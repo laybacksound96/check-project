@@ -1,6 +1,6 @@
 import styled from "styled-components";
-
 import { ReactComponent as DiscordIcon } from "../discord-icon.svg";
+
 const Header = styled.header`
   display: flex;
   justify-content: start;
@@ -39,7 +39,6 @@ const Section = styled.section`
     }
   }
 `;
-
 const LoginDiscordBtn = styled.button`
   background-color: #6e78ea;
   margin-top: 20px;
@@ -57,7 +56,6 @@ const LoginDiscordBtn = styled.button`
     padding-bottom: 3px;
   }
 `;
-
 const Article = styled.article`
   height: 3000px;
   background-color: ${(props) => props.theme.bgColor};
@@ -77,7 +75,6 @@ const Article = styled.article`
     margin-bottom: 15px;
   }
 `;
-
 const ImgFake = styled.div`
   margin-left: 200px;
   width: 300px;
@@ -95,6 +92,7 @@ const Footer = styled.footer`
 function home() {
   const loginHandlerDiscord = (event: React.MouseEvent) => {
     event.preventDefault();
+
     console.log("인증콜백 여기에 넣자");
   };
   return (

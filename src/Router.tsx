@@ -5,7 +5,7 @@ function Router() {
   return (
     <BrowserRouter>
       <Switch>
-        <Route path="/app">
+        <Route path="/dashboard">
           <div>asdasd</div>
         </Route>
         <Route path="/">
