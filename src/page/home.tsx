@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { ReactComponent as DiscordIcon } from "../discord-icon.svg";
+import axios from "axios";
 
 const Header = styled.header`
   display: flex;
@@ -40,20 +41,31 @@ const Section = styled.section`
   }
 `;
 const LoginDiscordBtn = styled.button`
-  background-color: #6e78ea;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   margin-top: 20px;
   margin-bottom: 10px;
+
   width: 300px;
   height: 50px;
+
   border: none;
-  color: white;
   border-radius: 15px;
+
+  background-color: #6e78ea;
+  color: white;
+
   font-size: 20px;
   &:hover {
     background-color: #8c92f5;
   }
   p {
-    padding-bottom: 3px;
+    margin-top: 15px;
+    &:hover {
+      color: white;
+    }
   }
 `;
 const Article = styled.article`
@@ -89,12 +101,12 @@ const Footer = styled.footer`
   justify-content: center;
   align-items: center;
 `;
-function home() {
-  const loginHandlerDiscord = (event: React.MouseEvent) => {
-    event.preventDefault();
+async function name(event: React.MouseEvent) {
+  const response = await axios.get("http://localhost:4000/login");
+  window.location.href = response.data.loginUrl;
+}
 
-    console.log("인증콜백 여기에 넣자");
-  };
+function Home() {
   return (
     <>
       <Header>
@@ -102,7 +114,7 @@ function home() {
           <h1>Check.loa</h1>
           <div>
             <span>간편하고 똑똑한 일정관리 앱</span>
-            <LoginDiscordBtn onClick={loginHandlerDiscord}>
+            <LoginDiscordBtn onClick={name}>
               <DiscordIcon />
               <p>Discord로 로그인</p>
             </LoginDiscordBtn>
@@ -134,4 +146,4 @@ function home() {
   );
 }
 
-export default home;
+export default Home;
