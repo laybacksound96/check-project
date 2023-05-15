@@ -1,5 +1,5 @@
 import { createGlobalStyle, ThemeProvider } from "styled-components";
-import { darkTheme } from "./theme";
+import { darkTheme } from "./theme/theme";
 import Router from "./Router";
 
 const GlobalStyle = createGlobalStyle`
