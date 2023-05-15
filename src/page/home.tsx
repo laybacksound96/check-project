@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { ReactComponent as DiscordIcon } from "../discord-icon.svg";
-import axios from "axios";
+import { fetchLogin } from "../util/fetch";
 
 const Header = styled.header`
   display: flex;
@@ -62,7 +62,6 @@ const LoginDiscordBtn = styled.button`
     background-color: #8c92f5;
   }
   p {
-    margin-top: 15px;
     &:hover {
       color: white;
     }
@@ -101,9 +100,10 @@ const Footer = styled.footer`
   justify-content: center;
   align-items: center;
 `;
-async function name(event: React.MouseEvent) {
-  const response = await axios.get("http://localhost:4000/login");
-  window.location.href = response.data.loginUrl;
+async function discordLoginHandler(event: React.MouseEvent) {
+  event.preventDefault();
+  const response = await fetchLogin();
+  window.location.href = response;
 }
 
 function Home() {
@@ -114,7 +114,7 @@ function Home() {
           <h1>Check.loa</h1>
           <div>
             <span>간편하고 똑똑한 일정관리 앱</span>
-            <LoginDiscordBtn onClick={name}>
+            <LoginDiscordBtn onClick={discordLoginHandler}>
               <DiscordIcon />
               <p>Discord로 로그인</p>
             </LoginDiscordBtn>
