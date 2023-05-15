@@ -31,6 +31,7 @@ export const Section = styled.section`
     margin-right: 20px;
   }
   a {
+    width: 150px;
     margin-left: 15px;
     font-size: 17px;
     &:hover {
