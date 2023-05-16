@@ -6,7 +6,6 @@ import DroppableSpace from "./Horizontal__Droppable";
 
 function Horizontal() {
   const setChars = useSetRecoilState(CharacterState);
-
   const onDragEnd = (dragInfo: DropResult) => {
     const { destination, source } = dragInfo;
     if (!destination) return;

@@ -1,8 +1,7 @@
 import React from "react";
 import { Draggable } from "react-beautiful-dnd";
 import styled from "styled-components";
-import { ICheck } from "../../../atoms";
-import Checkbox from "./Horizontal__Draggable__Checkbox";
+
 import { AxisLocker } from "../Functions/AxisLocker";
 import { dragIcon } from "../../../Settings";
 
@@ -10,33 +9,6 @@ interface INameProps {
   boardId: string;
   value: string;
   index: number;
-  check: ICheck[];
-}
-
-function Horizontal__Draggable({ boardId, value, check, index }: INameProps) {
-  const boardIndex = index;
-  return (
-    <Draggable draggableId={boardId} index={index}>
-      {(provided) => (
-        <NameBox
-          ref={provided.innerRef}
-          {...provided.draggableProps}
-          style={AxisLocker(provided.draggableProps.style!, true)}
-        >
-          <Name {...provided.dragHandleProps}>{value}</Name>
-
-          {check.map((check, index) => (
-            <Checkbox
-              key={check.checkName}
-              isChecked={check.isChecked}
-              BoxIndex={index}
-              boardIndex={boardIndex}
-            />
-          ))}
-        </NameBox>
-      )}
-    </Draggable>
-  );
 }
 
 const Name = styled.div`
@@ -56,5 +28,20 @@ const Name = styled.div`
 const NameBox = styled.div`
   display: flex;
 `;
+function Horizontal__Draggable({ boardId, value, index }: INameProps) {
+  return (
+    <Draggable draggableId={boardId} index={index}>
+      {(provided) => (
+        <NameBox
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+          style={AxisLocker(provided.draggableProps.style!, false)}
+        >
+          <Name {...provided.dragHandleProps}>{value}</Name>
+        </NameBox>
+      )}
+    </Draggable>
+  );
+}
 
 export default React.memo(Horizontal__Draggable);

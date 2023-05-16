@@ -9,28 +9,6 @@ interface ICardProps {
   boardId: string;
 }
 
-function Horizontal__Droppable({ boardId }: ICardProps) {
-  const user = useRecoilValue(CharacterState);
-  return (
-    <Droppable droppableId={boardId}>
-      {(provided, snapshot) => (
-        <Area ref={provided.innerRef} {...provided.droppableProps}>
-          {user.map((value, index) => (
-            <DraggableName
-              boardId={value.CharacterName}
-              value={value.CharacterName}
-              index={index}
-              check={value.Check}
-              key={value.CharacterName}
-            />
-          ))}
-          {provided.placeholder}
-        </Area>
-      )}
-    </Droppable>
-  );
-}
-
 const Area = styled.div`
   * {
     color: ${(props) => props.theme.bgColor};
@@ -42,5 +20,26 @@ const Area = styled.div`
   background-color: ${(props) => props.theme.subColor};
   transition: background-color 0.2s ease-in-out;
 `;
+
+function Horizontal__Droppable({ boardId }: ICardProps) {
+  const user = useRecoilValue(CharacterState);
+  return (
+    <Droppable droppableId={boardId}>
+      {(provided, snapshot) => (
+        <Area ref={provided.innerRef} {...provided.droppableProps}>
+          {user.map((value, index) => (
+            <DraggableName
+              boardId={value.CharacterName}
+              value={value.CharacterName}
+              index={index}
+              key={value.CharacterName}
+            />
+          ))}
+          {provided.placeholder}
+        </Area>
+      )}
+    </Droppable>
+  );
+}
 
 export default React.memo(Horizontal__Droppable);
