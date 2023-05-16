@@ -32,10 +32,15 @@ function Horizontal__Droppable({ boardId }: ICardProps) {
 }
 
 const Area = styled.div`
-  color: ${(props) => props.theme.textColor};
+  * {
+    color: ${(props) => props.theme.bgColor};
+  }
   font-weight: 500;
   flex-grow: 1;
-
+  border-radius: 10px;
+  margin: 5px;
+  padding: 15px;
+  background-color: ${(props) => props.theme.subColor};
   transition: background-color 0.2s ease-in-out;
 `;
 

@@ -13,10 +13,6 @@ export interface ICharacter {
   ItemAvgLevel?: string;
   ItemMaxLevel?: string;
 }
-export const isAuthenticated = atom<boolean>({
-  key: "isAuthenticated",
-  default: false,
-});
 
 export const CharacterState = atom<ICharacter[]>({
   key: "CharacterInfo",
@@ -54,7 +50,7 @@ export const CharacterState = atom<ICharacter[]>({
   ],
 });
 
-export const RowState = atom({
-  key: "RowState",
-  default: ["A", "B", "C", "D", "E"],
+export const ColumnState = atom({
+  key: "ColumnState",
+  default: ["사과", "배", "바나나", "귤", "오렌지", "아보카도", "치킨", "짬뽕"],
 });

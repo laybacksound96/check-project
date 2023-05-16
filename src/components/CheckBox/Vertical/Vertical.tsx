@@ -9,49 +9,41 @@ import {
 } from "react-beautiful-dnd";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { CharacterState, RowState } from "../../../atoms";
+import { CharacterState, ColumnState } from "../../../atoms";
 
-import RowCard from "./Vertical__card";
+import Card from "./Vertical__card";
 
 function AxisLocker(style: DraggingStyle | NotDraggingStyle) {
-  if (style?.transform) {
-    const axisLockX = `${style.transform.split(",").shift()}, 0px)`;
-    return {
-      ...style,
-      transform: axisLockX,
-    };
-  }
   return style;
+  // if (style?.transform) {
+  //   const axisLockX = `${style.transform.split(",").shift()}, 0px)`;
+  //   return {
+  //     ...style,
+  //     transform: axisLockX,
+  //   };
+  // }
+  // return style;
 }
 const Container = styled.div`
   display: flex;
-  color: ${(props) => props.theme.textColor};
 `;
-const Name = styled.div`
+const ColumnStyle = styled.div`
   display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  width: 200px;
-  height: 20px;
-  border-radius: 5px;
 `;
-function CheckBoxRow() {
+function CheckBoxColumn() {
   const setChars = useSetRecoilState(CharacterState);
-  const [Row, setRows] = useRecoilState(RowState);
+  const [Column, setColumns] = useRecoilState(ColumnState);
+
   const onDragEnd = (info: DropResult) => {
     const { destination, draggableId, source } = info;
     if (!destination) return;
     if (destination?.droppableId === source.droppableId) {
-      setRows((prev) => {
+      setColumns((prev) => {
         const boardCopy = [...prev];
         boardCopy.splice(source.index, 1);
         boardCopy.splice(destination?.index, 0, draggableId);
         return [...boardCopy];
       });
-
-      /* 
-      @todo : code refactoring needs
-      */
 
       setChars((prev) => {
         const boardCopy = [...prev];
@@ -72,26 +64,18 @@ function CheckBoxRow() {
     }
     return;
   };
+
   return (
-    /*
-    Name 컴포넌트는 Droppable의 열을 맞춰주고 있다.
-    컨테이너를 Grid식으로 바꾸던지 근본적인 개선필요
-    */
     <DragDropContext onDragEnd={onDragEnd}>
       <Container>
-        <Name />
         <Droppable droppableId="one" direction="horizontal">
           {(provided) => (
-            <div
-              style={{ display: "flex" }}
-              ref={provided.innerRef}
-              {...provided.droppableProps}
-            >
-              {Row.map((Row, index) => (
-                <Draggable draggableId={Row} index={index} key={Row}>
+            <ColumnStyle ref={provided.innerRef} {...provided.droppableProps}>
+              {Column.map((Column, index) => (
+                <Draggable draggableId={Column} index={index} key={Column}>
                   {(provided) => (
-                    <RowCard
-                      Row={Row}
+                    <Card
+                      Column={Column}
                       parentProvided={provided}
                       style={AxisLocker(provided.draggableProps.style!)}
                     />
@@ -99,11 +83,11 @@ function CheckBoxRow() {
                 </Draggable>
               ))}
               {provided.placeholder}
-            </div>
+            </ColumnStyle>
           )}
         </Droppable>
       </Container>
     </DragDropContext>
   );
 }
-export default React.memo(CheckBoxRow);
+export default React.memo(CheckBoxColumn);

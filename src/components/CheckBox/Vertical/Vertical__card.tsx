@@ -9,21 +9,26 @@ const Name = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 50px;
+
+  min-width: 50px;
+  width: auto;
   height: 50px;
+
   border-radius: 5px;
+  margin: 10px;
+  padding: 10px;
   &:hover {
-    background-color: rgba(255, 255, 255, 0.05);
+    background-color: rgba(255, 255, 255, 0.231);
     transition: ease-in-out 0.1s;
   }
 `;
-interface IRowCardProp {
-  Row: string;
+interface IColumnCardProp {
+  Column: string;
   parentProvided: DraggableProvided;
   style: DraggingStyle | NotDraggingStyle;
 }
 
-function RowCard({ Row, parentProvided, style }: IRowCardProp) {
+function ColumnCard({ Column, parentProvided, style }: IColumnCardProp) {
   return (
     <Name
       ref={parentProvided.innerRef}
@@ -31,8 +36,8 @@ function RowCard({ Row, parentProvided, style }: IRowCardProp) {
       {...parentProvided.draggableProps}
       style={style}
     >
-      {Row}
+      {Column}
     </Name>
   );
 }
-export default RowCard;
+export default ColumnCard;

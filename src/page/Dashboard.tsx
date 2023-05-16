@@ -1,84 +1,21 @@
-import { useState } from "react";
 import { useParams } from "react-router-dom";
-import styled from "styled-components";
 import CheckBox from "../components/CheckBox/CheckBox";
 import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  AddBtn,
+  CheckBoxContainer,
+  Container,
+  HeaderBox,
+  Items,
+} from "../Style/Dashboard";
+import Vertical from "../components/CheckBox/Vertical/Vertical";
+
 interface RouteParams {
   userId: string;
 }
-const Container = styled.div`
-  width: 900px;
-  height: 1000px;
 
-  display: flex;
-  flex-direction: column;
-  justify-content: start;
-  align-items: center;
-  margin-top: 150px;
-  header {
-    width: inherit;
-  }
-`;
-const HeaderBox = styled.div`
-  margin-top: 30px;
-  width: inherit;
-  height: auto;
-  border-radius: 30px;
-  padding: 30px;
-  background-color: ${(props) => props.theme.subColor};
-  * {
-    color: ${(props) => props.theme.bgColor};
-  }
-  h1 {
-    font-size: 30px;
-  }
-  header {
-    width: 100%;
-    margin-bottom: 30px;
-    display: flex;
-    justify-content: space-between;
-  }
-  svg {
-    margin-top: 5px;
-  }
-`;
-const Items = styled.ul`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  grid-auto-rows: 60px;
-  gap: 10px;
-  margin-top: 30px;
-  li {
-    margin: 0 10px;
-    text-align: center;
-    border-radius: 10px;
-    width: auto;
-    min-width: 120px;
-    height: 50px;
-    line-height: 50px;
-    background-color: ${(props) => props.theme.accentColor};
-    color: ${(props) => props.theme.bgColor};
-  }
-`;
-const AddBtn = styled.div``;
-
-const CheckBoxContainer = styled.div`
-  background-color: ${(props) => props.theme.subColor};
-  * {
-    color: ${(props) => props.theme.bgColor};
-    font-size: 25px;
-  }
-  margin-top: 20px;
-  display: flex;
-  flex-direction: column;
-  height: auto;
-  width: inherit;
-  padding: 30px 40px;
-  border-radius: 15px;
-`;
 function Dashboard(props: any) {
-  const charArr = useState();
   const { userId } = useParams<RouteParams>();
 
   return (
@@ -101,6 +38,7 @@ function Dashboard(props: any) {
         </Items>
       </HeaderBox>
       <CheckBoxContainer>
+        <Vertical />
         <CheckBox />
         <CheckBox />
         <CheckBox />
