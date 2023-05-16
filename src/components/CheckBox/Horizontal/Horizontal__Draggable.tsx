@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { ICheck } from "../../../atoms";
 import Checkbox from "./Horizontal__Draggable__Checkbox";
 import { AxisLocker } from "../Functions/AxisLocker";
+import { dragIcon } from "../../../Settings";
 
 interface INameProps {
   boardId: string;
@@ -44,7 +45,7 @@ const Name = styled.div`
   align-items: center;
   width: 200px;
   padding-left: 5px;
-  height: 50px;
+  height: ${dragIcon.edgeLength}px;
   border-radius: 5px;
   &:hover {
     background-color: rgba(255, 255, 255, 0.05);

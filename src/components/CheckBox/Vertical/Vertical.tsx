@@ -6,7 +6,6 @@ import {
   DropResult,
 } from "react-beautiful-dnd";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import styled from "styled-components";
 import { CharacterState, ColumnState } from "../../../atoms";
 
 import Card from "./Vertical__card";
@@ -52,7 +51,7 @@ function CheckBoxColumn() {
       <Droppable droppableId="one" direction="horizontal">
         {(provided) => (
           <div
-            style={{ display: "flex" }}
+            style={{ display: "flex", marginLeft: "200px" }}
             ref={provided.innerRef}
             {...provided.droppableProps}
           >

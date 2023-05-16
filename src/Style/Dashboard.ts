@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-  width: 900px;
+  width: auto;
   height: 1000px;
 
   display: flex;
@@ -15,7 +15,7 @@ export const Container = styled.div`
 `;
 export const HeaderBox = styled.div`
   margin-top: 30px;
-  width: inherit;
+  width: 100%;
   height: auto;
   border-radius: 30px;
   padding: 30px;

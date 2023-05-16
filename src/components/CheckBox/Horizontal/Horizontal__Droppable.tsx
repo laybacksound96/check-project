@@ -38,8 +38,7 @@ const Area = styled.div`
   font-weight: 500;
   flex-grow: 1;
   border-radius: 10px;
-  margin: 5px;
-  padding: 15px;
+  margin-bottom: 10px;
   background-color: ${(props) => props.theme.subColor};
   transition: background-color 0.2s ease-in-out;
 `;

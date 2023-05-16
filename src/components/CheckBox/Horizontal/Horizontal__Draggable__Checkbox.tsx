@@ -4,13 +4,15 @@ import { useCallback } from "react";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { CharacterState } from "../../../atoms";
+import { dragIcon } from "../../../Settings";
 
 // @todo2 width는 Row쪽 witdh와 공유해야 함
 const ShareWidthDiv = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 50px;
+  width: ${dragIcon.edgeLength}px;
+  height: ${dragIcon.edgeLength}px;
   border-radius: 5px;
   color: ${(props) => props.theme.subColor};
   &:hover {
