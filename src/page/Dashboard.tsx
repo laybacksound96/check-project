@@ -40,8 +40,6 @@ function Dashboard(props: any) {
       <CheckBoxContainer>
         <Vertical />
         <CheckBox />
-        <CheckBox />
-        <CheckBox />
       </CheckBoxContainer>
       <AddBtn />
     </Container>

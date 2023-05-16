@@ -4,10 +4,13 @@ import styled from "styled-components";
 
 import { AxisLocker } from "../Functions/AxisLocker";
 import { dragIcon } from "../../../Settings";
+import Checkbox from "./Horizontal__Draggable__Checkbox";
+import { useRecoilValue } from "recoil";
+import { ColumnState } from "../../../atoms";
 
 interface INameProps {
   boardId: string;
-  value: string;
+  name: string;
   index: number;
 }
 
@@ -28,7 +31,8 @@ const Name = styled.div`
 const NameBox = styled.div`
   display: flex;
 `;
-function Horizontal__Draggable({ boardId, value, index }: INameProps) {
+function Horizontal__Draggable({ boardId, name, index }: INameProps) {
+  const Column = useRecoilValue(ColumnState);
   return (
     <Draggable draggableId={boardId} index={index}>
       {(provided) => (
@@ -37,7 +41,12 @@ function Horizontal__Draggable({ boardId, value, index }: INameProps) {
           {...provided.draggableProps}
           style={AxisLocker(provided.draggableProps.style!, false)}
         >
-          <Name {...provided.dragHandleProps}>{value}</Name>
+          <Name {...provided.dragHandleProps}>{name}</Name>
+          {Column.map((elem, ColumnIndex) => {
+            return (
+              <Checkbox key={elem} RowIndex={index} ColumnIndex={ColumnIndex} />
+            );
+          })}
         </NameBox>
       )}
     </Draggable>

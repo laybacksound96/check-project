@@ -1,13 +1,7 @@
 import React from "react";
 import { Droppable } from "react-beautiful-dnd";
-import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { CharacterState } from "../../../atoms";
-import DraggableName from "./Horizontal__Draggable";
-
-interface ICardProps {
-  boardId: string;
-}
+import Draggable from "./Horizontal__Draggable";
 
 const Area = styled.div`
   * {
@@ -20,21 +14,26 @@ const Area = styled.div`
   background-color: ${(props) => props.theme.subColor};
   transition: background-color 0.2s ease-in-out;
 `;
-
-function Horizontal__Droppable({ boardId }: ICardProps) {
-  const user = useRecoilValue(CharacterState);
+interface IProps {
+  account: { Characters: string[] };
+  boardId: string;
+  accountIndex: number;
+}
+function Horizontal__Droppable({ boardId, accountIndex, account }: IProps) {
   return (
     <Droppable droppableId={boardId}>
       {(provided, snapshot) => (
         <Area ref={provided.innerRef} {...provided.droppableProps}>
-          {user.map((value, index) => (
-            <DraggableName
-              boardId={value.CharacterName}
-              value={value.CharacterName}
-              index={index}
-              key={value.CharacterName}
-            />
-          ))}
+          {account.Characters.map((elem, index) => {
+            return (
+              <Draggable
+                name={elem}
+                index={index}
+                boardId={elem + "_" + index}
+                key={elem + "_" + index}
+              />
+            );
+          })}
           {provided.placeholder}
         </Area>
       )}

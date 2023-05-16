@@ -20,18 +20,17 @@ const CheckBox = styled.div`
 `;
 interface ICheckboxProps {
   key: string;
-
-  BoxIndex: number;
-  boardIndex: number;
+  ColumnIndex: number;
+  RowIndex: number;
 }
-function Checkbox({ BoxIndex, boardIndex }: ICheckboxProps) {
+function Checkbox({ ColumnIndex, RowIndex }: ICheckboxProps) {
   const [isClicked, setIsClicked] = useState(false);
 
   function CheckBox_Onclick() {
     setIsClicked((prev) => {
       return !prev;
     });
-    console.log("BoxIndex: " + BoxIndex, "boardIndex: " + boardIndex);
+    console.log("ColumnIndex: " + ColumnIndex, "RowIndex: " + RowIndex);
   }
 
   return (
