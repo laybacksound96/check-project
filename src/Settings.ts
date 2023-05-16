@@ -1,3 +1,5 @@
 export const dragIcon = {
-  edgeLength: 70,
+  icon: { edgeLength: 70, fontSize: 25 },
+  column: { fontSize: 17 },
+  row: { fontSize: 17 },
 };

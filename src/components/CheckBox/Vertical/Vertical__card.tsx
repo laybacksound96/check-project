@@ -11,11 +11,11 @@ const Name = styled.div`
   justify-content: center;
   align-items: center;
 
-  width: ${dragIcon.edgeLength}px;
-  height: ${dragIcon.edgeLength}px;
+  width: ${dragIcon.icon.edgeLength}px;
+  height: ${dragIcon.icon.edgeLength}px;
 
   border-radius: 5px;
-  font-size: 15px;
+  font-size: ${dragIcon.column.fontSize}px;
   &:hover {
     background-color: rgba(255, 255, 255, 0.231);
     transition: ease-in-out 0.1s;

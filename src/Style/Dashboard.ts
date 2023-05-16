@@ -34,6 +34,7 @@ export const HeaderBox = styled.div`
   }
   svg {
     margin-top: 5px;
+    font-size: 25px;
   }
 `;
 export const Items = styled.ul`
@@ -60,7 +61,6 @@ export const CheckBoxContainer = styled.div`
   background-color: ${(props) => props.theme.subColor};
   * {
     color: ${(props) => props.theme.bgColor};
-    font-size: 25px;
   }
   margin-top: 20px;
   display: flex;

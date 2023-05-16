@@ -6,13 +6,13 @@ import styled from "styled-components";
 import { CharacterState } from "../../../atoms";
 import { dragIcon } from "../../../Settings";
 
-// @todo2 width는 Row쪽 witdh와 공유해야 함
 const ShareWidthDiv = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: ${dragIcon.edgeLength}px;
-  height: ${dragIcon.edgeLength}px;
+  font-size: ${dragIcon.icon.fontSize}px;
+  width: ${dragIcon.icon.edgeLength}px;
+  height: ${dragIcon.icon.edgeLength}px;
   border-radius: 5px;
   color: ${(props) => props.theme.subColor};
   &:hover {

@@ -45,7 +45,8 @@ const Name = styled.div`
   align-items: center;
   width: 200px;
   padding-left: 5px;
-  height: ${dragIcon.edgeLength}px;
+  font-size: ${dragIcon.row.fontSize}px;
+  height: ${dragIcon.icon.edgeLength}px;
   border-radius: 5px;
   &:hover {
     background-color: rgba(255, 255, 255, 0.05);
