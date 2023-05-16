@@ -23,7 +23,7 @@ const Container = styled.div`
 const HeaderBox = styled.div`
   margin-top: 30px;
   width: inherit;
-  height: 200px;
+  height: auto;
   border-radius: 30px;
   padding: 30px;
   background-color: ${(props) => props.theme.subColor};
@@ -44,13 +44,17 @@ const HeaderBox = styled.div`
   }
 `;
 const Items = styled.ul`
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  grid-auto-rows: 60px;
+  gap: 10px;
   margin-top: 30px;
   li {
     margin: 0 10px;
     text-align: center;
     border-radius: 10px;
-    width: 80px;
+    width: auto;
+    min-width: 120px;
     height: 50px;
     line-height: 50px;
     background-color: ${(props) => props.theme.accentColor};
@@ -88,12 +92,12 @@ function Dashboard(props: any) {
         <Items>
           <li>사과 x 5</li>
           <li>배 x 6</li>
-          <li>사과 x 5</li>
-          <li>배 x 6</li>
-          <li>사과 x 5</li>
-          <li>배 x 6</li>
-          <li>사과 x 5</li>
-          <li>배 x 6</li>
+          <li>바나나 x 2</li>
+          <li>귤 x 6</li>
+          <li>오렌지 x 5</li>
+          <li>아보카도 x 6</li>
+          <li>치킨 x 5</li>
+          <li>짬뽕 x 6</li>
         </Items>
       </HeaderBox>
       <CheckBoxContainer>
