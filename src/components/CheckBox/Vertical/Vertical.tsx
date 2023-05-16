@@ -3,8 +3,6 @@ import {
   DragDropContext,
   Draggable,
   Droppable,
-  DraggingStyle,
-  NotDraggingStyle,
   DropResult,
 } from "react-beautiful-dnd";
 import { useRecoilState, useSetRecoilState } from "recoil";
@@ -12,24 +10,8 @@ import styled from "styled-components";
 import { CharacterState, ColumnState } from "../../../atoms";
 
 import Card from "./Vertical__card";
+import { AxisLocker } from "../Functions/AxisLocker";
 
-function AxisLocker(style: DraggingStyle | NotDraggingStyle) {
-  return style;
-  // if (style?.transform) {
-  //   const axisLockX = `${style.transform.split(",").shift()}, 0px)`;
-  //   return {
-  //     ...style,
-  //     transform: axisLockX,
-  //   };
-  // }
-  // return style;
-}
-const Container = styled.div`
-  display: flex;
-`;
-const ColumnStyle = styled.div`
-  display: flex;
-`;
 function CheckBoxColumn() {
   const setChars = useSetRecoilState(CharacterState);
   const [Column, setColumns] = useRecoilState(ColumnState);
@@ -67,26 +49,28 @@ function CheckBoxColumn() {
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <Container>
-        <Droppable droppableId="one" direction="horizontal">
-          {(provided) => (
-            <ColumnStyle ref={provided.innerRef} {...provided.droppableProps}>
-              {Column.map((Column, index) => (
-                <Draggable draggableId={Column} index={index} key={Column}>
-                  {(provided) => (
-                    <Card
-                      Column={Column}
-                      parentProvided={provided}
-                      style={AxisLocker(provided.draggableProps.style!)}
-                    />
-                  )}
-                </Draggable>
-              ))}
-              {provided.placeholder}
-            </ColumnStyle>
-          )}
-        </Droppable>
-      </Container>
+      <Droppable droppableId="one" direction="horizontal">
+        {(provided) => (
+          <div
+            style={{ display: "flex" }}
+            ref={provided.innerRef}
+            {...provided.droppableProps}
+          >
+            {Column.map((Column, index) => (
+              <Draggable draggableId={Column} index={index} key={Column}>
+                {(provided) => (
+                  <Card
+                    Column={Column}
+                    parentProvided={provided}
+                    style={AxisLocker(provided.draggableProps.style!, true)}
+                  />
+                )}
+              </Draggable>
+            ))}
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
     </DragDropContext>
   );
 }

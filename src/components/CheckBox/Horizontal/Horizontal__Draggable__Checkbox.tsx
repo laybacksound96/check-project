@@ -12,7 +12,7 @@ const ShareWidthDiv = styled.div`
   align-items: center;
   width: 50px;
   border-radius: 5px;
-  color: ${(props) => props.theme.textColor};
+  color: ${(props) => props.theme.subColor};
   &:hover {
     background-color: rgba(255, 255, 255, 0.05);
     transition: ease-in-out 0.1s;

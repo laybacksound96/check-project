@@ -16,7 +16,7 @@ const Name = styled.div`
 
   border-radius: 5px;
   margin: 10px;
-  padding: 10px;
+  padding: 5px;
   &:hover {
     background-color: rgba(255, 255, 255, 0.231);
     transition: ease-in-out 0.1s;
