@@ -24,13 +24,13 @@ function Horizontal__Droppable({ boardId, accountIndex, account }: IProps) {
     <Droppable droppableId={boardId}>
       {(provided, snapshot) => (
         <Area ref={provided.innerRef} {...provided.droppableProps}>
-          {account.Characters.map((elem, index) => {
+          {account.Characters.map((name, index) => {
             return (
               <Draggable
-                name={elem}
+                name={name}
                 index={index}
-                boardId={elem + "_" + index}
-                key={elem + "_" + index}
+                boardId={name + "_" + index}
+                key={name + "_" + index}
               />
             );
           })}

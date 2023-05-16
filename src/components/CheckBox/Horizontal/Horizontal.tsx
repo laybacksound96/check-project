@@ -2,6 +2,7 @@ import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { useSetRecoilState } from "recoil";
 import { CharacterState } from "../../../atoms";
 import DroppableSpace from "./Horizontal__Droppable";
+import { useState } from "react";
 
 interface IAccountProps {
   account: { Characters: string[] };
@@ -9,20 +10,25 @@ interface IAccountProps {
 }
 
 function Horizontal({ index, account }: IAccountProps) {
-  const setChars = useSetRecoilState(CharacterState);
+  const [accountState, setAccountState] = useState(account);
 
   const onDragEnd = (dragInfo: DropResult) => {
     const { destination, source } = dragInfo;
     if (!destination) return;
     if (destination?.droppableId === source.droppableId) {
-      setChars((prev) => {
-        console.log(prev);
-        // const charStateCopy = [...prev];
-        // const copiedObject = { ...charStateCopy[source.index] };
+      setAccountState((prev) => {
+        const copiedPrev = { ...prev };
+
+        console.log(copiedPrev);
+
+        const charStateCopy = [...prev.Characters];
+        const copiedObject = charStateCopy[source.index];
+
         // charStateCopy.splice(source.index, 1);
         // charStateCopy.splice(destination?.index, 0, copiedObject);
-        // return [...charStateCopy];
-        return prev;
+        copiedPrev.Characters = charStateCopy;
+
+        return copiedPrev;
       });
     }
     return;
