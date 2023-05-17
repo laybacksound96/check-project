@@ -1,7 +1,7 @@
 import { useRecoilState } from "recoil";
 import { CharacterState } from "../../atoms";
 import Horizontal from "./Horizontal/Horizontal";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { InsertAccountHandler } from "./Functions/InsertAccount";
 import {
   DropResult,
@@ -27,6 +27,17 @@ const AccountStyle = styled.div`
   display: flex;
   flex-direction: column;
 `;
+const fadeInAnimation = keyframes`
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+`;
+const MotionStyle = styled.div`
+  animation: ${fadeInAnimation} 0.5s ease-in-out;
+`;
 function CheckBox() {
   const [accounts, setAccounts] = useRecoilState(CharacterState);
 
@@ -36,13 +47,24 @@ function CheckBox() {
       return [...prev, InsertAccountHandler()];
     });
   };
-  const onDragEnd2 = (dragInfo: DropResult) => {
-    return;
+  const onDragEnd = (dragInfo: DropResult) => {
+    const { destination, source } = dragInfo;
+    if (!destination) return;
+    if (destination?.droppableId === source.droppableId) {
+      setAccounts((prev) => {
+        const copiedPrev = [...prev];
+        const copiedObject = copiedPrev[source.index];
+        copiedPrev.splice(source.index, 1);
+        copiedPrev.splice(destination?.index, 0, copiedObject);
+
+        return [...copiedPrev];
+      });
+    }
   };
   return (
     <>
-      <DragDropContext onDragEnd={onDragEnd2}>
-        <Droppable droppableId="sssdadw" direction="vertical">
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Droppable droppableId="accounts" direction="vertical">
           {(provided) => (
             <AccountStyle ref={provided.innerRef} {...provided.droppableProps}>
               {accounts.map((account, index) => (
@@ -52,13 +74,18 @@ function CheckBox() {
                   key={`account_${index}`}
                 >
                   {(provided) => (
-                    <Horizontal
-                      parentProvided={provided}
-                      account={account}
-                      key={account.Characters[0]}
-                      index={index}
-                      style={AxisLocker(provided.draggableProps.style!, false)}
-                    />
+                    <MotionStyle>
+                      <Horizontal
+                        parentProvided={provided}
+                        account={account}
+                        key={account.Characters[0]}
+                        index={index}
+                        style={AxisLocker(
+                          provided.draggableProps.style!,
+                          false
+                        )}
+                      />
+                    </MotionStyle>
                   )}
                 </Draggable>
               ))}

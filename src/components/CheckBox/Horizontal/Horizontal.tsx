@@ -14,6 +14,7 @@ interface IAccountProps {
   parentProvided: DraggableProvided;
   style: DraggingStyle | NotDraggingStyle;
 }
+
 function Horizontal({ index, account, parentProvided, style }: IAccountProps) {
   const [accountState, setAccountState] = useState(account);
 

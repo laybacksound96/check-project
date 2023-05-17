@@ -30,7 +30,6 @@ function Checkbox({ ColumnIndex, RowIndex }: ICheckboxProps) {
     setIsClicked((prev) => {
       return !prev;
     });
-    console.log("ColumnIndex: " + ColumnIndex, "RowIndex: " + RowIndex);
   }
 
   return (
