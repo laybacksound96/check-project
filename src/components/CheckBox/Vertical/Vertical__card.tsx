@@ -6,7 +6,7 @@ import {
 import styled from "styled-components";
 import { dragIcon } from "../../../Settings";
 
-const Name = styled.div`
+export const Name = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;

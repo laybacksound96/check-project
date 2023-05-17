@@ -24,7 +24,7 @@ const Name = styled.div`
   height: ${dragIcon.icon.edgeLength}px;
   border-radius: 5px;
   &:hover {
-    background-color: rgba(255, 255, 255, 0.05);
+    background-color: rgba(255, 255, 255, 0.483);
     transition: ease-in-out 0.1s;
   }
 `;

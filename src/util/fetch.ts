@@ -5,3 +5,7 @@ export async function fetchLogin(): Promise<string> {
   console.log(response);
   return response.data.loginUrl;
 }
+
+export function fetchCheck() {
+  return console.log("called by fetchCheck()");
+}

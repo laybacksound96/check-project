@@ -1,20 +1,42 @@
 import { atom } from "recoil";
+import { fetchCheck } from "./util/fetch";
 
 export interface ICharacter {
   Characters: string[];
 }
+
+interface IBox {
+  value: boolean;
+  fetch: () => void;
+}
+type BoxArray = IBox[][];
+
+export const checkBoxState = atom<BoxArray>({
+  key: "checkBoxState",
+  default: [
+    [
+      { value: true, fetch: () => fetchCheck },
+      { value: true, fetch: () => fetchCheck },
+      { value: true, fetch: () => fetchCheck },
+    ],
+    [
+      { value: true, fetch: () => fetchCheck },
+      { value: true, fetch: () => fetchCheck },
+      { value: true, fetch: () => fetchCheck },
+    ],
+    [
+      { value: true, fetch: () => fetchCheck },
+      { value: true, fetch: () => fetchCheck },
+      { value: true, fetch: () => fetchCheck },
+    ],
+  ],
+});
 
 export const CharacterState = atom<ICharacter[]>({
   key: "CharacterInfo",
   default: [
     {
       Characters: ["a", "b", "c"],
-    },
-    {
-      Characters: ["d", "e", "f"],
-    },
-    {
-      Characters: ["g", "h", "i"],
     },
   ],
 });
