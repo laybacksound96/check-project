@@ -1,10 +1,9 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-  width: auto;
-  height: 1000px;
-
   display: flex;
+  width: auto;
+
   flex-direction: column;
   justify-content: start;
   align-items: center;
@@ -55,7 +54,6 @@ export const Items = styled.ul`
     color: ${(props) => props.theme.bgColor};
   }
 `;
-export const AddBtn = styled.div``;
 
 export const CheckBoxContainer = styled.div`
   background-color: ${(props) => props.theme.subColor};
@@ -69,4 +67,5 @@ export const CheckBoxContainer = styled.div`
   width: inherit;
   padding: 30px 40px;
   border-radius: 15px;
+  margin-bottom: 150px;
 `;

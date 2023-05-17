@@ -3,7 +3,6 @@ import CheckBox from "../components/CheckBox/CheckBox";
 import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  AddBtn,
   CheckBoxContainer,
   Container,
   HeaderBox,
@@ -41,7 +40,6 @@ function Dashboard(props: any) {
         <Vertical />
         <CheckBox />
       </CheckBoxContainer>
-      <AddBtn />
     </Container>
   );
 }

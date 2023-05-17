@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 import { AxisLocker } from "../Functions/AxisLocker";
 import { dragIcon } from "../../../Settings";
-import Checkbox from "./Horizontal__Draggable__Checkbox";
+import Checkbox from "./Checkbox";
 import { useRecoilValue } from "recoil";
 import { ColumnState } from "../../../atoms";
 
@@ -24,7 +24,7 @@ const Name = styled.div`
   height: ${dragIcon.icon.edgeLength}px;
   border-radius: 5px;
   &:hover {
-    background-color: rgba(255, 255, 255, 0.483);
+    background-color: rgba(255, 255, 255, 0.258);
     transition: ease-in-out 0.1s;
   }
 `;

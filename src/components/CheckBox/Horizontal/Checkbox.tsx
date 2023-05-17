@@ -14,7 +14,7 @@ const CheckBox = styled.div`
   border-radius: 5px;
   color: ${(props) => props.theme.subColor};
   &:hover {
-    background-color: rgba(255, 255, 255, 0.05);
+    background-color: rgba(255, 255, 255, 0.258);
     transition: ease-in-out 0.1s;
   }
 `;
@@ -28,6 +28,8 @@ function Checkbox({ ColumnIndex, RowIndex }: ICheckboxProps) {
 
   function CheckBox_Onclick() {
     setIsClicked((prev) => {
+      console.log(ColumnIndex);
+      console.log(RowIndex);
       return !prev;
     });
   }

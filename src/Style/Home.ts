@@ -91,11 +91,3 @@ export const ImgFake = styled.div`
   height: auto;
   background-color: #000000;
 `;
-export const Footer = styled.footer`
-  background-color: #181924;
-  color: ${(props) => props.theme.accentColor};
-  height: 100px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;

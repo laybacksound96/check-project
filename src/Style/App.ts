@@ -1,4 +1,4 @@
-import { createGlobalStyle } from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
 export const GlobalStyle = createGlobalStyle`
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400&display=swap');
 html, body, div, span, applet, object, iframe,
@@ -30,9 +30,7 @@ footer, header, hgroup, main, menu, nav, section {
 *[hidden] {
     display: none;
 }
-body {
-  line-height: 1;
-}
+
 menu, ol, ul {
   list-style: none;
 }
@@ -52,14 +50,22 @@ table {
   box-sizing: border-box;
 }
 body {
-  display: flex;
-  justify-content: center;
-  font-family: 'Source Sans Pro', sans-serif;
-  background-color:${(props) => props.theme.bgColor};
-  color:${(props) => props.theme.accentColor};
+
 }
 a {
   text-decoration:none;
   color:inherit;
 }
+`;
+export const Body = styled.body`
+  width: 100%;
+  height: auto;
+  line-height: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  font-family: "Source Sans Pro", sans-serif;
+  background-color: ${(props) => props.theme.bgColor};
+  color: ${(props) => props.theme.accentColor};
 `;

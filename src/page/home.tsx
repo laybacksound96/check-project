@@ -4,7 +4,6 @@ import {
   LoginDiscordBtn,
   Article,
   ImgFake,
-  Footer,
 } from "../Style/Home";
 import { ReactComponent as DiscordIcon } from "../icons/discord-icon.svg";
 import { fetchLogin } from "../util/fetch";
@@ -48,9 +47,6 @@ function Home() {
           <ImgFake />
         </div>
       </Article>
-      <Footer>
-        <p>Contact us : 412#4615</p>
-      </Footer>
     </>
   );
 }
