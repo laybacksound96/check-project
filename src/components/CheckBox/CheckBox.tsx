@@ -85,6 +85,7 @@ function CheckBox() {
                           provided.draggableProps.style!,
                           false
                         )}
+                        accountIndex={index}
                       />
                     </MotionStyle>
                   )}

@@ -15,16 +15,10 @@ interface IProps {
   account: IAccount;
   parentProvided: DraggableProvided;
   style: DraggingStyle | NotDraggingStyle;
+  accountIndex: number;
 }
-function findIndexByKeyValue(array: IAccount[], value: string) {
-  for (let i = 0; i < array.length; i++) {
-    if (array[i].AccountName === value) {
-      return i;
-    }
-  }
-  return -1;
-}
-function Horizontal({ account, parentProvided, style }: IProps) {
+
+function Horizontal({ account, parentProvided, style, accountIndex }: IProps) {
   const [accountsState, setAccountsState] = useRecoilState(AccountsState);
   const onDragEnd = (dragInfo: DropResult) => {
     const { destination, source } = dragInfo;
@@ -32,22 +26,14 @@ function Horizontal({ account, parentProvided, style }: IProps) {
     if (destination?.droppableId === source.droppableId) {
       setAccountsState((prev) => {
         const copiedPrev = [...prev];
-        const foundAccountOnDroppable = copiedPrev.find(
-          (Account) => Account.AccountName === destination.droppableId
-        );
-        if (!foundAccountOnDroppable) return [];
-
-        const index = findIndexByKeyValue(copiedPrev, destination.droppableId);
-
-        const AccountCharacterCopy = [...foundAccountOnDroppable.Characters];
-        const copiedAccount = AccountCharacterCopy[source.index];
-        AccountCharacterCopy.splice(source.index, 1);
-        AccountCharacterCopy.splice(destination?.index, 0, copiedAccount);
-
-        const copiedStartPrev = copiedPrev[index];
-        copiedStartPrev.Characters = [...AccountCharacterCopy];
-        copiedPrev.splice(index, 1);
-        copiedPrev.splice(destination?.index, 0, copiedStartPrev);
+        const copiedAccount = { ...prev[accountIndex] };
+        const Characters = [...copiedAccount.Characters];
+        const copiedArray = Characters[source.index];
+        copiedPrev.splice(accountIndex, 1);
+        Characters.splice(source.index, 1);
+        Characters.splice(destination?.index, 0, copiedArray);
+        copiedPrev.splice(accountIndex, 0, copiedAccount);
+        copiedAccount.Characters = Characters;
 
         return [...copiedPrev];
       });

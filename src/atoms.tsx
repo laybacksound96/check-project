@@ -21,7 +21,7 @@ export const AccountsState = atom<IAccounts>({
   key: "AccountsState",
   default: [
     {
-      AccountName: "a",
+      AccountName: "abbb",
       Characters: [
         {
           CharacterName: "a_1",
