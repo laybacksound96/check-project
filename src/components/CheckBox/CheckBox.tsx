@@ -10,6 +10,7 @@ import {
   Draggable,
 } from "react-beautiful-dnd";
 import { AxisLocker } from "./Functions/AxisLocker";
+import React from "react";
 
 const AddAccountBtn = styled.button`
   height: 100px;
@@ -35,38 +36,34 @@ const fadeInAnimation = keyframes`
   }
 `;
 const MotionStyle = styled.div`
-  animation: ${fadeInAnimation} 0.5s ease-in-out;
+  /* animation: ${fadeInAnimation} 0.5s ease-in-out; */
 `;
 
 function CheckBox() {
   const [accountsState, setAccountsState] = useRecoilState(AccountsState);
 
   const AddAccountHandler = (event: React.MouseEvent) => {
-    return;
-    // event.preventDefault();
-    // return;
-    // setAccounts((prev) => {
-    //   return [...prev, InsertAccountHandler()];
-    // });
+    event.preventDefault();
+
+    setAccountsState((prev) => {
+      return [...prev, InsertAccountHandler()];
+    });
   };
 
   const onDragEnd = (dragInfo: DropResult) => {
-    return;
+    const { destination, source } = dragInfo;
+    if (!destination) return;
+    if (destination?.droppableId === source.droppableId) {
+      setAccountsState((prev) => {
+        const copiedPrev = [...prev];
+        const copiedObject = copiedPrev[source.index];
+        copiedPrev.splice(source.index, 1);
+        copiedPrev.splice(destination?.index, 0, copiedObject);
+        return [...copiedPrev];
+      });
+    }
   };
 
-  //   const { destination, source } = dragInfo;
-  //   if (!destination) return;
-  //   if (destination?.droppableId === source.droppableId) {
-  //     setAccounts((prev) => {
-  //       const copiedPrev = [...prev];
-  //       const copiedObject = copiedPrev[source.index];
-  //       copiedPrev.splice(source.index, 1);
-  //       copiedPrev.splice(destination?.index, 0, copiedObject);
-
-  //       return [...copiedPrev];
-  //     });
-  //   }
-  // };
   return (
     <>
       <DragDropContext onDragEnd={onDragEnd}>
@@ -105,4 +102,4 @@ function CheckBox() {
   );
 }
 
-export default CheckBox;
+export default React.memo(CheckBox);

@@ -6,31 +6,52 @@ import {
   NotDraggingStyle,
 } from "react-beautiful-dnd";
 import DroppableSpace from "./Horizontal__Droppable";
-import { IAccount } from "../../../atoms";
+import { AccountsState, IAccount } from "../../../atoms";
+import React from "react";
+import { useRecoilState } from "recoil";
+import { Contents } from "../../../Style/Dashboard";
 
 interface IProps {
   account: IAccount;
   parentProvided: DraggableProvided;
   style: DraggingStyle | NotDraggingStyle;
 }
-
+function findIndexByKeyValue(array: IAccount[], value: string) {
+  for (let i = 0; i < array.length; i++) {
+    if (array[i].AccountName === value) {
+      return i;
+    }
+  }
+  return -1;
+}
 function Horizontal({ account, parentProvided, style }: IProps) {
+  const [accountsState, setAccountsState] = useRecoilState(AccountsState);
   const onDragEnd = (dragInfo: DropResult) => {
-    // const { destination, source } = dragInfo;
-    // if (!destination) return;
-    // if (destination?.droppableId === source.droppableId) {
-    //   setAccountState((prev) => {
-    //     const copiedPrev = { ...prev };
-    //     const charStateCopy = [...prev.Characters];
-    //     const copiedObject = charStateCopy[source.index];
+    const { destination, source } = dragInfo;
+    if (!destination) return;
+    if (destination?.droppableId === source.droppableId) {
+      setAccountsState((prev) => {
+        const copiedPrev = [...prev];
+        const foundAccountOnDroppable = copiedPrev.find(
+          (Account) => Account.AccountName === destination.droppableId
+        );
+        if (!foundAccountOnDroppable) return [];
 
-    //     charStateCopy.splice(source.index, 1);
-    //     charStateCopy.splice(destination?.index, 0, copiedObject);
-    //     copiedPrev.Characters = charStateCopy;
+        const index = findIndexByKeyValue(copiedPrev, destination.droppableId);
 
-    //     return { ...copiedPrev };
-    //   });
-    // }
+        const AccountCharacterCopy = [...foundAccountOnDroppable.Characters];
+        const copiedAccount = AccountCharacterCopy[source.index];
+        AccountCharacterCopy.splice(source.index, 1);
+        AccountCharacterCopy.splice(destination?.index, 0, copiedAccount);
+
+        const copiedStartPrev = copiedPrev[index];
+        copiedStartPrev.Characters = [...AccountCharacterCopy];
+        copiedPrev.splice(index, 1);
+        copiedPrev.splice(destination?.index, 0, copiedStartPrev);
+
+        return [...copiedPrev];
+      });
+    }
     return;
   };
 
@@ -50,4 +71,4 @@ function Horizontal({ account, parentProvided, style }: IProps) {
     </div>
   );
 }
-export default Horizontal;
+export default React.memo(Horizontal);
