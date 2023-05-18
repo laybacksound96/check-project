@@ -42,27 +42,31 @@ function CheckBox() {
   const [accountsState, setAccountsState] = useRecoilState(AccountsState);
 
   const AddAccountHandler = (event: React.MouseEvent) => {
-    event.preventDefault();
     return;
-    setAccounts((prev) => {
-      return [...prev, InsertAccountHandler()];
-    });
+    // event.preventDefault();
+    // return;
+    // setAccounts((prev) => {
+    //   return [...prev, InsertAccountHandler()];
+    // });
   };
 
   const onDragEnd = (dragInfo: DropResult) => {
-    const { destination, source } = dragInfo;
-    if (!destination) return;
-    if (destination?.droppableId === source.droppableId) {
-      setAccounts((prev) => {
-        const copiedPrev = [...prev];
-        const copiedObject = copiedPrev[source.index];
-        copiedPrev.splice(source.index, 1);
-        copiedPrev.splice(destination?.index, 0, copiedObject);
-
-        return [...copiedPrev];
-      });
-    }
+    return;
   };
+
+  //   const { destination, source } = dragInfo;
+  //   if (!destination) return;
+  //   if (destination?.droppableId === source.droppableId) {
+  //     setAccounts((prev) => {
+  //       const copiedPrev = [...prev];
+  //       const copiedObject = copiedPrev[source.index];
+  //       copiedPrev.splice(source.index, 1);
+  //       copiedPrev.splice(destination?.index, 0, copiedObject);
+
+  //       return [...copiedPrev];
+  //     });
+  //   }
+  // };
   return (
     <>
       <DragDropContext onDragEnd={onDragEnd}>

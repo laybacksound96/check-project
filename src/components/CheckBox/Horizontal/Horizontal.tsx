@@ -16,22 +16,21 @@ interface IProps {
 
 function Horizontal({ account, parentProvided, style }: IProps) {
   const onDragEnd = (dragInfo: DropResult) => {
-    const { destination, source } = dragInfo;
-    if (!destination) return;
-    if (destination?.droppableId === source.droppableId) {
-      return;
-      setAccountState((prev) => {
-        const copiedPrev = { ...prev };
-        const charStateCopy = [...prev.Characters];
-        const copiedObject = charStateCopy[source.index];
+    // const { destination, source } = dragInfo;
+    // if (!destination) return;
+    // if (destination?.droppableId === source.droppableId) {
+    //   setAccountState((prev) => {
+    //     const copiedPrev = { ...prev };
+    //     const charStateCopy = [...prev.Characters];
+    //     const copiedObject = charStateCopy[source.index];
 
-        charStateCopy.splice(source.index, 1);
-        charStateCopy.splice(destination?.index, 0, copiedObject);
-        copiedPrev.Characters = charStateCopy;
+    //     charStateCopy.splice(source.index, 1);
+    //     charStateCopy.splice(destination?.index, 0, copiedObject);
+    //     copiedPrev.Characters = charStateCopy;
 
-        return { ...copiedPrev };
-      });
-    }
+    //     return { ...copiedPrev };
+    //   });
+    // }
     return;
   };
 
