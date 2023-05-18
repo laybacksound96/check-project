@@ -6,22 +6,20 @@ import {
   NotDraggingStyle,
 } from "react-beautiful-dnd";
 import DroppableSpace from "./Horizontal__Droppable";
-import { useState } from "react";
+import { IAccount } from "../../../atoms";
 
-interface IAccountProps {
-  account: { Characters: string[] };
-  index: number;
+interface IProps {
+  account: IAccount;
   parentProvided: DraggableProvided;
   style: DraggingStyle | NotDraggingStyle;
 }
 
-function Horizontal({ index, account, parentProvided, style }: IAccountProps) {
-  const [accountState, setAccountState] = useState(account);
-
+function Horizontal({ account, parentProvided, style }: IProps) {
   const onDragEnd = (dragInfo: DropResult) => {
     const { destination, source } = dragInfo;
     if (!destination) return;
     if (destination?.droppableId === source.droppableId) {
+      return;
       setAccountState((prev) => {
         const copiedPrev = { ...prev };
         const charStateCopy = [...prev.Characters];
@@ -45,9 +43,8 @@ function Horizontal({ index, account, parentProvided, style }: IAccountProps) {
     >
       <DragDropContext onDragEnd={onDragEnd}>
         <DroppableSpace
-          boardId={"" + index}
-          accountIndex={index}
-          account={accountState}
+          boardId={account.AccountName}
+          account={account}
           parentProvided={parentProvided}
         />
       </DragDropContext>

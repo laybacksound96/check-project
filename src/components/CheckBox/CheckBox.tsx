@@ -1,5 +1,5 @@
 import { useRecoilState } from "recoil";
-import { CharacterState } from "../../atoms";
+import { AccountsState } from "../../atoms";
 import Horizontal from "./Horizontal/Horizontal";
 import styled, { keyframes } from "styled-components";
 import { InsertAccountHandler } from "./Functions/InsertAccount";
@@ -22,7 +22,6 @@ const AddAccountBtn = styled.button`
     transition: ease-in-out 0.1s;
   }
 `;
-
 const AccountStyle = styled.div`
   display: flex;
   flex-direction: column;
@@ -38,15 +37,18 @@ const fadeInAnimation = keyframes`
 const MotionStyle = styled.div`
   animation: ${fadeInAnimation} 0.5s ease-in-out;
 `;
+
 function CheckBox() {
-  const [accounts, setAccounts] = useRecoilState(CharacterState);
+  const [accountsState, setAccountsState] = useRecoilState(AccountsState);
 
   const AddAccountHandler = (event: React.MouseEvent) => {
     event.preventDefault();
+    return;
     setAccounts((prev) => {
       return [...prev, InsertAccountHandler()];
     });
   };
+
   const onDragEnd = (dragInfo: DropResult) => {
     const { destination, source } = dragInfo;
     if (!destination) return;
@@ -67,19 +69,17 @@ function CheckBox() {
         <Droppable droppableId="accounts" direction="vertical">
           {(provided) => (
             <AccountStyle ref={provided.innerRef} {...provided.droppableProps}>
-              {accounts.map((account, index) => (
+              {accountsState.map((account, index) => (
                 <Draggable
-                  draggableId={`account_${index}`}
+                  draggableId={`${index}_draggableID_${account.AccountName}`}
+                  key={`${index}_draggableID_${account.AccountName}`}
                   index={index}
-                  key={`account_${index}`}
                 >
                   {(provided) => (
                     <MotionStyle>
                       <Horizontal
                         parentProvided={provided}
                         account={account}
-                        key={account.Characters[0]}
-                        index={index}
                         style={AxisLocker(
                           provided.draggableProps.style!,
                           false

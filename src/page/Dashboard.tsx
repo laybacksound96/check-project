@@ -6,17 +6,29 @@ import {
   CheckBoxContainer,
   Container,
   HeaderBox,
-  Items,
+  Contents,
 } from "../Style/Dashboard";
 import Vertical from "../components/CheckBox/Vertical/Vertical";
+import { useState } from "react";
+import Content from "../components/Content";
 
 interface RouteParams {
   userId: string;
 }
 
+export interface IContent {
+  name: string;
+  quantity: number;
+}
+
+const mocking = {
+  name: "사과",
+  quantity: 2,
+};
+
 function Dashboard(props: any) {
   const { userId } = useParams<RouteParams>();
-
+  const [content, setContent] = useState<IContent>(mocking);
   return (
     <Container>
       <HeaderBox>
@@ -25,16 +37,9 @@ function Dashboard(props: any) {
           <FontAwesomeIcon icon={faGear} size="lg" />
         </header>
         <hr></hr>
-        <Items>
-          <li>사과 x 5</li>
-          <li>배 x 6</li>
-          <li>바나나 x 2</li>
-          <li>귤 x 6</li>
-          <li>오렌지 x 5</li>
-          <li>아보카도 x 6</li>
-          <li>치킨 x 5</li>
-          <li>짬뽕 x 6</li>
-        </Items>
+        <Contents>
+          <Content content={content} />
+        </Contents>
       </HeaderBox>
       <CheckBoxContainer>
         <Vertical />

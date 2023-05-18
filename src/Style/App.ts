@@ -57,15 +57,18 @@ a {
   color:inherit;
 }
 `;
-export const Body = styled.body`
+export const Body = styled.div`
+  padding-top: 100px;
   width: 100%;
   height: auto;
   line-height: 1;
+
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   font-family: "Source Sans Pro", sans-serif;
+
   background-color: ${(props) => props.theme.bgColor};
   color: ${(props) => props.theme.accentColor};
 `;

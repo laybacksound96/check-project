@@ -8,12 +8,6 @@ import Checkbox from "./Checkbox";
 import { useRecoilValue } from "recoil";
 import { ColumnState } from "../../../atoms";
 
-interface INameProps {
-  boardId: string;
-  name: string;
-  index: number;
-}
-
 const Name = styled.div`
   display: flex;
   justify-content: flex-start;
@@ -31,7 +25,13 @@ const Name = styled.div`
 const NameBox = styled.div`
   display: flex;
 `;
-function Horizontal__Draggable({ boardId, name, index }: INameProps) {
+
+interface IProps {
+  boardId: string;
+  CharacterName: string;
+  index: number;
+}
+function Horizontal__Draggable({ boardId, CharacterName, index }: IProps) {
   const Column = useRecoilValue(ColumnState);
   return (
     <Draggable draggableId={boardId} index={index}>
@@ -41,7 +41,7 @@ function Horizontal__Draggable({ boardId, name, index }: INameProps) {
           {...provided.draggableProps}
           style={AxisLocker(provided.draggableProps.style!, false)}
         >
-          <Name {...provided.dragHandleProps}>{name}</Name>
+          <Name {...provided.dragHandleProps}>{CharacterName}</Name>
           {Column.map((elem, ColumnIndex) => {
             return (
               <Checkbox key={elem} RowIndex={index} ColumnIndex={ColumnIndex} />

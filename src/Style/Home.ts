@@ -1,13 +1,6 @@
 import styled from "styled-components";
 
-export const Header = styled.header`
-  display: flex;
-  justify-content: start;
-  height: 750px;
-`;
 export const Section = styled.section`
-  margin-top: 200px;
-  margin-left: 150px;
   div * {
     display: flex;
     align-items: start;

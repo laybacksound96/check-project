@@ -2,6 +2,7 @@ import React from "react";
 import { DraggableProvided, Droppable } from "react-beautiful-dnd";
 import styled from "styled-components";
 import Draggable from "./Horizontal__Draggable";
+import { IAccount } from "../../../atoms";
 
 const Area = styled.div`
   * {
@@ -26,30 +27,25 @@ const DragAccount = styled.div`
   }
   border-radius: 10px;
 `;
+
 interface IProps {
-  account: { Characters: string[] };
   boardId: string;
-  accountIndex: number;
+  account: IAccount;
   parentProvided: DraggableProvided;
 }
-function Horizontal__Droppable({
-  boardId,
-  accountIndex,
-  account,
-  parentProvided,
-}: IProps) {
+function Horizontal__Droppable({ boardId, account, parentProvided }: IProps) {
   return (
     <Droppable droppableId={boardId}>
       {(provided, snapshot) => (
         <Area style={{ display: "flex" }}>
           <div ref={provided.innerRef} {...provided.droppableProps}>
-            {account.Characters.map((name, index) => {
+            {account.Characters.map((Character, index) => {
               return (
                 <Draggable
-                  name={name}
+                  CharacterName={Character.CharacterName}
                   index={index}
-                  boardId={name + "_" + index}
-                  key={name + "_" + index}
+                  boardId={Character.CharacterName + "_" + index}
+                  key={Character.CharacterName + "_" + index}
                 />
               );
             })}

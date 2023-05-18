@@ -1,42 +1,37 @@
 import { atom } from "recoil";
 import { fetchCheck } from "./util/fetch";
 
-export interface ICharacter {
-  Characters: string[];
-}
+type IAccounts = IAccount[];
 
-interface IBox {
+export interface IAccount {
+  AccountName: string;
+  Characters: ICharacter[];
+}
+export interface ICharacter {
+  CharacterName: string;
+  Contents: IBox[];
+}
+export interface IBox {
+  ContentName: string;
   value: boolean;
   fetch: () => void;
 }
-type BoxArray = IBox[][];
 
-export const checkBoxState = atom<BoxArray>({
-  key: "checkBoxState",
-  default: [
-    [
-      { value: true, fetch: () => fetchCheck },
-      { value: true, fetch: () => fetchCheck },
-      { value: true, fetch: () => fetchCheck },
-    ],
-    [
-      { value: true, fetch: () => fetchCheck },
-      { value: true, fetch: () => fetchCheck },
-      { value: true, fetch: () => fetchCheck },
-    ],
-    [
-      { value: true, fetch: () => fetchCheck },
-      { value: true, fetch: () => fetchCheck },
-      { value: true, fetch: () => fetchCheck },
-    ],
-  ],
-});
-
-export const CharacterState = atom<ICharacter[]>({
-  key: "CharacterInfo",
+export const AccountsState = atom<IAccounts>({
+  key: "AccountsState",
   default: [
     {
-      Characters: ["a", "b", "c"],
+      AccountName: "a",
+      Characters: [
+        {
+          CharacterName: "a_1",
+          Contents: [
+            { ContentName: "a_1_1", value: true, fetch: () => fetchCheck },
+            { ContentName: "a_1_2", value: true, fetch: () => fetchCheck },
+            { ContentName: "a_1_3", value: true, fetch: () => fetchCheck },
+          ],
+        },
+      ],
     },
   ],
 });

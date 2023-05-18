@@ -7,13 +7,12 @@ export const Container = styled.div`
   flex-direction: column;
   justify-content: start;
   align-items: center;
-  margin-top: 150px;
+
   header {
     width: inherit;
   }
 `;
 export const HeaderBox = styled.div`
-  margin-top: 30px;
   width: 100%;
   height: auto;
   border-radius: 30px;
@@ -36,25 +35,25 @@ export const HeaderBox = styled.div`
     font-size: 25px;
   }
 `;
-export const Items = styled.ul`
+export const Contents = styled.ul`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
   grid-auto-rows: 60px;
   gap: 10px;
   margin-top: 30px;
-  li {
-    margin: 0 10px;
-    text-align: center;
-    border-radius: 10px;
-    width: auto;
-    min-width: 120px;
-    height: 50px;
-    line-height: 50px;
-    background-color: ${(props) => props.theme.accentColor};
-    color: ${(props) => props.theme.bgColor};
-  }
 `;
-
+export const ContentStyle = styled.li`
+  margin: 0 10px;
+  text-align: center;
+  border-radius: 10px;
+  width: auto;
+  max-width: 200px;
+  min-width: 120px;
+  height: 50px;
+  line-height: 50px;
+  background-color: ${(props) => props.theme.accentColor};
+  color: ${(props) => props.theme.bgColor};
+`;
 export const CheckBoxContainer = styled.div`
   background-color: ${(props) => props.theme.subColor};
   * {
