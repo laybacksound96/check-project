@@ -20,23 +20,37 @@ const CheckBox = styled.div`
 `;
 interface ICheckboxProps {
   key: string;
-  ColumnIndex: number;
   RowIndex: number;
+  ColumnIndex: number;
+  accountName: string;
+  CharacterName: string;
+  elem: string;
+  isChecked: boolean;
 }
-function Checkbox({ ColumnIndex, RowIndex }: ICheckboxProps) {
+function Checkbox({
+  ColumnIndex,
+  RowIndex,
+  CharacterName,
+  accountName,
+  elem,
+  isChecked,
+}: ICheckboxProps) {
   const [isClicked, setIsClicked] = useState(false);
 
   function CheckBox_Onclick() {
     setIsClicked((prev) => {
-      console.log(ColumnIndex);
-      console.log(RowIndex);
+      console.log("accountName = " + accountName);
+      console.log("CharacterName = " + CharacterName);
+      console.log("ColumnIndex = " + ColumnIndex);
+      console.log("elem = " + elem);
+      console.log("RowIndex = " + RowIndex);
       return !prev;
     });
   }
 
   return (
     <CheckBox onClick={CheckBox_Onclick}>
-      {isClicked ? (
+      {isChecked ? (
         <FontAwesomeIcon icon={faSquareCheck} size="lg" />
       ) : (
         <FontAwesomeIcon icon={faSquare} size="lg" />

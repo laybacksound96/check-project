@@ -28,7 +28,7 @@ const mocking = {
 
 function Dashboard(props: any) {
   const { userId } = useParams<RouteParams>();
-  const [content, setContent] = useState<IContent>(mocking);
+  const [content] = useState<IContent>(mocking);
   return (
     <Container>
       <HeaderBox>

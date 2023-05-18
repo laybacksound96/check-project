@@ -8,8 +8,7 @@ import {
 import DroppableSpace from "./Horizontal__Droppable";
 import { AccountsState, IAccount } from "../../../atoms";
 import React from "react";
-import { useRecoilState } from "recoil";
-import { Contents } from "../../../Style/Dashboard";
+import { useSetRecoilState } from "recoil";
 
 interface IProps {
   account: IAccount;
@@ -19,7 +18,7 @@ interface IProps {
 }
 
 function Horizontal({ account, parentProvided, style, accountIndex }: IProps) {
-  const [accountsState, setAccountsState] = useRecoilState(AccountsState);
+  const setAccountsState = useSetRecoilState(AccountsState);
   const onDragEnd = (dragInfo: DropResult) => {
     const { destination, source } = dragInfo;
     if (!destination) return;
@@ -34,7 +33,6 @@ function Horizontal({ account, parentProvided, style, accountIndex }: IProps) {
         Characters.splice(destination?.index, 0, copiedArray);
         copiedPrev.splice(accountIndex, 0, copiedAccount);
         copiedAccount.Characters = Characters;
-
         return [...copiedPrev];
       });
     }
@@ -50,8 +48,9 @@ function Horizontal({ account, parentProvided, style, accountIndex }: IProps) {
       <DragDropContext onDragEnd={onDragEnd}>
         <DroppableSpace
           boardId={account.AccountName}
-          account={account}
+          accountName={account.AccountName}
           parentProvided={parentProvided}
+          accountIndex={accountIndex}
         />
       </DragDropContext>
     </div>

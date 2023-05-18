@@ -5,8 +5,8 @@ import styled from "styled-components";
 import { AxisLocker } from "../Functions/AxisLocker";
 import { dragIcon } from "../../../Settings";
 import Checkbox from "./Checkbox";
-import { useRecoilValue } from "recoil";
-import { ColumnState } from "../../../atoms";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { CheckboxesState, ColumnState } from "../../../atoms";
 
 const Name = styled.div`
   display: flex;
@@ -30,9 +30,17 @@ interface IProps {
   boardId: string;
   CharacterName: string;
   index: number;
+  accountName: string;
 }
-function Horizontal__Draggable({ boardId, CharacterName, index }: IProps) {
+function Horizontal__Draggable({
+  boardId,
+  CharacterName,
+  index,
+  accountName,
+}: IProps) {
   const Column = useRecoilValue(ColumnState);
+  const [CheckboxState, setCheckboxState] = useRecoilState(CheckboxesState);
+
   return (
     <Draggable draggableId={boardId} index={index}>
       {(provided) => (
@@ -42,9 +50,18 @@ function Horizontal__Draggable({ boardId, CharacterName, index }: IProps) {
           style={AxisLocker(provided.draggableProps.style!, false)}
         >
           <Name {...provided.dragHandleProps}>{CharacterName}</Name>
+
           {Column.map((elem, ColumnIndex) => {
             return (
-              <Checkbox key={elem} RowIndex={index} ColumnIndex={ColumnIndex} />
+              <Checkbox
+                key={index + ColumnIndex + elem}
+                ColumnIndex={ColumnIndex}
+                CharacterName={CharacterName}
+                accountName={accountName}
+                elem={elem}
+                RowIndex={index}
+                isChecked={CheckboxState[index][ColumnIndex].isChecked}
+              />
             );
           })}
         </NameBox>
