@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 
 export const Container = styled.div`
   display: flex;
@@ -42,6 +42,23 @@ export const Contents = styled.ul`
   gap: 10px;
   margin-top: 30px;
 `;
+
+const bump = keyframes`
+  0% {
+    transform: scale(1);
+  }
+  10% {
+    transform: scale(0.9);
+  }
+  30% {
+    transform: scale(1.1);
+  }
+  50% {
+    transform: scale(1.10);
+  }
+  100% {
+    transform: scale(1);}
+ `;
 export const ContentStyle = styled.li`
   margin: 0 10px;
   text-align: center;
@@ -53,6 +70,8 @@ export const ContentStyle = styled.li`
   line-height: 50px;
   background-color: ${(props) => props.theme.accentColor};
   color: ${(props) => props.theme.bgColor};
+
+  animation: ${bump} 300ms ease-out;
 `;
 export const CheckBoxContainer = styled.div`
   background-color: ${(props) => props.theme.subColor};
