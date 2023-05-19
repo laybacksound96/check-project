@@ -1,7 +1,5 @@
-import { useRecoilValue } from "recoil";
 import { ContentStyle } from "../Style/Dashboard";
-import { ContentsState, IContent } from "../atoms";
-import { useEffect } from "react";
+import { IContent } from "../atoms";
 
 interface Iprops {
   content: IContent;
