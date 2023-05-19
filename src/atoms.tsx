@@ -42,14 +42,14 @@ export const CheckboxesState = atom<ICheckAccounts>({
   key: "CheckboxesState",
   default: {
     abbb: {
-      a_1: { A: true, B: true, C: false },
-      a_2: { A: true, B: false, C: false },
-      a_3: { A: true, B: false, C: true },
+      a_1: { A: false, B: false, C: false },
+      a_2: { A: false, B: false, C: false },
+      a_3: { A: false, B: false, C: false },
     },
     sdad: {
-      sdad_1: { A: true, B: true, C: false },
-      sdad_2: { A: true, B: false, C: false },
-      sdad_3: { A: true, B: false, C: true },
+      sdad_1: { A: false, B: false, C: false },
+      sdad_2: { A: false, B: false, C: false },
+      sdad_3: { A: false, B: false, C: false },
     },
   },
 });
@@ -63,9 +63,9 @@ export interface IContent {
 export const ContentsState = atom<IContentsState>({
   key: "ContentsState",
   default: [
-    { name: "A", frequency: 2 },
-    { name: "B", frequency: 5 },
-    { name: "C", frequency: 7 },
+    { name: "A", frequency: 0 },
+    { name: "B", frequency: 0 },
+    { name: "C", frequency: 0 },
   ],
 });
 

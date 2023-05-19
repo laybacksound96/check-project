@@ -20,10 +20,11 @@ const CheckBox = styled.div`
 `;
 interface ICheckboxProps {
   key: string;
-  CheckBoxOnclick: (char: string, cont: string) => void;
+  CheckBoxOnclick: (char: string, cont: string, ColumnIndex: number) => void;
   isChecked: boolean;
   CharacterName: string;
   ContentName: string;
+  ColumnIndex: number;
 }
 
 function Checkbox({
@@ -31,9 +32,10 @@ function Checkbox({
   CheckBoxOnclick,
   CharacterName,
   ContentName,
+  ColumnIndex,
 }: ICheckboxProps) {
   function onClickHandler(event: React.MouseEvent) {
-    CheckBoxOnclick(CharacterName, ContentName);
+    CheckBoxOnclick(CharacterName, ContentName, ColumnIndex);
   }
   return (
     <CheckBox onClick={onClickHandler}>

@@ -1,12 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Draggable } from "react-beautiful-dnd";
 import styled from "styled-components";
 
 import { AxisLocker } from "../Functions/AxisLocker";
 import { dragIcon } from "../../../Settings";
 import Checkbox from "./Checkbox";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { CheckboxesState, ColumnState } from "../../../atoms";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { CheckboxesState, ColumnState, ContentsState } from "../../../atoms";
 
 const Name = styled.div`
   display: flex;
@@ -39,8 +39,10 @@ function Horizontal__Draggable({
   accountName,
 }: IProps) {
   const Column = useRecoilValue(ColumnState);
+  const setContents = useSetRecoilState(ContentsState);
   const [CheckboxState, setCheckboxState] = useRecoilState(CheckboxesState);
-  const CheckBoxOnclick = (char: string, cont: string) => {
+
+  const CheckBoxOnclick = (char: string, cont: string, ColumnIndex: number) => {
     setCheckboxState((Accounts) => {
       const copiedAccounts = { ...Accounts };
       const copiedAccount = { ...copiedAccounts[accountName] };
@@ -50,13 +52,20 @@ function Horizontal__Draggable({
       copiedAccount[char] = copiedCharacter;
       copiedAccounts[accountName] = copiedAccount;
 
-      if (copiedCharacter[cont]) {
-        console.log("plus");
-      } else {
-        console.log("minus");
-      }
-
       return copiedAccounts;
+    });
+
+    setContents((prev) => {
+      const copiedPrev = [...prev];
+      const content = { ...copiedPrev[ColumnIndex] };
+      if (!CheckboxState[accountName][char][cont]) {
+        content.frequency++;
+      } else {
+        content.frequency--;
+      }
+      copiedPrev[ColumnIndex] = content;
+
+      return copiedPrev;
     });
   };
   return (
@@ -77,6 +86,7 @@ function Horizontal__Draggable({
                 CheckBoxOnclick={CheckBoxOnclick}
                 ContentName={elem}
                 CharacterName={CharacterName}
+                ColumnIndex={ColumnIndex}
               />
             );
           })}
