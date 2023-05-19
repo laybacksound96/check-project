@@ -1,15 +1,14 @@
 import { ContentStyle } from "../Style/Dashboard";
-import { IContent } from "../page/Dashboard";
+import { IContent } from "../atoms";
 
 interface Iprops {
   content: IContent;
 }
 
 const Content = ({ content }: Iprops) => {
-  console.log(content);
   return (
     <ContentStyle>
-      {content.name} x{content.quantity}
+      {content.name} x {content.frequency}
     </ContentStyle>
   );
 };

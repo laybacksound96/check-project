@@ -1,6 +1,6 @@
 import { faSquare, faSquareCheck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
+
 import styled from "styled-components";
 import { dragIcon } from "../../../Settings";
 
@@ -20,36 +20,23 @@ const CheckBox = styled.div`
 `;
 interface ICheckboxProps {
   key: string;
-  RowIndex: number;
-  ColumnIndex: number;
-  accountName: string;
-  CharacterName: string;
-  elem: string;
+  CheckBoxOnclick: (char: string, cont: string) => void;
   isChecked: boolean;
+  CharacterName: string;
+  ContentName: string;
 }
+
 function Checkbox({
-  ColumnIndex,
-  RowIndex,
-  CharacterName,
-  accountName,
-  elem,
   isChecked,
+  CheckBoxOnclick,
+  CharacterName,
+  ContentName,
 }: ICheckboxProps) {
-  const [isClicked, setIsClicked] = useState(false);
-
-  function CheckBox_Onclick() {
-    setIsClicked((prev) => {
-      console.log("accountName = " + accountName);
-      console.log("CharacterName = " + CharacterName);
-      console.log("ColumnIndex = " + ColumnIndex);
-      console.log("elem = " + elem);
-      console.log("RowIndex = " + RowIndex);
-      return !prev;
-    });
+  function onClickHandler(event: React.MouseEvent) {
+    CheckBoxOnclick(CharacterName, ContentName);
   }
-
   return (
-    <CheckBox onClick={CheckBox_Onclick}>
+    <CheckBox onClick={onClickHandler}>
       {isChecked ? (
         <FontAwesomeIcon icon={faSquareCheck} size="lg" />
       ) : (

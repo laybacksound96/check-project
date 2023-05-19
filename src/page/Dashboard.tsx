@@ -9,26 +9,18 @@ import {
   Contents,
 } from "../Style/Dashboard";
 import Vertical from "../components/CheckBox/Vertical/Vertical";
-import { useState } from "react";
+
 import Content from "../components/Content";
+import { useRecoilValue } from "recoil";
+import { ContentsState } from "../atoms";
 
 interface RouteParams {
   userId: string;
 }
 
-export interface IContent {
-  name: string;
-  quantity: number;
-}
-
-const mocking = {
-  name: "사과",
-  quantity: 2,
-};
-
 function Dashboard(props: any) {
   const { userId } = useParams<RouteParams>();
-  const [content] = useState<IContent>(mocking);
+  const contents = useRecoilValue(ContentsState);
   return (
     <Container>
       <HeaderBox>
@@ -38,7 +30,14 @@ function Dashboard(props: any) {
         </header>
         <hr></hr>
         <Contents>
-          <Content content={content} />
+          {contents.map((content) => {
+            return (
+              <Content
+                content={content}
+                key={content.name + "_" + content.frequency}
+              />
+            );
+          })}
         </Contents>
       </HeaderBox>
       <CheckBoxContainer>

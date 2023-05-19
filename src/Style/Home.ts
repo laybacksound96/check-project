@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 export const Section = styled.section`
+  margin-bottom: 300px;
   div * {
     display: flex;
     align-items: start;

@@ -40,7 +40,25 @@ function Horizontal__Draggable({
 }: IProps) {
   const Column = useRecoilValue(ColumnState);
   const [CheckboxState, setCheckboxState] = useRecoilState(CheckboxesState);
+  const CheckBoxOnclick = (char: string, cont: string) => {
+    setCheckboxState((Accounts) => {
+      const copiedAccounts = { ...Accounts };
+      const copiedAccount = { ...copiedAccounts[accountName] };
+      const copiedCharacter = { ...copiedAccount[char] };
 
+      copiedCharacter[cont] = !copiedCharacter[cont];
+      copiedAccount[char] = copiedCharacter;
+      copiedAccounts[accountName] = copiedAccount;
+
+      if (copiedCharacter[cont]) {
+        console.log("plus");
+      } else {
+        console.log("minus");
+      }
+
+      return copiedAccounts;
+    });
+  };
   return (
     <Draggable draggableId={boardId} index={index}>
       {(provided) => (
@@ -55,12 +73,10 @@ function Horizontal__Draggable({
             return (
               <Checkbox
                 key={index + ColumnIndex + elem}
-                ColumnIndex={ColumnIndex}
+                isChecked={CheckboxState[accountName][CharacterName][elem]}
+                CheckBoxOnclick={CheckBoxOnclick}
+                ContentName={elem}
                 CharacterName={CharacterName}
-                accountName={accountName}
-                elem={elem}
-                RowIndex={index}
-                isChecked={CheckboxState[index][ColumnIndex].isChecked}
               />
             );
           })}
