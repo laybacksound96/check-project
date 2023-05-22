@@ -71,5 +71,15 @@ export const ContentsState = atom<IContentsState>({
 
 export const ColumnState = atom({
   key: "ColumnState",
-  default: ["A", "B", "C"],
+  default: ["A", "B", "C", "D", "E"],
+});
+
+type ModalStateType = ModalContent;
+interface ModalContent {
+  status: boolean;
+  content: { name: string };
+}
+export const ModalState = atom<ModalStateType>({
+  key: "ModalState",
+  default: { status: false, content: { name: "" } },
 });

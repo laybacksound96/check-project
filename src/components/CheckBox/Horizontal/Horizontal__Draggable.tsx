@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Draggable } from "react-beautiful-dnd";
 import styled from "styled-components";
 
@@ -11,11 +11,12 @@ import {
   ColumnState,
   ContentsState,
   IContent,
+  ModalState,
 } from "../../../atoms";
 
 const Name = styled.div`
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
   width: 200px;
   padding-left: 5px;
@@ -25,6 +26,9 @@ const Name = styled.div`
   &:hover {
     background-color: rgba(255, 255, 255, 0.258);
     transition: ease-in-out 0.1s;
+  }
+  button {
+    margin-top: 0px;
   }
 `;
 const NameBox = styled.div`
@@ -46,7 +50,7 @@ function Horizontal__Draggable({
   const Column = useRecoilValue(ColumnState);
   const setContents = useSetRecoilState(ContentsState);
   const [CheckboxState, setCheckboxState] = useRecoilState(CheckboxesState);
-
+  const SetConfigModalOpen = useSetRecoilState(ModalState);
   const CheckBoxOnclick = (char: string, cont: string, ColumnIndex: number) => {
     setCheckboxState((Accounts) => {
       const copiedAccounts = { ...Accounts };
@@ -100,6 +104,23 @@ function Horizontal__Draggable({
       return copiedPrev;
     });
   };
+  const [isHovered, setIsHovered] = useState(false);
+  const handleHovered = () => {
+    setIsHovered((prev) => !prev);
+  };
+  const OpenModalHandler = (event: React.MouseEvent) => {
+    event.preventDefault();
+    console.log(CharacterName);
+    SetConfigModalOpen((prev) => {
+      const copiedPrev = { ...prev };
+      copiedPrev.status = !prev.status;
+      copiedPrev.content = {
+        name: CharacterName,
+      };
+      return copiedPrev;
+    });
+  };
+
   return (
     <Draggable draggableId={boardId} index={index}>
       {(provided) => (
@@ -107,8 +128,22 @@ function Horizontal__Draggable({
           ref={provided.innerRef}
           {...provided.draggableProps}
           style={AxisLocker(provided.draggableProps.style!, false)}
+          onMouseEnter={handleHovered}
+          onMouseLeave={handleHovered}
         >
-          <Name {...provided.dragHandleProps}>{CharacterName}</Name>
+          <Name {...provided.dragHandleProps}>
+            {CharacterName}
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "start",
+                height: "100%",
+              }}
+            >
+              {isHovered && <button onClick={OpenModalHandler}>Setting</button>}
+            </div>
+          </Name>
 
           {Column.map((elem, ColumnIndex) => {
             return (

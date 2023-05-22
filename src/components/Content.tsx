@@ -6,7 +6,7 @@ interface Iprops {
 }
 
 const Content = ({ content }: Iprops) => {
-  return (
+  return content.frequency === 0 ? null : (
     <ContentStyle>
       {content.name} x {content.frequency}
     </ContentStyle>

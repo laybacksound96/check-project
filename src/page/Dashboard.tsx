@@ -21,6 +21,7 @@ interface RouteParams {
 function Dashboard(props: any) {
   const { userId } = useParams<RouteParams>();
   const contents = useRecoilValue(ContentsState);
+
   return (
     <Container>
       <HeaderBox>
