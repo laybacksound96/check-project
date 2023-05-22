@@ -56,6 +56,9 @@ a {
   text-decoration:none;
   color:inherit;
 }
+hr {
+    border-color: ${(props) => props.theme.subColor};
+  }
 `;
 export const Body = styled.div`
   padding-top: 100px;

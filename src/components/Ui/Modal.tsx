@@ -36,9 +36,6 @@ const MainDiv = styled.div`
   padding: 40px;
   border-radius: 30px;
   background-color: ${(props) => props.theme.subColor};
-  hr {
-    border-color: ${(props) => props.theme.subColor};
-  }
 `;
 const Background = styled.div`
   width: 100%;
