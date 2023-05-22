@@ -1,5 +1,5 @@
-import { useRecoilState } from "recoil";
-import { AccountsState } from "../../atoms";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { AccountsState, CheckboxesState, ColumnState } from "../../atoms";
 import Horizontal from "./Horizontal/Horizontal";
 import styled, { keyframes } from "styled-components";
 import { InsertAccountHandler } from "./Functions/InsertAccount";
@@ -41,12 +41,36 @@ const MotionStyle = styled.div`
 
 function CheckBox() {
   const [accountsState, setAccountsState] = useRecoilState(AccountsState);
+  const [checkboxesState, setCheckboxesState] = useRecoilState(CheckboxesState);
+  const columnState = useRecoilValue(ColumnState);
 
   const AddAccountHandler = (event: React.MouseEvent) => {
     event.preventDefault();
+    const InsertedAccount = InsertAccountHandler();
+    const isThereAccountName = checkboxesState[InsertedAccount.AccountName];
+    const newAccountName = InsertedAccount.AccountName;
 
+    if (!isThereAccountName) {
+      setCheckboxesState((prev) => {
+        const copiedPrev = { ...prev };
+        console.log(copiedPrev);
+        copiedPrev[newAccountName] = {};
+
+        InsertedAccount.Characters.map((Character) => {
+          const newCharacterName = Character.CharacterName;
+          copiedPrev[newAccountName][newCharacterName] = {};
+          columnState.map(
+            (content) =>
+              (copiedPrev[newAccountName][newCharacterName][content] = false)
+          );
+          return null;
+        });
+        console.log(copiedPrev);
+        return copiedPrev;
+      });
+    }
     setAccountsState((prev) => {
-      return [...prev, InsertAccountHandler()];
+      return [...prev, InsertedAccount];
     });
   };
 

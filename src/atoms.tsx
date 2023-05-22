@@ -25,13 +25,7 @@ type ICheckAccounts = { [accountName: string]: ICheckCharacters };
 
 export const CheckboxesState = atom<ICheckAccounts>({
   key: "CheckboxesState",
-  default: {
-    abbb: {
-      a_1: { A: false, B: false, C: false },
-      a_2: { A: false, B: false, C: false },
-      a_3: { A: false, B: false, C: false },
-    },
-  },
+  default: {},
 });
 
 type IContentsState = IContent[];

@@ -11,8 +11,14 @@ import {
 import Vertical from "../components/CheckBox/Vertical/Vertical";
 
 import Content from "../components/Content";
-import { useRecoilValue } from "recoil";
-import { ContentsState } from "../atoms";
+import { useRecoilState, useRecoilValue } from "recoil";
+import {
+  AccountsState,
+  CheckboxesState,
+  ColumnState,
+  ContentsState,
+} from "../atoms";
+import { useEffect } from "react";
 
 interface RouteParams {
   userId: string;
@@ -20,8 +26,12 @@ interface RouteParams {
 
 function Dashboard(props: any) {
   const { userId } = useParams<RouteParams>();
-  const contents = useRecoilValue(ContentsState);
 
+  const accounts = useRecoilValue(AccountsState);
+
+  const contents = useRecoilValue(ContentsState);
+  const columns = useRecoilValue(ColumnState);
+  useEffect(() => {}, [accounts, columns]);
   return (
     <Container>
       <HeaderBox>
