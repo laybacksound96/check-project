@@ -6,7 +6,12 @@ import { AxisLocker } from "../Functions/AxisLocker";
 import { dragIcon } from "../../../Settings";
 import Checkbox from "./Checkbox";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { CheckboxesState, ColumnState, ContentsState } from "../../../atoms";
+import {
+  CheckboxesState,
+  ColumnState,
+  ContentsState,
+  IContent,
+} from "../../../atoms";
 
 const Name = styled.div`
   display: flex;
@@ -56,15 +61,42 @@ function Horizontal__Draggable({
     });
 
     setContents((prev) => {
+      console.log(
+        "setContents 실행됨: " +
+          " char: " +
+          char +
+          " cont: " +
+          cont +
+          " ColumnIndex: " +
+          ColumnIndex
+      );
       const copiedPrev = [...prev];
-      const content = { ...copiedPrev[ColumnIndex] };
+      console.log(prev);
+      const filteredContent = copiedPrev.filter((elem) => elem.name === cont);
+      const content = { ...filteredContent[0] };
+      console.log(content);
       if (!CheckboxState[accountName][char][cont]) {
         content.frequency++;
       } else {
         content.frequency--;
       }
-      copiedPrev[ColumnIndex] = content;
 
+      console.log(content.name + "," + content.frequency);
+
+      function findIndexWithAValue(
+        copiedPrevArray: IContent[],
+        targetContent: string
+      ) {
+        for (let i = 0; i < copiedPrevArray.length; i++) {
+          if (copiedPrevArray[i].name === targetContent) {
+            return i;
+          }
+        }
+        return -1;
+      }
+
+      copiedPrev[findIndexWithAValue(copiedPrev, cont)] = content;
+      console.log(content);
       return copiedPrev;
     });
   };
