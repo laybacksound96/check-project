@@ -1,15 +1,15 @@
 export function InsertAccountHandler() {
   return {
-    AccountName: "c",
+    AccountName: "abbb",
     Characters: [
       {
-        CharacterName: "c_1",
+        CharacterName: "a_1",
       },
       {
-        CharacterName: "c_2",
+        CharacterName: "a_2",
       },
       {
-        CharacterName: "c_3",
+        CharacterName: "a_3",
       },
     ],
   };

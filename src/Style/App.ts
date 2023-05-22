@@ -49,9 +49,7 @@ table {
 * {
   box-sizing: border-box;
 }
-body {
 
-}
 a {
   text-decoration:none;
   color:inherit;
@@ -63,11 +61,12 @@ hr {
 export const Body = styled.div`
   padding-top: 100px;
   width: 100%;
-  height: auto;
+  min-height: 50vw;
+  height: 100%;
   line-height: 1;
 
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   flex-direction: column;
   font-family: "Source Sans Pro", sans-serif;

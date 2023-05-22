@@ -12,22 +12,7 @@ export interface ICharacter {
 
 export const AccountsState = atom<IAccounts>({
   key: "AccountsState",
-  default: [
-    {
-      AccountName: "abbb",
-      Characters: [
-        {
-          CharacterName: "a_1",
-        },
-        {
-          CharacterName: "a_2",
-        },
-        {
-          CharacterName: "a_3",
-        },
-      ],
-    },
-  ],
+  default: [],
 });
 
 interface ICheckbox {
@@ -45,11 +30,6 @@ export const CheckboxesState = atom<ICheckAccounts>({
       a_1: { A: false, B: false, C: false },
       a_2: { A: false, B: false, C: false },
       a_3: { A: false, B: false, C: false },
-    },
-    sdad: {
-      sdad_1: { A: false, B: false, C: false },
-      sdad_2: { A: false, B: false, C: false },
-      sdad_3: { A: false, B: false, C: false },
     },
   },
 });
