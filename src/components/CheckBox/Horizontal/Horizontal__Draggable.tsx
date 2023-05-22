@@ -10,7 +10,6 @@ import {
   CheckboxesState,
   ColumnState,
   ContentsState,
-  IContent,
   ModalState,
 } from "../../../atoms";
 
@@ -65,42 +64,14 @@ function Horizontal__Draggable({
     });
 
     setContents((prev) => {
-      console.log(
-        "setContents 실행됨: " +
-          " char: " +
-          char +
-          " cont: " +
-          cont +
-          " ColumnIndex: " +
-          ColumnIndex
-      );
-      const copiedPrev = [...prev];
-      console.log(prev);
-      const filteredContent = copiedPrev.filter((elem) => elem.name === cont);
-      const content = { ...filteredContent[0] };
-      console.log(content);
+      const copiedPrev = { ...prev };
+      if (!copiedPrev[cont]) return prev;
       if (!CheckboxState[accountName][char][cont]) {
-        content.frequency++;
+        copiedPrev[cont]++;
       } else {
-        content.frequency--;
+        copiedPrev[cont]--;
       }
 
-      console.log(content.name + "," + content.frequency);
-
-      function findIndexWithAValue(
-        copiedPrevArray: IContent[],
-        targetContent: string
-      ) {
-        for (let i = 0; i < copiedPrevArray.length; i++) {
-          if (copiedPrevArray[i].name === targetContent) {
-            return i;
-          }
-        }
-        return -1;
-      }
-
-      copiedPrev[findIndexWithAValue(copiedPrev, cont)] = content;
-      console.log(content);
       return copiedPrev;
     });
   };

@@ -28,19 +28,11 @@ export const CheckboxesState = atom<ICheckAccounts>({
   default: {},
 });
 
-type IContentsState = IContent[];
+type IContentsState = { [name: string]: number };
 
-export interface IContent {
-  name: string;
-  frequency: number;
-}
 export const ContentsState = atom<IContentsState>({
   key: "ContentsState",
-  default: [
-    { name: "A", frequency: 0 },
-    { name: "B", frequency: 0 },
-    { name: "C", frequency: 0 },
-  ],
+  default: {},
 });
 
 export const ColumnState = atom({

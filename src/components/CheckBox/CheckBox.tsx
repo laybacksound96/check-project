@@ -53,9 +53,7 @@ function CheckBox() {
     if (!isThereAccountName) {
       setCheckboxesState((prev) => {
         const copiedPrev = { ...prev };
-        console.log(copiedPrev);
         copiedPrev[newAccountName] = {};
-
         InsertedAccount.Characters.map((Character) => {
           const newCharacterName = Character.CharacterName;
           copiedPrev[newAccountName][newCharacterName] = {};
@@ -65,7 +63,6 @@ function CheckBox() {
           );
           return null;
         });
-        console.log(copiedPrev);
         return copiedPrev;
       });
     }

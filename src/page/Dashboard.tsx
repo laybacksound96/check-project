@@ -5,12 +5,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   CheckBoxContainer,
   Container,
-  HeaderBox,
   Contents,
+  HeaderBox,
 } from "../Style/Dashboard";
 import Vertical from "../components/CheckBox/Vertical/Vertical";
-
-import Content from "../components/Content";
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
   AccountsState,
@@ -27,11 +25,29 @@ interface RouteParams {
 function Dashboard(props: any) {
   const { userId } = useParams<RouteParams>();
 
-  const accounts = useRecoilValue(AccountsState);
-
-  const contents = useRecoilValue(ContentsState);
+  const [contents, setContents] = useRecoilState(ContentsState);
   const columns = useRecoilValue(ColumnState);
-  useEffect(() => {}, [accounts, columns]);
+  const checkboxes = useRecoilValue(CheckboxesState);
+  const accounts = useRecoilValue(AccountsState);
+  useEffect(() => {
+    // console.log(columns);
+    // console.log(accounts);
+    // console.log(contents);
+    // console.log(checkboxes);
+
+    accounts.map((account) => {
+      account.Characters.map((Character) => {
+        const constentOfCharacter =
+          checkboxes[account.AccountName][Character.CharacterName];
+        // for (var elem in constentOfCharacter) {
+        //   if (!contents[elem]) {
+        //   }
+        // }
+        return null;
+      });
+      return null;
+    });
+  }, [columns, contents, checkboxes, accounts]);
   return (
     <Container>
       <HeaderBox>
@@ -40,16 +56,7 @@ function Dashboard(props: any) {
           <FontAwesomeIcon icon={faGear} size="lg" />
         </header>
         <hr></hr>
-        <Contents>
-          {contents.map((content) => {
-            return (
-              <Content
-                content={content}
-                key={content.name + "_" + content.frequency}
-              />
-            );
-          })}
-        </Contents>
+        <Contents></Contents>
       </HeaderBox>
       <CheckBoxContainer>
         <Vertical />
