@@ -28,7 +28,7 @@ export const CheckboxesState = atom<ICheckAccounts>({
   default: {},
 });
 
-type IContentsState = { [name: string]: number };
+export type IContentsState = { [name: string]: number };
 
 export const ContentsState = atom<IContentsState>({
   key: "ContentsState",

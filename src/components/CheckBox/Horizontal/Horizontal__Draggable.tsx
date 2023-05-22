@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Draggable } from "react-beautiful-dnd";
 import styled from "styled-components";
 
@@ -47,8 +47,9 @@ function Horizontal__Draggable({
   accountName,
 }: IProps) {
   const Column = useRecoilValue(ColumnState);
-  const setContents = useSetRecoilState(ContentsState);
+  const [contents, setContents] = useRecoilState(ContentsState);
   const [CheckboxState, setCheckboxState] = useRecoilState(CheckboxesState);
+
   const SetConfigModalOpen = useSetRecoilState(ModalState);
   const CheckBoxOnclick = (char: string, cont: string, ColumnIndex: number) => {
     setCheckboxState((Accounts) => {
@@ -59,22 +60,19 @@ function Horizontal__Draggable({
       copiedCharacter[cont] = !copiedCharacter[cont];
       copiedAccount[char] = copiedCharacter;
       copiedAccounts[accountName] = copiedAccount;
-
       return copiedAccounts;
     });
 
     setContents((prev) => {
       const copiedPrev = { ...prev };
-      if (!copiedPrev[cont]) return prev;
-      if (!CheckboxState[accountName][char][cont]) {
-        copiedPrev[cont]++;
-      } else {
-        copiedPrev[cont]--;
-      }
+      const checkedBox = CheckboxState[accountName][char][cont];
 
+      if (copiedPrev[cont] === undefined) return copiedPrev;
+      checkedBox ? ++copiedPrev[cont] : --copiedPrev[cont];
       return copiedPrev;
     });
   };
+
   const [isHovered, setIsHovered] = useState(false);
   const handleHovered = () => {
     setIsHovered((prev) => !prev);

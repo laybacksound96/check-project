@@ -9,14 +9,8 @@ import {
   HeaderBox,
 } from "../Style/Dashboard";
 import Vertical from "../components/CheckBox/Vertical/Vertical";
-import { useRecoilState, useRecoilValue } from "recoil";
-import {
-  AccountsState,
-  CheckboxesState,
-  ColumnState,
-  ContentsState,
-} from "../atoms";
-import { useEffect } from "react";
+import { useRecoilValue } from "recoil";
+import { ContentsState } from "../atoms";
 
 interface RouteParams {
   userId: string;
@@ -24,39 +18,18 @@ interface RouteParams {
 
 function Dashboard(props: any) {
   const { userId } = useParams<RouteParams>();
-
-  const [contents, setContents] = useRecoilState(ContentsState);
-  const columns = useRecoilValue(ColumnState);
-  const checkboxes = useRecoilValue(CheckboxesState);
-  const accounts = useRecoilValue(AccountsState);
-  useEffect(() => {
-    // console.log(columns);
-    // console.log(accounts);
-    // console.log(contents);
-    // console.log(checkboxes);
-
-    accounts.map((account) => {
-      account.Characters.map((Character) => {
-        const constentOfCharacter =
-          checkboxes[account.AccountName][Character.CharacterName];
-        // for (var elem in constentOfCharacter) {
-        //   if (!contents[elem]) {
-        //   }
-        // }
-        return null;
-      });
-      return null;
-    });
-  }, [columns, contents, checkboxes, accounts]);
+  const ContentsValue = useRecoilValue(ContentsState);
+  console.log(Object.keys(ContentsValue));
   return (
     <Container>
       <HeaderBox>
         <header>
           <h1>{userId}님의 Sheet</h1>
+          <div>{Object.keys(ContentsValue)}</div>
           <FontAwesomeIcon icon={faGear} size="lg" />
         </header>
         <hr></hr>
-        <Contents></Contents>
+        <Contents>{Object.keys(ContentsValue)}</Contents>
       </HeaderBox>
       <CheckBoxContainer>
         <Vertical />

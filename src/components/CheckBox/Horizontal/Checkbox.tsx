@@ -36,10 +36,6 @@ function Checkbox({
 }: ICheckboxProps) {
   function onClickHandler(event: React.MouseEvent) {
     CheckBoxOnclick(CharacterName, ContentName, ColumnIndex);
-    console.log(
-      "CheckBoxOnclick 실행됨: CharacterName: " + CharacterName,
-      " ContentName: " + ContentName + " ColumnIndex: " + ColumnIndex
-    );
   }
   return (
     <CheckBox onClick={onClickHandler}>
