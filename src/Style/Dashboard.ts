@@ -1,14 +1,9 @@
 import styled from "styled-components";
 
-export const Container = styled.div`
-  min-width: 40%;
-  display: flex;
-  flex-direction: column;
-  justify-content: start;
-  align-items: center;
-`;
-export const HeaderBox = styled.div`
-  width: 100%;
+export const HeaderBox = styled.header`
+  position: relative;
+  width: 700px;
+  min-width: auto;
   height: auto;
   border-radius: 30px;
   padding: 30px;
@@ -17,18 +12,25 @@ export const HeaderBox = styled.div`
     color: ${(props) => props.theme.bgColor};
   }
   h1 {
+    display: inline;
     font-size: 30px;
   }
-  header {
-    width: 100%;
-    margin-bottom: 30px;
-    display: flex;
-    justify-content: space-between;
-  }
   svg {
+    position: absolute;
+    top: 30px;
+    right: 30px;
     margin-top: 5px;
     font-size: 25px;
   }
+`;
+export const Container = styled.main`
+  display: flex;
+  width: 700px;
+  width: auto;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  flex: 1;
 `;
 export const CheckBoxContainer = styled.div`
   width: 100%;
@@ -44,10 +46,4 @@ export const CheckBoxContainer = styled.div`
   padding: 30px 40px;
   border-radius: 15px;
   margin-bottom: 150px;
-`;
-
-export const PageContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  height: 100%;
 `;

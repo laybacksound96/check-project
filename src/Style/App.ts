@@ -1,4 +1,4 @@
-import styled, { createGlobalStyle } from "styled-components";
+import { createGlobalStyle } from "styled-components";
 export const GlobalStyle = createGlobalStyle`
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400&display=swap');
 html, body, div, span, applet, object, iframe,
@@ -58,26 +58,20 @@ hr {
     border-color: ${(props) => props.theme.subColor};
   }
 
-html,body{
+html{
   height: 100%;
 }
 body{ 
+  padding-top: 5%;
+  height: auto;
+  min-height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  
+  align-items: center;
+
   font-family: "Source Sans Pro", sans-serif;
   background-color: ${(props) => props.theme.bgColor};
   color: ${(props) => props.theme.accentColor}; 
   }
-`;
-export const Wrapper = styled.div`
-  width: 100%;
-  height: auto;
-  min-height: inherit;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-direction: column;
-  font-family: "Source Sans Pro", sans-serif;
 `;
