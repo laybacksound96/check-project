@@ -46,7 +46,8 @@ function CheckBox() {
 
   const AddAccountHandler = (event: React.MouseEvent) => {
     event.preventDefault();
-    const InsertedAccount = InsertAccountHandler();
+
+    const InsertedAccount = InsertAccountHandler(Math.floor(event.timeStamp));
     const isThereAccountName = checkboxesState[InsertedAccount.AccountName];
     const newAccountName = InsertedAccount.AccountName;
 

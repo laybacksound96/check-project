@@ -1,3 +1,4 @@
+import React from "react";
 import { useEffect, useState } from "react";
 import styled, { css, keyframes } from "styled-components";
 const bump = keyframes`
@@ -52,6 +53,7 @@ const Content = ({ content, frequency }: IProps) => {
 
     return () => clearTimeout(timeoutId);
   }, [frequency]);
+
   return frequency !== 0 ? (
     <ContentStyle shouldAnimate={shouldAnimate}>
       {content} x {frequency}
@@ -59,4 +61,4 @@ const Content = ({ content, frequency }: IProps) => {
   ) : null;
 };
 
-export default Content;
+export default React.memo(Content);

@@ -1,25 +1,16 @@
-export function InsertAccountHandler() {
+export function InsertAccountHandler(timestamp: number) {
   return {
-    AccountName: "newOne",
+    AccountName: `id_${timestamp}`,
     Characters: [
       {
-        CharacterName: "newOne_1",
+        CharacterName: `id_${timestamp}_1`,
       },
       {
-        CharacterName: "newOne_2",
+        CharacterName: `id_${timestamp}_2`,
       },
       {
-        CharacterName: "newOne_3",
+        CharacterName: `id_${timestamp}_3`,
       },
     ],
   };
 }
-
-/*
-CheckboxesState
-abbb: {
-      a_1: { A: false, B: false, C: false },
-      a_2: { A: false, B: false, C: false },
-      a_3: { A: false, B: false, C: false },
-    },
-*/
