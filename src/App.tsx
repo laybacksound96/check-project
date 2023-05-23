@@ -1,8 +1,9 @@
 import { ThemeProvider } from "styled-components";
 import { darkTheme } from "./theme/theme";
 import Router from "./Router";
-import { GlobalStyle } from "./Style/App";
+import { GlobalStyle, Wrapper } from "./Style/App";
 import { RecoilRoot } from "recoil";
+
 import Footer from "./components/Ui/Footer";
 
 function App() {
@@ -10,8 +11,10 @@ function App() {
     <ThemeProvider theme={darkTheme}>
       <RecoilRoot>
         <GlobalStyle />
-        <Router />
-        <Footer />
+        <Wrapper>
+          <Router />
+          <Footer />
+        </Wrapper>
       </RecoilRoot>
     </ThemeProvider>
   );

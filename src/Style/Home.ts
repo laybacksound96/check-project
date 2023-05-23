@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 export const Section = styled.section`
+  margin-top: 15%;
   margin-bottom: 300px;
   div * {
     display: flex;
@@ -61,7 +62,7 @@ export const LoginDiscordBtn = styled.button`
   }
 `;
 export const Article = styled.article`
-  height: 3000px;
+  height: 300px;
   background-color: ${(props) => props.theme.bgColor};
   padding-left: 150px;
   padding-top: 100px;

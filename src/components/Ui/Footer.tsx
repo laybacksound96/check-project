@@ -3,7 +3,7 @@ import styled from "styled-components";
 const FooterStyle = styled.footer`
   background-color: #181924;
   color: ${(props) => props.theme.accentColor};
-  width: inherit;
+  width: 100%;
   height: 100px;
   display: flex;
   justify-content: center;

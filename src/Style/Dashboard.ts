@@ -1,15 +1,11 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-  margin-top: 15%;
+  min-width: 40%;
   display: flex;
-  width: auto;
   flex-direction: column;
   justify-content: start;
   align-items: center;
-  header {
-    width: inherit;
-  }
 `;
 export const HeaderBox = styled.div`
   width: 100%;
@@ -35,6 +31,8 @@ export const HeaderBox = styled.div`
   }
 `;
 export const CheckBoxContainer = styled.div`
+  width: 100%;
+  height: auto;
   background-color: ${(props) => props.theme.subColor};
   * {
     color: ${(props) => props.theme.bgColor};
@@ -42,9 +40,14 @@ export const CheckBoxContainer = styled.div`
   margin-top: 20px;
   display: flex;
   flex-direction: column;
-  height: auto;
-  width: inherit;
+
   padding: 30px 40px;
   border-radius: 15px;
   margin-bottom: 150px;
+`;
+
+export const PageContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  height: 100%;
 `;
