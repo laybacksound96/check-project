@@ -1,4 +1,4 @@
-import { Section, LoginDiscordBtn, Article, ImgFake } from "../Style/Home";
+import { Main, LoginDiscordBtn, Article, ImgFake } from "../Style/Home";
 import { ReactComponent as DiscordIcon } from "../icons/discord-icon.svg";
 import { fetchLogin } from "../util/fetch";
 
@@ -11,18 +11,17 @@ async function discordLoginHandler(event: React.MouseEvent) {
 function Home() {
   return (
     <>
-      <div style={{ display: "flex", flexDirection: "column" }}>
-        <Section>
+      <Main>
+        <section>
           <h1>Check.loa</h1>
-          <div>
-            <span>간편하고 똑똑한 일정관리 앱</span>
-            <LoginDiscordBtn onClick={discordLoginHandler}>
-              <DiscordIcon />
-              <p>Discord로 로그인</p>
-            </LoginDiscordBtn>
-            <a href="/">로그인 없이 시작</a>
-          </div>
-        </Section>
+          <span>간편하고 똑똑한 일정관리 앱</span>
+          <LoginDiscordBtn onClick={discordLoginHandler}>
+            <DiscordIcon />
+            <p>Discord로 로그인</p>
+          </LoginDiscordBtn>
+          <a href="/">로그인 없이 시작</a>
+        </section>
+        <div style={{ height: "300px" }}></div>
         <Article>
           <h1>Lorem Ipsum</h1>
           <div>
@@ -41,7 +40,7 @@ function Home() {
             <ImgFake />
           </div>
         </Article>
-      </div>
+      </Main>
     </>
   );
 }

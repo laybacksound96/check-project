@@ -1,7 +1,9 @@
 import styled from "styled-components";
 
-export const Section = styled.section`
-  margin-top: 15%;
+export const Main = styled.main`
+  display: flex;
+  flex-direction: column;
+
   margin-bottom: 300px;
   div * {
     display: flex;
