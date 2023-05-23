@@ -11,10 +11,8 @@ function App() {
     <ThemeProvider theme={darkTheme}>
       <RecoilRoot>
         <GlobalStyle />
-        <Wrapper>
-          <Router />
-          <Footer />
-        </Wrapper>
+        <Router />
+        <Footer />
       </RecoilRoot>
     </ThemeProvider>
   );

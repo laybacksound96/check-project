@@ -58,8 +58,14 @@ hr {
     border-color: ${(props) => props.theme.subColor};
   }
 
-
-body{   
+html,body{
+  height: 100%;
+}
+body{ 
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  
   font-family: "Source Sans Pro", sans-serif;
   background-color: ${(props) => props.theme.bgColor};
   color: ${(props) => props.theme.accentColor}; 
@@ -67,8 +73,8 @@ body{
 `;
 export const Wrapper = styled.div`
   width: 100%;
-  height: 100%;
-  line-height: 1;
+  height: auto;
+  min-height: inherit;
   display: flex;
   justify-content: space-between;
   align-items: center;
