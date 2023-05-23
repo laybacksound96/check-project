@@ -5,8 +5,8 @@ import styled from "styled-components";
 import { AxisLocker } from "../Functions/AxisLocker";
 import { dragIcon } from "../../../Settings";
 import Checkbox from "./Checkbox";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { CheckboxesState, ColumnState, ModalState } from "../../../atoms";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { CheckboxesState, ColumnState } from "../../../atoms";
 
 const Name = styled.div`
   display: flex;
@@ -45,7 +45,6 @@ function Horizontal__Draggable({
 
   const [CheckboxState, setCheckboxState] = useRecoilState(CheckboxesState);
 
-  const SetConfigModalOpen = useSetRecoilState(ModalState);
   const CheckBoxOnclick = (char: string, cont: string, ColumnIndex: number) => {
     setCheckboxState((Accounts) => {
       const copiedAccounts = { ...Accounts };
@@ -62,18 +61,6 @@ function Horizontal__Draggable({
   const [isHovered, setIsHovered] = useState(false);
   const handleHovered = () => {
     setIsHovered((prev) => !prev);
-  };
-  const OpenModalHandler = (event: React.MouseEvent) => {
-    event.preventDefault();
-    console.log(CharacterName);
-    SetConfigModalOpen((prev) => {
-      const copiedPrev = { ...prev };
-      copiedPrev.status = !prev.status;
-      copiedPrev.content = {
-        name: CharacterName,
-      };
-      return copiedPrev;
-    });
   };
 
   return (
@@ -96,7 +83,7 @@ function Horizontal__Draggable({
                 height: "100%",
               }}
             >
-              {isHovered && <button onClick={OpenModalHandler}>Setting</button>}
+              {isHovered && <button>Setting</button>}
             </div>
           </Name>
 

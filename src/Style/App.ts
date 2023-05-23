@@ -1,4 +1,4 @@
-import styled, { createGlobalStyle } from "styled-components";
+import { createGlobalStyle } from "styled-components";
 export const GlobalStyle = createGlobalStyle`
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400&display=swap');
 html, body, div, span, applet, object, iframe,
@@ -57,20 +57,16 @@ a {
 hr {
     border-color: ${(props) => props.theme.subColor};
   }
-`;
-export const Body = styled.div`
-  padding-top: 100px;
-  width: 100%;
-  min-height: 50vw;
-  height: 100%;
-  line-height: 1;
 
+body{ 
+  width: 100%;
+  height: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-direction: column;
   font-family: "Source Sans Pro", sans-serif;
-
   background-color: ${(props) => props.theme.bgColor};
-  color: ${(props) => props.theme.accentColor};
+  color: ${(props) => props.theme.accentColor}; 
+  }
 `;

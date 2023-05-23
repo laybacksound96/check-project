@@ -5,8 +5,8 @@ import {
   Droppable,
   DropResult,
 } from "react-beautiful-dnd";
-import { useRecoilState } from "recoil";
-import { ColumnState } from "../../../atoms";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { ColumnState, ModalState } from "../../../atoms";
 
 import Card, { Name } from "./Vertical__card";
 import { AxisLocker } from "../Functions/AxisLocker";
@@ -28,6 +28,10 @@ function CheckBoxColumn() {
       });
     }
     return;
+  };
+  const setIsModalOpen = useSetRecoilState(ModalState);
+  const openModal = () => {
+    setIsModalOpen(true);
   };
 
   return (
@@ -51,7 +55,7 @@ function CheckBoxColumn() {
               </Draggable>
             ))}
             {provided.placeholder}
-            <Name>+</Name>
+            <Name onClick={openModal}>+</Name>
           </div>
         )}
       </Droppable>

@@ -1,13 +1,12 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
+  margin-top: 15%;
   display: flex;
   width: auto;
-
   flex-direction: column;
   justify-content: start;
   align-items: center;
-
   header {
     width: inherit;
   }
@@ -35,7 +34,6 @@ export const HeaderBox = styled.div`
     font-size: 25px;
   }
 `;
-
 export const CheckBoxContainer = styled.div`
   background-color: ${(props) => props.theme.subColor};
   * {

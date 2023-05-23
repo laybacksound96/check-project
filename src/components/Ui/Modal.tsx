@@ -1,74 +1,59 @@
-import { useRecoilState } from "recoil";
+import React, { Component } from "react";
 import styled from "styled-components";
-import { ModalState } from "../../atoms";
 
 const ModalContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  position: absolute;
-
+  position: fixed;
+  top: 0px;
+  left: 0px;
   width: 100%;
   height: 100%;
-`;
-const SubjectDiv = styled.div`
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-
-  h1 {
-    font-size: 30px;
-  }
-  svg {
-    margin-top: 5px;
-    font-size: 25px;
-  }
-`;
-const MainDiv = styled.div`
-  width: 50%;
-  min-width: 950px;
-  height: auto;
-
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-
-  padding: 40px;
-  border-radius: 30px;
-  background-color: ${(props) => props.theme.subColor};
 `;
 const Background = styled.div`
   width: 100%;
   height: 100%;
+  position: absolute;
   background-color: black;
-  opacity: 60%;
+  opacity: 80%;
 `;
-const Modal = () => {
-  const [ConfigModalOpen, SetConfigModalOpen] = useRecoilState(ModalState);
-  const closeModalHandler = () => {
-    SetConfigModalOpen((prev) => {
-      const copiedPrev = { ...prev };
-      copiedPrev.status = !prev.status;
-      return copiedPrev;
-    });
-  };
+const MainDiv = styled.div`
+  width: 50%;
+  min-width: 950px;
 
-  return ConfigModalOpen.status === true ? (
-    <ModalContainer>
-      <Background onClick={closeModalHandler}></Background>
-      <MainDiv>
-        <SubjectDiv>
-          <h1>Setting</h1>
-          <span onClick={closeModalHandler}>x</span>
-        </SubjectDiv>
+  display: flex;
+  flex-direction: column;
+  z-index: 999;
+  padding: 40px;
+  border-radius: 30px;
+  background-color: ${(props) => props.theme.subColor};
+`;
+interface ModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  children: React.ReactNode;
+}
 
-        <span>
-          <hr />
-          {ConfigModalOpen.content.name}
-        </span>
-      </MainDiv>
-    </ModalContainer>
-  ) : null;
-};
+class Modal extends Component<ModalProps> {
+  render() {
+    const { isOpen, onClose } = this.props;
+
+    if (!isOpen) {
+      return null;
+    }
+    return (
+      <ModalContainer>
+        <Background onClick={onClose}></Background>
+        <MainDiv>
+          <span className="close" onClick={onClose}>
+            &times;
+          </span>
+          {this.props.children}
+        </MainDiv>
+      </ModalContainer>
+    );
+  }
+}
 
 export default Modal;

@@ -40,12 +40,8 @@ export const ColumnState = atom({
   default: ["A", "B", "C", "D", "E"],
 });
 
-type ModalStateType = ModalContent;
-interface ModalContent {
-  status: boolean;
-  content: { name: string };
-}
-export const ModalState = atom<ModalStateType>({
+type IModal = boolean;
+export const ModalState = atom<IModal>({
   key: "ModalState",
-  default: { status: false, content: { name: "" } },
+  default: false,
 });
