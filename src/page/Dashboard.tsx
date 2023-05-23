@@ -2,15 +2,10 @@ import { useParams } from "react-router-dom";
 import CheckBox from "../components/CheckBox/CheckBox";
 import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  CheckBoxContainer,
-  Container,
-  Contents,
-  HeaderBox,
-} from "../Style/Dashboard";
+import { CheckBoxContainer, Container, HeaderBox } from "../Style/Dashboard";
 import Vertical from "../components/CheckBox/Vertical/Vertical";
-import { useRecoilValue } from "recoil";
-import { ContentsState } from "../atoms";
+
+import Contents from "../components/Contents";
 
 interface RouteParams {
   userId: string;
@@ -18,18 +13,17 @@ interface RouteParams {
 
 function Dashboard(props: any) {
   const { userId } = useParams<RouteParams>();
-  const ContentsValue = useRecoilValue(ContentsState);
-  console.log(Object.keys(ContentsValue));
+
   return (
     <Container>
       <HeaderBox>
         <header>
           <h1>{userId}님의 Sheet</h1>
-          <div>{Object.keys(ContentsValue)}</div>
+
           <FontAwesomeIcon icon={faGear} size="lg" />
         </header>
         <hr></hr>
-        <Contents>{Object.keys(ContentsValue)}</Contents>
+        <Contents />
       </HeaderBox>
       <CheckBoxContainer>
         <Vertical />

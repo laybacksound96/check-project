@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Draggable } from "react-beautiful-dnd";
 import styled from "styled-components";
 
@@ -6,12 +6,7 @@ import { AxisLocker } from "../Functions/AxisLocker";
 import { dragIcon } from "../../../Settings";
 import Checkbox from "./Checkbox";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import {
-  CheckboxesState,
-  ColumnState,
-  ContentsState,
-  ModalState,
-} from "../../../atoms";
+import { CheckboxesState, ColumnState, ModalState } from "../../../atoms";
 
 const Name = styled.div`
   display: flex;
@@ -47,7 +42,7 @@ function Horizontal__Draggable({
   accountName,
 }: IProps) {
   const Column = useRecoilValue(ColumnState);
-  const [contents, setContents] = useRecoilState(ContentsState);
+
   const [CheckboxState, setCheckboxState] = useRecoilState(CheckboxesState);
 
   const SetConfigModalOpen = useSetRecoilState(ModalState);
@@ -61,15 +56,6 @@ function Horizontal__Draggable({
       copiedAccount[char] = copiedCharacter;
       copiedAccounts[accountName] = copiedAccount;
       return copiedAccounts;
-    });
-
-    setContents((prev) => {
-      const copiedPrev = { ...prev };
-      const checkedBox = CheckboxState[accountName][char][cont];
-
-      if (copiedPrev[cont] === undefined) return copiedPrev;
-      checkedBox ? ++copiedPrev[cont] : --copiedPrev[cont];
-      return copiedPrev;
     });
   };
 

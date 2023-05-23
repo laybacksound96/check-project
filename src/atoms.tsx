@@ -21,7 +21,7 @@ interface ICheckbox {
 interface ICheckCharacters {
   [Character: string]: ICheckbox;
 }
-type ICheckAccounts = { [accountName: string]: ICheckCharacters };
+export type ICheckAccounts = { [accountName: string]: ICheckCharacters };
 
 export const CheckboxesState = atom<ICheckAccounts>({
   key: "CheckboxesState",
