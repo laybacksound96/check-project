@@ -41,8 +41,23 @@ const MainDiv = styled.div`
 `;
 const ButtonContainer = styled.div`
   position: absolute;
-  margin-top: 10px;
+  margin-top: 5px;
   right: 40px;
+  button {
+    width: 40px;
+    height: 40px;
+    border: 0;
+    background-color: transparent;
+    border-radius: 5px;
+    &:hover {
+      background-color: #ffffff72;
+      transition: 0.2s ease-in-out;
+    }
+    span {
+      color: ${(props) => props.theme.bgColor};
+      font-size: 30px;
+    }
+  }
 `;
 interface ModalProps {
   onClose: () => void;
@@ -58,7 +73,7 @@ const Modal = ({ children, onClose, onOpen }: ModalProps) => {
       <MainDiv>
         <ButtonContainer>
           <button onClick={onClose} style={{ fontSize: "20px" }}>
-            &times;
+            <span>X</span>
           </button>
         </ButtonContainer>
         {children}

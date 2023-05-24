@@ -4,6 +4,8 @@ import { ColumnState } from "../../../atoms";
 import Switch from "../UiComponents/Switch";
 
 import styled from "styled-components";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGear } from "@fortawesome/free-solid-svg-icons";
 const ContentsContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -29,6 +31,16 @@ const ContentCard = styled.div`
   align-items: center;
   font-size: 30px;
 `;
+const Header = styled.header`
+  display: flex;
+  align-items: center;
+  font-weight: bolder;
+  svg {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+  }
+`;
 export const AddContent = () => {
   const [columns, setColumns] = useRecoilState(ColumnState);
   const DefaultContents = columns.filter((elem) => elem.type === "Default");
@@ -48,7 +60,11 @@ export const AddContent = () => {
 
   return (
     <div>
-      <h1 style={{ fontSize: "40px" }}>Settings</h1>
+      <Header>
+        <FontAwesomeIcon icon={faGear} size="lg" />
+        <h1 style={{ fontSize: "40px" }}>Settings</h1>
+      </Header>
+
       <hr></hr>
       <Container>
         <ContentsContainer>

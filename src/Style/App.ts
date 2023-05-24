@@ -71,4 +71,7 @@ main{
   background-color: ${(props) => props.theme.bgColor};
   color: ${(props) => props.theme.accentColor};
   }
+header{
+  margin-bottom: 20px;
+}
 `;

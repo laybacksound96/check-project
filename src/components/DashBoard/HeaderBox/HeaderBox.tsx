@@ -13,6 +13,7 @@ const HeaderBoxStyle = styled.header`
   border-radius: 30px;
   padding: 30px;
   background-color: ${(props) => props.theme.subColor};
+
   * {
     color: ${(props) => props.theme.bgColor};
   }
@@ -21,11 +22,19 @@ const HeaderBoxStyle = styled.header`
     font-size: 30px;
   }
   svg {
+    height: 40px;
+    width: 40px;
+    padding: 5px;
+    border-radius: 10px;
+
     position: absolute;
-    top: 30px;
+    top: 20px;
     right: 30px;
     margin-top: 5px;
     font-size: 25px;
+    &:hover {
+      background-color: #ffffff71;
+    }
   }
 `;
 interface RouteParams {
@@ -41,11 +50,15 @@ const HeaderBox = () => {
       return { ...copiedPrev };
     });
   };
+
   const { userId } = useParams<RouteParams>();
   return (
     <HeaderBoxStyle>
-      <h1>{userId}님의 Sheet</h1>
-      <FontAwesomeIcon onClick={openModal} icon={faGear} size="lg" />
+      <header>
+        <h1>{userId}님의 Sheet</h1>
+        <FontAwesomeIcon onClick={openModal} icon={faGear} size="lg" />
+      </header>
+
       <hr></hr>
       <Contents />
     </HeaderBoxStyle>
