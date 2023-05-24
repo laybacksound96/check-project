@@ -3,6 +3,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import Contents from "./Contents";
+import { useSetRecoilState } from "recoil";
+import { ModalEnum, ModalState } from "../../../atoms";
 
 const HeaderBoxStyle = styled.header`
   position: relative;
@@ -30,11 +32,20 @@ interface RouteParams {
   userId: string;
 }
 const HeaderBox = () => {
+  const setIsModalOpen = useSetRecoilState(ModalState);
+  const openModal = () => {
+    setIsModalOpen((prev) => {
+      const copiedPrev = { ...prev };
+      copiedPrev.isModalOpen = true;
+      copiedPrev.modalType = ModalEnum.ADD_CONTENT;
+      return { ...copiedPrev };
+    });
+  };
   const { userId } = useParams<RouteParams>();
   return (
     <HeaderBoxStyle>
       <h1>{userId}님의 Sheet</h1>
-      <FontAwesomeIcon icon={faGear} size="lg" />
+      <FontAwesomeIcon onClick={openModal} icon={faGear} size="lg" />
       <hr></hr>
       <Contents />
     </HeaderBoxStyle>

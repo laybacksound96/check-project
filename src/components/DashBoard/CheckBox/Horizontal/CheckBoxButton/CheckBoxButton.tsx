@@ -34,7 +34,7 @@ function CheckBoxButton({
   ContentName,
   ColumnIndex,
 }: ICheckboxProps) {
-  function onClickHandler(event: React.MouseEvent) {
+  function onClickHandler() {
     CheckBoxOnclick(CharacterName, ContentName, ColumnIndex);
   }
   return (

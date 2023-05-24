@@ -21,7 +21,6 @@ function Horizontal() {
   const setAccountsState = useSetRecoilState(AccountsState);
   const [checkboxesState, setCheckboxesState] = useRecoilState(CheckboxesState);
   const Column = useRecoilValue(ColumnState);
-  const [ColumState] = useState(Column.map((obj) => obj.contentName));
 
   const AddAccountHandler = (event: React.MouseEvent) => {
     event.preventDefault();
@@ -35,7 +34,8 @@ function Horizontal() {
         InsertedAccount.Characters.map((Character) => {
           const newCharacterName = Character.CharacterName;
           copiedPrev[newAccountName][newCharacterName] = {};
-          ColumState.map(
+          const columns = Column.map((obj) => obj.contentName);
+          columns.map(
             (content) =>
               (copiedPrev[newAccountName][newCharacterName][content] = false)
           );

@@ -42,7 +42,6 @@ function DragCharacters__Draggable({
   accountName,
 }: IProps) {
   const Column = useRecoilValue(ColumnState);
-  const [ColumState] = useState(Column.map((obj) => obj.contentName));
 
   const [CheckboxState, setCheckboxState] = useRecoilState(CheckboxesState);
 
@@ -88,13 +87,15 @@ function DragCharacters__Draggable({
             </div>
           </Name>
 
-          {ColumState.map((elem, ColumnIndex) => {
+          {Column.map((elem, ColumnIndex) => {
             return (
               <Checkbox
-                key={index + ColumnIndex + elem}
-                isChecked={CheckboxState[accountName][CharacterName][elem]}
+                key={index + ColumnIndex + elem.contentName}
+                isChecked={
+                  CheckboxState[accountName][CharacterName][elem.contentName]
+                }
                 CheckBoxOnclick={CheckBoxOnclick}
-                ContentName={elem}
+                ContentName={elem.contentName}
                 CharacterName={CharacterName}
                 ColumnIndex={ColumnIndex}
               />
