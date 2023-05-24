@@ -5,8 +5,8 @@ import {
   DropResult,
   NotDraggingStyle,
 } from "react-beautiful-dnd";
-import DroppableSpace from "./Horizontal__Droppable";
-import { AccountsState, IAccount } from "../../../atoms";
+import DroppableSpace from "./DragCharacters__Droppable";
+import { AccountsState, IAccount } from "../../../../../atoms";
 import React from "react";
 import { useSetRecoilState } from "recoil";
 
@@ -17,7 +17,12 @@ interface IProps {
   accountIndex: number;
 }
 
-function Horizontal({ account, parentProvided, style, accountIndex }: IProps) {
+function DragCharacters({
+  account,
+  parentProvided,
+  style,
+  accountIndex,
+}: IProps) {
   const setAccountsState = useSetRecoilState(AccountsState);
   const onDragEnd = (dragInfo: DropResult) => {
     const { destination, source } = dragInfo;
@@ -56,4 +61,4 @@ function Horizontal({ account, parentProvided, style, accountIndex }: IProps) {
     </div>
   );
 }
-export default React.memo(Horizontal);
+export default React.memo(DragCharacters);

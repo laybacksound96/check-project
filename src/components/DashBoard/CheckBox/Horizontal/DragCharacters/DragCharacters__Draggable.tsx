@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import { Draggable } from "react-beautiful-dnd";
 import styled from "styled-components";
 
-import { AxisLocker } from "../Functions/AxisLocker";
-import { dragIcon } from "../../../Settings";
-import Checkbox from "./Checkbox";
+import { AxisLocker } from "../../../Functions/AxisLocker";
+import { dragIcon } from "../../../../../Settings";
+import Checkbox from "../CheckBoxButton/CheckBoxButton";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { CheckboxesState, ColumnState2 } from "../../../atoms";
+import { CheckboxesState, ColumnState } from "../../../../../atoms";
 
 const Name = styled.div`
   display: flex;
@@ -35,14 +35,14 @@ interface IProps {
   index: number;
   accountName: string;
 }
-function Horizontal__Draggable({
+function DragCharacters__Draggable({
   boardId,
   CharacterName,
   index,
   accountName,
 }: IProps) {
-  const Column2 = useRecoilValue(ColumnState2);
-  const [ColumState] = useState(Column2.map((obj) => obj.contentName));
+  const Column = useRecoilValue(ColumnState);
+  const [ColumState] = useState(Column.map((obj) => obj.contentName));
 
   const [CheckboxState, setCheckboxState] = useRecoilState(CheckboxesState);
 
@@ -106,4 +106,4 @@ function Horizontal__Draggable({
   );
 }
 
-export default React.memo(Horizontal__Draggable);
+export default React.memo(DragCharacters__Draggable);

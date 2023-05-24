@@ -37,11 +37,6 @@ export const ContentsState = atom<IContentsState>({
 
 export const ColumnState = atom({
   key: "ColumnState",
-  default: ["A", "B", "C", "D", "E"],
-});
-
-export const ColumnState2 = atom({
-  key: "ColumnState2",
   default: [
     { contentName: "A", type: "Default", isVisible: true },
     { contentName: "B", type: "Default", isVisible: true },

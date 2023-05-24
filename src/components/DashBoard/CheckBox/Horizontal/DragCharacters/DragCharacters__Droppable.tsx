@@ -1,8 +1,8 @@
 import React from "react";
 import { DraggableProvided, Droppable } from "react-beautiful-dnd";
 import styled from "styled-components";
-import Draggable from "./Horizontal__Draggable";
-import { AccountsState } from "../../../atoms";
+import Draggable from "./DragCharacters__Draggable";
+import { AccountsState } from "../../../../../atoms";
 import { useRecoilValue } from "recoil";
 
 const Area = styled.div`
@@ -35,7 +35,7 @@ interface IProps {
   accountIndex: number;
   accountName: string;
 }
-function Horizontal__Droppable({
+function DragCharacters__Droppable({
   boardId,
   parentProvided,
   accountIndex,
@@ -68,4 +68,4 @@ function Horizontal__Droppable({
   );
 }
 
-export default React.memo(Horizontal__Droppable);
+export default React.memo(DragCharacters__Droppable);

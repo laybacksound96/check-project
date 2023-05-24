@@ -2,7 +2,7 @@ import { faSquare, faSquareCheck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import styled from "styled-components";
-import { dragIcon } from "../../../Settings";
+import { dragIcon } from "../../../../../Settings";
 
 const CheckBox = styled.div`
   display: flex;
@@ -27,7 +27,7 @@ interface ICheckboxProps {
   ColumnIndex: number;
 }
 
-function Checkbox({
+function CheckBoxButton({
   isChecked,
   CheckBoxOnclick,
   CharacterName,
@@ -48,4 +48,4 @@ function Checkbox({
   );
 }
 
-export default Checkbox;
+export default CheckBoxButton;

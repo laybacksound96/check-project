@@ -4,7 +4,7 @@ import {
   NotDraggingStyle,
 } from "react-beautiful-dnd";
 import styled from "styled-components";
-import { dragIcon } from "../../../Settings";
+import { dragIcon } from "../../../../Settings";
 
 export const Name = styled.div`
   display: flex;

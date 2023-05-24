@@ -11,10 +11,10 @@ import {
   ColumnState2,
   ModalEnum,
   ModalState,
-} from "../../../atoms";
+} from "../../../../atoms";
 
 import Card, { Name } from "./Vertical__card";
-import { AxisLocker } from "../Functions/AxisLocker";
+import { AxisLocker } from "../../Functions/AxisLocker";
 
 function CheckBoxColumn() {
   const Column2 = useRecoilValue(ColumnState2);

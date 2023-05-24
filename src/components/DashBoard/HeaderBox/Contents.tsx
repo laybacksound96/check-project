@@ -1,6 +1,10 @@
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { CheckboxesState, ICheckAccounts, IContentsState } from "../atoms";
+import {
+  CheckboxesState,
+  ICheckAccounts,
+  IContentsState,
+} from "../../../atoms";
 import { useEffect, useState } from "react";
 import Content from "./Content";
 
