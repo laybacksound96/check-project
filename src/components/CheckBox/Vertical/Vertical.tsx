@@ -41,7 +41,7 @@ function CheckBoxColumn() {
     setIsModalOpen((prev) => {
       const copiedPrev = { ...prev };
       copiedPrev.isModalOpen = true;
-      copiedPrev.modalType = ModalEnum.VALUE1;
+      copiedPrev.modalType = ModalEnum.ADD_CONTENT;
       return copiedPrev;
     });
   };

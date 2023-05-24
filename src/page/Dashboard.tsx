@@ -6,9 +6,10 @@ import { CheckBoxContainer, Container, HeaderBox } from "../Style/Dashboard";
 import Vertical from "../components/CheckBox/Vertical/Vertical";
 
 import Contents from "../components/Contents";
-import Modal from "../components/Ui/Modal";
+import Modal from "../components/Ui/Modal/Modal";
 import { useRecoilState } from "recoil";
 import { ModalEnum, ModalState } from "../atoms";
+import { AddContent } from "../components/Ui/Modal/ModalContents";
 
 interface RouteParams {
   userId: string;
@@ -29,7 +30,7 @@ function Dashboard(props: any) {
   return (
     <>
       <Modal isOpen={isModalOpen.isModalOpen} onClose={closeModal}>
-        {ModalEnum.VALUE1 && <div>sd</div>}
+        {ModalEnum.ADD_CONTENT && <AddContent />}
       </Modal>
       <HeaderBox>
         <h1>{userId}님의 Sheet</h1>

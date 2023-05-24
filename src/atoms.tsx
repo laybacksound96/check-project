@@ -41,7 +41,7 @@ export const ColumnState = atom({
 });
 
 export enum ModalEnum {
-  VALUE1 = "Value 1",
+  ADD_CONTENT = "Value 1",
   VALUE2 = "Value 2",
   VALUE3 = "Value 3",
 }
