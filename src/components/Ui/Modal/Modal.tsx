@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import styled, { keyframes } from "styled-components";
 const fadeInAnimation = keyframes`
   0% {
@@ -37,38 +37,34 @@ const MainDiv = styled.div`
   padding: 40px;
   border-radius: 30px;
   background-color: ${(props) => props.theme.subColor};
+  position: relative;
 `;
 const ButtonContainer = styled.div`
-  display: flex;
-  flex-direction: row-reverse;
+  position: absolute;
+  margin-top: 10px;
+  right: 40px;
 `;
 interface ModalProps {
-  isOpen: boolean;
   onClose: () => void;
   children: React.ReactNode;
+  onOpen: boolean;
 }
 
-class Modal extends Component<ModalProps> {
-  render() {
-    const { isOpen, onClose } = this.props;
-
-    if (!isOpen) {
-      return null;
-    }
-    return (
-      <ModalContainer>
-        <Background onClick={onClose}></Background>
-        <MainDiv>
-          <ButtonContainer>
-            <button onClick={onClose} style={{ fontSize: "20px" }}>
-              &times;
-            </button>
-          </ButtonContainer>
-          {this.props.children}
-        </MainDiv>
-      </ModalContainer>
-    );
-  }
-}
+const Modal = ({ children, onClose, onOpen }: ModalProps) => {
+  if (!onOpen) return null;
+  return (
+    <ModalContainer>
+      <Background onClick={onClose}></Background>
+      <MainDiv>
+        <ButtonContainer>
+          <button onClick={onClose} style={{ fontSize: "20px" }}>
+            &times;
+          </button>
+        </ButtonContainer>
+        {children}
+      </MainDiv>
+    </ModalContainer>
+  );
+};
 
 export default Modal;

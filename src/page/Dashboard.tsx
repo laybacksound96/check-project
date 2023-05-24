@@ -17,7 +17,7 @@ interface RouteParams {
 
 function Dashboard(props: any) {
   const { userId } = useParams<RouteParams>();
-  const [isModalOpen, setIsModalOpen] = useRecoilState(ModalState);
+  const [IsModalOpen, setIsModalOpen] = useRecoilState(ModalState);
 
   const closeModal = () => {
     setIsModalOpen((prev) => {
@@ -29,7 +29,7 @@ function Dashboard(props: any) {
 
   return (
     <>
-      <Modal isOpen={isModalOpen.isModalOpen} onClose={closeModal}>
+      <Modal onClose={closeModal} onOpen={IsModalOpen.isModalOpen}>
         {ModalEnum.ADD_CONTENT && <AddContent />}
       </Modal>
       <HeaderBox>

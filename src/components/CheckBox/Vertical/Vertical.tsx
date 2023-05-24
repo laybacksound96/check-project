@@ -1,14 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   DragDropContext,
   Draggable,
   Droppable,
   DropResult,
 } from "react-beautiful-dnd";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import {
   AccountsState,
-  ColumnState,
+  ColumnState2,
   ModalEnum,
   ModalState,
 } from "../../../atoms";
@@ -17,13 +17,17 @@ import Card, { Name } from "./Vertical__card";
 import { AxisLocker } from "../Functions/AxisLocker";
 
 function CheckBoxColumn() {
-  const [Column, setColumn] = useRecoilState(ColumnState);
+  const Column2 = useRecoilValue(ColumnState2);
+  const [ColumState, setColumnState] = useState(
+    Column2.map((obj) => obj.contentName)
+  );
+
   const Accounts = useRecoilValue(AccountsState);
   const onDragEnd = (dragInfo: DropResult) => {
     const { destination, source } = dragInfo;
     if (!destination) return;
     if (destination?.droppableId === source.droppableId) {
-      setColumn((prev) => {
+      setColumnState((prev) => {
         const copiedPrev = [...prev];
         const copiedObject = copiedPrev[source.index];
 
@@ -42,7 +46,7 @@ function CheckBoxColumn() {
       const copiedPrev = { ...prev };
       copiedPrev.isModalOpen = true;
       copiedPrev.modalType = ModalEnum.ADD_CONTENT;
-      return copiedPrev;
+      return { ...copiedPrev };
     });
   };
 
@@ -55,7 +59,7 @@ function CheckBoxColumn() {
             ref={provided.innerRef}
             {...provided.droppableProps}
           >
-            {Column.map((Column, index) => (
+            {ColumState.map((Column, index) => (
               <Draggable draggableId={Column} index={index} key={Column}>
                 {(provided) => (
                   <Card

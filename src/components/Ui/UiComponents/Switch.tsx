@@ -1,12 +1,9 @@
-import "./Switch.css";
+import { useState } from "react";
 import styled from "styled-components";
 interface IStyleProps {
   isOn: boolean;
 }
-interface IProps {
-  isOn: boolean;
-  handleToggle: () => void;
-}
+
 const Checkbox = styled.input`
   height: 0;
   width: 0;
@@ -17,8 +14,8 @@ const Lable = styled.label<IStyleProps>`
   align-items: center;
   justify-content: space-between;
   cursor: pointer;
-  width: 80px;
-  height: 40px;
+  width: 60px;
+  height: 30px;
   border-radius: 100px;
   position: relative;
   transition: background-color 0.2s;
@@ -41,21 +38,18 @@ const SwitchButton = styled.span<IStyleProps>`
     transform: translateX(-100%);
     `}
 `;
-const Switch = ({ isOn, handleToggle }: IProps) => {
+const Switch = () => {
+  const [isOn, setValue] = useState(false);
+  const ToggleHanddler = () => {
+    setValue((prev) => {
+      return !prev;
+    });
+  };
   return (
-    <div>
-      <Checkbox
-        className="react-switch-checkbox"
-        id={`react-switch-new`}
-        type="checkbox"
-      />
-      <Lable
-        onClick={handleToggle}
-        className="react-switch-label"
-        htmlFor={`react-switch-new`}
-        isOn={isOn}
-      >
-        <SwitchButton className={`react-switch-button`} isOn={isOn} />
+    <div style={{ display: "inline-flex" }}>
+      <Checkbox id="ContentsSwitch" type="checkbox" />
+      <Lable onClick={ToggleHanddler} htmlFor="ContentsSwitch" isOn={isOn}>
+        <SwitchButton isOn={isOn} />
       </Lable>
     </div>
   );

@@ -6,7 +6,7 @@ import { AxisLocker } from "../Functions/AxisLocker";
 import { dragIcon } from "../../../Settings";
 import Checkbox from "./Checkbox";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { CheckboxesState, ColumnState } from "../../../atoms";
+import { CheckboxesState, ColumnState2 } from "../../../atoms";
 
 const Name = styled.div`
   display: flex;
@@ -41,11 +41,12 @@ function Horizontal__Draggable({
   index,
   accountName,
 }: IProps) {
-  const Column = useRecoilValue(ColumnState);
+  const Column2 = useRecoilValue(ColumnState2);
+  const [ColumState] = useState(Column2.map((obj) => obj.contentName));
 
   const [CheckboxState, setCheckboxState] = useRecoilState(CheckboxesState);
 
-  const CheckBoxOnclick = (char: string, cont: string, ColumnIndex: number) => {
+  const CheckBoxOnclick = (char: string, cont: string) => {
     setCheckboxState((Accounts) => {
       const copiedAccounts = { ...Accounts };
       const copiedAccount = { ...copiedAccounts[accountName] };
@@ -87,7 +88,7 @@ function Horizontal__Draggable({
             </div>
           </Name>
 
-          {Column.map((elem, ColumnIndex) => {
+          {ColumState.map((elem, ColumnIndex) => {
             return (
               <Checkbox
                 key={index + ColumnIndex + elem}

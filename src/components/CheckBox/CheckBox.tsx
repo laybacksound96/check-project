@@ -1,5 +1,5 @@
 import { useRecoilState, useRecoilValue } from "recoil";
-import { AccountsState, CheckboxesState, ColumnState } from "../../atoms";
+import { AccountsState, CheckboxesState, ColumnState2 } from "../../atoms";
 import Horizontal from "./Horizontal/Horizontal";
 import styled, { keyframes } from "styled-components";
 import { InsertAccountHandler } from "./Functions/InsertAccount";
@@ -10,7 +10,7 @@ import {
   Draggable,
 } from "react-beautiful-dnd";
 import { AxisLocker } from "./Functions/AxisLocker";
-import React from "react";
+import React, { useState } from "react";
 
 const AddAccountBtn = styled.button`
   height: 100px;
@@ -42,7 +42,9 @@ const MotionStyle = styled.div`
 function CheckBox() {
   const [accountsState, setAccountsState] = useRecoilState(AccountsState);
   const [checkboxesState, setCheckboxesState] = useRecoilState(CheckboxesState);
-  const columnState = useRecoilValue(ColumnState);
+
+  const Column2 = useRecoilValue(ColumnState2);
+  const [ColumState] = useState(Column2.map((obj) => obj.contentName));
 
   const AddAccountHandler = (event: React.MouseEvent) => {
     event.preventDefault();
@@ -58,7 +60,7 @@ function CheckBox() {
         InsertedAccount.Characters.map((Character) => {
           const newCharacterName = Character.CharacterName;
           copiedPrev[newAccountName][newCharacterName] = {};
-          columnState.map(
+          ColumState.map(
             (content) =>
               (copiedPrev[newAccountName][newCharacterName][content] = false)
           );

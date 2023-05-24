@@ -40,6 +40,19 @@ export const ColumnState = atom({
   default: ["A", "B", "C", "D", "E"],
 });
 
+export const ColumnState2 = atom({
+  key: "ColumnState2",
+  default: [
+    { contentName: "A", type: "Default", isVisible: true },
+    { contentName: "B", type: "Default", isVisible: true },
+    { contentName: "C", type: "Default", isVisible: true },
+    { contentName: "D", type: "Default", isVisible: true },
+    { contentName: "E", type: "Default", isVisible: true },
+    { contentName: "치킨", type: "Custom", isVisible: true },
+    { contentName: "피자", type: "Custom", isVisible: true },
+  ],
+});
+
 export enum ModalEnum {
   ADD_CONTENT = "Value 1",
   VALUE2 = "Value 2",
