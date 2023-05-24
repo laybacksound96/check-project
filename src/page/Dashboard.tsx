@@ -8,7 +8,7 @@ import Vertical from "../components/CheckBox/Vertical/Vertical";
 import Contents from "../components/Contents";
 import Modal from "../components/Ui/Modal";
 import { useRecoilState } from "recoil";
-import { ModalState } from "../atoms";
+import { ModalEnum, ModalState } from "../atoms";
 
 interface RouteParams {
   userId: string;
@@ -17,14 +17,19 @@ interface RouteParams {
 function Dashboard(props: any) {
   const { userId } = useParams<RouteParams>();
   const [isModalOpen, setIsModalOpen] = useRecoilState(ModalState);
+
   const closeModal = () => {
-    setIsModalOpen(false);
+    setIsModalOpen((prev) => {
+      const copiedPrev = { ...prev };
+      copiedPrev.isModalOpen = false;
+      return copiedPrev;
+    });
   };
+
   return (
     <>
-      <Modal isOpen={isModalOpen} onClose={closeModal}>
-        <h1>모달 내용</h1>
-        <p>이곳에 모달 내용을 작성할 수 있습니다.</p>
+      <Modal isOpen={isModalOpen.isModalOpen} onClose={closeModal}>
+        {ModalEnum.VALUE1 && <div>sd</div>}
       </Modal>
       <HeaderBox>
         <h1>{userId}님의 Sheet</h1>

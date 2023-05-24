@@ -1,6 +1,13 @@
 import React, { Component } from "react";
-import styled from "styled-components";
-
+import styled, { keyframes } from "styled-components";
+const fadeInAnimation = keyframes`
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+`;
 const ModalContainer = styled.div`
   display: flex;
   justify-content: center;
@@ -10,6 +17,8 @@ const ModalContainer = styled.div`
   left: 0px;
   width: 100%;
   height: 100%;
+  animation: ${fadeInAnimation} 0.2s ease-in-out;
+  z-index: 999;
 `;
 const Background = styled.div`
   width: 100%;
@@ -24,10 +33,14 @@ const MainDiv = styled.div`
 
   display: flex;
   flex-direction: column;
-  z-index: 999;
+  z-index: 998;
   padding: 40px;
   border-radius: 30px;
   background-color: ${(props) => props.theme.subColor};
+`;
+const ButtonContainer = styled.div`
+  display: flex;
+  flex-direction: row-reverse;
 `;
 interface ModalProps {
   isOpen: boolean;
@@ -46,9 +59,11 @@ class Modal extends Component<ModalProps> {
       <ModalContainer>
         <Background onClick={onClose}></Background>
         <MainDiv>
-          <span className="close" onClick={onClose}>
-            &times;
-          </span>
+          <ButtonContainer>
+            <button onClick={onClose} style={{ fontSize: "20px" }}>
+              &times;
+            </button>
+          </ButtonContainer>
           {this.props.children}
         </MainDiv>
       </ModalContainer>

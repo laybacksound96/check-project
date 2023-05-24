@@ -40,8 +40,17 @@ export const ColumnState = atom({
   default: ["A", "B", "C", "D", "E"],
 });
 
-type IModal = boolean;
+export enum ModalEnum {
+  VALUE1 = "Value 1",
+  VALUE2 = "Value 2",
+  VALUE3 = "Value 3",
+}
+type IModal = IModalObject;
+interface IModalObject {
+  isModalOpen: boolean;
+  modalType?: ModalEnum;
+}
 export const ModalState = atom<IModal>({
   key: "ModalState",
-  default: false,
+  default: { isModalOpen: false },
 });
