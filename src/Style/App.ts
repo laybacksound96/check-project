@@ -58,13 +58,10 @@ hr {
     border-color: ${(props) => props.theme.subColor};
   }
 
-html{
-  height: 100%;
-}
-body{ 
+
+main{
   padding-top: 5%;
-  height: auto;
-  min-height: 100%;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: space-between;

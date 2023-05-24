@@ -23,10 +23,10 @@ export const HeaderBox = styled.header`
     font-size: 25px;
   }
 `;
-export const Container = styled.main`
+export const Container = styled.div`
   display: flex;
+  min-width: auto;
   width: 700px;
-  width: auto;
   flex-direction: column;
   justify-content: start;
   align-items: center;

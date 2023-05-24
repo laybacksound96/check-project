@@ -5,14 +5,15 @@ import {
   Droppable,
   DropResult,
 } from "react-beautiful-dnd";
-import { useRecoilState, useSetRecoilState } from "recoil";
-import { ColumnState, ModalState } from "../../../atoms";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { AccountsState, ColumnState, ModalState } from "../../../atoms";
 
 import Card, { Name } from "./Vertical__card";
 import { AxisLocker } from "../Functions/AxisLocker";
 
 function CheckBoxColumn() {
   const [Column, setColumn] = useRecoilState(ColumnState);
+  const Accounts = useRecoilValue(AccountsState);
   const onDragEnd = (dragInfo: DropResult) => {
     const { destination, source } = dragInfo;
     if (!destination) return;
@@ -29,12 +30,13 @@ function CheckBoxColumn() {
     }
     return;
   };
+
   const setIsModalOpen = useSetRecoilState(ModalState);
   const openModal = () => {
     setIsModalOpen(true);
   };
 
-  return (
+  return Accounts.length ? (
     <DragDropContext onDragEnd={onDragEnd}>
       <Droppable droppableId="one" direction="horizontal">
         {(provided) => (
@@ -60,6 +62,6 @@ function CheckBoxColumn() {
         )}
       </Droppable>
     </DragDropContext>
-  );
+  ) : null;
 }
 export default React.memo(CheckBoxColumn);
