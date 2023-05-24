@@ -1,5 +1,5 @@
 import { useRecoilValue } from "recoil";
-import { ColumnState2 } from "../../../atoms";
+import { ColumnState } from "../../../atoms";
 
 import Switch from "../UiComponents/Switch";
 
@@ -30,8 +30,7 @@ const ContentCard = styled.div`
   font-size: 30px;
 `;
 export const AddContent = () => {
-  const columns = useRecoilValue(ColumnState2);
-
+  const columns = useRecoilValue(ColumnState);
   const DefaultContents = columns.filter((elem) => elem.type === "Default");
   const CustomContents = columns.filter((elem) => elem.type === "Custom");
   return (

@@ -8,7 +8,7 @@ import {
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import {
   AccountsState,
-  ColumnState2,
+  ColumnState,
   ModalEnum,
   ModalState,
 } from "../../../../atoms";
@@ -17,9 +17,9 @@ import Card, { Name } from "./Vertical__card";
 import { AxisLocker } from "../../Functions/AxisLocker";
 
 function CheckBoxColumn() {
-  const Column2 = useRecoilValue(ColumnState2);
+  const Column = useRecoilValue(ColumnState);
   const [ColumState, setColumnState] = useState(
-    Column2.map((obj) => obj.contentName)
+    Column.map((obj) => obj.contentName)
   );
 
   const Accounts = useRecoilValue(AccountsState);

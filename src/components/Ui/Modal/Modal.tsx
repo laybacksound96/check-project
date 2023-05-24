@@ -18,6 +18,7 @@ const ModalContainer = styled.div`
   width: 100%;
   height: 100%;
   animation: ${fadeInAnimation} 0.2s ease-in-out;
+  color: ${(props) => props.theme.bgColor};
   z-index: 999;
 `;
 const Background = styled.div`
@@ -30,7 +31,6 @@ const Background = styled.div`
 const MainDiv = styled.div`
   width: 50%;
   min-width: 950px;
-
   display: flex;
   flex-direction: column;
   z-index: 998;
