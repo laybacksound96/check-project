@@ -40,21 +40,24 @@ function CheckBoxColumn() {
             ref={provided.innerRef}
             {...provided.droppableProps}
           >
-            {Columns.map((Column, index) => (
-              <Draggable
-                draggableId={Column.contentName}
-                index={index}
-                key={Column.contentName}
-              >
-                {(provided) => (
-                  <Card
-                    Column={Column.contentName}
-                    parentProvided={provided}
-                    style={AxisLocker(provided.draggableProps.style!, true)}
-                  />
-                )}
-              </Draggable>
-            ))}
+            {Columns.map(
+              (Column, index) =>
+                Column.isVisible && (
+                  <Draggable
+                    draggableId={Column.contentName}
+                    index={index}
+                    key={Column.contentName}
+                  >
+                    {(provided) => (
+                      <Card
+                        Column={Column.contentName}
+                        parentProvided={provided}
+                        style={AxisLocker(provided.draggableProps.style!, true)}
+                      />
+                    )}
+                  </Draggable>
+                )
+            )}
             {provided.placeholder}
             <Name>+</Name>
           </div>

@@ -54,11 +54,11 @@ const Content = ({ content, frequency }: IProps) => {
     return () => clearTimeout(timeoutId);
   }, [frequency]);
 
-  return frequency !== 0 ? (
+  return (
     <ContentStyle shouldAnimate={shouldAnimate}>
       {content} x {frequency}
     </ContentStyle>
-  ) : null;
+  );
 };
 
 export default React.memo(Content);

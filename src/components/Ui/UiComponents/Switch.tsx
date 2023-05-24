@@ -1,14 +1,14 @@
 import { useState } from "react";
 import styled from "styled-components";
-interface IStyleProps {
-  isOn: boolean;
-}
 
 const Checkbox = styled.input`
   height: 0;
   width: 0;
   visibility: hidden;
 `;
+interface IStyleProps {
+  isOn: boolean;
+}
 const Lable = styled.label<IStyleProps>`
   display: flex;
   align-items: center;
@@ -38,10 +38,16 @@ const SwitchButton = styled.span<IStyleProps>`
     transform: translateX(-100%);
     `}
 `;
-const Switch = () => {
-  const [isOn, setValue] = useState(false);
+
+interface ISwitchProps {
+  switchState: boolean;
+  getValue: (isOn: boolean) => void;
+}
+const Switch = ({ switchState, getValue }: ISwitchProps) => {
+  const [isOn, setValue] = useState(switchState);
   const ToggleHanddler = () => {
     setValue((prev) => {
+      getValue(!prev);
       return !prev;
     });
   };

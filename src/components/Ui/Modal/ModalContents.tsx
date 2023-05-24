@@ -33,6 +33,11 @@ export const AddContent = () => {
   const columns = useRecoilValue(ColumnState);
   const DefaultContents = columns.filter((elem) => elem.type === "Default");
   const CustomContents = columns.filter((elem) => elem.type === "Custom");
+
+  function getValueHandler(isOn: boolean): void {
+    console.log(isOn);
+  }
+
   return (
     <div>
       <h1 style={{ fontSize: "40px" }}>Settings</h1>
@@ -42,7 +47,11 @@ export const AddContent = () => {
           <span>Basic</span>
           {DefaultContents.map((content) => (
             <ContentCard key={content.contentName}>
-              {content.contentName} <Switch />
+              {content.contentName}
+              <Switch
+                switchState={content.isVisible}
+                getValue={getValueHandler}
+              />
             </ContentCard>
           ))}
         </ContentsContainer>
@@ -51,7 +60,11 @@ export const AddContent = () => {
           <span>Custom</span>
           {CustomContents.map((content) => (
             <ContentCard key={content.contentName}>
-              {content.contentName} <Switch />
+              {content.contentName}
+              <Switch
+                switchState={content.isVisible}
+                getValue={getValueHandler}
+              />
             </ContentCard>
           ))}
         </ContentsContainer>

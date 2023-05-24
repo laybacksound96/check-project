@@ -2,6 +2,7 @@ import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import {
   CheckboxesState,
+  ColumnState,
   ICheckAccounts,
   IContentsState,
 } from "../../../atoms";
@@ -33,15 +34,25 @@ const CalculateCheckbox = (AccountsObj: ICheckAccounts) => {
 const Contents = () => {
   const [contentState, setContentState] = useState<IContentsState>({});
   const checkboxState = useRecoilValue(CheckboxesState);
+  const column = useRecoilValue(ColumnState);
+  console.log(contentState);
+  console.log(column);
   useEffect(() => {
     setContentState(() => CalculateCheckbox(checkboxState));
   }, [checkboxState]);
 
   return (
     <ContainerStyle>
-      {Object.keys(contentState).map((key) => (
-        <Content key={key} content={key} frequency={contentState[key]} />
-      ))}
+      {column.map((key) => {
+        if (!key.isVisible || !contentState[key.contentName]) return null;
+        return (
+          <Content
+            key={key.contentName}
+            content={key.contentName}
+            frequency={contentState[key.contentName]}
+          />
+        );
+      })}
     </ContainerStyle>
   );
 };

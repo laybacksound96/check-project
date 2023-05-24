@@ -89,16 +89,18 @@ function DragCharacters__Draggable({
 
           {Column.map((elem, ColumnIndex) => {
             return (
-              <Checkbox
-                key={index + ColumnIndex + elem.contentName}
-                isChecked={
-                  CheckboxState[accountName][CharacterName][elem.contentName]
-                }
-                CheckBoxOnclick={CheckBoxOnclick}
-                ContentName={elem.contentName}
-                CharacterName={CharacterName}
-                ColumnIndex={ColumnIndex}
-              />
+              elem.isVisible && (
+                <Checkbox
+                  key={index + ColumnIndex + elem.contentName}
+                  isChecked={
+                    CheckboxState[accountName][CharacterName][elem.contentName]
+                  }
+                  CheckBoxOnclick={CheckBoxOnclick}
+                  ContentName={elem.contentName}
+                  CharacterName={CharacterName}
+                  ColumnIndex={ColumnIndex}
+                />
+              )
             );
           })}
         </NameBox>

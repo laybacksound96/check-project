@@ -42,8 +42,8 @@ export const ColumnState = atom({
     { contentName: "B", type: "Default", isVisible: true },
     { contentName: "C", type: "Default", isVisible: true },
     { contentName: "D", type: "Default", isVisible: true },
-    { contentName: "E", type: "Default", isVisible: true },
-    { contentName: "치킨", type: "Custom", isVisible: true },
+    { contentName: "E", type: "Default", isVisible: false },
+    { contentName: "치킨", type: "Custom", isVisible: false },
     { contentName: "피자", type: "Custom", isVisible: true },
   ],
 });

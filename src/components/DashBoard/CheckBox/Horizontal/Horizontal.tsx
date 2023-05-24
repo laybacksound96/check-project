@@ -1,6 +1,6 @@
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import React, { useState } from "react";
+import React from "react";
 import { AccountsState, CheckboxesState, ColumnState } from "../../../../atoms";
 import { InsertAccountHandler } from "../../Functions/InsertAccount";
 import DragAccounts from "./DragAccounts/DragAccounts";
