@@ -29,8 +29,7 @@ const Background = styled.div`
   opacity: 80%;
 `;
 const MainDiv = styled.div`
-  width: 50%;
-  min-width: 950px;
+  min-width: auto;
   display: flex;
   flex-direction: column;
   z-index: 998;
@@ -41,7 +40,6 @@ const MainDiv = styled.div`
 `;
 const ButtonContainer = styled.div`
   position: absolute;
-  margin-top: 5px;
   right: 40px;
   button {
     width: 40px;
@@ -62,11 +60,9 @@ const ButtonContainer = styled.div`
 interface ModalProps {
   onClose: () => void;
   children: React.ReactNode;
-  onOpen: boolean;
 }
 
-const Modal = ({ children, onClose, onOpen }: ModalProps) => {
-  if (!onOpen) return null;
+const Modal = ({ children, onClose }: ModalProps) => {
   return (
     <ModalContainer>
       <Background onClick={onClose}></Background>

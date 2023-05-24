@@ -46,7 +46,7 @@ const HeaderBox = () => {
     setIsModalOpen((prev) => {
       const copiedPrev = { ...prev };
       copiedPrev.isModalOpen = true;
-      copiedPrev.modalType = ModalEnum.ADD_CONTENT;
+      copiedPrev.modalType = ModalEnum.CONFIG_CONTENT;
       return { ...copiedPrev };
     });
   };

@@ -1,7 +1,10 @@
 import Modal from "../components/Ui/Modal/Modal";
 import { useRecoilState } from "recoil";
 import { ModalEnum, ModalState } from "../atoms";
-import { AddContent } from "../components/Ui/Modal/ModalContents";
+import {
+  AddContent,
+  ConfigContent,
+} from "../components/Ui/Modal/ModalContents";
 import HeaderBox from "../components/DashBoard/HeaderBox/HeaderBox";
 import CheckBox from "../components/DashBoard/CheckBox/Checkbox";
 
@@ -17,9 +20,14 @@ function Dashboard(props: any) {
 
   return (
     <>
-      <Modal onClose={closeModal} onOpen={IsModalOpen.isModalOpen}>
-        {ModalEnum.ADD_CONTENT && <AddContent />}
-      </Modal>
+      {IsModalOpen.isModalOpen && (
+        <Modal onClose={closeModal}>
+          {IsModalOpen.modalType === ModalEnum.CONFIG_CONTENT && (
+            <ConfigContent />
+          )}
+          {IsModalOpen.modalType === ModalEnum.ADD_CONTENT && <AddContent />}
+        </Modal>
+      )}
       <div style={{ minWidth: "800px" }}>
         <HeaderBox />
         <CheckBox />

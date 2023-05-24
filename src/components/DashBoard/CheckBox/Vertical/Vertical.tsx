@@ -5,8 +5,13 @@ import {
   Droppable,
   DropResult,
 } from "react-beautiful-dnd";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { AccountsState, ColumnState } from "../../../../atoms";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import {
+  AccountsState,
+  ColumnState,
+  ModalEnum,
+  ModalState,
+} from "../../../../atoms";
 
 import Card, { Name } from "./Vertical__card";
 import { AxisLocker } from "../../Functions/AxisLocker";
@@ -29,6 +34,15 @@ function CheckBoxColumn() {
       });
     }
     return;
+  };
+  const setIsModalOpen = useSetRecoilState(ModalState);
+  const openModal = () => {
+    setIsModalOpen((prev) => {
+      const copiedPrev = { ...prev };
+      copiedPrev.isModalOpen = true;
+      copiedPrev.modalType = ModalEnum.ADD_CONTENT;
+      return { ...copiedPrev };
+    });
   };
 
   return Accounts.length ? (
@@ -59,7 +73,7 @@ function CheckBoxColumn() {
                 )
             )}
             {provided.placeholder}
-            <Name>+</Name>
+            <Name onClick={openModal}>+</Name>
           </div>
         )}
       </Droppable>
