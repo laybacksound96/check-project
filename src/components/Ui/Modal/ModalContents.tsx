@@ -1,4 +1,4 @@
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { ColumnState } from "../../../atoms";
 
 import Switch from "../UiComponents/Switch";
@@ -30,12 +30,20 @@ const ContentCard = styled.div`
   font-size: 30px;
 `;
 export const AddContent = () => {
-  const columns = useRecoilValue(ColumnState);
+  const [columns, setColumns] = useRecoilState(ColumnState);
   const DefaultContents = columns.filter((elem) => elem.type === "Default");
   const CustomContents = columns.filter((elem) => elem.type === "Custom");
 
-  function getValueHandler(isOn: boolean): void {
-    console.log(isOn);
+  function getValueHandler(isOn: boolean, key: string): void {
+    setColumns((prev) => {
+      const copiedPrev = [...prev];
+      const targetIndex = prev.findIndex((obj) => obj.contentName === key);
+
+      const CopiedTargetPrev = { ...copiedPrev[targetIndex] };
+      CopiedTargetPrev.isVisible = isOn;
+      copiedPrev[targetIndex] = CopiedTargetPrev;
+      return [...copiedPrev];
+    });
   }
 
   return (
@@ -49,6 +57,7 @@ export const AddContent = () => {
             <ContentCard key={content.contentName}>
               {content.contentName}
               <Switch
+                switchKey={content.contentName}
                 switchState={content.isVisible}
                 getValue={getValueHandler}
               />
@@ -62,6 +71,7 @@ export const AddContent = () => {
             <ContentCard key={content.contentName}>
               {content.contentName}
               <Switch
+                switchKey={content.contentName}
                 switchState={content.isVisible}
                 getValue={getValueHandler}
               />

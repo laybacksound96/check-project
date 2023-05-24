@@ -41,13 +41,14 @@ const SwitchButton = styled.span<IStyleProps>`
 
 interface ISwitchProps {
   switchState: boolean;
-  getValue: (isOn: boolean) => void;
+  getValue: (isOn: boolean, key: string) => void;
+  switchKey: string;
 }
-const Switch = ({ switchState, getValue }: ISwitchProps) => {
+const Switch = ({ switchState, getValue, switchKey }: ISwitchProps) => {
   const [isOn, setValue] = useState(switchState);
   const ToggleHanddler = () => {
     setValue((prev) => {
-      getValue(!prev);
+      getValue(!prev, switchKey);
       return !prev;
     });
   };
