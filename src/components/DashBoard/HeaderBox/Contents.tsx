@@ -35,8 +35,6 @@ const Contents = () => {
   const [contentState, setContentState] = useState<IContentsState>({});
   const checkboxState = useRecoilValue(CheckboxesState);
   const column = useRecoilValue(ColumnState);
-  console.log(contentState);
-  console.log(column);
   useEffect(() => {
     setContentState(() => CalculateCheckbox(checkboxState));
   }, [checkboxState]);

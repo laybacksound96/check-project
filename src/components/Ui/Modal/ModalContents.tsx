@@ -1,4 +1,4 @@
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { ColumnState } from "../../../atoms";
 
 import Switch from "../UiComponents/Switch";
