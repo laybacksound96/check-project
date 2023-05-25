@@ -1,5 +1,5 @@
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { ColumnState, ModalState } from "../../../atoms";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { ContentsState, ModalState } from "../../../atoms";
 
 import Switch from "../UiComponents/Switch";
 
@@ -47,19 +47,22 @@ const Header = styled.header`
   }
 `;
 export const ConfigContent = () => {
-  const [columns, setColumns] = useRecoilState(ColumnState);
-  const DefaultContents = columns.filter((elem) => elem.type === "Default");
-  const CustomContents = columns.filter((elem) => elem.type === "Custom");
+  const [content, setContent] = useRecoilState(ContentsState);
+  const DefaultContents = Object.keys(content).filter(
+    (contentName) => content[contentName].type === "Default"
+  );
 
-  function getValueHandler(isOn: boolean, key: string): void {
-    setColumns((prev) => {
-      const copiedPrev = [...prev];
-      const targetIndex = prev.findIndex((obj) => obj.contentName === key);
+  const CustomContents = Object.keys(content).filter(
+    (contentName) => content[contentName].type === "Custom"
+  );
 
-      const CopiedTargetPrev = { ...copiedPrev[targetIndex] };
+  function getValueHandler(isOn: boolean, contentName: string): void {
+    setContent((prev) => {
+      const copiedPrev = { ...prev };
+      const CopiedTargetPrev = { ...copiedPrev[contentName] };
       CopiedTargetPrev.isVisible = isOn;
-      copiedPrev[targetIndex] = CopiedTargetPrev;
-      return [...copiedPrev];
+      copiedPrev[contentName] = CopiedTargetPrev;
+      return prev;
     });
   }
 
@@ -73,12 +76,12 @@ export const ConfigContent = () => {
       <Container>
         <ContentsContainer>
           <span>Basic</span>
-          {DefaultContents.map((content) => (
-            <ContentCard key={content.contentName}>
-              {content.contentName}
+          {DefaultContents.map((contentName) => (
+            <ContentCard key={contentName}>
+              {contentName}
               <Switch
-                switchKey={content.contentName}
-                switchState={content.isVisible}
+                switchKey={contentName}
+                switchState={content[contentName].isVisible}
                 getValue={getValueHandler}
               />
             </ContentCard>
@@ -87,12 +90,12 @@ export const ConfigContent = () => {
 
         <ContentsContainer>
           <span>Custom</span>
-          {CustomContents.map((content) => (
-            <ContentCard key={content.contentName}>
-              {content.contentName}
+          {CustomContents.map((contentName) => (
+            <ContentCard key={contentName}>
+              {contentName}
               <Switch
-                switchKey={content.contentName}
-                switchState={content.isVisible}
+                switchKey={contentName}
+                switchState={content[contentName].isVisible}
                 getValue={getValueHandler}
               />
             </ContentCard>
@@ -167,24 +170,23 @@ export const AddContent = () => {
   const [inputValue, setInputValue] = useState("");
   const [isdisabled, setIsdisabled] = useState(true);
   const [isDupplicated, setIsDupplicated] = useState(false);
-  const setModalState = useSetRecoilState(ModalState);
-  const setColumnState = useSetRecoilState(ColumnState);
 
-  const Column = useRecoilValue(ColumnState);
+  const setModalState = useSetRecoilState(ModalState);
+  const [contentState, setContentsState] = useRecoilState(ContentsState);
+
   const addContentHandler = () => {
-    if (Column.find((elem) => elem.contentName === inputValue)) {
+    if (Object.keys(contentState).find((elem) => elem === inputValue)) {
       setIsDupplicated(true);
       setIsdisabled(true);
       return;
     }
-    setColumnState((prev) => {
-      const copiedPrev = [...prev];
-      const newColumn = {
-        contentName: `${inputValue}`,
+    setContentsState((prev) => {
+      const copiedPrev = { ...prev };
+      copiedPrev.inputValue = {
         type: "Custom",
         isVisible: true,
       };
-      return [...copiedPrev, newColumn];
+      return prev;
     });
     setModalState((prev) => {
       const copiedPrev = { ...prev };
