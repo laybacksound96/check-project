@@ -42,12 +42,7 @@ const DragAccount = styled.div`
   border-radius: 10px;
 `;
 
-function DragCharacters({
-  parentProvided,
-  style,
-  accountName,
-  accountIndex,
-}: IProps) {
+function DragCharacters({ parentProvided, style, accountName }: IProps) {
   const Accounts = useRecoilValue(CheckboxesState);
   const [Account, setAccount] = useState(Object.keys(Accounts[accountName]));
 

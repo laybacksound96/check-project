@@ -6,7 +6,7 @@ import { AxisLocker } from "../../../Functions/AxisLocker";
 import { dragIcon } from "../../../../../Settings";
 import Checkbox from "../CheckBoxButton/CheckBoxButton";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { CheckboxesState, ColumnState } from "../../../../../atoms";
+import { CheckboxesState, ContentsState } from "../../../../../atoms";
 
 const Name = styled.div`
   display: flex;
@@ -41,7 +41,7 @@ function DragCharactersDraggable({
   index,
   accountName,
 }: IProps) {
-  const Column = useRecoilValue(ColumnState);
+  const Column = useRecoilValue(ContentsState);
   const [CheckboxState, setCheckboxState] = useRecoilState(CheckboxesState);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -86,16 +86,16 @@ function DragCharactersDraggable({
             </div>
           </Name>
 
-          {Column.map((elem, ColumnIndex) => {
+          {Object.keys(Column).map((ContentName, ColumnIndex) => {
             return (
-              elem.isVisible && (
+              Column.ContentName.isVisible && (
                 <Checkbox
-                  key={index + ColumnIndex + elem.contentName}
+                  key={index + ColumnIndex + ContentName}
                   isChecked={
-                    CheckboxState[accountName][CharacterName][elem.contentName]
+                    CheckboxState[accountName][CharacterName][ContentName]
                   }
                   CheckBoxOnclick={CheckBoxOnclick}
-                  ContentName={elem.contentName}
+                  ContentName={ContentName}
                   CharacterName={CharacterName}
                   ColumnIndex={ColumnIndex}
                 />

@@ -7,30 +7,29 @@ interface ICheckCharacters {
   [Character: string]: ICheckbox;
 }
 export type ICheckAccounts = { [accountName: string]: ICheckCharacters };
-
 export const CheckboxesState = atom<ICheckAccounts>({
   key: "CheckboxesState",
   default: {},
 });
 
-export type IContentsState = { [name: string]: number };
-
-export interface IColumnState {
-  contentName: string;
-  type: string;
+interface IContentState {
+  type: "Default" | "Custom";
   isVisible: boolean;
 }
-export const ColumnState = atom<IColumnState[]>({
-  key: "ColumnState",
-  default: [
-    { contentName: "A", type: "Default", isVisible: true },
-    { contentName: "B", type: "Default", isVisible: true },
-    { contentName: "C", type: "Default", isVisible: true },
-    { contentName: "D", type: "Default", isVisible: true },
-    { contentName: "E", type: "Default", isVisible: false },
-    { contentName: "치킨", type: "Custom", isVisible: false },
-    { contentName: "피자", type: "Custom", isVisible: true },
-  ],
+export interface IContents {
+  [CharacterName: string]: IContentState;
+}
+export const ContentsState = atom<IContents>({
+  key: "ContentsState",
+  default: {
+    A: { type: "Default", isVisible: true },
+    B: { type: "Default", isVisible: true },
+    C: { type: "Default", isVisible: true },
+    D: { type: "Default", isVisible: true },
+    E: { type: "Default", isVisible: false },
+    치킨: { type: "Custom", isVisible: false },
+    피자: { type: "Custom", isVisible: true },
+  },
 });
 
 export enum ModalEnum {

@@ -8,8 +8,7 @@ import {
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import {
   CheckboxesState,
-  ColumnState,
-  IColumnState,
+  ContentsState,
   ModalEnum,
   ModalState,
 } from "../../../../atoms";
@@ -18,17 +17,21 @@ import Card, { Name } from "./Vertical__card";
 import { AxisLocker } from "../../Functions/AxisLocker";
 
 function CheckBoxColumn() {
-  const Columns = useRecoilValue(ColumnState);
+  const Columns = useRecoilValue(ContentsState);
   const Accounts = useRecoilValue(CheckboxesState);
-  const [visibledColumns, setVisibledColumns] = useState<IColumnState[]>([]);
+  const [visibledColumns, setVisibledColumns] = useState<string[]>([]);
 
   useEffect(() => {
-    setVisibledColumns(() =>
-      Columns.filter((column) => column.isVisible === true)
-    );
+    setVisibledColumns(() => {
+      const newColumnArray = [];
+      for (let key in Columns) {
+        if (Columns[key].isVisible === false) break;
+        newColumnArray.push(key);
+      }
+      return [...newColumnArray];
+    });
   }, [Columns]);
-  console.log(Columns);
-  console.log(visibledColumns);
+
   const onDragEnd = (dragInfo: DropResult) => {
     const { destination, source } = dragInfo;
     if (!destination) return;
@@ -63,15 +66,11 @@ function CheckBoxColumn() {
             ref={provided.innerRef}
             {...provided.droppableProps}
           >
-            {visibledColumns.map((Column, index) => (
-              <Draggable
-                draggableId={Column.contentName}
-                index={index}
-                key={Column.contentName}
-              >
+            {visibledColumns.map((name, index) => (
+              <Draggable draggableId={name} index={index} key={name}>
                 {(provided) => (
                   <Card
-                    Column={Column.contentName}
+                    Column={name}
                     parentProvided={provided}
                     style={AxisLocker(provided.draggableProps.style!, true)}
                   />

@@ -1,11 +1,6 @@
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import {
-  CheckboxesState,
-  ColumnState,
-  ICheckAccounts,
-  IContentsState,
-} from "../../../atoms";
+import { CheckboxesState, ICheckAccounts, ContentsState } from "../../../atoms";
 import { useEffect, useState } from "react";
 import Content from "./Content";
 
@@ -16,26 +11,30 @@ const ContainerStyle = styled.ul`
   gap: 10px;
   margin-top: 30px;
 `;
+
+interface IContentsState {
+  [contentName: string]: number;
+}
 const CalculateCheckbox = (AccountsObj: ICheckAccounts) => {
   const resultObj: IContentsState = {};
-  function traverseNestedObject(AccountsObj: any) {
+  function frequencyCounter(AccountsObj: any) {
     for (let key in AccountsObj) {
       if (typeof AccountsObj[key] === "object" && AccountsObj[key] !== null) {
-        traverseNestedObject(AccountsObj[key]);
+        frequencyCounter(AccountsObj[key]);
       } else {
         if (resultObj[key] === undefined) resultObj[key] = 0;
         if (AccountsObj[key] === false) resultObj[key]++;
       }
     }
   }
-  traverseNestedObject(AccountsObj);
+  frequencyCounter(AccountsObj);
+
   return resultObj;
 };
 const Contents = () => {
   const [contentState, setContentState] = useState<IContentsState>({});
-
   const checkboxState = useRecoilValue(CheckboxesState);
-  const column = useRecoilValue(ColumnState);
+  const column = useRecoilValue(ContentsState);
 
   useEffect(() => {
     setContentState(() => CalculateCheckbox(checkboxState));
@@ -43,14 +42,10 @@ const Contents = () => {
 
   return (
     <ContainerStyle>
-      {column.map((key) => {
-        if (!key.isVisible || !contentState[key.contentName]) return null;
+      {Object.keys(column).map((key) => {
+        if (!column[key].isVisible || !contentState[key]) return null;
         return (
-          <Content
-            key={key.contentName}
-            content={key.contentName}
-            frequency={contentState[key.contentName]}
-          />
+          <Content key={key} content={key} frequency={contentState[key]} />
         );
       })}
     </ContainerStyle>

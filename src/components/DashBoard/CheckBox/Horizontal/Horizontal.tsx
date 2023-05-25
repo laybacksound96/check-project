@@ -1,7 +1,7 @@
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import React, { useState } from "react";
-import { CheckboxesState, ColumnState } from "../../../../atoms";
+import { CheckboxesState, ContentsState } from "../../../../atoms";
 import { InsertAccountHandler } from "../../Functions/InsertAccount";
 import DragAccounts from "./DragAccounts/DragAccounts";
 import { DropResult } from "react-beautiful-dnd";
@@ -20,7 +20,7 @@ const AddAccountBtn = styled.button`
 
 function Horizontal() {
   const [accounts, setAccounts] = useRecoilState(CheckboxesState);
-  const Column = useRecoilValue(ColumnState);
+  const Column = useRecoilValue(ContentsState);
 
   type IAccountOrder = string[];
   const [AccountOrder, setAccountOrder] = useState<IAccountOrder>([]);
@@ -42,7 +42,7 @@ function Horizontal() {
         const CharacterName =
           MakedMockingAccount.Characters[index].CharacterName;
         const newCharacterName = CharacterName;
-        const columns = Column.map((obj) => obj.contentName);
+        const columns = Object.keys(Column);
         copiedPrev[newMockingAccountName][newCharacterName] = {};
 
         for (let index in columns) {
