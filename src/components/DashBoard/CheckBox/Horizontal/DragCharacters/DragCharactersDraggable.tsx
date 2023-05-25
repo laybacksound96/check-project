@@ -41,7 +41,7 @@ function DragCharactersDraggable({
   index,
   accountName,
 }: IProps) {
-  const Column = useRecoilValue(ContentsState);
+  const Contents = useRecoilValue(ContentsState);
   const [CheckboxState, setCheckboxState] = useRecoilState(CheckboxesState);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -86,9 +86,9 @@ function DragCharactersDraggable({
             </div>
           </Name>
 
-          {Object.keys(Column).map((ContentName, ColumnIndex) => {
+          {Object.keys(Contents).map((ContentName, ColumnIndex) => {
             return (
-              Column.ContentName.isVisible && (
+              Contents[ContentName].isVisible && (
                 <Checkbox
                   key={index + ColumnIndex + ContentName}
                   isChecked={

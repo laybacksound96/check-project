@@ -34,7 +34,7 @@ const CalculateCheckbox = (AccountsObj: ICheckAccounts) => {
 const Contents = () => {
   const [contentState, setContentState] = useState<IContentsState>({});
   const checkboxState = useRecoilValue(CheckboxesState);
-  const column = useRecoilValue(ContentsState);
+  const Contents = useRecoilValue(ContentsState);
 
   useEffect(() => {
     setContentState(() => CalculateCheckbox(checkboxState));
@@ -42,8 +42,8 @@ const Contents = () => {
 
   return (
     <ContainerStyle>
-      {Object.keys(column).map((key) => {
-        if (!column[key].isVisible || !contentState[key]) return null;
+      {Object.keys(Contents).map((key) => {
+        if (!Contents[key].isVisible || !contentState[key]) return null;
         return (
           <Content key={key} content={key} frequency={contentState[key]} />
         );
