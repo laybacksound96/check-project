@@ -22,8 +22,8 @@ export const CheckBoxStyle = styled.div`
 const CheckBox = () => {
   const CheckboxesStateLogging = useRecoilValue(CheckboxesState);
   const ColumnStateLogging = useRecoilValue(ColumnState);
-  console.log(CheckboxesStateLogging);
-  console.log(ColumnStateLogging);
+  // console.log(CheckboxesStateLogging);
+  // console.log(ColumnStateLogging);
   return (
     <CheckBoxStyle>
       <Vertical />

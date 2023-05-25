@@ -35,7 +35,7 @@ interface IProps {
   index: number;
   accountName: string;
 }
-function DragCharacters__Draggable({
+function DragCharactersDraggable({
   boardId,
   CharacterName,
   index,
@@ -108,4 +108,4 @@ function DragCharacters__Draggable({
   );
 }
 
-export default React.memo(DragCharacters__Draggable);
+export default React.memo(DragCharactersDraggable);

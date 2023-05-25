@@ -5,7 +5,7 @@ import {
   DropResult,
   Droppable,
 } from "react-beautiful-dnd";
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 import { AxisLocker } from "../../../Functions/AxisLocker";
 import DragCharacters from "../DragCharacters/DragCharacters";
 
@@ -13,17 +13,7 @@ const AccountStyle = styled.div`
   display: flex;
   flex-direction: column;
 `;
-const fadeInAnimation = keyframes`
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-`;
-const MotionStyle = styled.div`
-  /* animation: ${fadeInAnimation} 0.5s ease-in-out; */
-`;
+
 interface IProps {
   AccountOrder: string[];
   dragAccountHandler: (dragInfo: DropResult) => void;
@@ -41,14 +31,12 @@ const DragAccounts = ({ AccountOrder, dragAccountHandler }: IProps) => {
                 index={index}
               >
                 {(provided) => (
-                  <MotionStyle>
-                    <DragCharacters
-                      parentProvided={provided}
-                      accountName={AccountName}
-                      accountIndex={index}
-                      style={AxisLocker(provided.draggableProps.style!, false)}
-                    />
-                  </MotionStyle>
+                  <DragCharacters
+                    parentProvided={provided}
+                    accountName={AccountName}
+                    accountIndex={index}
+                    style={AxisLocker(provided.draggableProps.style!, false)}
+                  />
                 )}
               </Draggable>
             ))}
