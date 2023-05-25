@@ -15,7 +15,12 @@ export const CheckboxesState = atom<ICheckAccounts>({
 
 export type IContentsState = { [name: string]: number };
 
-export const ColumnState = atom({
+export interface IColumnState {
+  contentName: string;
+  type: string;
+  isVisible: boolean;
+}
+export const ColumnState = atom<IColumnState[]>({
   key: "ColumnState",
   default: [
     { contentName: "A", type: "Default", isVisible: true },

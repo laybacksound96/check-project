@@ -1,14 +1,15 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   DragDropContext,
   Draggable,
   Droppable,
   DropResult,
 } from "react-beautiful-dnd";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import {
   CheckboxesState,
   ColumnState,
+  IColumnState,
   ModalEnum,
   ModalState,
 } from "../../../../atoms";
@@ -17,14 +18,22 @@ import Card, { Name } from "./Vertical__card";
 import { AxisLocker } from "../../Functions/AxisLocker";
 
 function CheckBoxColumn() {
-  const [Columns, setColumns] = useRecoilState(ColumnState);
+  const Columns = useRecoilValue(ColumnState);
   const Accounts = useRecoilValue(CheckboxesState);
+  const [visibledColumns, setVisibledColumns] = useState<IColumnState[]>([]);
 
+  useEffect(() => {
+    setVisibledColumns(() =>
+      Columns.filter((column) => column.isVisible === true)
+    );
+  }, [Columns]);
+  console.log(Columns);
+  console.log(visibledColumns);
   const onDragEnd = (dragInfo: DropResult) => {
     const { destination, source } = dragInfo;
     if (!destination) return;
     if (destination?.droppableId === source.droppableId) {
-      setColumns((prev) => {
+      setVisibledColumns((prev) => {
         const copiedPrev = [...prev];
         const copiedObject = copiedPrev[source.index];
         copiedPrev.splice(source.index, 1);
@@ -54,24 +63,21 @@ function CheckBoxColumn() {
             ref={provided.innerRef}
             {...provided.droppableProps}
           >
-            {Columns.map(
-              (Column, index) =>
-                Column.isVisible && (
-                  <Draggable
-                    draggableId={Column.contentName}
-                    index={index}
-                    key={Column.contentName}
-                  >
-                    {(provided) => (
-                      <Card
-                        Column={Column.contentName}
-                        parentProvided={provided}
-                        style={AxisLocker(provided.draggableProps.style!, true)}
-                      />
-                    )}
-                  </Draggable>
-                )
-            )}
+            {visibledColumns.map((Column, index) => (
+              <Draggable
+                draggableId={Column.contentName}
+                index={index}
+                key={Column.contentName}
+              >
+                {(provided) => (
+                  <Card
+                    Column={Column.contentName}
+                    parentProvided={provided}
+                    style={AxisLocker(provided.draggableProps.style!, true)}
+                  />
+                )}
+              </Draggable>
+            ))}
             {provided.placeholder}
             <Name onClick={openModal}>+</Name>
           </div>
