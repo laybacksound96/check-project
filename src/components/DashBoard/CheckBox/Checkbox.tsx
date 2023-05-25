@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import Vertical from "./Vertical/Vertical";
 import Horizontal from "./Horizontal/Horizontal";
+import { useRecoilValue } from "recoil";
+import { CheckboxesState, ColumnState } from "../../../atoms";
 
 export const CheckBoxStyle = styled.div`
   width: 100%;
@@ -18,6 +20,10 @@ export const CheckBoxStyle = styled.div`
   margin-bottom: 150px;
 `;
 const CheckBox = () => {
+  const CheckboxesStateLogging = useRecoilValue(CheckboxesState);
+  const ColumnStateLogging = useRecoilValue(ColumnState);
+  console.log(CheckboxesStateLogging);
+  console.log(ColumnStateLogging);
   return (
     <CheckBoxStyle>
       <Vertical />

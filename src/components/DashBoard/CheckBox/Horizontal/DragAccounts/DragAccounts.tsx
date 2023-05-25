@@ -5,9 +5,7 @@ import {
   DropResult,
   Droppable,
 } from "react-beautiful-dnd";
-import { useRecoilState } from "recoil";
 import styled, { keyframes } from "styled-components";
-import { AccountsState } from "../../../../../atoms";
 import { AxisLocker } from "../../../Functions/AxisLocker";
 import DragCharacters from "../DragCharacters/DragCharacters";
 
@@ -26,39 +24,29 @@ const fadeInAnimation = keyframes`
 const MotionStyle = styled.div`
   /* animation: ${fadeInAnimation} 0.5s ease-in-out; */
 `;
-const DragAccounts = () => {
-  const [accountsState, setAccountsState] = useRecoilState(AccountsState);
-  const onDragEnd = (dragInfo: DropResult) => {
-    const { destination, source } = dragInfo;
-    if (!destination) return;
-    if (destination?.droppableId === source.droppableId) {
-      setAccountsState((prev) => {
-        const copiedPrev = [...prev];
-        const copiedObject = copiedPrev[source.index];
-        copiedPrev.splice(source.index, 1);
-        copiedPrev.splice(destination?.index, 0, copiedObject);
-        return [...copiedPrev];
-      });
-    }
-  };
+interface IProps {
+  AccountOrder: string[];
+  dragAccountHandler: (dragInfo: DropResult) => void;
+}
+const DragAccounts = ({ AccountOrder, dragAccountHandler }: IProps) => {
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
+    <DragDropContext onDragEnd={dragAccountHandler}>
       <Droppable droppableId="accounts" direction="vertical">
         {(provided) => (
           <AccountStyle ref={provided.innerRef} {...provided.droppableProps}>
-            {accountsState.map((account, index) => (
+            {AccountOrder.map((AccountName, index) => (
               <Draggable
-                draggableId={`${index}_draggableID_${account.AccountName}`}
-                key={`${index}_draggableID_${account.AccountName}`}
+                draggableId={`draggableID_${AccountName}`}
+                key={`draggableID_${AccountName}`}
                 index={index}
               >
                 {(provided) => (
                   <MotionStyle>
                     <DragCharacters
                       parentProvided={provided}
-                      account={account}
-                      style={AxisLocker(provided.draggableProps.style!, false)}
+                      accountName={AccountName}
                       accountIndex={index}
+                      style={AxisLocker(provided.draggableProps.style!, false)}
                     />
                   </MotionStyle>
                 )}

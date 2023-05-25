@@ -33,8 +33,10 @@ const CalculateCheckbox = (AccountsObj: ICheckAccounts) => {
 };
 const Contents = () => {
   const [contentState, setContentState] = useState<IContentsState>({});
+
   const checkboxState = useRecoilValue(CheckboxesState);
   const column = useRecoilValue(ColumnState);
+
   useEffect(() => {
     setContentState(() => CalculateCheckbox(checkboxState));
   }, [checkboxState]);

@@ -1,9 +1,10 @@
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
-import React from "react";
-import { AccountsState, CheckboxesState, ColumnState } from "../../../../atoms";
+import React, { useState } from "react";
+import { CheckboxesState, ColumnState } from "../../../../atoms";
 import { InsertAccountHandler } from "../../Functions/InsertAccount";
 import DragAccounts from "./DragAccounts/DragAccounts";
+import { DropResult } from "react-beautiful-dnd";
 
 const AddAccountBtn = styled.button`
   height: 100px;
@@ -18,40 +19,62 @@ const AddAccountBtn = styled.button`
 `;
 
 function Horizontal() {
-  const setAccountsState = useSetRecoilState(AccountsState);
-  const [checkboxesState, setCheckboxesState] = useRecoilState(CheckboxesState);
+  const [accounts, setAccounts] = useRecoilState(CheckboxesState);
   const Column = useRecoilValue(ColumnState);
+
+  type IAccountOrder = string[];
+  const [AccountOrder, setAccountOrder] = useState<IAccountOrder>([]);
 
   const AddAccountHandler = (event: React.MouseEvent) => {
     event.preventDefault();
-    const InsertedAccount = InsertAccountHandler(Math.floor(event.timeStamp));
-    const isThereAccountName = checkboxesState[InsertedAccount.AccountName];
-    const newAccountName = InsertedAccount.AccountName;
-    if (!isThereAccountName) {
-      setCheckboxesState((prev) => {
-        const copiedPrev = { ...prev };
-        copiedPrev[newAccountName] = {};
-        InsertedAccount.Characters.map((Character) => {
-          const newCharacterName = Character.CharacterName;
-          copiedPrev[newAccountName][newCharacterName] = {};
-          const columns = Column.map((obj) => obj.contentName);
-          columns.map(
-            (content) =>
-              (copiedPrev[newAccountName][newCharacterName][content] = false)
-          );
-          return null;
-        });
-        return copiedPrev;
-      });
-    }
-    setAccountsState((prev) => {
-      return [...prev, InsertedAccount];
+    const MakedMockingAccount = InsertAccountHandler(
+      Math.floor(event.timeStamp)
+    );
+    const isExistAccountName = accounts[MakedMockingAccount.AccountName];
+    const newMockingAccountName = MakedMockingAccount.AccountName;
+
+    if (isExistAccountName) return;
+    setAccounts((prev) => {
+      const copiedPrev = { ...prev };
+      copiedPrev[newMockingAccountName] = {};
+
+      for (let index in MakedMockingAccount.Characters) {
+        const CharacterName =
+          MakedMockingAccount.Characters[index].CharacterName;
+        const newCharacterName = CharacterName;
+        const columns = Column.map((obj) => obj.contentName);
+        copiedPrev[newMockingAccountName][newCharacterName] = {};
+
+        for (let index in columns) {
+          copiedPrev[newMockingAccountName][newCharacterName][columns[index]] =
+            false;
+        }
+      }
+      return copiedPrev;
+    });
+    setAccountOrder((prev) => {
+      return [...prev, newMockingAccountName];
+    });
+  };
+  const dragAccountHandler = (dragInfo: DropResult) => {
+    const { destination, source } = dragInfo;
+    if (!destination) return;
+    if (destination?.droppableId !== source.droppableId) return;
+    setAccountOrder((prev) => {
+      const copiedPrev = [...prev];
+      const copiedObject = copiedPrev[source.index];
+      copiedPrev.splice(source.index, 1);
+      copiedPrev.splice(destination?.index, 0, copiedObject);
+      return [...copiedPrev];
     });
   };
 
   return (
     <>
-      <DragAccounts />
+      <DragAccounts
+        AccountOrder={AccountOrder}
+        dragAccountHandler={dragAccountHandler}
+      />
       <AddAccountBtn onClick={AddAccountHandler}>
         + add new account?
       </AddAccountBtn>

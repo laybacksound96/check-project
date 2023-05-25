@@ -42,8 +42,8 @@ function DragCharacters__Draggable({
   accountName,
 }: IProps) {
   const Column = useRecoilValue(ColumnState);
-
   const [CheckboxState, setCheckboxState] = useRecoilState(CheckboxesState);
+  const [isHovered, setIsHovered] = useState(false);
 
   const CheckBoxOnclick = (char: string, cont: string) => {
     setCheckboxState((Accounts) => {
@@ -58,7 +58,6 @@ function DragCharacters__Draggable({
     });
   };
 
-  const [isHovered, setIsHovered] = useState(false);
   const handleHovered = () => {
     setIsHovered((prev) => !prev);
   };

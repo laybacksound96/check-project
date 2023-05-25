@@ -42,6 +42,7 @@ interface IProps {
   content: string;
   frequency: number;
 }
+
 const Content = ({ content, frequency }: IProps) => {
   const [shouldAnimate, setShouldAnimate] = useState(false);
   useEffect(() => {

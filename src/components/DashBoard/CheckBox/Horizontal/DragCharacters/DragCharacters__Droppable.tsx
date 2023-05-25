@@ -2,8 +2,6 @@ import React from "react";
 import { DraggableProvided, Droppable } from "react-beautiful-dnd";
 import styled from "styled-components";
 import Draggable from "./DragCharacters__Draggable";
-import { AccountsState } from "../../../../../atoms";
-import { useRecoilValue } from "recoil";
 
 const Area = styled.div`
   * {
@@ -30,36 +28,32 @@ const DragAccount = styled.div`
 
 interface IProps {
   boardId: string;
-
   parentProvided: DraggableProvided;
-  accountIndex: number;
   accountName: string;
 }
 function DragCharacters__Droppable({
   boardId,
   parentProvided,
-  accountIndex,
   accountName,
 }: IProps) {
-  const account = useRecoilValue(AccountsState);
-
   return (
     <Droppable droppableId={boardId}>
       {(provided, snapshot) => (
         <Area style={{ display: "flex" }}>
           <div ref={provided.innerRef} {...provided.droppableProps}>
-            {account[accountIndex].Characters.map((Character, index) => {
+            <div>{accountName}</div>
+            {/* {account.map((CharacterName, index) => {
               return (
                 <Draggable
-                  CharacterName={Character.CharacterName}
+                  CharacterName={CharacterName}
                   index={index}
-                  boardId={Character.CharacterName + "_" + index + "여기"}
-                  key={Character.CharacterName + "_" + index + "여기"}
+                  boardId={CharacterName + "_" + index}
+                  key={CharacterName + "_" + index}
                   accountName={accountName}
                 />
               );
             })}
-            {provided.placeholder}
+            {provided.placeholder} */}
           </div>
           <DragAccount {...parentProvided.dragHandleProps}></DragAccount>
         </Area>

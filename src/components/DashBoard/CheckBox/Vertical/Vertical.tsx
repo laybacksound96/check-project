@@ -7,7 +7,7 @@ import {
 } from "react-beautiful-dnd";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {
-  AccountsState,
+  CheckboxesState,
   ColumnState,
   ModalEnum,
   ModalState,
@@ -18,8 +18,7 @@ import { AxisLocker } from "../../Functions/AxisLocker";
 
 function CheckBoxColumn() {
   const [Columns, setColumns] = useRecoilState(ColumnState);
-
-  const Accounts = useRecoilValue(AccountsState);
+  const Accounts = useRecoilValue(CheckboxesState);
 
   const onDragEnd = (dragInfo: DropResult) => {
     const { destination, source } = dragInfo;
@@ -35,6 +34,7 @@ function CheckBoxColumn() {
     }
     return;
   };
+
   const setIsModalOpen = useSetRecoilState(ModalState);
   const openModal = () => {
     setIsModalOpen((prev) => {
@@ -45,7 +45,7 @@ function CheckBoxColumn() {
     });
   };
 
-  return Accounts.length ? (
+  return Object.keys(Accounts).length ? (
     <DragDropContext onDragEnd={onDragEnd}>
       <Droppable droppableId="one" direction="horizontal">
         {(provided) => (

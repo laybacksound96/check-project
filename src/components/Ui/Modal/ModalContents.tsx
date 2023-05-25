@@ -1,5 +1,5 @@
-import { useRecoilState, useRecoilValue } from "recoil";
-import { ColumnState } from "../../../atoms";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { ColumnState, ModalState } from "../../../atoms";
 
 import Switch from "../UiComponents/Switch";
 
@@ -167,16 +167,34 @@ export const AddContent = () => {
   const [inputValue, setInputValue] = useState("");
   const [isdisabled, setIsdisabled] = useState(true);
   const [isDupplicated, setIsDupplicated] = useState(false);
-  const Column = useRecoilValue(ColumnState);
+  const setModalState = useSetRecoilState(ModalState);
+  const setColumnState = useSetRecoilState(ColumnState);
 
+  const Column = useRecoilValue(ColumnState);
   const addContentHandler = () => {
     if (Column.find((elem) => elem.contentName === inputValue)) {
       setIsDupplicated(true);
       setIsdisabled(true);
+      return;
     }
+    setColumnState((prev) => {
+      const copiedPrev = [...prev];
+      const newColumn = {
+        contentName: `${inputValue}`,
+        type: "Custom",
+        isVisible: true,
+      };
+      return [...copiedPrev, newColumn];
+    });
+    setModalState((prev) => {
+      const copiedPrev = { ...prev };
+      copiedPrev.isModalOpen = false;
+      return copiedPrev;
+    });
   };
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.value !== "") setIsdisabled(false);
+    setIsDupplicated(false);
+    event.target.value === "" ? setIsdisabled(true) : setIsdisabled(false);
     setInputValue(event.target.value);
   };
   return (

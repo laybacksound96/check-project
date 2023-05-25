@@ -1,20 +1,5 @@
 import { atom } from "recoil";
 
-type IAccounts = IAccount[];
-
-export interface IAccount {
-  AccountName: string;
-  Characters: ICharacter[];
-}
-export interface ICharacter {
-  CharacterName: string;
-}
-
-export const AccountsState = atom<IAccounts>({
-  key: "AccountsState",
-  default: [],
-});
-
 interface ICheckbox {
   [Content: string]: boolean;
 }
@@ -29,11 +14,6 @@ export const CheckboxesState = atom<ICheckAccounts>({
 });
 
 export type IContentsState = { [name: string]: number };
-
-export const ContentsState = atom<IContentsState>({
-  key: "ContentsState",
-  default: {},
-});
 
 export const ColumnState = atom({
   key: "ColumnState",
