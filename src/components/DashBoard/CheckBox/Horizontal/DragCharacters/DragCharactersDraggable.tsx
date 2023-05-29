@@ -11,6 +11,8 @@ import {
   ContentsState,
   VisibledColumns,
 } from "../../../../../atoms";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGear } from "@fortawesome/free-solid-svg-icons";
 
 const Name = styled.div`
   display: flex;
@@ -31,6 +33,23 @@ const Name = styled.div`
 `;
 const NameBox = styled.div`
   display: flex;
+`;
+const ButtonContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  height: 100%;
+  padding-right: 5px;
+  padding-top: 5px;
+  svg {
+    opacity: 60%;
+    border-radius: 10px;
+    padding: 10px 10px;
+    &:hover {
+      opacity: 100%;
+      background-color: #f0f8ff72;
+    }
+  }
 `;
 
 interface IProps {
@@ -74,16 +93,15 @@ function DragCharactersDraggable({
         >
           <Name {...provided.dragHandleProps}>
             {CharacterName}
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "start",
-                height: "100%",
-              }}
-            >
-              {isHovered && <button>Setting</button>}
-            </div>
+            <ButtonContainer>
+              {isHovered && (
+                <FontAwesomeIcon
+                  onClick={() => console.log("clicked")}
+                  icon={faGear}
+                  size="lg"
+                />
+              )}
+            </ButtonContainer>
           </Name>
 
           {visibledColumns.map((ContentName, ColumnIndex) => {

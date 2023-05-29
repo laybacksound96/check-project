@@ -34,11 +34,15 @@ export const VisibledColumns = atom<string[]>({
   key: "visibledColumns",
   default: [],
 });
+export const AccountOrder = atom<string[]>({
+  key: "AccountOrder",
+  default: [],
+});
 
 export enum ModalEnum {
   CONFIG_CONTENT = "Value 1",
   ADD_CONTENT = "Value 2",
-  VALUE3 = "Value 3",
+  ADD_ACCOUNT = "Value 3",
 }
 type IModal = IModalObject;
 interface IModalObject {

@@ -1,12 +1,12 @@
 import Modal from "../components/Ui/Modal/Modal";
 import { useRecoilState } from "recoil";
 import { ModalEnum, ModalState } from "../atoms";
-import {
-  AddContent,
-  ConfigContent,
-} from "../components/Ui/Modal/ModalContents";
+
 import HeaderBox from "../components/DashBoard/HeaderBox/HeaderBox";
 import CheckBox from "../components/DashBoard/CheckBox/Checkbox";
+import ConfigContent from "../components/Ui/Modal/ModalContents/ConfigContent";
+import AddContent from "../components/Ui/Modal/ModalContents/AddContent";
+import AddAccount from "../components/Ui/Modal/ModalContents/AddAccount";
 
 function Dashboard() {
   const [IsModalOpen, setIsModalOpen] = useRecoilState(ModalState);
@@ -26,6 +26,7 @@ function Dashboard() {
             <ConfigContent />
           )}
           {IsModalOpen.modalType === ModalEnum.ADD_CONTENT && <AddContent />}
+          {IsModalOpen.modalType === ModalEnum.ADD_ACCOUNT && <AddAccount />}
         </Modal>
       )}
       <div style={{ minWidth: "800px" }}>

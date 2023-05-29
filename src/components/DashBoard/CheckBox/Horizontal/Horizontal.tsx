@@ -1,8 +1,8 @@
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import React, { useState } from "react";
-import { CheckboxesState, ContentsState } from "../../../../atoms";
-import { InsertAccountHandler } from "../../Functions/InsertAccount";
+import { ModalEnum, ModalState } from "../../../../atoms";
+
 import DragAccounts from "./DragAccounts/DragAccounts";
 import { DropResult } from "react-beautiful-dnd";
 
@@ -19,43 +19,9 @@ const AddAccountBtn = styled.button`
 `;
 
 function Horizontal() {
-  const [accounts, setAccounts] = useRecoilState(CheckboxesState);
-  const Column = useRecoilValue(ContentsState);
-
   type IAccountOrder = string[];
   const [AccountOrder, setAccountOrder] = useState<IAccountOrder>([]);
 
-  const AddAccountHandler = (event: React.MouseEvent) => {
-    event.preventDefault();
-    const MakedMockingAccount = InsertAccountHandler(
-      Math.floor(event.timeStamp)
-    );
-    const isExistAccountName = accounts[MakedMockingAccount.AccountName];
-    const newMockingAccountName = MakedMockingAccount.AccountName;
-
-    if (isExistAccountName) return;
-    setAccounts((prev) => {
-      const copiedPrev = { ...prev };
-      copiedPrev[newMockingAccountName] = {};
-
-      for (let index in MakedMockingAccount.Characters) {
-        const CharacterName =
-          MakedMockingAccount.Characters[index].CharacterName;
-        const newCharacterName = CharacterName;
-        const columns = Object.keys(Column);
-        copiedPrev[newMockingAccountName][newCharacterName] = {};
-
-        for (let index in columns) {
-          copiedPrev[newMockingAccountName][newCharacterName][columns[index]] =
-            false;
-        }
-      }
-      return copiedPrev;
-    });
-    setAccountOrder((prev) => {
-      return [...prev, newMockingAccountName];
-    });
-  };
   const dragAccountHandler = (dragInfo: DropResult) => {
     const { destination, source } = dragInfo;
     if (!destination) return;
@@ -68,6 +34,15 @@ function Horizontal() {
       return [...copiedPrev];
     });
   };
+  const setIsModalOpen = useSetRecoilState(ModalState);
+  const openModal = () => {
+    setIsModalOpen((prev) => {
+      const copiedPrev = { ...prev };
+      copiedPrev.isModalOpen = true;
+      copiedPrev.modalType = ModalEnum.ADD_ACCOUNT;
+      return { ...copiedPrev };
+    });
+  };
 
   return (
     <>
@@ -75,9 +50,7 @@ function Horizontal() {
         AccountOrder={AccountOrder}
         dragAccountHandler={dragAccountHandler}
       />
-      <AddAccountBtn onClick={AddAccountHandler}>
-        + add new account?
-      </AddAccountBtn>
+      <AddAccountBtn onClick={openModal}>+ add new account?</AddAccountBtn>
     </>
   );
 }
