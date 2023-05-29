@@ -25,7 +25,7 @@ function CheckBoxColumn() {
     setVisibledColumns(() => {
       const newColumnArray = [];
       for (let key in Columns) {
-        if (Columns[key].isVisible === false) break;
+        if (Columns[key].isVisible === false) continue;
         newColumnArray.push(key);
       }
       return [...newColumnArray];

@@ -1,5 +1,5 @@
 import { useRecoilState, useSetRecoilState } from "recoil";
-import { ContentsState, ModalState } from "../../../atoms";
+import { CheckboxesState, ContentsState, ModalState } from "../../../atoms";
 
 import Switch from "../UiComponents/Switch";
 
@@ -173,6 +173,7 @@ export const AddContent = () => {
 
   const setModalState = useSetRecoilState(ModalState);
   const [contentState, setContentsState] = useRecoilState(ContentsState);
+  const [checkBoxState, setCheckboxState] = useRecoilState(CheckboxesState);
 
   const addContentHandler = () => {
     if (Object.keys(contentState).find((elem) => elem === inputValue)) {
@@ -182,12 +183,30 @@ export const AddContent = () => {
     }
     setContentsState((prev) => {
       const copiedPrev = { ...prev };
-      copiedPrev.inputValue = {
+      copiedPrev[inputValue] = {
         type: "Custom",
         isVisible: true,
       };
-      return prev;
+
+      return { ...copiedPrev };
     });
+    setCheckboxState((prev) => {
+      const copiedAccounts = { ...prev };
+
+      for (let account in copiedAccounts) {
+        const copiedAccount = { ...copiedAccounts[account] };
+
+        for (let character in copiedAccounts[account]) {
+          const copiedCotents = { ...copiedAccount[character] };
+          copiedCotents[inputValue] = false;
+          copiedAccount[character] = copiedCotents;
+        }
+        copiedAccounts[account] = copiedAccount;
+      }
+
+      return copiedAccounts;
+    });
+
     setModalState((prev) => {
       const copiedPrev = { ...prev };
       copiedPrev.isModalOpen = false;
