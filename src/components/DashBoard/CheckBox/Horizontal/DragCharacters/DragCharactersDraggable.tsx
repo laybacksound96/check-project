@@ -6,7 +6,11 @@ import { AxisLocker } from "../../../Functions/AxisLocker";
 import { dragIcon } from "../../../../../Settings";
 import Checkbox from "../CheckBoxButton/CheckBoxButton";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { CheckboxesState, ContentsState } from "../../../../../atoms";
+import {
+  CheckboxesState,
+  ContentsState,
+  VisibledColumns,
+} from "../../../../../atoms";
 
 const Name = styled.div`
   display: flex;
@@ -44,7 +48,7 @@ function DragCharactersDraggable({
   const Contents = useRecoilValue(ContentsState);
   const [CheckboxState, setCheckboxState] = useRecoilState(CheckboxesState);
   const [isHovered, setIsHovered] = useState(false);
-
+  const visibledColumns = useRecoilValue(VisibledColumns);
   const CheckBoxOnclick = (char: string, cont: string) => {
     setCheckboxState((Accounts) => {
       const copiedAccounts = { ...Accounts };
@@ -86,7 +90,7 @@ function DragCharactersDraggable({
             </div>
           </Name>
 
-          {Object.keys(Contents).map((ContentName, ColumnIndex) => {
+          {visibledColumns.map((ContentName, ColumnIndex) => {
             return (
               Contents[ContentName].isVisible && (
                 <Checkbox
@@ -97,7 +101,6 @@ function DragCharactersDraggable({
                   CheckBoxOnclick={CheckBoxOnclick}
                   ContentName={ContentName}
                   CharacterName={CharacterName}
-                  ColumnIndex={ColumnIndex}
                 />
               )
             );

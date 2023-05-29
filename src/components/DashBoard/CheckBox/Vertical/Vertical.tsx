@@ -1,16 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   DragDropContext,
   Draggable,
   Droppable,
   DropResult,
 } from "react-beautiful-dnd";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {
   CheckboxesState,
   ContentsState,
   ModalEnum,
   ModalState,
+  VisibledColumns,
 } from "../../../../atoms";
 
 import Card, { Name } from "./Vertical__card";
@@ -19,7 +20,7 @@ import { AxisLocker } from "../../Functions/AxisLocker";
 function CheckBoxColumn() {
   const Columns = useRecoilValue(ContentsState);
   const Accounts = useRecoilValue(CheckboxesState);
-  const [visibledColumns, setVisibledColumns] = useState<string[]>([]);
+  const [visibledColumns, setVisibledColumns] = useRecoilState(VisibledColumns);
 
   useEffect(() => {
     setVisibledColumns(() => {
@@ -30,7 +31,7 @@ function CheckBoxColumn() {
       }
       return [...newColumnArray];
     });
-  }, [Columns]);
+  }, [Columns, setVisibledColumns]);
 
   const onDragEnd = (dragInfo: DropResult) => {
     const { destination, source } = dragInfo;

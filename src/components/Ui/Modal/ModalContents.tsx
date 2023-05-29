@@ -62,7 +62,7 @@ export const ConfigContent = () => {
       const CopiedTargetPrev = { ...copiedPrev[contentName] };
       CopiedTargetPrev.isVisible = isOn;
       copiedPrev[contentName] = CopiedTargetPrev;
-      return prev;
+      return copiedPrev;
     });
   }
 
@@ -173,7 +173,7 @@ export const AddContent = () => {
 
   const setModalState = useSetRecoilState(ModalState);
   const [contentState, setContentsState] = useRecoilState(ContentsState);
-  const [checkBoxState, setCheckboxState] = useRecoilState(CheckboxesState);
+  const setCheckboxState = useSetRecoilState(CheckboxesState);
 
   const addContentHandler = () => {
     if (Object.keys(contentState).find((elem) => elem === inputValue)) {

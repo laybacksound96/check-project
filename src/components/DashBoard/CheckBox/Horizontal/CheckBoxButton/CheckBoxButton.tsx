@@ -20,11 +20,10 @@ const CheckBox = styled.div`
 `;
 interface ICheckboxProps {
   key: string;
-  CheckBoxOnclick: (char: string, cont: string, ColumnIndex: number) => void;
+  CheckBoxOnclick: (char: string, cont: string) => void;
   isChecked: boolean;
   CharacterName: string;
   ContentName: string;
-  ColumnIndex: number;
 }
 
 function CheckBoxButton({
@@ -32,10 +31,9 @@ function CheckBoxButton({
   CheckBoxOnclick,
   CharacterName,
   ContentName,
-  ColumnIndex,
 }: ICheckboxProps) {
   function onClickHandler() {
-    CheckBoxOnclick(CharacterName, ContentName, ColumnIndex);
+    CheckBoxOnclick(CharacterName, ContentName);
   }
   return (
     <CheckBox onClick={onClickHandler}>

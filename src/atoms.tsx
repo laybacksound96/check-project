@@ -32,6 +32,11 @@ export const ContentsState = atom<IContents>({
   },
 });
 
+export const VisibledColumns = atom<string[]>({
+  key: "visibledColumns",
+  default: [],
+});
+
 export enum ModalEnum {
   CONFIG_CONTENT = "Value 1",
   ADD_CONTENT = "Value 2",
