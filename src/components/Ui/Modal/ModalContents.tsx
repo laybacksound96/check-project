@@ -171,8 +171,8 @@ export const AddContent = () => {
   const [isdisabled, setIsdisabled] = useState(true);
   const [isDupplicated, setIsDupplicated] = useState(false);
 
-  const setModalState = useSetRecoilState(ModalState);
   const [contentState, setContentsState] = useRecoilState(ContentsState);
+  const setModalState = useSetRecoilState(ModalState);
   const setCheckboxState = useSetRecoilState(CheckboxesState);
 
   const addContentHandler = () => {

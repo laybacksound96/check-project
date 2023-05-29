@@ -62,10 +62,6 @@ function DragCharactersDraggable({
     });
   };
 
-  const handleHovered = () => {
-    setIsHovered((prev) => !prev);
-  };
-
   return (
     <Draggable draggableId={boardId} index={index}>
       {(provided) => (
@@ -73,8 +69,8 @@ function DragCharactersDraggable({
           ref={provided.innerRef}
           {...provided.draggableProps}
           style={AxisLocker(provided.draggableProps.style!, false)}
-          onMouseEnter={handleHovered}
-          onMouseLeave={handleHovered}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
         >
           <Name {...provided.dragHandleProps}>
             {CharacterName}

@@ -27,8 +27,6 @@ export const ContentsState = atom<IContents>({
     C: { type: "Default", isVisible: true },
     D: { type: "Default", isVisible: true },
     E: { type: "Default", isVisible: false },
-    치킨: { type: "Custom", isVisible: false },
-    피자: { type: "Custom", isVisible: true },
   },
 });
 

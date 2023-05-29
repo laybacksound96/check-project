@@ -8,7 +8,7 @@ import {
 import HeaderBox from "../components/DashBoard/HeaderBox/HeaderBox";
 import CheckBox from "../components/DashBoard/CheckBox/Checkbox";
 
-function Dashboard(props: any) {
+function Dashboard() {
   const [IsModalOpen, setIsModalOpen] = useRecoilState(ModalState);
   const closeModal = () => {
     setIsModalOpen((prev) => {

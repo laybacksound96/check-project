@@ -54,8 +54,12 @@ const Switch = ({ switchState, getValue, switchKey }: ISwitchProps) => {
   };
   return (
     <div style={{ display: "inline-flex" }}>
-      <Checkbox id="ContentsSwitch" type="checkbox" />
-      <Lable onClick={ToggleHanddler} htmlFor="ContentsSwitch" isOn={isOn}>
+      <Checkbox id={`ContentsSwitch_${switchKey}`} type="checkbox" />
+      <Lable
+        onClick={ToggleHanddler}
+        htmlFor={`ContentsSwitch_${switchKey}`}
+        isOn={isOn}
+      >
         <SwitchButton isOn={isOn} />
       </Lable>
     </div>
