@@ -12,21 +12,10 @@ import {
   ModalState,
 } from "../../../../atoms";
 import { fetchSearchAccount } from "../../../../util/fetch";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Input } from "./AddContent";
-
-const CharacterCard = styled.div`
-  width: auto;
-  height: 40px;
-  background-color: white;
-  display: flex;
-  justify-content: start;
-  padding-left: 10px;
-  align-items: center;
-  border-radius: 10px;
-  margin: 3px 3px;
-`;
+import CharacterContainer from "./components/CharacterContainer";
 
 const Container = styled.div`
   display: flex;
@@ -50,16 +39,15 @@ const Error = styled.p`
   margin-top: 5px;
   color: #bb002caa;
 `;
+export interface IFetchedCharacter {
+  ServerName: string;
+  CharacterName: string;
+  CharacterLevel: number;
+  CharacterClassName: string;
+  ItemAvgLevel: string;
+  ItemMaxLevel: string;
+}
 const AddAccount = () => {
-  interface IFetchedCharacter {
-    ServerName: string;
-    CharacterName: string;
-    CharacterLevel: number;
-    CharacterClassName: string;
-    ItemAvgLevel: string;
-    ItemMaxLevel: string;
-  }
-
   const setAccounts = useSetRecoilState(CheckboxesState);
   const SetAccountOrder = useSetRecoilState(AccountOrder);
   const setModalState = useSetRecoilState(ModalState);
@@ -72,10 +60,6 @@ const AddAccount = () => {
   const [isdisabled, setIsdisabled] = useState(true);
   const [isDupplicated, setIsDupplicated] = useState(false);
   const [isNull, setIsNull] = useState(false);
-
-  useEffect(() => {
-    setFetchedCharacters(() => []);
-  }, [isDupplicated]);
 
   const SearchAccountHandler = async (event: React.MouseEvent) => {
     event.preventDefault();
@@ -175,18 +159,10 @@ const AddAccount = () => {
         </form>
         {isDupplicated && <Error>같은 이름이 이미 일정에 있어요</Error>}
         {isNull && <Error>유효하지 않은 이름이에요</Error>}
-        {!isDupplicated &&
-          fetchedCharacters.map(
-            (character, index) =>
-              index < 3 && (
-                <CharacterCard key={index}>
-                  {character.CharacterName}
-                </CharacterCard>
-              )
-          )}
-        {!isDupplicated && fetchedCharacters.length > 3 && (
-          <CharacterCard>...</CharacterCard>
-        )}
+        <CharacterContainer
+          isDupplicated={isDupplicated}
+          Characters={fetchedCharacters}
+        />
         <Button type="button" onClick={AddAccountHandler} disabled={isdisabled}>
           추가
         </Button>
