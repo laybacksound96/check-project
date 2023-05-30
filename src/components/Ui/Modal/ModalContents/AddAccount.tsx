@@ -47,54 +47,75 @@ export interface IFetchedCharacter {
   ItemAvgLevel: string;
   ItemMaxLevel: string;
 }
+interface IOptions {
+  fetchedCharacters: IFetchedCharacter[];
+  inputValue: string;
+  isdisabled: boolean;
+  isDupplicated: boolean;
+  isNull: boolean;
+}
+const AccountDataSorter = (data: IFetchedCharacter[]) => {
+  const copiedData: IFetchedCharacter[] = [...data];
+  copiedData.sort((a, b) => {
+    const itemAvgLevelA = parseFloat(a.ItemAvgLevel.replace(",", ""));
+    const itemAvgLevelB = parseFloat(b.ItemAvgLevel.replace(",", ""));
+
+    if (itemAvgLevelA > itemAvgLevelB) {
+      return -1; // a를 b보다 앞으로 정렬
+    } else if (itemAvgLevelA < itemAvgLevelB) {
+      return 1; // b를 a보다 앞으로 정렬
+    } else {
+      return 0; // 정렬 순서 변경 없음
+    }
+  });
+  return copiedData;
+};
 const AddAccount = () => {
   const setCheckboxesState = useSetRecoilState(CheckboxesState);
   const setAccountOrder = useSetRecoilState(AccountOrder);
   const setModalState = useSetRecoilState(ModalState);
   const [accountState, setAccountState] = useRecoilState(AccountState);
   const Column = useRecoilValue(ContentsState);
-  const [fetchedCharacters, setFetchedCharacters] = useState<
-    IFetchedCharacter[]
-  >([]);
-  const [inputValue, setInputValue] = useState("");
-  const [isdisabled, setIsdisabled] = useState(true);
-  const [isDupplicated, setIsDupplicated] = useState(false);
-  const [isNull, setIsNull] = useState(false);
+
+  const [option, setOption] = useState<IOptions>({
+    fetchedCharacters: [],
+    inputValue: "",
+    isdisabled: true,
+    isDupplicated: false,
+    isNull: false,
+  });
+  const { fetchedCharacters, inputValue, isdisabled, isDupplicated, isNull } =
+    option;
 
   const SearchAccountHandler = async (event: React.MouseEvent) => {
     event.preventDefault();
     for (let accountName in accountState) {
-      const chracters = Object.keys(accountState[accountName]);
-      chracters.map((chracter) => {
-        if (chracter === inputValue) {
-          setIsDupplicated(true);
-          setIsdisabled(true);
+      const characters = Object.keys(accountState[accountName]);
+      characters.map((character) => {
+        if (character === inputValue) {
+          setOption((prev) => ({
+            ...prev,
+            isDupplicated: true,
+            isdisabled: true,
+          }));
         }
         return null;
       });
     }
     const data = await fetchSearchAccount(inputValue);
     if (data === null) {
-      setIsNull(true);
-      setIsdisabled(true);
+      setOption((prev) => ({
+        ...prev,
+        fetchedCharacters: AccountDataSorter(prev.fetchedCharacters),
+      }));
+
       return;
     }
-    setFetchedCharacters(() => {
-      const copiedData: IFetchedCharacter[] = [...data];
-      copiedData.sort((a, b) => {
-        const itemAvgLevelA = parseFloat(a.ItemAvgLevel.replace(",", ""));
-        const itemAvgLevelB = parseFloat(b.ItemAvgLevel.replace(",", ""));
-
-        if (itemAvgLevelA > itemAvgLevelB) {
-          return -1; // a를 b보다 앞으로 정렬
-        } else if (itemAvgLevelA < itemAvgLevelB) {
-          return 1; // b를 a보다 앞으로 정렬
-        } else {
-          return 0; // 정렬 순서 변경 없음
-        }
-      });
-      return copiedData;
-    });
+    setOption((prev) => ({
+      ...prev,
+      isNull: true,
+      isdisabled: true,
+    }));
   };
   const AddAccountHandler = () => {
     const AccountOwner = fetchedCharacters[0].CharacterName;
@@ -137,12 +158,13 @@ const AddAccount = () => {
       return copiedPrev;
     });
   };
-  console.log("fetchedCharacters");
-  console.log(fetchedCharacters);
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setIsDupplicated(false);
-    event.target.value === "" ? setIsdisabled(true) : setIsdisabled(false);
-    setInputValue(event.target.value);
+    const input = event.target.value;
+    input === ""
+      ? setOption((prev) => ({ ...prev, isdisabled: true }))
+      : setOption((prev) => ({ ...prev, isdisabled: false }));
+    setOption((prev) => ({ ...prev, isDupplicated: false, inputValue: input }));
   };
   return (
     <>
@@ -174,9 +196,15 @@ const AddAccount = () => {
           isDupplicated={isDupplicated}
           Characters={fetchedCharacters}
         />
-        <Button type="button" onClick={AddAccountHandler} disabled={isdisabled}>
-          추가
-        </Button>
+        {
+          <Button
+            type="button"
+            onClick={AddAccountHandler}
+            disabled={isdisabled}
+          >
+            추가
+          </Button>
+        }
       </Container>
     </>
   );
