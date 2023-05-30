@@ -1,6 +1,11 @@
 import Modal from "../components/Ui/Modal/Modal";
-import { useRecoilState } from "recoil";
-import { ModalEnum, ModalState } from "../atoms";
+import { useRecoilState, useRecoilValue } from "recoil";
+import {
+  CheckboxesState,
+  ContentsState,
+  ModalEnum,
+  ModalState,
+} from "../atoms";
 
 import HeaderBox from "../components/DashBoard/HeaderBox/HeaderBox";
 import CheckBox from "../components/DashBoard/CheckBox/Checkbox";
@@ -18,6 +23,10 @@ function Dashboard() {
     });
   };
 
+  const Checkbox = useRecoilValue(CheckboxesState);
+  const Contents = useRecoilValue(ContentsState);
+  console.log(Checkbox);
+  console.log(Contents);
   return (
     <>
       {IsModalOpen.isModalOpen && (
