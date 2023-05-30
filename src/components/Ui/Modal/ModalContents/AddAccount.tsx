@@ -9,16 +9,22 @@ import {
   ContentsState,
 } from "../../../../atoms";
 import { fetchSearchAccount } from "../../../../util/fetch";
+import { useState } from "react";
 
 const AddAccount = () => {
   const [accounts, setAccounts] = useRecoilState(CheckboxesState);
   const Column = useRecoilValue(ContentsState);
   const [accountOrder, SetAccountOrder] = useRecoilState(AccountOrder);
 
+  const [inputValue, setInputValue] = useState("");
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(event.target.value);
+  };
+
   const AddAccountHandler = (event: React.MouseEvent) => {
     event.preventDefault();
 
-    fetchSearchAccount();
+    fetchSearchAccount(inputValue);
     // setAccounts((prev) => {
     //   const copiedPrev = { ...prev };
     //   copiedPrev[newMockingAccountName] = {};
@@ -46,7 +52,7 @@ const AddAccount = () => {
       </Header>
       <form>
         <div>
-          <input type="text" />
+          <input type="text" value={inputValue} onChange={handleChange} />
           <button type="submit" onClick={AddAccountHandler}>
             검색
           </button>

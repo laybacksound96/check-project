@@ -6,9 +6,17 @@ export async function fetchLogin(): Promise<string> {
   return response.data.loginUrl;
 }
 
-export async function fetchSearchAccount(): Promise<object> {
-  const response = await axios.get("http://localhost:4000/user/character");
-  console.log(response);
+export async function fetchSearchAccount(inputValue: string): Promise<object> {
+  const response = await axios.post(
+    "http://localhost:4000/user/character",
+    { name: inputValue },
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
   return {};
 }
 
