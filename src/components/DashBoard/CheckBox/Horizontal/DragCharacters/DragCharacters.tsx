@@ -11,6 +11,8 @@ import styled from "styled-components";
 import { useRecoilValue } from "recoil";
 import { CheckboxesState } from "../../../../../atoms";
 import DragCharactersDraggable from "./DragCharactersDraggable";
+import { faGear } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 interface IProps {
   parentProvided: DraggableProvided;
@@ -41,10 +43,31 @@ const DragAccount = styled.div`
   }
   border-radius: 10px;
 `;
+const ButtonContainer = styled.div`
+  width: 45px;
+  height: 45px;
+  margin-left: 15px;
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
+  svg {
+    opacity: 50%;
+    width: 45px;
+    height: 45px;
+    padding: 5px 5px;
+    border-radius: 10px;
+    &:hover {
+      background-color: #ffffff3e;
+      opacity: 100%;
+    }
+  }
+`;
 function DragCharacters({ parentProvided, style, accountName }: IProps) {
   const Accounts = useRecoilValue(CheckboxesState);
   const [Account, setAccount] = useState(Object.keys(Accounts[accountName]));
+  const [isHovered, setIsHovered] = useState(false);
 
   const dragCharacterHandler = (dragInfo: DropResult) => {
     const { destination, source } = dragInfo;
@@ -59,17 +82,27 @@ function DragCharacters({ parentProvided, style, accountName }: IProps) {
     });
     return;
   };
+
   return (
     <div
       ref={parentProvided.innerRef}
       {...parentProvided.draggableProps}
       style={style}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
       <DragDropContext onDragEnd={dragCharacterHandler}>
         <Droppable droppableId={accountName}>
           {(provided, snapshot) => (
             <Area style={{ display: "flex" }}>
               <div ref={provided.innerRef} {...provided.droppableProps}>
+                {
+                  <ButtonContainer
+                    style={{ opacity: `${isHovered ? "100" : "0"}` }}
+                  >
+                    <FontAwesomeIcon icon={faGear} size="lg" />
+                  </ButtonContainer>
+                }
                 {Account.map((CharacterName, index) => {
                   return (
                     <DragCharactersDraggable

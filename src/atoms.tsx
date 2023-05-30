@@ -3,7 +3,7 @@ import { atom } from "recoil";
 interface ICheckbox {
   [Content: string]: boolean;
 }
-interface ICheckCharacters {
+export interface ICheckCharacters {
   [Character: string]: ICheckbox;
 }
 export type ICheckAccounts = { [accountName: string]: ICheckCharacters };
@@ -17,7 +17,7 @@ interface ICharacterInfo {
   ["CharacterClassName"]: string;
   ["ItemMaxLevel"]: number;
 }
-interface ICharacterState {
+export interface ICharacterState {
   [Character: string]: ICharacterInfo;
 }
 export type IAccountState = { [AccountName: string]: ICharacterState };

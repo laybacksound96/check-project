@@ -34,7 +34,7 @@ const Name = styled.div`
 const NameBox = styled.div`
   display: flex;
 `;
-const ButtonContainer = styled.div`
+export const ButtonContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: start;

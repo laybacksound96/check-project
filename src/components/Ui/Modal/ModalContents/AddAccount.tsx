@@ -7,8 +7,8 @@ import {
   AccountState,
   CheckboxesState,
   ContentsState,
-  IAccountState,
-  ICheckAccounts,
+  ICharacterState,
+  ICheckCharacters,
   ModalState,
 } from "../../../../atoms";
 import { fetchSearchAccount } from "../../../../util/fetch";
@@ -48,8 +48,8 @@ export interface IFetchedCharacter {
   ItemMaxLevel: string;
 }
 const AddAccount = () => {
-  const setAccounts = useSetRecoilState(CheckboxesState);
-  const SetAccountOrder = useSetRecoilState(AccountOrder);
+  const setCheckboxesState = useSetRecoilState(CheckboxesState);
+  const setAccountOrder = useSetRecoilState(AccountOrder);
   const setModalState = useSetRecoilState(ModalState);
   const [accountState, setAccountState] = useRecoilState(AccountState);
   const Column = useRecoilValue(ContentsState);
@@ -96,12 +96,10 @@ const AddAccount = () => {
       return copiedData;
     });
   };
-  const AddAccountHandler = (event: React.MouseEvent) => {
+  const AddAccountHandler = () => {
     const AccountOwner = fetchedCharacters[0].CharacterName;
-    const newCheckAccount: ICheckAccounts = {};
-    const newAccountState: IAccountState = {};
-    newCheckAccount[AccountOwner] = {};
-    newAccountState[AccountOwner] = {};
+    const newCheckAccount: ICheckCharacters = {};
+    const newAccountState: ICharacterState = {};
 
     fetchedCharacters.map((Character) => {
       const name = Character.CharacterName;
@@ -109,26 +107,38 @@ const AddAccount = () => {
       const server = Character.ServerName;
       const className = Character.CharacterClassName;
 
-      newCheckAccount[AccountOwner][name] = {};
-      newAccountState[AccountOwner][name] = {
+      newAccountState[name] = {
         ServerName: server,
         CharacterClassName: className,
         ItemMaxLevel: level,
       };
+      newCheckAccount[name] = {};
       for (let content in Column) {
-        newCheckAccount[AccountOwner][name][content] = false;
+        newCheckAccount[name][content] = false;
       }
       return null;
     });
-    SetAccountOrder((prev) => [...prev, AccountOwner]);
-    setAccounts(() => newCheckAccount);
-    setAccountState(() => newAccountState);
+
+    setAccountOrder((prev) => [...prev, AccountOwner]);
+    setCheckboxesState((prev) => {
+      const copiedPrev = { ...prev };
+      copiedPrev[`${AccountOwner}`] = newCheckAccount;
+      return copiedPrev;
+    });
+    setAccountState((prev) => {
+      const copiedPrev = { ...prev };
+      copiedPrev[`${AccountOwner}`] = newAccountState;
+      return copiedPrev;
+    });
+
     setModalState((prev) => {
       const copiedPrev = { ...prev };
       copiedPrev.isModalOpen = false;
       return copiedPrev;
     });
   };
+  console.log("fetchedCharacters");
+  console.log(fetchedCharacters);
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setIsDupplicated(false);
     event.target.value === "" ? setIsdisabled(true) : setIsdisabled(false);
@@ -144,6 +154,7 @@ const AddAccount = () => {
         <form>
           <Input
             type="text"
+            name="search"
             isDupplicated={isDupplicated}
             value={inputValue}
             onChange={handleChange}
