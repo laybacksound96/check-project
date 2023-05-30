@@ -12,19 +12,30 @@ import { fetchSearchAccount } from "../../../../util/fetch";
 import { useState } from "react";
 
 const AddAccount = () => {
+  interface IFetchedCharacter {
+    ServerName: string;
+    CharacterName: string;
+    CharacterLevel: number;
+    CharacterClassName: string;
+    ItemAvgLevel: string;
+    ItemMaxLevel: string;
+  }
   const [accounts, setAccounts] = useRecoilState(CheckboxesState);
   const Column = useRecoilValue(ContentsState);
   const [accountOrder, SetAccountOrder] = useRecoilState(AccountOrder);
-
+  const [fetchedCharacters, setFetchedCharacters] = useState<
+    IFetchedCharacter[]
+  >([]);
   const [inputValue, setInputValue] = useState("");
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
   };
 
-  const AddAccountHandler = (event: React.MouseEvent) => {
+  const AddAccountHandler = async (event: React.MouseEvent) => {
     event.preventDefault();
 
-    fetchSearchAccount(inputValue);
+    const data = await fetchSearchAccount(inputValue);
+    setFetchedCharacters(data);
     // setAccounts((prev) => {
     //   const copiedPrev = { ...prev };
     //   copiedPrev[newMockingAccountName] = {};
@@ -57,8 +68,11 @@ const AddAccount = () => {
             검색
           </button>
         </div>
-        <button type="button">추가</button>
       </form>
+      {fetchedCharacters.map((character, index) => (
+        <div key={index}>{character.CharacterName}</div>
+      ))}
+      <button type="button">추가</button>
     </>
   );
 };

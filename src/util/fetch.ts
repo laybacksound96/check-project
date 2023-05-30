@@ -6,7 +6,7 @@ export async function fetchLogin(): Promise<string> {
   return response.data.loginUrl;
 }
 
-export async function fetchSearchAccount(inputValue: string): Promise<object> {
+export async function fetchSearchAccount(inputValue: string): Promise<[]> {
   const response = await axios.post(
     "http://localhost:4000/user/character",
     { name: inputValue },
@@ -17,7 +17,7 @@ export async function fetchSearchAccount(inputValue: string): Promise<object> {
     }
   );
 
-  return {};
+  return response.data;
 }
 
 export function fetchCheck() {
