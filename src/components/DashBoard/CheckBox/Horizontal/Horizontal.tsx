@@ -1,6 +1,5 @@
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import React, { useState } from "react";
 import { AccountOrder, ModalEnum, ModalState } from "../../../../atoms";
 
 import DragAccounts from "./DragAccounts/DragAccounts";

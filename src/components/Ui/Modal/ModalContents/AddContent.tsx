@@ -15,7 +15,7 @@ const vibration = keyframes`
       transform: translateX(-1%);
     }
   `;
-const Input = styled.input<IStyle>`
+export const Input = styled.input<IStyle>`
   width: 300px;
   height: 50px;
   background-color: ${(props) => props.theme.subColor};

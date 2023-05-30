@@ -2,6 +2,7 @@ import Modal from "../components/Ui/Modal/Modal";
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
   AccountOrder,
+  AccountState,
   CheckboxesState,
   ContentsState,
   ModalEnum,
@@ -23,7 +24,7 @@ function Dashboard() {
   const contentsState = useRecoilValue(ContentsState);
   const visibledColumns = useRecoilValue(VisibledColumns);
   const accountOrder = useRecoilValue(AccountOrder);
-
+  const accountState = useRecoilValue(AccountState);
   const closeModal = () => {
     setIsModalOpen((prev) => {
       const copiedPrev = { ...prev };
@@ -43,9 +44,18 @@ function Dashboard() {
 
     console.log("accountOrder");
     console.log(accountOrder);
+
+    console.log("AccountState");
+    console.log(accountState);
     console.log("-------------------------");
     console.log("-------------------------");
-  }, [checkboxesState, contentsState, visibledColumns, accountOrder]);
+  }, [
+    checkboxesState,
+    contentsState,
+    visibledColumns,
+    accountOrder,
+    accountState,
+  ]);
   return (
     <>
       {IsModalOpen.isModalOpen && (

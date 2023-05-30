@@ -12,6 +12,20 @@ export const CheckboxesState = atom<ICheckAccounts>({
   default: {},
 });
 
+interface ICharacterInfo {
+  ["ServerName"]: string;
+  ["CharacterClassName"]: string;
+  ["ItemMaxLevel"]: number;
+}
+interface ICharacterState {
+  [Character: string]: ICharacterInfo;
+}
+export type IAccountState = { [AccountName: string]: ICharacterState };
+export const AccountState = atom<IAccountState>({
+  key: "AccountState",
+  default: {},
+});
+
 interface IContentState {
   type: "Default" | "Custom";
   isVisible: boolean;
