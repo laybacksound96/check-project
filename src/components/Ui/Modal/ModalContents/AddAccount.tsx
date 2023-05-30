@@ -1,16 +1,16 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Header } from "./ConfigContent";
 import { faGear } from "@fortawesome/free-solid-svg-icons";
-import { InsertAccountHandler } from "../../../DashBoard/Functions/InsertAccount";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import {
   AccountOrder,
   CheckboxesState,
   ContentsState,
 } from "../../../../atoms";
 import { fetchSearchAccount } from "../../../../util/fetch";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+
 const CharacterCard = styled.div`
   width: auto;
   height: 40px;
@@ -49,9 +49,9 @@ const AddAccount = () => {
     ItemAvgLevel: string;
     ItemMaxLevel: string;
   }
-  const [accounts, setAccounts] = useRecoilState(CheckboxesState);
+  const setAccounts = useSetRecoilState(CheckboxesState);
+  const SetAccountOrder = useSetRecoilState(AccountOrder);
   const Column = useRecoilValue(ContentsState);
-  const [accountOrder, SetAccountOrder] = useRecoilState(AccountOrder);
   const [fetchedCharacters, setFetchedCharacters] = useState<
     IFetchedCharacter[]
   >([]);
@@ -83,24 +83,23 @@ const AddAccount = () => {
     });
   };
   const AddAccountHandler = (event: React.MouseEvent) => {
-    // setAccounts((prev) => {
-    //   const copiedPrev = { ...prev };
-    //   copiedPrev[newMockingAccountName] = {};
-    //   for (let index in MakedMockingAccount.Characters) {
-    //     const CharacterName =
-    //       MakedMockingAccount.Characters[index].CharacterName;
-    //     const newCharacterName = CharacterName;
-    //     const columns = Object.keys(Column);
-    //     copiedPrev[newMockingAccountName][newCharacterName] = {};
-    //     for (let index in columns) {
-    //       copiedPrev[newMockingAccountName][newCharacterName][columns[index]] =
-    //         false;
-    //     }
-    //   }
-    //   return copiedPrev;
-    // });
+    const AccountOwner = fetchedCharacters[0].CharacterName;
+    SetAccountOrder((prev) => [...prev, AccountOwner]);
+    setAccounts((prev) => {
+      const copiedPrev = { ...prev };
+      copiedPrev[AccountOwner] = {};
+      fetchedCharacters.map((Character) => {
+        const name = Character.CharacterName;
+        copiedPrev[AccountOwner][name] = {};
+        for (let content in Column) {
+          copiedPrev[AccountOwner][name][content] = false;
+        }
+        return null;
+      });
+      return copiedPrev;
+    });
   };
-  useEffect(() => console.log(fetchedCharacters), [fetchedCharacters]);
+
   return (
     <>
       <Header>

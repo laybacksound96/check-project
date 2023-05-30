@@ -1,7 +1,7 @@
-import { useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import React, { useState } from "react";
-import { ModalEnum, ModalState } from "../../../../atoms";
+import { AccountOrder, ModalEnum, ModalState } from "../../../../atoms";
 
 import DragAccounts from "./DragAccounts/DragAccounts";
 import { DropResult } from "react-beautiful-dnd";
@@ -20,7 +20,8 @@ const AddAccountBtn = styled.button`
 
 function Horizontal() {
   type IAccountOrder = string[];
-  const [AccountOrder, setAccountOrder] = useState<IAccountOrder>([]);
+  const [accountOrder, setAccountOrder] =
+    useRecoilState<IAccountOrder>(AccountOrder);
 
   const dragAccountHandler = (dragInfo: DropResult) => {
     const { destination, source } = dragInfo;
@@ -47,7 +48,7 @@ function Horizontal() {
   return (
     <>
       <DragAccounts
-        AccountOrder={AccountOrder}
+        AccountOrder={accountOrder}
         dragAccountHandler={dragAccountHandler}
       />
       <AddAccountBtn onClick={openModal}>+ add new account?</AddAccountBtn>

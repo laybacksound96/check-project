@@ -1,10 +1,12 @@
 import Modal from "../components/Ui/Modal/Modal";
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
+  AccountOrder,
   CheckboxesState,
   ContentsState,
   ModalEnum,
   ModalState,
+  VisibledColumns,
 } from "../atoms";
 
 import HeaderBox from "../components/DashBoard/HeaderBox/HeaderBox";
@@ -12,9 +14,16 @@ import CheckBox from "../components/DashBoard/CheckBox/Checkbox";
 import ConfigContent from "../components/Ui/Modal/ModalContents/ConfigContent";
 import AddContent from "../components/Ui/Modal/ModalContents/AddContent";
 import AddAccount from "../components/Ui/Modal/ModalContents/AddAccount";
+import { useEffect } from "react";
 
 function Dashboard() {
   const [IsModalOpen, setIsModalOpen] = useRecoilState(ModalState);
+
+  const checkboxesState = useRecoilValue(CheckboxesState);
+  const contentsState = useRecoilValue(ContentsState);
+  const visibledColumns = useRecoilValue(VisibledColumns);
+  const accountOrder = useRecoilValue(AccountOrder);
+
   const closeModal = () => {
     setIsModalOpen((prev) => {
       const copiedPrev = { ...prev };
@@ -22,11 +31,21 @@ function Dashboard() {
       return copiedPrev;
     });
   };
+  useEffect(() => {
+    console.log("checkboxesState");
+    console.log(checkboxesState);
 
-  const Checkbox = useRecoilValue(CheckboxesState);
-  const Contents = useRecoilValue(ContentsState);
-  console.log(Checkbox);
-  console.log(Contents);
+    console.log("contentsState");
+    console.log(contentsState);
+
+    console.log("visibledColumns");
+    console.log(visibledColumns);
+
+    console.log("accountOrder");
+    console.log(accountOrder);
+    console.log("-------------------------");
+    console.log("-------------------------");
+  }, [checkboxesState, contentsState, visibledColumns, accountOrder]);
   return (
     <>
       {IsModalOpen.isModalOpen && (
