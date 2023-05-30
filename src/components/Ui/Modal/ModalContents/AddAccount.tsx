@@ -16,6 +16,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { Input } from "./AddContent";
 import CharacterContainer from "./components/CharacterContainer";
+import AccountDataSorter from "./functions/AccountDataSorter";
 
 const Container = styled.div`
   display: flex;
@@ -54,22 +55,7 @@ interface IOptions {
   isDupplicated: boolean;
   isNull: boolean;
 }
-const AccountDataSorter = (data: IFetchedCharacter[]) => {
-  const copiedData: IFetchedCharacter[] = [...data];
-  copiedData.sort((a, b) => {
-    const itemAvgLevelA = parseFloat(a.ItemAvgLevel.replace(",", ""));
-    const itemAvgLevelB = parseFloat(b.ItemAvgLevel.replace(",", ""));
 
-    if (itemAvgLevelA > itemAvgLevelB) {
-      return -1; // a를 b보다 앞으로 정렬
-    } else if (itemAvgLevelA < itemAvgLevelB) {
-      return 1; // b를 a보다 앞으로 정렬
-    } else {
-      return 0; // 정렬 순서 변경 없음
-    }
-  });
-  return copiedData;
-};
 const AddAccount = () => {
   const setCheckboxesState = useSetRecoilState(CheckboxesState);
   const setAccountOrder = useSetRecoilState(AccountOrder);
@@ -89,6 +75,8 @@ const AddAccount = () => {
 
   const SearchAccountHandler = async (event: React.MouseEvent) => {
     event.preventDefault();
+    console.log("asdsd");
+
     for (let accountName in accountState) {
       const characters = Object.keys(accountState[accountName]);
       characters.map((character) => {
