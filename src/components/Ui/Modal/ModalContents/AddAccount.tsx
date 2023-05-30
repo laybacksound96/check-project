@@ -69,17 +69,14 @@ const AddAccount = () => {
     IFetchedCharacter[]
   >([]);
   const [inputValue, setInputValue] = useState("");
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setIsDupplicated(false);
-    event.target.value === "" ? setIsdisabled(true) : setIsdisabled(false);
-    setInputValue(event.target.value);
-  };
   const [isdisabled, setIsdisabled] = useState(true);
   const [isDupplicated, setIsDupplicated] = useState(false);
   const [isNull, setIsNull] = useState(false);
+
   useEffect(() => {
     setFetchedCharacters(() => []);
   }, [isDupplicated]);
+
   const SearchAccountHandler = async (event: React.MouseEvent) => {
     event.preventDefault();
     for (let accountName in accountState) {
@@ -96,7 +93,6 @@ const AddAccount = () => {
     if (data === null) {
       setIsNull(true);
       setIsdisabled(true);
-      setIsDupplicated(true);
       return;
     }
     setFetchedCharacters(() => {
@@ -117,7 +113,6 @@ const AddAccount = () => {
     });
   };
   const AddAccountHandler = (event: React.MouseEvent) => {
-    console.log(fetchedCharacters);
     const AccountOwner = fetchedCharacters[0].CharacterName;
     const newCheckAccount: ICheckAccounts = {};
     const newAccountState: IAccountState = {};
@@ -150,7 +145,11 @@ const AddAccount = () => {
       return copiedPrev;
     });
   };
-
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setIsDupplicated(false);
+    event.target.value === "" ? setIsdisabled(true) : setIsdisabled(false);
+    setInputValue(event.target.value);
+  };
   return (
     <>
       <Header>
@@ -164,6 +163,7 @@ const AddAccount = () => {
             isDupplicated={isDupplicated}
             value={inputValue}
             onChange={handleChange}
+            isNull={isNull}
           />
           <button
             type="submit"
@@ -173,9 +173,7 @@ const AddAccount = () => {
             검색
           </button>
         </form>
-        {isDupplicated && isNull === false && (
-          <Error>같은 이름이 이미 일정에 있어요</Error>
-        )}
+        {isDupplicated && <Error>같은 이름이 이미 일정에 있어요</Error>}
         {isNull && <Error>유효하지 않은 이름이에요</Error>}
         {!isDupplicated &&
           fetchedCharacters.map(

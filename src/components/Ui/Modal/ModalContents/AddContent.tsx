@@ -6,6 +6,7 @@ import { Header } from "./ConfigContent";
 
 interface IStyle {
   isDupplicated: boolean;
+  isNull: boolean;
 }
 const vibration = keyframes`
     from {
@@ -19,29 +20,33 @@ export const Input = styled.input<IStyle>`
   width: 300px;
   height: 50px;
   background-color: ${(props) => props.theme.subColor};
-  border: 2px solid ${(props) => (props.isDupplicated ? "#EF476F" : "#5e5e5e")};
+  border: 2px solid
+    ${(props) => (props.isDupplicated || props.isNull ? "#EF476F" : "#5e5e5e")};
   border-radius: 10px;
   padding-left: 10px;
 
   &:hover {
     transition: 0.1s ease;
     border: 2px solid
-      ${(props) => (props.isDupplicated ? "#EF476F" : " #43434382")};
+      ${(props) =>
+        props.isDupplicated || props.isNull ? "#EF476F" : " #43434382"};
   }
   &:focus {
     outline: none;
     transition: 0.2s ease;
     border: 2px solid
-      ${(props) => (props.isDupplicated ? "#EF476F" : props.theme.bgColor)};
+      ${(props) =>
+        props.isDupplicated || props.isNull ? "#EF476F" : props.theme.bgColor};
   }
   &::placeholder {
     color: ${(props) => props.theme.bgColor};
   }
   ${(props) =>
-    props.isDupplicated &&
-    css`
-      animation: ${vibration} 0.1s 5 linear;
-    `};
+    props.isDupplicated || props.isNull
+      ? css`
+          animation: ${vibration} 0.1s 5 linear;
+        `
+      : null};
 `;
 
 const ButtonStyle = styled.button`
@@ -128,6 +133,7 @@ const AddContent = () => {
       </Header>
       <hr></hr>
       <Input
+        isNull={false}
         isDupplicated={isDupplicated}
         value={inputValue}
         onChange={handleInputChange}
