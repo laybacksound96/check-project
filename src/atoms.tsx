@@ -23,7 +23,42 @@ export interface ICharacterState {
 export type IAccountState = { [AccountName: string]: ICharacterState };
 export const AccountState = atom<IAccountState>({
   key: "AccountState",
-  default: {},
+  default: {
+    aa: {
+      aa2: {
+        ServerName: "asds",
+        CharacterClassName: "sfaswg",
+        ItemMaxLevel: 43,
+      },
+      aa3: {
+        ServerName: "asds",
+        CharacterClassName: "sfaswg",
+        ItemMaxLevel: 43,
+      },
+      aa25: {
+        ServerName: "asds",
+        CharacterClassName: "sfaswg",
+        ItemMaxLevel: 43,
+      },
+    },
+    aa2: {
+      bb2: {
+        ServerName: "fwasds",
+        CharacterClassName: "sfaswg",
+        ItemMaxLevel: 433,
+      },
+      bb3: {
+        ServerName: "fwasds",
+        CharacterClassName: "sfaswg",
+        ItemMaxLevel: 433,
+      },
+      bb4: {
+        ServerName: "fwasds",
+        CharacterClassName: "sfaswg",
+        ItemMaxLevel: 433,
+      },
+    },
+  },
 });
 
 interface IContentState {

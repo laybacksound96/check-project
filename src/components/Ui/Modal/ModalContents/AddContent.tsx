@@ -5,8 +5,7 @@ import { ContentsState, ModalState, CheckboxesState } from "../../../../atoms";
 import { Header } from "./ConfigContent";
 
 interface IStyle {
-  isDupplicated: boolean;
-  isNull: boolean;
+  isDisabled: boolean;
 }
 const vibration = keyframes`
     from {
@@ -20,33 +19,29 @@ export const Input = styled.input<IStyle>`
   width: 300px;
   height: 50px;
   background-color: ${(props) => props.theme.subColor};
-  border: 2px solid
-    ${(props) => (props.isDupplicated || props.isNull ? "#EF476F" : "#5e5e5e")};
+  border: 2px solid ${(props) => (props.isDisabled ? "#EF476F" : "#5e5e5e")};
   border-radius: 10px;
   padding-left: 10px;
 
   &:hover {
     transition: 0.1s ease;
     border: 2px solid
-      ${(props) =>
-        props.isDupplicated || props.isNull ? "#EF476F" : " #43434382"};
+      ${(props) => (props.isDisabled ? "#EF476F" : " #43434382")};
   }
   &:focus {
     outline: none;
     transition: 0.2s ease;
     border: 2px solid
-      ${(props) =>
-        props.isDupplicated || props.isNull ? "#EF476F" : props.theme.bgColor};
+      ${(props) => (props.isDisabled ? "#EF476F" : props.theme.bgColor)};
   }
   &::placeholder {
     color: ${(props) => props.theme.bgColor};
   }
   ${(props) =>
-    props.isDupplicated || props.isNull
-      ? css`
-          animation: ${vibration} 0.1s 5 linear;
-        `
-      : null};
+    props.isDisabled &&
+    css`
+      animation: ${vibration} 0.1s 5 linear;
+    `};
 `;
 
 const ButtonStyle = styled.button`
@@ -133,8 +128,7 @@ const AddContent = () => {
       </Header>
       <hr></hr>
       <Input
-        isNull={false}
-        isDupplicated={isDupplicated}
+        isDisabled={false}
         value={inputValue}
         onChange={handleInputChange}
         placeholder="여기에 일정을 입력"

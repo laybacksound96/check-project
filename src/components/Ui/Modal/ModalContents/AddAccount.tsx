@@ -12,11 +12,15 @@ import {
   ModalState,
 } from "../../../../atoms";
 import { fetchSearchAccount } from "../../../../util/fetch";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Input } from "./AddContent";
 import CharacterContainer from "./components/CharacterContainer";
 import AccountDataSorter from "./functions/AccountDataSorter";
+
+import IsInValidName from "./functions/IsValidName";
+import IsDisabled from "./functions/IsDisabled";
+import IsDupplicated from "./functions/IsDupplicated";
 
 const Container = styled.div`
   display: flex;
@@ -50,10 +54,9 @@ export interface IFetchedCharacter {
 }
 interface IOptions {
   fetchedCharacters: IFetchedCharacter[];
-  inputValue: string;
-  isdisabled: boolean;
   isDupplicated: boolean;
   isNull: boolean;
+  isInValid: boolean;
 }
 
 const AddAccount = () => {
@@ -62,98 +65,51 @@ const AddAccount = () => {
   const setModalState = useSetRecoilState(ModalState);
   const [accountState, setAccountState] = useRecoilState(AccountState);
   const Column = useRecoilValue(ContentsState);
-
+  const [inputValue, setInputValue] = useState("");
+  const [isDisabled, setIsDisabled] = useState(false);
   const [option, setOption] = useState<IOptions>({
     fetchedCharacters: [],
-    inputValue: "",
-    isdisabled: true,
     isDupplicated: false,
     isNull: false,
+    isInValid: false,
   });
-  const { fetchedCharacters, inputValue, isdisabled, isDupplicated, isNull } =
-    option;
+  const { fetchedCharacters, isDupplicated, isNull, isInValid } = option;
 
   const SearchAccountHandler = async (event: React.MouseEvent) => {
     event.preventDefault();
-    console.log("asdsd");
 
-    for (let accountName in accountState) {
-      const characters = Object.keys(accountState[accountName]);
-      characters.map((character) => {
-        if (character === inputValue) {
-          setOption((prev) => ({
-            ...prev,
-            isDupplicated: true,
-            isdisabled: true,
-          }));
-        }
-        return null;
-      });
+    if (IsDupplicated(inputValue, accountState)) {
+      return setOption((prev) => ({ ...prev, isDupplicated: true }));
     }
     const data = await fetchSearchAccount(inputValue);
     if (data === null) {
-      setOption((prev) => ({
-        ...prev,
-        fetchedCharacters: AccountDataSorter(prev.fetchedCharacters),
-      }));
-
-      return;
+      return setOption((prev) => ({ ...prev, isNull: true }));
     }
-    setOption((prev) => ({
-      ...prev,
-      isNull: true,
-      isdisabled: true,
-    }));
   };
   const AddAccountHandler = () => {
-    const AccountOwner = fetchedCharacters[0].CharacterName;
-    const newCheckAccount: ICheckCharacters = {};
-    const newAccountState: ICharacterState = {};
-
-    fetchedCharacters.map((Character) => {
-      const name = Character.CharacterName;
-      const level = parseFloat(Character.ItemMaxLevel.replace(",", ""));
-      const server = Character.ServerName;
-      const className = Character.CharacterClassName;
-
-      newAccountState[name] = {
-        ServerName: server,
-        CharacterClassName: className,
-        ItemMaxLevel: level,
-      };
-      newCheckAccount[name] = {};
-      for (let content in Column) {
-        newCheckAccount[name][content] = false;
-      }
-      return null;
-    });
-
-    setAccountOrder((prev) => [...prev, AccountOwner]);
-    setCheckboxesState((prev) => {
-      const copiedPrev = { ...prev };
-      copiedPrev[`${AccountOwner}`] = newCheckAccount;
-      return copiedPrev;
-    });
-    setAccountState((prev) => {
-      const copiedPrev = { ...prev };
-      copiedPrev[`${AccountOwner}`] = newAccountState;
-      return copiedPrev;
-    });
-
-    setModalState((prev) => {
-      const copiedPrev = { ...prev };
-      copiedPrev.isModalOpen = false;
-      return copiedPrev;
-    });
+    setModalState((prev) => ({ ...prev, isModalOpen: false }));
   };
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const input = event.target.value;
-    input === ""
-      ? setOption((prev) => ({ ...prev, isdisabled: true }))
-      : setOption((prev) => ({ ...prev, isdisabled: false }));
-    setOption((prev) => ({ ...prev, isDupplicated: false, inputValue: input }));
+  const HandleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const name = event.target.value;
+    setInputValue(() => name);
+    setOption((prev) => ({
+      ...prev,
+      isInValid: false,
+      isDupplicated: false,
+      isNull: false,
+    }));
+    if (IsInValidName(name))
+      return setOption((prev) => ({ ...prev, isInValid: true }));
   };
+
+  useEffect(() => {
+    setIsDisabled(() => IsDisabled(isDupplicated, isNull, isInValid));
+  }, [isDupplicated, isNull, isInValid]);
+
+  useEffect(() => {
+    console.log(option);
+  }, [option]);
   return (
     <>
       <Header>
@@ -165,34 +121,29 @@ const AddAccount = () => {
           <Input
             type="text"
             name="search"
-            isDupplicated={isDupplicated}
+            isDisabled={isDisabled}
+            onChange={HandleChange}
             value={inputValue}
-            onChange={handleChange}
-            isNull={isNull}
           />
           <button
             type="submit"
             onClick={SearchAccountHandler}
-            disabled={isdisabled}
+            disabled={isDisabled}
           >
             검색
           </button>
         </form>
+        {isInValid && <Error>검색하려는 이름이 유효하지 않아요</Error>}
         {isDupplicated && <Error>같은 이름이 이미 일정에 있어요</Error>}
-        {isNull && <Error>유효하지 않은 이름이에요</Error>}
+        {isNull && <Error>서버에 존재하지 않는 이름이에요</Error>}
         <CharacterContainer
           isDupplicated={isDupplicated}
           Characters={fetchedCharacters}
         />
-        {
-          <Button
-            type="button"
-            onClick={AddAccountHandler}
-            disabled={isdisabled}
-          >
-            추가
-          </Button>
-        }
+
+        <Button type="button" onClick={AddAccountHandler} disabled={isDisabled}>
+          추가
+        </Button>
       </Container>
     </>
   );
