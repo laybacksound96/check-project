@@ -65,6 +65,7 @@ const AddAccount = () => {
   const setModalState = useSetRecoilState(ModalState);
   const [accountState, setAccountState] = useRecoilState(AccountState);
   const Column = useRecoilValue(ContentsState);
+
   const [inputValue, setInputValue] = useState("");
   const [isDisabled, setIsDisabled] = useState(false);
   const [option, setOption] = useState<IOptions>({
@@ -77,30 +78,30 @@ const AddAccount = () => {
 
   const SearchAccountHandler = async (event: React.MouseEvent) => {
     event.preventDefault();
-
     if (IsDupplicated(inputValue, accountState)) {
       return setOption((prev) => ({ ...prev, isDupplicated: true }));
     }
     const data = await fetchSearchAccount(inputValue);
-    if (data === null) {
-      return setOption((prev) => ({ ...prev, isNull: true }));
-    }
+    setOption((prev) => ({
+      ...prev,
+      fetchedCharacters: data ?? [],
+      isNull: data === null,
+    }));
   };
-  const AddAccountHandler = () => {
-    setModalState((prev) => ({ ...prev, isModalOpen: false }));
-  };
-
   const HandleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const name = event.target.value;
     setInputValue(() => name);
-    setOption((prev) => ({
-      ...prev,
-      isInValid: false,
+    setOption(() => ({
+      fetchedCharacters: [],
+      isInValid: IsInValidName(name),
       isDupplicated: false,
       isNull: false,
     }));
-    if (IsInValidName(name))
-      return setOption((prev) => ({ ...prev, isInValid: true }));
+  };
+
+  const AddAccountHandler = () => {
+    setModalState((prev) => ({ ...prev, isModalOpen: false }));
+    console.log(fetchedCharacters);
   };
 
   useEffect(() => {
@@ -108,8 +109,11 @@ const AddAccount = () => {
   }, [isDupplicated, isNull, isInValid]);
 
   useEffect(() => {
+    console.log("called for Debug------");
     console.log(option);
+    console.log("----------------------");
   }, [option]);
+
   return (
     <>
       <Header>
@@ -137,11 +141,15 @@ const AddAccount = () => {
         {isDupplicated && <Error>같은 이름이 이미 일정에 있어요</Error>}
         {isNull && <Error>서버에 존재하지 않는 이름이에요</Error>}
         <CharacterContainer
-          isDupplicated={isDupplicated}
+          isDisabled={isDisabled}
           Characters={fetchedCharacters}
         />
 
-        <Button type="button" onClick={AddAccountHandler} disabled={isDisabled}>
+        <Button
+          type="button"
+          onClick={AddAccountHandler}
+          disabled={fetchedCharacters.length === 0 || isDisabled}
+        >
           추가
         </Button>
       </Container>

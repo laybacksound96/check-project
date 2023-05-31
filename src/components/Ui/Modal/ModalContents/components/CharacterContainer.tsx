@@ -14,11 +14,11 @@ const CharacterCard = styled.div`
 `;
 
 interface Iprops {
-  isDupplicated: boolean;
+  isDisabled: boolean;
   Characters: IFetchedCharacter[];
 }
-const CharacterContainer = ({ isDupplicated, Characters }: Iprops) => {
-  if (isDupplicated) return null;
+const CharacterContainer = ({ isDisabled, Characters }: Iprops) => {
+  if (isDisabled) return null;
   return (
     <>
       {Characters.map(
