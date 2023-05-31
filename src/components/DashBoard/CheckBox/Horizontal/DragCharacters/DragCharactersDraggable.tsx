@@ -73,8 +73,10 @@ function DragCharactersDraggable({
       const copiedAccounts = { ...Accounts };
       const copiedAccount = { ...copiedAccounts[accountName] };
       const copiedCharacter = { ...copiedAccount[char] };
-
-      copiedCharacter[cont] = !copiedCharacter[cont];
+      const copiedContent = { ...copiedCharacter[cont] };
+      const state = copiedAccounts[accountName][char][cont].isCleared;
+      copiedContent.isCleared = !state;
+      copiedCharacter[cont] = copiedContent;
       copiedAccount[char] = copiedCharacter;
       copiedAccounts[accountName] = copiedAccount;
       return copiedAccounts;
@@ -111,6 +113,7 @@ function DragCharactersDraggable({
                   key={index + ColumnIndex + ContentName}
                   isChecked={
                     CheckboxState[accountName][CharacterName][ContentName]
+                      .isCleared
                   }
                   CheckBoxOnclick={CheckBoxOnclick}
                   ContentName={ContentName}

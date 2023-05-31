@@ -7,8 +7,6 @@ import {
   AccountState,
   CheckboxesState,
   ContentsState,
-  ICharacterState,
-  ICheckCharacters,
   ModalState,
 } from "../../../../atoms";
 import { fetchSearchAccount } from "../../../../util/fetch";
@@ -64,7 +62,7 @@ interface IOptions {
 const AddAccount = () => {
   const setModalState = useSetRecoilState(ModalState);
   const setAccountOrder = useSetRecoilState(AccountOrder);
-  const [checkboxesState, setCheckboxesState] = useRecoilState(CheckboxesState);
+  const setCheckboxesState = useSetRecoilState(CheckboxesState);
   const [accountState, setAccountState] = useRecoilState(AccountState);
   const Column = useRecoilValue(ContentsState);
 

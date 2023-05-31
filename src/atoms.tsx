@@ -1,7 +1,11 @@
 import { atom } from "recoil";
 
+interface ICheckboxState {
+  isCleared: boolean;
+  isVisible: boolean;
+}
 interface ICheckbox {
-  [Content: string]: boolean;
+  [Content: string]: ICheckboxState;
 }
 export interface ICheckCharacters {
   [Character: string]: ICheckbox;
@@ -23,47 +27,13 @@ export interface ICharacterState {
 export type IAccountState = { [accountOwner: string]: ICharacterState };
 export const AccountState = atom<IAccountState>({
   key: "AccountState",
-  default: {
-    aa: {
-      aa2: {
-        ServerName: "asds",
-        CharacterClassName: "sfaswg",
-        ItemMaxLevel: 43,
-      },
-      aa3: {
-        ServerName: "asds",
-        CharacterClassName: "sfaswg",
-        ItemMaxLevel: 43,
-      },
-      aa25: {
-        ServerName: "asds",
-        CharacterClassName: "sfaswg",
-        ItemMaxLevel: 43,
-      },
-    },
-    aa2: {
-      bb2: {
-        ServerName: "fwasds",
-        CharacterClassName: "sfaswg",
-        ItemMaxLevel: 433,
-      },
-      bb3: {
-        ServerName: "fwasds",
-        CharacterClassName: "sfaswg",
-        ItemMaxLevel: 433,
-      },
-      bb4: {
-        ServerName: "fwasds",
-        CharacterClassName: "sfaswg",
-        ItemMaxLevel: 433,
-      },
-    },
-  },
+  default: {},
 });
 
-interface IContentState {
+export interface IContentState {
   type: "Default" | "Custom";
   isVisible: boolean;
+  difficulty?: "Normal" | "Hard";
 }
 export interface IContents {
   [ContentsName: string]: IContentState;
@@ -71,11 +41,10 @@ export interface IContents {
 export const ContentsState = atom<IContents>({
   key: "ContentsState",
   default: {
-    A: { type: "Default", isVisible: true },
-    B: { type: "Default", isVisible: true },
-    C: { type: "Default", isVisible: true },
-    D: { type: "Default", isVisible: true },
-    E: { type: "Default", isVisible: false },
+    발탄: { type: "Default", isVisible: true },
+    비아키스: { type: "Default", isVisible: true },
+    쿠크세이튼: { type: "Default", isVisible: true },
+    아브렐슈드: { type: "Default", isVisible: true },
   },
 });
 

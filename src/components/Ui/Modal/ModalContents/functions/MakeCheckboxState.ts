@@ -8,7 +8,8 @@ const MakeCheckboxState = (Account: IFetchedCharacter[], Column: IContents) => {
     const { CharacterName } = Account[index];
     result[CharacterName] = {};
     for (let content in Column) {
-      result[CharacterName][content] = false;
+      const initialState = { isCleared: false, isVisible: true };
+      result[CharacterName][content] = initialState;
     }
   }
   return result;
