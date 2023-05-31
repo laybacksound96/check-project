@@ -1,6 +1,6 @@
 import { IFetchedCharacter } from "../AddAccount";
 
-const AccountDataSorter = (data: IFetchedCharacter[]) => {
+const SortByLevel = (data: IFetchedCharacter[]) => {
   const copiedData: IFetchedCharacter[] = [...data];
   copiedData.sort((a, b) => {
     const itemAvgLevelA = parseFloat(a.ItemAvgLevel.replace(",", ""));
@@ -16,4 +16,4 @@ const AccountDataSorter = (data: IFetchedCharacter[]) => {
   });
   return copiedData;
 };
-export default AccountDataSorter;
+export default SortByLevel;

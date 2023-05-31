@@ -6,7 +6,7 @@ interface ICheckbox {
 export interface ICheckCharacters {
   [Character: string]: ICheckbox;
 }
-export type ICheckAccounts = { [accountName: string]: ICheckCharacters };
+export type ICheckAccounts = { [accountOwner: string]: ICheckCharacters };
 export const CheckboxesState = atom<ICheckAccounts>({
   key: "CheckboxesState",
   default: {},
@@ -20,7 +20,7 @@ interface ICharacterInfo {
 export interface ICharacterState {
   [Character: string]: ICharacterInfo;
 }
-export type IAccountState = { [AccountName: string]: ICharacterState };
+export type IAccountState = { [accountOwner: string]: ICharacterState };
 export const AccountState = atom<IAccountState>({
   key: "AccountState",
   default: {
@@ -66,7 +66,7 @@ interface IContentState {
   isVisible: boolean;
 }
 export interface IContents {
-  [CharacterName: string]: IContentState;
+  [ContentsName: string]: IContentState;
 }
 export const ContentsState = atom<IContents>({
   key: "ContentsState",

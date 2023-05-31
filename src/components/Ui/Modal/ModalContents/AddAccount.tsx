@@ -16,11 +16,13 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Input } from "./AddContent";
 import CharacterContainer from "./components/CharacterContainer";
-import AccountDataSorter from "./functions/AccountDataSorter";
 
 import IsInValidName from "./functions/IsValidName";
 import IsDisabled from "./functions/IsDisabled";
 import IsDupplicated from "./functions/IsDupplicated";
+import MakeAccountState from "./functions/MakeAccountState";
+import MakeCheckboxState from "./functions/MakeCheckboxState";
+import SortByLevel from "./functions/SortByLevel";
 
 const Container = styled.div`
   display: flex;
@@ -60,9 +62,9 @@ interface IOptions {
 }
 
 const AddAccount = () => {
-  const setCheckboxesState = useSetRecoilState(CheckboxesState);
-  const setAccountOrder = useSetRecoilState(AccountOrder);
   const setModalState = useSetRecoilState(ModalState);
+  const setAccountOrder = useSetRecoilState(AccountOrder);
+  const [checkboxesState, setCheckboxesState] = useRecoilState(CheckboxesState);
   const [accountState, setAccountState] = useRecoilState(AccountState);
   const Column = useRecoilValue(ContentsState);
 
@@ -100,8 +102,25 @@ const AddAccount = () => {
   };
 
   const AddAccountHandler = () => {
+    const Character = SortByLevel(fetchedCharacters);
+    const AccountOwner = Character[0].CharacterName;
+    setAccountState((prev) => {
+      const copiedPrev = {
+        ...prev,
+        [`${AccountOwner}`]: MakeAccountState(Character),
+      };
+      return copiedPrev;
+    });
+    setCheckboxesState((prev) => {
+      const copiedPrev = {
+        ...prev,
+        [`${AccountOwner}`]: MakeCheckboxState(Character, Column),
+      };
+      return copiedPrev;
+    });
+    setAccountOrder((prev) => [...prev, AccountOwner]);
+
     setModalState((prev) => ({ ...prev, isModalOpen: false }));
-    console.log(fetchedCharacters);
   };
 
   useEffect(() => {
@@ -132,7 +151,7 @@ const AddAccount = () => {
           <button
             type="submit"
             onClick={SearchAccountHandler}
-            disabled={isDisabled}
+            disabled={inputValue.length === 0 || isDisabled}
           >
             검색
           </button>
@@ -144,7 +163,6 @@ const AddAccount = () => {
           isDisabled={isDisabled}
           Characters={fetchedCharacters}
         />
-
         <Button
           type="button"
           onClick={AddAccountHandler}
