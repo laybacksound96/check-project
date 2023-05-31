@@ -33,7 +33,7 @@ export const AccountState = atom<IAccountState>({
 export interface IContentState {
   type: "Default" | "Custom";
   isVisible: boolean;
-  difficulty?: "Normal" | "Hard";
+  difficulty?: "Normal" | "Hard" | "Hell";
 }
 export interface IContents {
   [ContentsName: string]: IContentState;

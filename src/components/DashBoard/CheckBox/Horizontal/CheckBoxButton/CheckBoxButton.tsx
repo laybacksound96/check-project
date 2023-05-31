@@ -3,8 +3,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import styled from "styled-components";
 import { dragIcon } from "../../../../../Settings";
-
-const CheckBox = styled.div`
+interface IStyle {
+  isVisible: boolean;
+}
+const CheckBox = styled.div<IStyle>`
+  opacity: ${(props) => (props.isVisible ? "100%" : "0%")};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -24,6 +27,8 @@ interface ICheckboxProps {
   isChecked: boolean;
   CharacterName: string;
   ContentName: string;
+  isVisible: boolean;
+  level: number;
 }
 
 function CheckBoxButton({
@@ -31,12 +36,16 @@ function CheckBoxButton({
   CheckBoxOnclick,
   CharacterName,
   ContentName,
+  isVisible,
+  level,
 }: ICheckboxProps) {
   function onClickHandler() {
+    if (!isVisible) return;
     CheckBoxOnclick(CharacterName, ContentName);
   }
+
   return (
-    <CheckBox onClick={onClickHandler}>
+    <CheckBox onClick={onClickHandler} isVisible={isVisible}>
       {isChecked ? (
         <FontAwesomeIcon icon={faSquareCheck} size="lg" />
       ) : (

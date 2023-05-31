@@ -7,12 +7,14 @@ import { dragIcon } from "../../../../../Settings";
 import Checkbox from "../CheckBoxButton/CheckBoxButton";
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
+  AccountState,
   CheckboxesState,
   ContentsState,
   VisibledColumns,
 } from "../../../../../atoms";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGear } from "@fortawesome/free-solid-svg-icons";
+import IsValidLevel from "../../../Functions/IsValidLevel";
 
 const Name = styled.div`
   display: flex;
@@ -65,6 +67,13 @@ function DragCharactersDraggable({
   accountName,
 }: IProps) {
   const Contents = useRecoilValue(ContentsState);
+
+  const {
+    [`${accountName}`]: {
+      [`${CharacterName}`]: { ItemMaxLevel: level },
+    },
+  } = useRecoilValue(AccountState);
+
   const [CheckboxState, setCheckboxState] = useRecoilState(CheckboxesState);
   const [isHovered, setIsHovered] = useState(false);
   const visibledColumns = useRecoilValue(VisibledColumns);
@@ -115,6 +124,8 @@ function DragCharactersDraggable({
                     CheckboxState[accountName][CharacterName][ContentName]
                       .isCleared
                   }
+                  isVisible={IsValidLevel(ContentName, level)}
+                  level={level}
                   CheckBoxOnclick={CheckBoxOnclick}
                   ContentName={ContentName}
                   CharacterName={CharacterName}
