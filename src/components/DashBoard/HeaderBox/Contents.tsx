@@ -1,8 +1,9 @@
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { CheckboxesState, ICheckAccounts, ContentsState } from "../../../atoms";
+import { CheckboxesState, ContentsState } from "../../../atoms";
 import { useEffect, useState } from "react";
 import Content from "./Content";
+import CalculateCheckbox from "../Functions/CalculateCheckbox";
 
 const ContainerStyle = styled.ul`
   display: grid;
@@ -12,27 +13,12 @@ const ContainerStyle = styled.ul`
   margin-top: 30px;
 `;
 
-interface IContentsState {
+export interface IContentsFrequency {
   [contentName: string]: number;
 }
-const CalculateCheckbox = (AccountsObj: ICheckAccounts) => {
-  const resultObj: IContentsState = {};
-  function frequencyCounter(AccountsObj: any) {
-    for (let key in AccountsObj) {
-      if (typeof AccountsObj[key] === "object" && AccountsObj[key] !== null) {
-        frequencyCounter(AccountsObj[key]);
-      } else {
-        if (resultObj[key] === undefined) resultObj[key] = 0;
-        if (AccountsObj[key] === false) resultObj[key]++;
-      }
-    }
-  }
-  frequencyCounter(AccountsObj);
 
-  return resultObj;
-};
 const Contents = () => {
-  const [contentState, setContentState] = useState<IContentsState>({});
+  const [contentState, setContentState] = useState<IContentsFrequency>({});
   const checkboxState = useRecoilValue(CheckboxesState);
   const Contents = useRecoilValue(ContentsState);
 

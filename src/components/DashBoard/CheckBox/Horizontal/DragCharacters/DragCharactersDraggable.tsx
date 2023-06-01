@@ -5,16 +5,14 @@ import styled from "styled-components";
 import { AxisLocker } from "../../../Functions/AxisLocker";
 import { dragIcon } from "../../../../../Settings";
 import Checkbox from "../CheckBoxButton/CheckBoxButton";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import {
-  AccountState,
   CheckboxesState,
   ContentsState,
   VisibledColumns,
 } from "../../../../../atoms";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGear } from "@fortawesome/free-solid-svg-icons";
-import IsValidLevel from "../../../Functions/IsValidLevel";
 
 const Name = styled.div`
   display: flex;
@@ -68,13 +66,11 @@ function DragCharactersDraggable({
 }: IProps) {
   const Contents = useRecoilValue(ContentsState);
 
+  const setCheckboxState = useSetRecoilState(CheckboxesState);
   const {
-    [`${accountName}`]: {
-      [`${CharacterName}`]: { ItemMaxLevel: level },
-    },
-  } = useRecoilValue(AccountState);
+    [`${accountName}`]: { [`${CharacterName}`]: ContentState },
+  } = useRecoilValue(CheckboxesState);
 
-  const [CheckboxState, setCheckboxState] = useRecoilState(CheckboxesState);
   const [isHovered, setIsHovered] = useState(false);
   const visibledColumns = useRecoilValue(VisibledColumns);
   const CheckBoxOnclick = (char: string, cont: string) => {
@@ -120,12 +116,8 @@ function DragCharactersDraggable({
               Contents[ContentName].isVisible && (
                 <Checkbox
                   key={index + ColumnIndex + ContentName}
-                  isChecked={
-                    CheckboxState[accountName][CharacterName][ContentName]
-                      .isCleared
-                  }
-                  isVisible={IsValidLevel(ContentName, level)}
-                  level={level}
+                  isChecked={ContentState[ContentName].isCleared}
+                  isVisible={ContentState[ContentName].isVisible}
                   CheckBoxOnclick={CheckBoxOnclick}
                   ContentName={ContentName}
                   CharacterName={CharacterName}

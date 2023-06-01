@@ -102,6 +102,7 @@ const AddAccount = () => {
   const AddAccountHandler = () => {
     const Character = SortByLevel(fetchedCharacters);
     const AccountOwner = Character[0].CharacterName;
+
     setAccountState((prev) => {
       const copiedPrev = {
         ...prev,

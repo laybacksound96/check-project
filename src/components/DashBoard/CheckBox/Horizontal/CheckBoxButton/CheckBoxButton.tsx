@@ -28,7 +28,6 @@ interface ICheckboxProps {
   CharacterName: string;
   ContentName: string;
   isVisible: boolean;
-  level: number;
 }
 
 function CheckBoxButton({
@@ -37,7 +36,6 @@ function CheckBoxButton({
   CharacterName,
   ContentName,
   isVisible,
-  level,
 }: ICheckboxProps) {
   function onClickHandler() {
     if (!isVisible) return;
