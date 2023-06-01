@@ -7,11 +7,11 @@ const SortByLevel = (data: IFetchedCharacter[]) => {
     const itemAvgLevelB = parseFloat(b.ItemAvgLevel.replace(",", ""));
 
     if (itemAvgLevelA > itemAvgLevelB) {
-      return -1; // a를 b보다 앞으로 정렬
+      return -1;
     } else if (itemAvgLevelA < itemAvgLevelB) {
-      return 1; // b를 a보다 앞으로 정렬
+      return 1;
     } else {
-      return 0; // 정렬 순서 변경 없음
+      return 0;
     }
   });
   return copiedData;

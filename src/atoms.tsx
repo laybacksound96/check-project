@@ -1,18 +1,23 @@
 import { atom } from "recoil";
 
-interface ICheckboxState {
-  isCleared: boolean;
-  isVisible: boolean;
+export interface IGates {
+  ["Gate_No"]: number;
+  ["Difficulty"]?: "normal" | "hard" | "easy";
+  ["isActivated"]: boolean;
 }
-interface ICheckbox {
-  [Content: string]: ICheckboxState;
+export interface IConfigObject {
+  ["isCleared"]: boolean;
+  ["isVisible"]: boolean;
+  ["Gates"]: IGates[];
 }
-export interface ICheckCharacters {
-  [Character: string]: ICheckbox;
+interface IContentName {
+  [ContentName: string]: IConfigObject;
 }
-export type ICheckAccounts = { [accountOwner: string]: ICheckCharacters };
-export const CheckboxesState = atom<ICheckAccounts>({
-  key: "CheckboxesState",
+export interface ICheckBoxconfig {
+  [ChracterName: string]: IContentName;
+}
+export const CheckBoxConfig = atom<ICheckBoxconfig>({
+  key: "CheckBoxConfig",
   default: {},
 });
 
@@ -33,7 +38,6 @@ export const AccountState = atom<IAccountState>({
 export interface IContentState {
   type: "Default" | "Custom";
   isVisible: boolean;
-  difficulty?: "Normal" | "Hard" | "Hell";
 }
 export interface IContents {
   [ContentsName: string]: IContentState;

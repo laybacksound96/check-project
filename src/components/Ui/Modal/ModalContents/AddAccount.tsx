@@ -113,7 +113,7 @@ const AddAccount = () => {
     setCheckboxesState((prev) => {
       const copiedPrev = {
         ...prev,
-        [`${AccountOwner}`]: MakeCheckboxState(Character, Column),
+        MakeCheckboxState(Character, Column),
       };
       return copiedPrev;
     });

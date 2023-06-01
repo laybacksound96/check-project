@@ -101,8 +101,7 @@ const AddContent = () => {
 
         for (let character in copiedAccounts[account]) {
           const copiedCotents = { ...copiedAccount[character] };
-          const initialState = { isCleared: false, isVisible: true };
-          copiedCotents[inputValue] = initialState;
+          copiedCotents[inputValue] = false;
           copiedAccount[character] = copiedCotents;
         }
         copiedAccounts[account] = copiedAccount;
