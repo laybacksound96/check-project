@@ -102,23 +102,23 @@ const AddAccount = () => {
   const AddAccountHandler = () => {
     const Character = SortByLevel(fetchedCharacters);
     const AccountOwner = Character[0].CharacterName;
+    const AccountState = MakeAccountState(Character);
 
     setAccountState((prev) => {
       const copiedPrev = {
         ...prev,
-        [`${AccountOwner}`]: MakeAccountState(Character),
+        [`${AccountOwner}`]: AccountState,
       };
       return copiedPrev;
     });
     setCheckBoxConfig((prev) => {
       const copiedPrev = {
         ...prev,
-        ...MakeCheckboxState(accountState[AccountOwner], Column),
+        ...MakeCheckboxState(AccountState, Column),
       };
       return copiedPrev;
     });
     setAccountOrder((prev) => [...prev, AccountOwner]);
-
     setModalState((prev) => ({ ...prev, isModalOpen: false }));
   };
 

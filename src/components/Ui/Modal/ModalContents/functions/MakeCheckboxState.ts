@@ -10,9 +10,12 @@ const MakeCheckboxState = (
   Account: ICharacterState,
   Column: IContents
 ): ICheckBoxconfig => {
+  console.log("------MakeCheckboxState--------");
+  console.log(Account);
+  console.log(Column);
+  console.log("------MakeCheckboxState--------");
   const result: ICheckBoxconfig = {};
 
-  if (!Account || !Account.length) return result;
   for (let CharacterName in Account) {
     const { ItemMaxLevel: level } = Account[CharacterName];
     result[`${CharacterName}`] = {};

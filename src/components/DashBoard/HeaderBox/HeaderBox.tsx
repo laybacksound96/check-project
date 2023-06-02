@@ -50,7 +50,14 @@ const HeaderBox = () => {
       return { ...copiedPrev };
     });
   };
-
+  const openModal2 = () => {
+    setIsModalOpen((prev) => {
+      const copiedPrev = { ...prev };
+      copiedPrev.isModalOpen = true;
+      copiedPrev.modalType = ModalEnum.ADD_ACCOUNT;
+      return { ...copiedPrev };
+    });
+  };
   const { userId } = useParams<RouteParams>();
   return (
     <HeaderBoxStyle>
@@ -61,6 +68,7 @@ const HeaderBox = () => {
 
       <hr></hr>
       <Contents />
+      <button onClick={openModal2}>ssssssssssssssssssssss</button>
     </HeaderBoxStyle>
   );
 };
