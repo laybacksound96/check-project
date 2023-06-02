@@ -5,6 +5,7 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {
   AccountOrder,
   AccountState,
+  CheckBoxConfig,
   CheckboxesState,
   ContentsState,
   ModalState,
@@ -62,7 +63,7 @@ interface IOptions {
 const AddAccount = () => {
   const setModalState = useSetRecoilState(ModalState);
   const setAccountOrder = useSetRecoilState(AccountOrder);
-  const setCheckboxesState = useSetRecoilState(CheckboxesState);
+  const setCheckBoxConfig = useSetRecoilState(CheckBoxConfig);
   const [accountState, setAccountState] = useRecoilState(AccountState);
   const Column = useRecoilValue(ContentsState);
 
@@ -110,10 +111,10 @@ const AddAccount = () => {
       };
       return copiedPrev;
     });
-    setCheckboxesState((prev) => {
+    setCheckBoxConfig((prev) => {
       const copiedPrev = {
         ...prev,
-        MakeCheckboxState(Character, Column),
+        ...MakeCheckboxState(accountState[AccountOwner], Column),
       };
       return copiedPrev;
     });

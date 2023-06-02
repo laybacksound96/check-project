@@ -2,15 +2,15 @@ import { atom } from "recoil";
 
 export interface IGates {
   ["Gate_No"]: number;
-  ["Difficulty"]?: "normal" | "hard" | "easy";
   ["isActivated"]: boolean;
+  ["Difficulty"]?: "normal" | "hard";
 }
 export interface IConfigObject {
   ["isCleared"]: boolean;
   ["isVisible"]: boolean;
-  ["Gates"]: IGates[];
+  ["Gates"]?: IGates[];
 }
-interface IContentName {
+export interface IContentName {
   [ContentName: string]: IConfigObject;
 }
 export interface ICheckBoxconfig {
