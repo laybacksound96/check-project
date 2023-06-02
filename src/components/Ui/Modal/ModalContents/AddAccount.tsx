@@ -6,7 +6,6 @@ import {
   AccountOrder,
   AccountState,
   CheckBoxConfig,
-  CheckboxesState,
   ContentsState,
   ModalState,
 } from "../../../../atoms";

@@ -7,7 +7,7 @@ import { dragIcon } from "../../../../../Settings";
 import Checkbox from "../CheckBoxButton/CheckBoxButton";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import {
-  CheckboxesState,
+  CheckBoxConfig,
   ContentsState,
   VisibledColumns,
 } from "../../../../../atoms";
@@ -66,25 +66,21 @@ function DragCharactersDraggable({
 }: IProps) {
   const Contents = useRecoilValue(ContentsState);
 
-  const setCheckboxState = useSetRecoilState(CheckboxesState);
-  const {
-    [`${accountName}`]: { [`${CharacterName}`]: ContentState },
-  } = useRecoilValue(CheckboxesState);
+  const setCheckboxState = useSetRecoilState(CheckBoxConfig);
+  const { [`${CharacterName}`]: ContentState } = useRecoilValue(CheckBoxConfig);
 
   const [isHovered, setIsHovered] = useState(false);
   const visibledColumns = useRecoilValue(VisibledColumns);
   const CheckBoxOnclick = (char: string, cont: string) => {
-    setCheckboxState((Accounts) => {
-      const copiedAccounts = { ...Accounts };
-      const copiedAccount = { ...copiedAccounts[accountName] };
-      const copiedCharacter = { ...copiedAccount[char] };
-      const copiedContent = copiedCharacter[cont];
-      const state = copiedAccounts[accountName][char][cont];
-
-      copiedCharacter[cont] = !state;
-      copiedAccount[char] = copiedCharacter;
-      copiedAccounts[accountName] = copiedAccount;
-      return copiedAccounts;
+    setCheckboxState((Characters) => {
+      const copiedCharacters = { ...Characters };
+      const ContentName = { ...copiedCharacters[char] };
+      const ConfigObject = { ...ContentName[cont] };
+      const state = copiedCharacters[char][cont].isCleared;
+      ConfigObject.isCleared = state!;
+      ContentName[cont] = ConfigObject;
+      copiedCharacters[char] = ContentName;
+      return copiedCharacters;
     });
   };
 
@@ -116,7 +112,7 @@ function DragCharactersDraggable({
               Contents[ContentName].isVisible && (
                 <Checkbox
                   key={index + ColumnIndex + ContentName}
-                  isChecked={ContentState[ContentName]}
+                  isChecked={ContentState[ContentName].isCleared}
                   isVisible={true}
                   CheckBoxOnclick={CheckBoxOnclick}
                   ContentName={ContentName}

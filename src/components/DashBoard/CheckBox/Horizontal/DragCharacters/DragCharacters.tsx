@@ -9,7 +9,7 @@ import {
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useRecoilValue } from "recoil";
-import { CheckboxesState } from "../../../../../atoms";
+import { AccountState } from "../../../../../atoms";
 import DragCharactersDraggable from "./DragCharactersDraggable";
 import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -65,8 +65,10 @@ const ButtonContainer = styled.div`
   }
 `;
 function DragCharacters({ parentProvided, style, accountName }: IProps) {
-  const Accounts = useRecoilValue(CheckboxesState);
-  const [Account, setAccount] = useState(Object.keys(Accounts[accountName]));
+  const accountState = useRecoilValue(AccountState);
+  const [Account, setAccount] = useState(
+    Object.keys(accountState[accountName])
+  );
   const [isHovered, setIsHovered] = useState(false);
 
   const dragCharacterHandler = (dragInfo: DropResult) => {
