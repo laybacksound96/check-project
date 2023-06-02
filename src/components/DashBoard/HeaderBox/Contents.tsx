@@ -1,6 +1,6 @@
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { CheckboxesState, ContentsState } from "../../../atoms";
+import { CheckBoxConfig, ContentsState } from "../../../atoms";
 import { useEffect, useState } from "react";
 import Content from "./Content";
 import CalculateCheckbox from "../Functions/CalculateCheckbox";
@@ -19,12 +19,12 @@ export interface IContentsFrequency {
 
 const Contents = () => {
   const [contentState, setContentState] = useState<IContentsFrequency>({});
-  const checkboxState = useRecoilValue(CheckboxesState);
+  const checkBoxConfig = useRecoilValue(CheckBoxConfig);
   const Contents = useRecoilValue(ContentsState);
 
   useEffect(() => {
-    setContentState(() => CalculateCheckbox(checkboxState));
-  }, [checkboxState]);
+    setContentState(() => CalculateCheckbox(checkBoxConfig));
+  }, [checkBoxConfig]);
 
   return (
     <ContainerStyle>

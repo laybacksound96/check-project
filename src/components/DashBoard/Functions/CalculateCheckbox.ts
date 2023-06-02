@@ -1,7 +1,7 @@
-import { ICheckAccounts } from "../../../atoms";
+import { ICheckBoxconfig } from "../../../atoms";
 import { IContentsFrequency } from "../HeaderBox/Contents";
 
-export const CalculateCheckbox = (Accounts: ICheckAccounts) => {
+export const CalculateCheckbox = (Accounts: ICheckBoxconfig) => {
   const resultObj: IContentsFrequency = {};
 
   function frequencyCounter(Accounts: any) {

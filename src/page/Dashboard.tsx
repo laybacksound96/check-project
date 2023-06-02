@@ -3,7 +3,7 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import {
   AccountOrder,
   AccountState,
-  CheckboxesState,
+  CheckBoxConfig,
   ContentsState,
   ModalEnum,
   ModalState,
@@ -20,7 +20,7 @@ import { useEffect } from "react";
 function Dashboard() {
   const [IsModalOpen, setIsModalOpen] = useRecoilState(ModalState);
 
-  const checkboxesState = useRecoilValue(CheckboxesState);
+  const checkBoxConfig = useRecoilValue(CheckBoxConfig);
   const contentsState = useRecoilValue(ContentsState);
   const visibledColumns = useRecoilValue(VisibledColumns);
   const accountOrder = useRecoilValue(AccountOrder);
@@ -34,7 +34,7 @@ function Dashboard() {
   };
   useEffect(() => {
     console.log("checkboxesState");
-    console.log(checkboxesState);
+    console.log(checkBoxConfig);
 
     console.log("contentsState");
     console.log(contentsState);
@@ -50,7 +50,7 @@ function Dashboard() {
     console.log("-------------------------");
     console.log("-------------------------");
   }, [
-    checkboxesState,
+    checkBoxConfig,
     contentsState,
     visibledColumns,
     accountOrder,

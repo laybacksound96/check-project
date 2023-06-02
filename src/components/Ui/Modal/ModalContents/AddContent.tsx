@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import styled, { keyframes, css } from "styled-components";
-import { ContentsState, ModalState, CheckboxesState } from "../../../../atoms";
+import { ContentsState, ModalState, CheckBoxConfig } from "../../../../atoms";
 import { Header } from "./ConfigContent";
 
 interface IStyle {
@@ -71,7 +71,7 @@ const AddContent = () => {
 
   const [contentState, setContentsState] = useRecoilState(ContentsState);
   const setModalState = useSetRecoilState(ModalState);
-  const setCheckboxState = useSetRecoilState(CheckboxesState);
+  const setCheckBoxConfig = useSetRecoilState(CheckBoxConfig);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -93,21 +93,19 @@ const AddContent = () => {
 
       return { ...copiedPrev };
     });
-    setCheckboxState((prev) => {
-      const copiedAccounts = { ...prev };
+    setCheckBoxConfig((prev) => {
+      const copiedCheckBoxConfig = { ...prev };
 
-      for (let account in copiedAccounts) {
-        const copiedAccount = { ...copiedAccounts[account] };
-
-        for (let character in copiedAccounts[account]) {
-          const copiedCotents = { ...copiedAccount[character] };
-          copiedCotents[inputValue] = false;
-          copiedAccount[character] = copiedCotents;
-        }
-        copiedAccounts[account] = copiedAccount;
+      for (let CharacterName in copiedCheckBoxConfig) {
+        const copiedContents = { ...copiedCheckBoxConfig[CharacterName] };
+        copiedContents[`${inputValue}`] = {
+          isCleared: false,
+          isVisible: true,
+        };
+        copiedCheckBoxConfig[CharacterName] = copiedContents;
       }
 
-      return copiedAccounts;
+      return copiedCheckBoxConfig;
     });
 
     setModalState((prev) => {

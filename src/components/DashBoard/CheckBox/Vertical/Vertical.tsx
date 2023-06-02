@@ -7,7 +7,6 @@ import {
 } from "react-beautiful-dnd";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {
-  CheckboxesState,
   ContentsState,
   ModalEnum,
   ModalState,
@@ -19,7 +18,7 @@ import { AxisLocker } from "../../Functions/AxisLocker";
 
 function CheckBoxColumn() {
   const Columns = useRecoilValue(ContentsState);
-  const Accounts = useRecoilValue(CheckboxesState);
+
   const [visibledColumns, setVisibledColumns] = useRecoilState(VisibledColumns);
 
   useEffect(() => {
@@ -58,7 +57,7 @@ function CheckBoxColumn() {
     });
   };
 
-  return Object.keys(Accounts).length ? (
+  return visibledColumns.length ? (
     <DragDropContext onDragEnd={onDragEnd}>
       <Droppable droppableId="one" direction="horizontal">
         {(provided) => (
