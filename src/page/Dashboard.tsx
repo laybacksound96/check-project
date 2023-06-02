@@ -69,6 +69,7 @@ function Dashboard() {
       )}
       <div style={{ minWidth: "800px" }}>
         <HeaderBox />
+        <CheckBox />
       </div>
     </>
   );

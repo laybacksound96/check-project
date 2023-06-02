@@ -77,7 +77,8 @@ function DragCharactersDraggable({
       const ContentName = { ...copiedCharacters[char] };
       const ConfigObject = { ...ContentName[cont] };
       const state = copiedCharacters[char][cont].isCleared;
-      ConfigObject.isCleared = state!;
+
+      ConfigObject.isCleared = !state;
       ContentName[cont] = ConfigObject;
       copiedCharacters[char] = ContentName;
       return copiedCharacters;
@@ -113,7 +114,7 @@ function DragCharactersDraggable({
                 <Checkbox
                   key={index + ColumnIndex + ContentName}
                   isChecked={ContentState[ContentName].isCleared}
-                  isVisible={true}
+                  isVisible={ContentState[ContentName].isVisible}
                   CheckBoxOnclick={CheckBoxOnclick}
                   ContentName={ContentName}
                   CharacterName={CharacterName}

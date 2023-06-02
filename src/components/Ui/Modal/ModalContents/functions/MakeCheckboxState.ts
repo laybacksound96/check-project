@@ -20,7 +20,7 @@ const MakeCheckboxState = (
     const { ItemMaxLevel: level } = Account[CharacterName];
     result[`${CharacterName}`] = {};
     for (let content in Column) {
-      result[`${CharacterName}`] = makeConfigObject(
+      result[`${CharacterName}`][content] = makeConfigObject(
         level,
         content,
         Column[content].type
