@@ -1,242 +1,210 @@
 {
   "아르고스": [
     {
-      "1385": {
+      "normal": {
         "gateNumber": 1,
         "level": 1385,
-        "gold": 1200,
-        "difficulty": "normal"
+        "gold": 1200
       }
     }
   ],
   "발탄": [
     {
-      "1415": {
+      "normal": {
         "gateNumber": 1,
         "level": 1415,
-        "gold": 500,
-        "difficulty": "normal"
+        "gold": 500
       },
-      "1445": {
+      "hard": {
         "gateNumber": 1,
         "level": 1445,
-        "gold": 700,
-        "difficulty": "hard"
+        "gold": 700
       }
     },
     {
-      "1415": {
+      "normal": {
         "gateNumber": 2,
         "level": 1415,
-        "gold": 700,
-        "difficulty": "normal"
+        "gold": 700
       },
-      "1445": {
+      "hard": {
         "gateNumber": 2,
         "level": 1445,
-        "gold": 1100,
-        "difficulty": "hard"
+        "gold": 1100
       }
     }
   ],
 
   "비아키스": [
     {
-      "1430": {
+      "normal": {
         "gateNumber": 1,
         "level": 1430,
-        "gold": 400,
-        "difficulty": "normal"
+        "gold": 400
       },
-      "1460": {
+      "hard": {
         "gateNumber": 1,
         "level": 1460,
-        "gold": 600,
-        "difficulty": "hard"
+        "gold": 600
       }
     },
     {
-      "1430": {
+      "normal": {
         "gateNumber": 2,
         "level": 1430,
-        "gold": 500,
-        "difficulty": "normal"
+        "gold": 500
       },
-      "1460": {
+      "hard": {
         "gateNumber": 2,
         "level": 1460,
-        "gold": 700,
-        "difficulty": "hard"
+        "gold": 700
       }
     },
     {
-      "1430": {
+      "normal": {
         "gateNumber": 3,
         "level": 1430,
-        "gold": 700,
-        "difficulty": "normal"
+        "gold": 700
       },
-      "1460": {
+      "hard": {
         "gateNumber": 3,
         "level": 1460,
-        "gold": 1100,
-        "difficulty": "hard"
+        "gold": 1100
       }
     }
   ],
   "쿠크세이튼": [
     {
-      "1475": {
+      "normal": {
         "gateNumber": 1,
         "level": 1475,
-        "gold": 1000,
-        "difficulty": "normal"
+        "gold": 1000
       }
     },
     {
-      "1475": {
+      "normal": {
         "gateNumber": 2,
         "level": 1475,
-        "gold": 1000,
-        "difficulty": "normal"
+        "gold": 1000
       }
     },
     {
-      "1475": {
+      "normal": {
         "gateNumber": 3,
         "level": 1475,
-        "gold": 2500,
-        "difficulty": "normal"
+        "gold": 2500
       }
     }
   ],
   "아브렐슈드": [
     {
-      "1490": {
+      "normal": {
         "gateNumber": 1,
         "level": 1490,
-        "gold": 2000,
-        "difficulty": "normal"
+        "gold": 2000
       },
-      "1540": {
+      "hard": {
         "gateNumber": 1,
         "level": 1540,
-        "gold": 2500,
-        "difficulty": "hard"
+        "gold": 2500
       }
     },
     {
-      "1490": {
+      "normal": {
         "gateNumber": 2,
         "level": 1490,
-        "gold": 2500,
-        "difficulty": "normal"
+        "gold": 2500
       },
-      "1540": {
+      "hard": {
         "gateNumber": 2,
         "level": 1540,
-        "gold": 3000,
-        "difficulty": "hard"
+        "gold": 3000
       }
     },
     {
-      "1500": {
+      "normal": {
         "gateNumber": 3,
         "level": 1500,
-        "gold": 700,
-        "difficulty": "normal"
+        "gold": 700
       },
-      "1550": {
+      "hard": {
         "gateNumber": 3,
         "level": 1550,
-        "gold": 900,
-        "difficulty": "hard"
+        "gold": 900
       }
     },
     {
-      "1500": {
+      "normal": {
         "gateNumber": 4,
         "level": 1500,
-        "gold": 800,
-        "difficulty": "normal"
+        "gold": 800
       },
-      "1550": {
+      "hard": {
         "gateNumber": 4,
         "level": 1550,
-        "gold": 1100,
-        "difficulty": "hard"
+        "gold": 1100
       }
     },
     {
-      "1520": {
+      "normal": {
         "gateNumber": 5,
         "level": 1520,
-        "gold": 1000,
-        "difficulty": "normal"
+        "gold": 1000
       },
-      "1560": {
+      "hard": {
         "gateNumber": 5,
         "level": 1560,
-        "gold": 1200,
-        "difficulty": "hard"
+        "gold": 1200
       }
     },
     {
-      "1520": {
+      "normal": {
         "gateNumber": 6,
         "level": 1520,
-        "gold": 1500,
-        "difficulty": "normal"
+        "gold": 1500
       },
-      "1560": {
+      "hard": {
         "gateNumber": 6,
         "level": 1560,
-        "gold": 1800,
-        "difficulty": "hard"
+        "gold": 1800
       }
     }
   ],
   "일리아칸": [
     {
-      "1580": {
+      "normal": {
         "gateNumber": 1,
         "level": 1580,
-        "gold": 1500,
-        "difficulty": "normal"
+        "gold": 1500
       },
-      "1600": {
+      "hard": {
         "gateNumber": 1,
         "level": 1600,
-        "gold": 1750,
-        "difficulty": "hard"
+        "gold": 1750
       }
     },
     {
-      "1580": {
+      "normal": {
         "gateNumber": 2,
         "level": 1580,
-        "gold": 1750,
-        "difficulty": "normal"
+        "gold": 1750
       },
-      "1600": {
+      "hard": {
         "gateNumber": 2,
         "level": 1600,
-        "gold": 2000,
-        "difficulty": "hard"
+        "gold": 2000
       }
     },
     {
-      "1580": {
+      "normal": {
         "gateNumber": 3,
         "level": 1580,
-        "gold": 2250,
-        "difficulty": "normal"
+        "gold": 2250
       },
-      "1600": {
+      "hard": {
         "gateNumber": 3,
         "level": 1600,
-        "gold": 3750,
-        "difficulty": "hard"
+        "gold": 3750
       }
     }
   ]
