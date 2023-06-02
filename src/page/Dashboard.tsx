@@ -42,7 +42,7 @@ function Dashboard() {
     console.log("visibledColumns");
     console.log(visibledColumns);
 
-    console.log("accountOrder");
+    console.log("accountOrder.");
     console.log(accountOrder);
 
     console.log("AccountState");
