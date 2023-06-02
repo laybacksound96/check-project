@@ -7,13 +7,14 @@ const makeConfigObject = (
   content: string,
   type: string
 ): IContentName => {
-  const ConfigObject: IConfigObject = {
-    isCleared: false,
-    isVisible: true,
-  };
-  if (type === "default") {
+  if (type === "Default") {
     const gateCount = CountGates(content);
-    for (let gateNumber = 1; gateNumber > gateCount; gateNumber++) {
+    const DefaultObject: IConfigObject = {
+      isCleared: false,
+      isVisible: true,
+      Gates: [],
+    };
+    for (let gateNumber = 1; gateNumber < gateCount + 1; gateNumber++) {
       const { isActivated, Difficulty } = makeActivatedAndDifficulty(
         level,
         content,
@@ -24,10 +25,15 @@ const makeConfigObject = (
         isActivated,
         Difficulty,
       };
-      ConfigObject.Gates?.push(Gate);
+      DefaultObject.Gates?.push(Gate);
     }
+    return { [`${content}`]: DefaultObject };
   }
-  const ContentName: IContentName = { [`${content}`]: ConfigObject };
+  const CustomObject: IConfigObject = {
+    isCleared: false,
+    isVisible: true,
+  };
+  const ContentName: IContentName = { [`${content}`]: CustomObject };
   return ContentName;
 };
 
