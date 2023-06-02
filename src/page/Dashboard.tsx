@@ -33,7 +33,7 @@ function Dashboard() {
     });
   };
   useEffect(() => {
-    console.log("checkboxesState");
+    console.log("checkBoxConfig");
     console.log(checkBoxConfig);
 
     console.log("contentsState");
