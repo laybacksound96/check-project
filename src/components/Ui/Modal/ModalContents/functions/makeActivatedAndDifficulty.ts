@@ -16,13 +16,7 @@ interface IData {
 }
 export const makeAvailableDifficulty = (
   level: number,
-  content:
-    | "발탄"
-    | "비아키스"
-    | "쿠크세이튼"
-    | "아브렐슈드"
-    | "일리아칸"
-    | "아르고스",
+  content: string,
   gateNumber: number
 ): resultObject => {
   const resultDifficulty: resultObject = {

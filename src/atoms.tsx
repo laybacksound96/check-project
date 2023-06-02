@@ -3,7 +3,7 @@ import { atom } from "recoil";
 export interface IGates {
   ["Gate_No"]: number;
   ["isActivated"]: boolean;
-  ["Difficulty"]?: "normal" | "hard";
+  ["Difficulty"]?: string;
 }
 export interface IConfigObject {
   ["isCleared"]: boolean;
