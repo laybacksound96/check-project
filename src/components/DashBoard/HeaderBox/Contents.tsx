@@ -23,8 +23,8 @@ const Contents = () => {
   const Contents = useRecoilValue(ContentsState);
 
   useEffect(() => {
-    setContentState(() => CalculateCheckbox(checkBoxConfig));
-  }, [checkBoxConfig]);
+    setContentState(() => CalculateCheckbox(checkBoxConfig, Contents));
+  }, [checkBoxConfig, Contents]);
 
   return (
     <ContainerStyle>

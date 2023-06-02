@@ -58,7 +58,6 @@ const HeaderBox = () => {
         <h1>{userId}님의 Sheet</h1>
         <FontAwesomeIcon onClick={openModal} icon={faGear} size="lg" />
       </header>
-
       <hr></hr>
       <Contents />
     </HeaderBoxStyle>
