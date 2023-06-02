@@ -18,6 +18,29 @@ export const CalculateCheckbox = (
       }
     }
   }
+
+  // function recursive(obj){
+  //   let result =[]
+  //   let a = obj.Gates[0].Gate_No
+  //   let b
+  //   let Diff = obj.Gates[0].Difficulty
+
+  //   for(let i in obj.Gates){
+  //       const Difficulty = obj.Gates[i].Difficulty
+  //       if(Diff!==Difficulty){
+  //           if(+a===+i){
+  //                result.push(`${Diff}${a}`)
+  //               continue
+  //           }
+  //           result.push(`${Diff}${a}-${i}`)
+  //           a = +i+1
+  //       }
+  //       Diff=obj.Gates[i].Difficulty
+  //       b=+i+1
+  //   }
+  //   result.push(`${Diff}${a}-${b}`)
+  //   return result
+  // }
   frequencyCounter(Accounts);
 
   return resultObj;
