@@ -8,7 +8,7 @@ import CalculateCheckbox from "../Functions/CalculateCheckbox";
 const ContainerStyle = styled.ul`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  grid-auto-rows: 60px;
+  grid-auto-rows: auto;
   gap: 10px;
   margin-top: 30px;
 `;

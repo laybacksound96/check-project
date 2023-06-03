@@ -36,7 +36,6 @@ export const CalculateCheckbox = (
       }
     }
   }
-  console.log(resultObj);
   return resultObj;
 };
 

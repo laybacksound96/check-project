@@ -23,14 +23,17 @@ interface IpropStyle {
   shouldAnimate: boolean;
 }
 const ContentStyle = styled.li<IpropStyle>`
+  display: flex;
+  flex-direction: column;
   margin: 0 10px;
   text-align: center;
   border-radius: 10px;
   width: auto;
   max-width: 200px;
   min-width: 120px;
-  height: 50px;
-  line-height: 50px;
+  min-height: 50px;
+  height: auto;
+  line-height: 30px;
   background-color: ${(props) => props.theme.accentColor};
   color: ${(props) => props.theme.bgColor};
   ${(props) =>
@@ -57,11 +60,11 @@ const Content = ({ contentState }: IProps) => {
 
   return (
     <ContentStyle shouldAnimate={shouldAnimate}>
-      {contentState.ContentsName}
+      <span>{contentState.ContentsName}</span>
       {contentState.GateState.map((elem) => {
-        return <div key={elem}>{elem}</div>;
+        return <p key={elem}>{elem}</p>;
       })}
-      {contentState.Frequency}
+      <span>{contentState.Frequency}</span>
     </ContentStyle>
   );
 };
