@@ -108,16 +108,17 @@ function DragCharactersDraggable({
             </ButtonContainer>
           </Name>
 
-          {visibledColumns.map((ContentName, ColumnIndex) => {
+          {visibledColumns.map((Content, ColumnIndex) => {
             return (
-              Contents[ContentName].isVisible && (
+              Contents[Content.name].isVisible && (
                 <Checkbox
-                  key={index + ColumnIndex + ContentName}
-                  isChecked={ContentState[ContentName].isCleared}
-                  isVisible={ContentState[ContentName].isVisible}
+                  key={index + ColumnIndex + Content.name}
+                  isChecked={ContentState[Content.name].isCleared}
+                  isVisible={ContentState[Content.name].isVisible}
                   CheckBoxOnclick={CheckBoxOnclick}
-                  ContentName={ContentName}
+                  ContentName={Content.name}
                   CharacterName={CharacterName}
+                  Width={Content.width}
                 />
               )
             );

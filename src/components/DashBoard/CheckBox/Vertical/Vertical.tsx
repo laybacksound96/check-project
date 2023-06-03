@@ -8,6 +8,7 @@ import {
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {
   AccountState,
+  Contents,
   ContentsState,
   ModalEnum,
   ModalState,
@@ -17,6 +18,7 @@ import {
 import Card, { Name } from "./Vertical__card";
 import { AxisLocker } from "../../Functions/AxisLocker";
 import styled from "styled-components";
+import { dragIcon } from "../../../../Settings";
 const CardContainer = styled.div`
   display: flex;
 `;
@@ -30,7 +32,11 @@ function CheckBoxColumn() {
       const newColumnArray = [];
       for (let key in Columns) {
         if (Columns[key].isVisible === false) continue;
-        newColumnArray.push(key);
+        const content: Contents = {
+          name: key,
+          width: dragIcon.icon.edgeLength,
+        };
+        newColumnArray.push(content);
       }
       return [...newColumnArray];
     });
@@ -68,12 +74,17 @@ function CheckBoxColumn() {
         <Droppable droppableId="one" direction="horizontal">
           {(provided) => (
             <CardContainer ref={provided.innerRef} {...provided.droppableProps}>
-              {visibledColumns.map((name, index) => (
-                <Draggable draggableId={name} index={index} key={name}>
+              {visibledColumns.map((contents, index) => (
+                <Draggable
+                  draggableId={contents.name}
+                  index={index}
+                  key={contents.name}
+                >
                   {(provided) => (
                     <Card
-                      Column={name}
+                      Column={contents.name}
                       parentProvided={provided}
+                      index={index}
                       style={AxisLocker(provided.draggableProps.style!, true)}
                     />
                   )}

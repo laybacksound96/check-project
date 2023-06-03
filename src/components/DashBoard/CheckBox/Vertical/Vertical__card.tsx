@@ -5,6 +5,9 @@ import {
 } from "react-beautiful-dnd";
 import styled from "styled-components";
 import { dragIcon } from "../../../../Settings";
+import { useEffect, useRef } from "react";
+import { useSetRecoilState } from "recoil";
+import { VisibledColumns } from "../../../../atoms";
 
 export const Name = styled.div`
   display: flex;
@@ -24,19 +27,36 @@ export const Name = styled.div`
 interface IColumnCardProp {
   Column: string;
   parentProvided: DraggableProvided;
+  index: number;
   style: DraggingStyle | NotDraggingStyle;
 }
 
-function ColumnCard({ Column, parentProvided, style }: IColumnCardProp) {
+function ColumnCard({ Column, parentProvided, style, index }: IColumnCardProp) {
+  const elementRef = useRef<HTMLDivElement>(null);
+
+  const setVisibledColumns = useSetRecoilState(VisibledColumns);
+  useEffect(() => {
+    if (elementRef.current) {
+      const elementWidth = elementRef.current.offsetWidth;
+      setVisibledColumns((prev) => {
+        const copiedPrev = [...prev];
+        const copiedContents = { ...copiedPrev[index] };
+        copiedContents.width = elementWidth;
+        copiedPrev[index] = copiedContents;
+        return copiedPrev;
+      });
+    }
+  }, [setVisibledColumns, index]);
+
   return (
-    <Name
+    <div
       ref={parentProvided.innerRef}
       {...parentProvided.dragHandleProps}
       {...parentProvided.draggableProps}
       style={style}
     >
-      {Column}
-    </Name>
+      <Name ref={elementRef}>{Column}</Name>
+    </div>
   );
 }
 export default ColumnCard;

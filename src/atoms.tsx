@@ -52,7 +52,11 @@ export const ContentsState = atom<IContents>({
   },
 });
 
-export const VisibledColumns = atom<string[]>({
+export interface Contents {
+  ["name"]: string;
+  ["width"]: number;
+}
+export const VisibledColumns = atom<Contents[]>({
   key: "visibledColumns",
   default: [],
 });
