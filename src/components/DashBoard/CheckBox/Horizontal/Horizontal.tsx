@@ -47,7 +47,6 @@ function Horizontal() {
 
   return (
     <>
-      <Vertical />
       <DragAccounts
         AccountOrder={accountOrder}
         dragAccountHandler={dragAccountHandler}

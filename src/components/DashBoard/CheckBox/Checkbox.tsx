@@ -24,6 +24,7 @@ export const CheckBoxStyle = styled.div`
 const CheckBox = () => {
   return (
     <CheckBoxStyle>
+      <Vertical />
       <Horizontal />
     </CheckBoxStyle>
   );

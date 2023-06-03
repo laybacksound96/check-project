@@ -106,6 +106,7 @@ function DragCharacters({ parentProvided, style, accountName }: IProps) {
                     <FontAwesomeIcon icon={faGear} size="lg" />
                   </ButtonContainer>
                 } */}
+
                 {Account.map((CharacterName, index) => {
                   return (
                     <DragCharactersDraggable
