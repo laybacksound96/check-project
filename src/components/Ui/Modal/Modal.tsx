@@ -18,7 +18,7 @@ const ModalContainer = styled.div`
   width: 100%;
   height: 100%;
   animation: ${fadeInAnimation} 0.2s ease-in-out;
-  color: ${(props) => props.theme.bgColor};
+  color: ${(props) => props.theme.Color_1};
   z-index: 999;
 `;
 const Background = styled.div`
@@ -35,7 +35,7 @@ const MainDiv = styled.div`
   z-index: 998;
   padding: 40px;
   border-radius: 30px;
-  background-color: ${(props) => props.theme.subColor};
+  background-color: ${(props) => props.theme.Color_1};
   position: relative;
 `;
 const ButtonContainer = styled.div`
@@ -52,7 +52,7 @@ const ButtonContainer = styled.div`
       transition: 0.2s ease-in-out;
     }
     span {
-      color: ${(props) => props.theme.bgColor};
+      color: ${(props) => props.theme.TextColor_B};
       font-size: 30px;
     }
   }

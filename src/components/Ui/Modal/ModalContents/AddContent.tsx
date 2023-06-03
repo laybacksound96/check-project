@@ -18,7 +18,7 @@ const vibration = keyframes`
 export const Input = styled.input<IStyle>`
   width: 300px;
   height: 50px;
-  background-color: ${(props) => props.theme.subColor};
+  background-color: ${(props) => props.theme.Color_3};
   border: 2px solid ${(props) => (props.isDisabled ? "#EF476F" : "#5e5e5e")};
   border-radius: 10px;
   padding-left: 10px;
@@ -32,10 +32,10 @@ export const Input = styled.input<IStyle>`
     outline: none;
     transition: 0.2s ease;
     border: 2px solid
-      ${(props) => (props.isDisabled ? "#EF476F" : props.theme.bgColor)};
+      ${(props) => (props.isDisabled ? "#EF476F" : props.theme.Color_1)};
   }
   &::placeholder {
-    color: ${(props) => props.theme.bgColor};
+    color: ${(props) => props.theme.Color_1};
   }
   ${(props) =>
     props.isDisabled &&

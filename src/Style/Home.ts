@@ -65,7 +65,7 @@ export const LoginDiscordBtn = styled.button`
 `;
 export const Article = styled.article`
   height: 300px;
-  background-color: ${(props) => props.theme.bgColor};
+  background-color: ${(props) => props.theme.Color_1};
   padding-left: 150px;
   padding-top: 100px;
   p {
@@ -78,7 +78,7 @@ export const Article = styled.article`
   }
   h1 {
     font-size: 60px;
-    color: ${(props) => props.theme.accentColor};
+    color: ${(props) => props.theme.Color_4};
     margin-bottom: 15px;
   }
 `;

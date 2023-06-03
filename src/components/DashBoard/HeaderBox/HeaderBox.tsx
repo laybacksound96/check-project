@@ -13,16 +13,18 @@ const HeaderBoxStyle = styled.header`
   border-radius: 30px;
   padding: 30px;
 
+  background-color: ${(props) => props.theme.Color_1};
+  border-color: ${(props) => props.theme.Color_4};
   border-style: solid;
-  border-color: ${(props) => props.theme.bgColor};
   border-width: 3px;
 
   * {
-    color: ${(props) => props.theme.bgColor};
+    color: ${(props) => props.theme.TextColor_A};
   }
   h1 {
     display: inline;
     font-size: 30px;
+    color: ${(props) => props.theme.TextColor_A};
   }
   svg {
     height: 40px;
@@ -61,7 +63,6 @@ const HeaderBox = () => {
         <h1>{userId}님의 Sheet</h1>
         <FontAwesomeIcon onClick={openModal} icon={faGear} size="lg" />
       </header>
-      <hr></hr>
       <Contents />
     </HeaderBoxStyle>
   );

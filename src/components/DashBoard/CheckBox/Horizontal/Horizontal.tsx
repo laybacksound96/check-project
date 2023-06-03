@@ -8,8 +8,8 @@ import { DropResult } from "react-beautiful-dnd";
 const AddAccountBtn = styled.button`
   height: 100px;
   border: none;
-  background-color: ${(props) => props.theme.subColor};
-  color: ${(props) => props.theme.bgColor};
+  background-color: ${(props) => props.theme.Color_4};
+  color: ${(props) => props.theme.TextColor_A};
   border-radius: 10px;
   &:hover {
     background-color: rgba(255, 255, 255, 0.231);

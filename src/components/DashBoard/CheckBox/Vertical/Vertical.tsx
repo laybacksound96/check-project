@@ -16,7 +16,11 @@ import {
 
 import Card, { Name } from "./Vertical__card";
 import { AxisLocker } from "../../Functions/AxisLocker";
-
+import styled from "styled-components";
+const CardContainer = styled.div`
+  display: flex;
+  margin-left: 210px;
+`;
 function CheckBoxColumn() {
   const Columns = useRecoilValue(ContentsState);
   const Accounts = useRecoilValue(AccountState);
@@ -62,11 +66,7 @@ function CheckBoxColumn() {
     <DragDropContext onDragEnd={onDragEnd}>
       <Droppable droppableId="one" direction="horizontal">
         {(provided) => (
-          <div
-            style={{ display: "flex", marginLeft: "200px" }}
-            ref={provided.innerRef}
-            {...provided.droppableProps}
-          >
+          <CardContainer ref={provided.innerRef} {...provided.droppableProps}>
             {visibledColumns.map((name, index) => (
               <Draggable draggableId={name} index={index} key={name}>
                 {(provided) => (
@@ -80,7 +80,7 @@ function CheckBoxColumn() {
             ))}
             {provided.placeholder}
             <Name onClick={openModal}>+</Name>
-          </div>
+          </CardContainer>
         )}
       </Droppable>
     </DragDropContext>

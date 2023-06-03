@@ -20,7 +20,7 @@ const Container = styled.div`
   justify-content: space-evenly;
 `;
 const ContentCard = styled.div`
-  background-color: ${(props) => props.theme.accentColor};
+  background-color: ${(props) => props.theme.TextColor_A};
   border-radius: 20px;
   padding: 20px;
   margin-left: 20px;

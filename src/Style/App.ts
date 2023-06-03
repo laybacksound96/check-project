@@ -54,9 +54,7 @@ a {
   text-decoration:none;
   color:inherit;
 }
-hr {
-    border-color: ${(props) => props.theme.subColor};
-  }
+
 
 
 main{
@@ -68,8 +66,8 @@ main{
   align-items: center;
 
   font-family: "Source Sans Pro", sans-serif;
-  background-color: ${(props) => props.theme.subColor};
-  color: ${(props) => props.theme.accentColor};
+  background-color: ${(props) => props.theme.Color_1};
+  color: ${(props) => props.theme.TextColor_A};
   }
 header{
   margin-bottom: 20px;

@@ -5,16 +5,16 @@ import Horizontal from "./Horizontal/Horizontal";
 export const CheckBoxStyle = styled.div`
   width: 100%;
   height: auto;
-  background-color: ${(props) => props.theme.subColor};
+  background-color: ${(props) => props.theme.Color_1};
   * {
-    color: ${(props) => props.theme.bgColor};
+    color: ${(props) => props.theme.TextColor_A};
   }
   margin-top: 20px;
   display: flex;
   flex-direction: column;
 
   border-style: solid;
-  border-color: ${(props) => props.theme.bgColor};
+  border-color: ${(props) => props.theme.Color_4};
   border-width: 3px;
 
   padding: 30px 40px;

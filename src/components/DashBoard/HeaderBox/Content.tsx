@@ -34,7 +34,7 @@ const ContentsBox = styled.div`
   flex-basis: 70%;
 `;
 const OwnerBox = styled.div`
-  background-color: #ffffff;
+  background-color: ${(props) => props.theme.Color_4};
   flex-basis: 30%;
   border-radius: 0 0 10px 10px;
 `;
@@ -50,8 +50,10 @@ const ContentStyle = styled.li<IpropStyle>`
   min-height: 200px;
   height: auto;
 
-  background-color: ${(props) => props.theme.accentColor};
-  color: ${(props) => props.theme.bgColor};
+  * {
+    color: ${(props) => props.theme.TextColor_A};
+  }
+  background-color: ${(props) => props.theme.Color_3};
   ${(props) =>
     props.shouldAnimate &&
     css`
@@ -75,7 +77,7 @@ const Icon = styled.div`
   width: 45px;
   height: 45px;
   border-radius: 7px;
-  background-color: #d2d2d2;
+  background-color: ${(props) => props.theme.Color_4};
 `;
 const TextContainer = styled.div`
   margin-top: 5px;

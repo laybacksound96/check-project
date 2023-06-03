@@ -15,7 +15,7 @@ const CheckBox = styled.div<IStyle>`
   width: ${dragIcon.icon.edgeLength}px;
   height: ${dragIcon.icon.edgeLength}px;
   border-radius: 5px;
-  color: ${(props) => props.theme.subColor};
+  color: ${(props) => props.theme.Color_3};
   &:hover {
     background-color: rgba(255, 255, 255, 0.258);
     transition: ease-in-out 0.1s;

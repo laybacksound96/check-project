@@ -23,13 +23,14 @@ interface IProps {
 
 const Area = styled.div`
   * {
-    color: ${(props) => props.theme.bgColor};
+    color: ${(props) => props.theme.TextColor_A};
   }
   font-weight: 500;
   flex-grow: 1;
   border-radius: 10px;
-  background-color: ${(props) => props.theme.subColor};
+  background-color: ${(props) => props.theme.Color_3};
   transition: background-color 0.2s ease-in-out;
+  padding: 10px;
   &:hover {
     background-color: rgba(255, 255, 255, 0.131);
     transition: ease-in-out 0.1s;
