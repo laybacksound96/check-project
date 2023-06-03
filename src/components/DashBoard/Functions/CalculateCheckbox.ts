@@ -6,20 +6,10 @@ export const CalculateCheckbox = (
   Accounts: ICheckBoxconfig,
   Contents: IContents
 ) => {
-  console.log("디버깅디버깅디버깅디버깅디버깅디버깅");
-  console.log("=================================");
-  console.log(Accounts);
-  console.log(Contents);
-  console.log("=================================");
-  console.log("디버깅디버깅디버깅디버깅디버깅디버깅");
   const resultObj: IContentsFrequency = {};
-
   for (const CharacterName in Accounts) {
     for (const ContentName in Contents) {
       const state = Accounts[CharacterName][ContentName];
-      if (CharacterName === "DK너구리") {
-        console.log(state);
-      }
       if (state.isVisible === false) continue;
       if (Contents[ContentName].type === "Default") {
         if (state.Gates === undefined) continue;
@@ -27,17 +17,14 @@ export const CalculateCheckbox = (
         const Key = `${ContentName}_${gates.join("_")}`;
         if (resultObj[Key] === undefined) {
           resultObj[Key] = {
-            Frequency: 1,
+            Frequency: 0,
             GateState: gates,
             ContentsName: ContentName,
-            ContentsOwner: [CharacterName],
+            ContentsOwner: [],
           };
-        } else {
-          if (state.isCleared === false) {
-            resultObj[Key].Frequency++;
-          }
-          resultObj[Key].ContentsOwner.push(CharacterName);
         }
+        if (state.isCleared === false) resultObj[Key].Frequency++;
+        resultObj[Key].ContentsOwner.push(CharacterName);
       }
       if (Contents[ContentName].type === "Custom") {
         if (resultObj[ContentName] === undefined) {
@@ -49,7 +36,6 @@ export const CalculateCheckbox = (
       }
     }
   }
-
   console.log(resultObj);
   return resultObj;
 };
