@@ -4,10 +4,11 @@ import { CheckBoxConfig, ContentsState } from "../../../atoms";
 import { useEffect, useState } from "react";
 import Content from "./Content";
 import CalculateCheckbox from "../Functions/CalculateCheckbox";
+import React from "react";
 
 const ContainerStyle = styled.ul`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
   grid-auto-rows: auto;
   gap: 10px;
   margin-top: 30px;
@@ -36,10 +37,11 @@ const Contents = () => {
     <ContainerStyle>
       {Object.keys(contentState).map((key) => {
         if (!contentState[key]) return null;
+        if (contentState[key].Frequency === 0) return null;
         return <Content key={key} contentState={contentState[key]} />;
       })}
     </ContainerStyle>
   );
 };
 
-export default Contents;
+export default React.memo(Contents);

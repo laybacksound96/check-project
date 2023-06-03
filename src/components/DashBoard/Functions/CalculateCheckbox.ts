@@ -11,6 +11,7 @@ export const CalculateCheckbox = (
     for (const ContentName in Contents) {
       const state = Accounts[CharacterName][ContentName];
       if (state.isVisible === false) continue;
+      if (Contents[ContentName].isVisible === false) continue;
       if (Contents[ContentName].type === "Default") {
         if (state.Gates === undefined) continue;
         const gates = CalculateGateDifficulty(state.Gates);
@@ -36,6 +37,7 @@ export const CalculateCheckbox = (
       }
     }
   }
+
   return resultObj;
 };
 
