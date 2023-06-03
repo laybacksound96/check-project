@@ -1,6 +1,7 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import styled, { css, keyframes } from "styled-components";
+import { IContents } from "./Contents";
 const bump = keyframes`
   0% {
     transform: scale(1);
@@ -39,11 +40,10 @@ const ContentStyle = styled.li<IpropStyle>`
     `};
 `;
 interface IProps {
-  content: string;
-  frequency: number;
+  contentState: IContents;
 }
 
-const Content = ({ content, frequency }: IProps) => {
+const Content = ({ contentState }: IProps) => {
   const [shouldAnimate, setShouldAnimate] = useState(false);
   useEffect(() => {
     setShouldAnimate(true);
@@ -53,11 +53,15 @@ const Content = ({ content, frequency }: IProps) => {
     }, 300);
 
     return () => clearTimeout(timeoutId);
-  }, [frequency]);
+  }, [contentState]);
 
   return (
     <ContentStyle shouldAnimate={shouldAnimate}>
-      {content} x {frequency}
+      {contentState.ContentsName}
+      {contentState.GateState.map((elem) => {
+        return <div key={elem}>{elem}</div>;
+      })}
+      {contentState.Frequency}
     </ContentStyle>
   );
 };

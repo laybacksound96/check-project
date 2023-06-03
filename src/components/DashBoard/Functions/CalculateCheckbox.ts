@@ -1,48 +1,56 @@
 import { ICheckBoxconfig, IContents } from "../../../atoms";
 import { IContentsFrequency } from "../HeaderBox/Contents";
+import CalculateGateDifficulty from "./CalculateGateDifficulty";
 
 export const CalculateCheckbox = (
   Accounts: ICheckBoxconfig,
   Contents: IContents
 ) => {
-  const resultObj: IContentsFrequency = {};
+  console.log("디버깅디버깅디버깅디버깅디버깅디버깅");
+  console.log("=================================");
+  console.log(Accounts);
   console.log(Contents);
-  function frequencyCounter(Accounts: any) {
-    for (let key in Accounts) {
-      if (Accounts[key] && typeof Accounts[key].isCleared !== "boolean") {
-        frequencyCounter(Accounts[key]);
-      } else {
-        if (Accounts[key].isVisible === false) continue;
-        if (resultObj[key] === undefined) resultObj[key] = 0;
-        if (Accounts[key].isCleared === false) resultObj[key]++;
+  console.log("=================================");
+  console.log("디버깅디버깅디버깅디버깅디버깅디버깅");
+  const resultObj: IContentsFrequency = {};
+
+  for (const CharacterName in Accounts) {
+    for (const ContentName in Contents) {
+      const state = Accounts[CharacterName][ContentName];
+      if (CharacterName === "DK너구리") {
+        console.log(state);
+      }
+      if (state.isVisible === false) continue;
+      if (Contents[ContentName].type === "Default") {
+        if (state.Gates === undefined) continue;
+        const gates = CalculateGateDifficulty(state.Gates);
+        const Key = `${ContentName}_${gates.join("_")}`;
+        if (resultObj[Key] === undefined) {
+          resultObj[Key] = {
+            Frequency: 1,
+            GateState: gates,
+            ContentsName: ContentName,
+            ContentsOwner: [CharacterName],
+          };
+        } else {
+          if (state.isCleared === false) {
+            resultObj[Key].Frequency++;
+          }
+          resultObj[Key].ContentsOwner.push(CharacterName);
+        }
+      }
+      if (Contents[ContentName].type === "Custom") {
+        if (resultObj[ContentName] === undefined) {
+          resultObj[ContentName].Frequency = 0;
+          resultObj[ContentName].GateState = [];
+          resultObj[ContentName].ContentsName = ContentName;
+        }
+        if (state.isCleared === false) resultObj[ContentName].Frequency++;
       }
     }
   }
 
-  // function recursive(obj){
-  //   let result =[]
-  //   let a = obj.Gates[0].Gate_No
-  //   let b
-  //   let Diff = obj.Gates[0].Difficulty
-
-  //   for(let i in obj.Gates){
-  //       const Difficulty = obj.Gates[i].Difficulty
-  //       if(Diff!==Difficulty){
-  //           if(+a===+i){
-  //                result.push(`${Diff}${a}`)
-  //               continue
-  //           }
-  //           result.push(`${Diff}${a}-${i}`)
-  //           a = +i+1
-  //       }
-  //       Diff=obj.Gates[i].Difficulty
-  //       b=+i+1
-  //   }
-  //   result.push(`${Diff}${a}-${b}`)
-  //   return result
-  // }
-  frequencyCounter(Accounts);
-
+  console.log(resultObj);
   return resultObj;
 };
 

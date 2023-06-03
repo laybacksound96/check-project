@@ -13,8 +13,14 @@ const ContainerStyle = styled.ul`
   margin-top: 30px;
 `;
 
+export interface IContents {
+  [`ContentsName`]: string;
+  [`GateState`]: string[];
+  [`Frequency`]: number;
+  [`ContentsOwner`]: string[];
+}
 export interface IContentsFrequency {
-  [contentName: string]: number;
+  [contentKey: string]: IContents;
 }
 
 const Contents = () => {
@@ -28,11 +34,9 @@ const Contents = () => {
 
   return (
     <ContainerStyle>
-      {Object.keys(Contents).map((key) => {
-        if (!Contents[key].isVisible || !contentState[key]) return null;
-        return (
-          <Content key={key} content={key} frequency={contentState[key]} />
-        );
+      {Object.keys(contentState).map((key) => {
+        if (!contentState[key]) return null;
+        return <Content key={key} contentState={contentState[key]} />;
       })}
     </ContainerStyle>
   );
