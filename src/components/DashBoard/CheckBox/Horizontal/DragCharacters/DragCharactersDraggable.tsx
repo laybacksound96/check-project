@@ -118,6 +118,7 @@ function DragCharactersDraggable({
                   CheckBoxOnclick={CheckBoxOnclick}
                   ContentName={Content.name}
                   CharacterName={CharacterName}
+                  Width={Content.width}
                 />
               )
             );
