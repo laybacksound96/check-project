@@ -68,7 +68,7 @@ main{
   align-items: center;
 
   font-family: "Source Sans Pro", sans-serif;
-  background-color: ${(props) => props.theme.bgColor};
+  background-color: ${(props) => props.theme.subColor};
   color: ${(props) => props.theme.accentColor};
   }
 header{

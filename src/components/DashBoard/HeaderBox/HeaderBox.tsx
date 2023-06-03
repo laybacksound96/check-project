@@ -12,7 +12,10 @@ const HeaderBoxStyle = styled.header`
   height: auto;
   border-radius: 30px;
   padding: 30px;
-  background-color: ${(props) => props.theme.subColor};
+
+  border-style: solid;
+  border-color: ${(props) => props.theme.bgColor};
+  border-width: 3px;
 
   * {
     color: ${(props) => props.theme.bgColor};

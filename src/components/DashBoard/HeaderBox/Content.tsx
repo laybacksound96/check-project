@@ -2,6 +2,12 @@ import React from "react";
 import { useEffect, useState } from "react";
 import styled, { css, keyframes } from "styled-components";
 import { IContents } from "./Contents";
+interface IpropStyle {
+  shouldAnimate: boolean;
+}
+interface IProps {
+  contentState: IContents;
+}
 const bump = keyframes`
   0% {
     transform: scale(1);
@@ -19,9 +25,20 @@ const bump = keyframes`
     transform: scale(1);}
  `;
 
-interface IpropStyle {
-  shouldAnimate: boolean;
-}
+const ContentsBox = styled.div`
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  flex-basis: 70%;
+`;
+const OwnerBox = styled.div`
+  background-color: #ffffff;
+  flex-basis: 30%;
+  border-radius: 0 0 10px 10px;
+`;
+
 const ContentStyle = styled.li<IpropStyle>`
   display: flex;
   flex-direction: column;
@@ -41,25 +58,13 @@ const ContentStyle = styled.li<IpropStyle>`
       animation: ${bump} 300ms ease-out;
     `};
 `;
-const ContentsBox = styled.div`
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-  justify-content: start;
-  align-items: center;
-  flex-basis: 70%;
-`;
-const OwnerBox = styled.div`
-  background-color: #ffffff;
-  flex-basis: 30%;
-  border-radius: 0 0 10px 10px;
-`;
 const HeaderContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  height: auto;
+  flex-basis: 50%;
+  height: 40%;
   span {
     text-align: start;
     margin-right: 5px;
@@ -79,6 +84,7 @@ const TextContainer = styled.div`
   align-items: start;
   width: 100%;
   height: 60%;
+
   h1 {
     font-size: 25px;
     margin-bottom: 5px;
@@ -88,10 +94,6 @@ const TextContainer = styled.div`
     font-size: 15px;
   }
 `;
-
-interface IProps {
-  contentState: IContents;
-}
 
 const Content = ({ contentState }: IProps) => {
   const [shouldAnimate, setShouldAnimate] = useState(false);
@@ -104,7 +106,6 @@ const Content = ({ contentState }: IProps) => {
 
     return () => clearTimeout(timeoutId);
   }, [contentState.Frequency]);
-
   return (
     <ContentStyle shouldAnimate={shouldAnimate}>
       <ContentsBox>
@@ -119,7 +120,7 @@ const Content = ({ contentState }: IProps) => {
           })}
         </TextContainer>
       </ContentsBox>
-      <OwnerBox></OwnerBox>
+      <OwnerBox />
     </ContentStyle>
   );
 };

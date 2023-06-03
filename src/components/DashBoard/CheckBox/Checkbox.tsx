@@ -13,6 +13,10 @@ export const CheckBoxStyle = styled.div`
   display: flex;
   flex-direction: column;
 
+  border-style: solid;
+  border-color: ${(props) => props.theme.bgColor};
+  border-width: 3px;
+
   padding: 30px 40px;
   border-radius: 15px;
   margin-bottom: 150px;

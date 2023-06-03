@@ -98,13 +98,13 @@ function DragCharacters({ parentProvided, style, accountName }: IProps) {
           {(provided, snapshot) => (
             <Area style={{ display: "flex" }}>
               <div ref={provided.innerRef} {...provided.droppableProps}>
-                {
+                {/* {
                   <ButtonContainer
                     style={{ opacity: `${isHovered ? "100" : "0"}` }}
                   >
                     <FontAwesomeIcon icon={faGear} size="lg" />
                   </ButtonContainer>
-                }
+                } */}
                 {Account.map((CharacterName, index) => {
                   return (
                     <DragCharactersDraggable
