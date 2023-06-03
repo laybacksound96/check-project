@@ -52,7 +52,7 @@ const ButtonContainer = styled.div`
       transition: 0.2s ease-in-out;
     }
     span {
-      color: ${(props) => props.theme.TextColor_B};
+      color: ${(props) => props.theme.TextColor_A};
       font-size: 30px;
     }
   }

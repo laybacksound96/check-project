@@ -25,12 +25,12 @@ const ContentCard = styled.div`
   padding: 20px;
   margin-left: 20px;
   margin: 5px 0;
-  width: 200px;
+  width: auto;
   height: 60px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 30px;
+  font-size: 20px;
 `;
 export const Header = styled.header`
   display: flex;
@@ -42,6 +42,7 @@ export const Header = styled.header`
     margin-right: 10px;
   }
   h1 {
+    color: ${(props) => props.theme.TextColor_A};
     font-size: 40px;
     font-weight: bolder;
   }
@@ -78,7 +79,7 @@ const ConfigContent = () => {
           <span>Basic</span>
           {DefaultContents.map((contentName) => (
             <ContentCard key={contentName}>
-              {contentName}
+              <p>{contentName}</p>
               <Switch
                 switchKey={contentName}
                 switchState={content[contentName].isVisible}

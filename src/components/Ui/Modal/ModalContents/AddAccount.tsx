@@ -146,6 +146,7 @@ const AddAccount = () => {
             isDisabled={isDisabled}
             onChange={HandleChange}
             value={inputValue}
+            placeholder="캐릭터 명을 입력한 뒤 검색"
           />
           <button
             type="submit"

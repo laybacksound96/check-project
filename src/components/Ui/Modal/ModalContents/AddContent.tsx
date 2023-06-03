@@ -18,24 +18,25 @@ const vibration = keyframes`
 export const Input = styled.input<IStyle>`
   width: 300px;
   height: 50px;
-  background-color: ${(props) => props.theme.Color_3};
-  border: 2px solid ${(props) => (props.isDisabled ? "#EF476F" : "#5e5e5e")};
+  background-color: ${(props) => props.theme.Color_4};
+  border: 2px solid
+    ${(props) => (props.isDisabled ? "#EF476F" : props.theme.TextColor_B)};
   border-radius: 10px;
   padding-left: 10px;
-
+  color: ${(props) => props.theme.TextColor_A};
   &:hover {
     transition: 0.1s ease;
     border: 2px solid
-      ${(props) => (props.isDisabled ? "#EF476F" : " #43434382")};
+      ${(props) => (props.isDisabled ? "#EF476F" : props.theme.Color_1)};
   }
   &:focus {
     outline: none;
     transition: 0.2s ease;
     border: 2px solid
-      ${(props) => (props.isDisabled ? "#EF476F" : props.theme.Color_1)};
+      ${(props) => (props.isDisabled ? "#EF476F" : props.theme.TextColor_A)};
   }
   &::placeholder {
-    color: ${(props) => props.theme.Color_1};
+    color: ${(props) => props.theme.TextColor_B};
   }
   ${(props) =>
     props.isDisabled &&
@@ -52,7 +53,7 @@ const ButtonStyle = styled.button`
   background-color: transparent;
   font-size: 15px;
   font-weight: bold;
-
+  color: ${(props) => props.theme.TextColor_A};
   &:hover {
     transition: 0.2s ease;
     background-color: #ffffff70;
