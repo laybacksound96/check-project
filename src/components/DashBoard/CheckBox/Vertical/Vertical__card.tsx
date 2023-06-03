@@ -10,8 +10,8 @@ export const Name = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-
-  width: ${dragIcon.icon.edgeLength}px;
+  padding: 10px;
+  min-width: ${dragIcon.icon.edgeLength}px;
   height: ${dragIcon.icon.edgeLength}px;
 
   border-radius: 5px;

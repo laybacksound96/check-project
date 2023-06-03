@@ -4,6 +4,7 @@ import { AccountOrder, ModalEnum, ModalState } from "../../../../atoms";
 
 import DragAccounts from "./DragAccounts/DragAccounts";
 import { DropResult } from "react-beautiful-dnd";
+import Vertical from "../Vertical/Vertical";
 
 const AddAccountBtn = styled.button`
   height: 100px;
@@ -46,6 +47,7 @@ function Horizontal() {
 
   return (
     <>
+      <Vertical />
       <DragAccounts
         AccountOrder={accountOrder}
         dragAccountHandler={dragAccountHandler}

@@ -19,7 +19,6 @@ import { AxisLocker } from "../../Functions/AxisLocker";
 import styled from "styled-components";
 const CardContainer = styled.div`
   display: flex;
-  margin-left: 210px;
 `;
 function CheckBoxColumn() {
   const Columns = useRecoilValue(ContentsState);
@@ -63,27 +62,30 @@ function CheckBoxColumn() {
   };
 
   return Object.keys(Accounts).length ? (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <Droppable droppableId="one" direction="horizontal">
-        {(provided) => (
-          <CardContainer ref={provided.innerRef} {...provided.droppableProps}>
-            {visibledColumns.map((name, index) => (
-              <Draggable draggableId={name} index={index} key={name}>
-                {(provided) => (
-                  <Card
-                    Column={name}
-                    parentProvided={provided}
-                    style={AxisLocker(provided.draggableProps.style!, true)}
-                  />
-                )}
-              </Draggable>
-            ))}
-            {provided.placeholder}
-            <Name onClick={openModal}>+</Name>
-          </CardContainer>
-        )}
-      </Droppable>
-    </DragDropContext>
+    <div style={{ display: "flex" }}>
+      <div style={{ width: "210px" }} />
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Droppable droppableId="one" direction="horizontal">
+          {(provided) => (
+            <CardContainer ref={provided.innerRef} {...provided.droppableProps}>
+              {visibledColumns.map((name, index) => (
+                <Draggable draggableId={name} index={index} key={name}>
+                  {(provided) => (
+                    <Card
+                      Column={name}
+                      parentProvided={provided}
+                      style={AxisLocker(provided.draggableProps.style!, true)}
+                    />
+                  )}
+                </Draggable>
+              ))}
+              {provided.placeholder}
+              <Name onClick={openModal}>+</Name>
+            </CardContainer>
+          )}
+        </Droppable>
+      </DragDropContext>
+    </div>
   ) : null;
 }
 export default React.memo(CheckBoxColumn);
