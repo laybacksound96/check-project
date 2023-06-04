@@ -28,13 +28,14 @@ function CheckBoxColumn() {
   const [visibledColumns, setVisibledColumns] = useRecoilState(VisibledColumns);
 
   useEffect(() => {
-    setVisibledColumns(() => {
+    setVisibledColumns((prev) => {
       const newColumnArray = [];
       for (let key in Columns) {
+        const find = prev.find((obj) => obj.name === key);
         if (Columns[key].isVisible === false) continue;
         const content: Contents = {
           name: key,
-          width: dragIcon.icon.edgeLength,
+          width: !find ? dragIcon.icon.edgeLength : find.width,
         };
         newColumnArray.push(content);
       }

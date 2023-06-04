@@ -33,7 +33,6 @@ interface IColumnCardProp {
 
 function ColumnCard({ Column, parentProvided, style, index }: IColumnCardProp) {
   const elementRef = useRef<HTMLDivElement>(null);
-
   const setVisibledColumns = useSetRecoilState(VisibledColumns);
   useEffect(() => {
     if (elementRef.current) {

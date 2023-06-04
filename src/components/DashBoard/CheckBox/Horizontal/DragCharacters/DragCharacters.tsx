@@ -20,8 +20,12 @@ interface IProps {
   accountName: string;
   accountIndex: number;
 }
-
-const Area = styled.div`
+interface Istyle {
+  isHovered: boolean;
+}
+const Area = styled.div<Istyle>`
+  display: flex;
+  justify-content: space-between;
   * {
     color: ${(props) => props.theme.TextColor_A};
   }
@@ -31,17 +35,19 @@ const Area = styled.div`
   background-color: ${(props) => props.theme.Color_3};
   transition: background-color 0.2s ease-in-out;
   padding: 10px;
+  margin-bottom: 10px;
   &:hover {
-    background-color: rgba(255, 255, 255, 0.131);
+    background-color: ${(props) =>
+      props.isHovered ? "rgba(0, 0, 0, 0.3)" : "initial"};
     transition: ease-in-out 0.1s;
   }
 `;
-const DragAccount = styled.div`
-  width: 100%;
-  &:hover {
-    background-color: rgba(255, 255, 255, 0.258);
-    transition: ease-in-out 0.1s;
-  }
+const DragAccount = styled.div<Istyle>`
+  flex-grow: 1;
+  width: 100px;
+  background-color: ${(props) =>
+    props.isHovered ? "rgba(100, 100, 100, 0.5)" : "initial"};
+  transition: ease-in-out 0.1s;
   border-radius: 10px;
 `;
 const ButtonContainer = styled.div`
@@ -49,6 +55,7 @@ const ButtonContainer = styled.div`
   height: 45px;
   margin-left: 15px;
   margin-top: 15px;
+  margin-bottom: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -60,11 +67,12 @@ const ButtonContainer = styled.div`
     padding: 5px 5px;
     border-radius: 10px;
     &:hover {
-      background-color: #ffffff3e;
+      background-color: rgba(100, 100, 100, 0.5);
       opacity: 100%;
     }
   }
 `;
+
 function DragCharacters({ parentProvided, style, accountName }: IProps) {
   const accountState = useRecoilValue(AccountState);
   const [Account, setAccount] = useState(
@@ -97,16 +105,8 @@ function DragCharacters({ parentProvided, style, accountName }: IProps) {
       <DragDropContext onDragEnd={dragCharacterHandler}>
         <Droppable droppableId={accountName}>
           {(provided, snapshot) => (
-            <Area style={{ display: "flex" }}>
+            <Area isHovered={isHovered}>
               <div ref={provided.innerRef} {...provided.droppableProps}>
-                {/* {
-                  <ButtonContainer
-                    style={{ opacity: `${isHovered ? "100" : "0"}` }}
-                  >
-                    <FontAwesomeIcon icon={faGear} size="lg" />
-                  </ButtonContainer>
-                } */}
-
                 {Account.map((CharacterName, index) => {
                   return (
                     <DragCharactersDraggable
@@ -114,13 +114,31 @@ function DragCharacters({ parentProvided, style, accountName }: IProps) {
                       index={index}
                       boardId={CharacterName + "_" + index}
                       key={CharacterName + "_" + index}
-                      accountName={accountName}
                     />
                   );
                 })}
                 {provided.placeholder}
               </div>
-              <DragAccount {...parentProvided.dragHandleProps}></DragAccount>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  marginLeft: "10px",
+                }}
+              >
+                <ButtonContainer
+                  style={{
+                    opacity: `${isHovered ? "100" : "0"}`,
+                    marginBottom: "20px",
+                  }}
+                >
+                  <FontAwesomeIcon icon={faGear} size="lg" />
+                </ButtonContainer>
+                <DragAccount
+                  {...parentProvided.dragHandleProps}
+                  isHovered={isHovered}
+                />
+              </div>
             </Area>
           )}
         </Droppable>

@@ -29,11 +29,15 @@ export const CalculateCheckbox = (
       }
       if (Contents[ContentName].type === "Custom") {
         if (resultObj[ContentName] === undefined) {
-          resultObj[ContentName].Frequency = 0;
-          resultObj[ContentName].GateState = [];
-          resultObj[ContentName].ContentsName = ContentName;
+          resultObj[ContentName] = {
+            Frequency: 0,
+            GateState: [],
+            ContentsName: ContentName,
+            ContentsOwner: [],
+          };
         }
         if (state.isCleared === false) resultObj[ContentName].Frequency++;
+        resultObj[ContentName].ContentsOwner.push(CharacterName);
       }
     }
   }

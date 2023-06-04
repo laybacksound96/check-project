@@ -24,7 +24,7 @@ const Name = styled.div`
   height: ${dragIcon.icon.edgeLength}px;
   border-radius: 5px;
   &:hover {
-    background-color: rgba(255, 255, 255, 0.258);
+    background-color: rgba(100, 100, 100, 0.5);
     transition: ease-in-out 0.1s;
   }
   button {
@@ -47,7 +47,7 @@ export const ButtonContainer = styled.div`
     padding: 10px 10px;
     &:hover {
       opacity: 100%;
-      background-color: #f0f8ff72;
+      background-color: rgba(100, 100, 100, 0.7);
     }
   }
 `;
@@ -56,14 +56,8 @@ interface IProps {
   boardId: string;
   CharacterName: string;
   index: number;
-  accountName: string;
 }
-function DragCharactersDraggable({
-  boardId,
-  CharacterName,
-  index,
-  accountName,
-}: IProps) {
+function DragCharactersDraggable({ boardId, CharacterName, index }: IProps) {
   const Contents = useRecoilValue(ContentsState);
 
   const setCheckboxState = useSetRecoilState(CheckBoxConfig);
