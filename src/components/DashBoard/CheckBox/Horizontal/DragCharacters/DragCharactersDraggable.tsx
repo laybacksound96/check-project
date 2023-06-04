@@ -9,6 +9,8 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 import {
   CheckBoxConfig,
   ContentsState,
+  ModalEnum,
+  ModalState,
   VisibledColumns,
 } from "../../../../../atoms";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -59,12 +61,13 @@ interface IProps {
 }
 function DragCharactersDraggable({ boardId, CharacterName, index }: IProps) {
   const Contents = useRecoilValue(ContentsState);
-
+  const visibledColumns = useRecoilValue(VisibledColumns);
+  const setIsModalOpen = useSetRecoilState(ModalState);
   const setCheckboxState = useSetRecoilState(CheckBoxConfig);
   const { [`${CharacterName}`]: ContentState } = useRecoilValue(CheckBoxConfig);
 
   const [isHovered, setIsHovered] = useState(false);
-  const visibledColumns = useRecoilValue(VisibledColumns);
+
   const CheckBoxOnclick = (char: string, cont: string) => {
     setCheckboxState((Characters) => {
       const copiedCharacters = { ...Characters };
@@ -76,6 +79,16 @@ function DragCharactersDraggable({ boardId, CharacterName, index }: IProps) {
       ContentName[cont] = ConfigObject;
       copiedCharacters[char] = ContentName;
       return copiedCharacters;
+    });
+  };
+
+  const openModal = () => {
+    setIsModalOpen((prev) => {
+      const copiedPrev = { ...prev };
+      copiedPrev.isModalOpen = true;
+      copiedPrev.modalType = ModalEnum.CONFIG_ACCOUNT;
+      copiedPrev.modalProp = CharacterName;
+      return { ...copiedPrev };
     });
   };
 
@@ -93,11 +106,7 @@ function DragCharactersDraggable({ boardId, CharacterName, index }: IProps) {
             {CharacterName}
             <ButtonContainer>
               {isHovered && (
-                <FontAwesomeIcon
-                  onClick={() => console.log("clicked")}
-                  icon={faGear}
-                  size="lg"
-                />
+                <FontAwesomeIcon onClick={openModal} icon={faGear} size="lg" />
               )}
             </ButtonContainer>
           </Name>

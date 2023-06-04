@@ -16,6 +16,7 @@ import ConfigContent from "../components/Ui/Modal/ModalContents/ConfigContent";
 import AddContent from "../components/Ui/Modal/ModalContents/AddContent";
 import AddAccount from "../components/Ui/Modal/ModalContents/AddAccount";
 import { useEffect } from "react";
+import ConfigAccount from "../components/Ui/Modal/ModalContents/ConfigAccount";
 
 function Dashboard() {
   const [IsModalOpen, setIsModalOpen] = useRecoilState(ModalState);
@@ -62,6 +63,9 @@ function Dashboard() {
         <Modal onClose={closeModal}>
           {IsModalOpen.modalType === ModalEnum.CONFIG_CONTENT && (
             <ConfigContent />
+          )}
+          {IsModalOpen.modalType === ModalEnum.CONFIG_ACCOUNT && (
+            <ConfigAccount />
           )}
           {IsModalOpen.modalType === ModalEnum.ADD_CONTENT && <AddContent />}
           {IsModalOpen.modalType === ModalEnum.ADD_ACCOUNT && <AddAccount />}

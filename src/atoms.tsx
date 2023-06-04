@@ -67,13 +67,15 @@ export const AccountOrder = atom<string[]>({
 
 export enum ModalEnum {
   CONFIG_CONTENT = "Value 1",
-  ADD_CONTENT = "Value 2",
-  ADD_ACCOUNT = "Value 3",
+  CONFIG_ACCOUNT = "Value 2",
+  ADD_CONTENT = "Value 3",
+  ADD_ACCOUNT = "Value 4",
 }
 type IModal = IModalObject;
 interface IModalObject {
   isModalOpen: boolean;
   modalType?: ModalEnum;
+  modalProp?: string;
 }
 export const ModalState = atom<IModal>({
   key: "ModalState",
