@@ -18,7 +18,7 @@ const ModalContainer = styled.div`
   width: 100%;
   height: 100%;
   animation: ${fadeInAnimation} 0.2s ease-in-out;
-  color: ${(props) => props.theme.Color_1};
+  color: ${(props) => props.theme.TextColor_A};
   z-index: 999;
 `;
 const Background = styled.div`

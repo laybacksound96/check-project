@@ -11,6 +11,7 @@ const CharacterCard = styled.div`
   align-items: center;
   border-radius: 10px;
   margin: 3px 3px;
+  color: ${(props) => props.theme.Color_4};
 `;
 
 interface Iprops {

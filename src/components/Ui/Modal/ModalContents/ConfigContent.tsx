@@ -31,6 +31,9 @@ const ContentCard = styled.div`
   justify-content: space-between;
   align-items: center;
   font-size: 20px;
+  p {
+    color: ${(props) => props.theme.Color_2};
+  }
 `;
 export const Header = styled.header`
   display: flex;
