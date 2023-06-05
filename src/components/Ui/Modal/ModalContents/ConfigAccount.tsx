@@ -28,7 +28,7 @@ const GridContainer = styled.div`
 const ConfigAccount = () => {
   const { modalProp } = useRecoilValue(ModalState);
   const { [`${modalProp}`]: contents } = useRecoilValue(CheckBoxConfig);
-  const [contentsState, setContentsState] = useState(contents);
+  const [contentsState] = useState(contents);
   return (
     <Container>
       <Header>
