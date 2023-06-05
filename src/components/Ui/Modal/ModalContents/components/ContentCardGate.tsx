@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { faEye } from "@fortawesome/free-solid-svg-icons";
+import { faEye } from "@fortawesome/free-regular-svg-icons";
 import { IGates } from "../../../../../atoms";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ContentCardCheckBox from "./ContentCardCheckBox";
@@ -49,8 +49,11 @@ const ContentCardGate = ({ Difficulty, Gate }: IProps) => {
           />
         </div>
         <div style={{ display: "flex", margin: "10px 0" }}>
-          <ContentCardCheckBox difficulty={"hard"} />
-          <ContentCardCheckBox difficulty={"normal"} />
+          <ContentCardCheckBox DifficultyState={Difficulty} Difficulty="hard" />
+          <ContentCardCheckBox
+            DifficultyState={Difficulty}
+            Difficulty="normal"
+          />
         </div>
       </DifficultyContainer>
     </GateContainer>

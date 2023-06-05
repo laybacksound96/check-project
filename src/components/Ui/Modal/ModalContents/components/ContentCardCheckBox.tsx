@@ -10,12 +10,16 @@ const CheckBoxContainer = styled.div`
   align-items: center;
   margin: 0px 10px;
 `;
+interface IProps {
+  DifficultyState: string | undefined;
+  Difficulty: string;
+}
 function onClickHandler() {}
-const ContentCardCheckBox = ({ difficulty }: { difficulty: string }) => (
+const ContentCardCheckBox = ({ DifficultyState, Difficulty }: IProps) => (
   <CheckBoxContainer>
-    <span>{difficulty}</span>
+    <span>{Difficulty}</span>
     <CheckBox onClick={onClickHandler}>
-      {difficulty === "hard" || "normal" ? (
+      {DifficultyState === Difficulty ? (
         <FontAwesomeIcon icon={faSquareCheck} size="lg" />
       ) : (
         <FontAwesomeIcon icon={faSquare} size="lg" />
