@@ -2,11 +2,16 @@ import styled from "styled-components";
 import { IGates } from "../../../../../atoms";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { faEye } from "@fortawesome/free-regular-svg-icons";
+import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 
 import { useState } from "react";
 import ContentCardGate from "./ContentCardGate";
-const ContentList = styled.div`
+
+interface IStyel {
+  isVisibled: boolean;
+}
+
+const ContentList = styled.div<IStyel>`
   display: flex;
   flex-direction: column;
   background-color: ${(props) => props.theme.Color_4};
@@ -19,6 +24,8 @@ const ContentList = styled.div`
     font-size: 30px;
     margin-bottom: 10px;
   }
+  opacity: ${(props) => (props.isVisibled ? "100%" : "30%")};
+  transition: opacity 0.3s ease-in-out;
 `;
 
 const CardHeader = styled.div`
@@ -56,19 +63,34 @@ const Card = styled.div`
 interface IProps {
   ContentsName: string;
   Gates: IGates[];
+  isVisible: boolean;
 }
 
-const ContentCard = ({ Gates, ContentsName }: IProps) => {
+const ContentCard = ({ Gates, ContentsName, isVisible }: IProps) => {
   const [isHovered, setIsHovered] = useState(false);
+  const [isVisibled, setIsVisibled] = useState(isVisible);
 
   return (
     <ContentList
+      isVisibled={isVisibled}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       <CardHeader>
         <h1>{ContentsName}</h1>
-        {isHovered && <FontAwesomeIcon icon={faEye} />}
+        {isHovered && (
+          <div
+            onClick={() => {
+              setIsVisibled((prev) => !prev);
+            }}
+          >
+            {isVisibled ? (
+              <FontAwesomeIcon icon={faEye} />
+            ) : (
+              <FontAwesomeIcon icon={faEyeSlash} />
+            )}
+          </div>
+        )}
       </CardHeader>
       <Card>
         {Gates.map((gate, index) => {

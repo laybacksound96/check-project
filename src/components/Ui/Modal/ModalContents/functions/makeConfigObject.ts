@@ -25,6 +25,8 @@ const makeConfigObject = (
         Gate_No: gateNumber,
         isActivated,
         Difficulty,
+        isFixedDifficulty: Difficulty === "normal" ? true : false,
+        isVisible: isActivated,
       };
       DefaultObject.Gates?.push(Gate);
     }

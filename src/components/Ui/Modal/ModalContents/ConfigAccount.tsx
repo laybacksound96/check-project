@@ -44,6 +44,7 @@ const ConfigAccount = () => {
                 key={contents}
                 Gates={Gates}
                 ContentsName={contents}
+                isVisible={contentsState[contents].isVisible}
               />
             )
           );
