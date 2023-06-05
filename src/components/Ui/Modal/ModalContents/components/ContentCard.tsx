@@ -107,7 +107,10 @@ const ContentCard = ({ Gates, ContentsName }: IProps) => {
 
               <DifficultyContainer>
                 <div style={{ display: "flex", justifyContent: "end" }}>
-                  <FontAwesomeIcon icon={faEye} />
+                  <FontAwesomeIcon
+                    icon={faEye}
+                    style={{ fontSize: "1.2rem", marginRight: "2px" }}
+                  />
                 </div>
                 <div style={{ display: "flex", margin: "10px 0" }}>
                   <CheckBoxContainer>
