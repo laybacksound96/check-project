@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Header } from "./ConfigContent";
 import { useRecoilValue } from "recoil";
 import { CheckBoxConfig, ModalState } from "../../../../atoms";
-import { useState } from "react";
 import styled from "styled-components";
 import ContentCard from "./components/ContentCard";
 
@@ -26,25 +25,27 @@ const GridContainer = styled.div`
 `;
 
 const ConfigAccount = () => {
-  const { modalProp } = useRecoilValue(ModalState);
-  const { [`${modalProp}`]: contents } = useRecoilValue(CheckBoxConfig);
-  const [contentsState] = useState(contents);
+  const { modalProp: ChracterName } = useRecoilValue(ModalState);
+  const { [`${ChracterName}`]: contents } = useRecoilValue(CheckBoxConfig);
+  const contentsState = contents;
+  const ContentNames = Object.keys(contents);
+
   return (
     <Container>
       <Header>
         <FontAwesomeIcon icon={faGear} size="lg" />
-        <h1>{modalProp === undefined ? "" : `${modalProp}`}'s Settings</h1>
+        <h1>{ChracterName && `${ChracterName}`}'s Settings</h1>
       </Header>
       <GridContainer>
-        {Object.keys(contentsState).map((contents) => {
-          const { Gates } = contentsState[contents];
+        {ContentNames.map((ContentName) => {
+          const { Gates, isVisible } = contentsState[ContentName];
           return (
             Gates && (
               <ContentCard
-                key={contents}
+                key={ContentName}
                 Gates={Gates}
-                ContentsName={contents}
-                isVisible={contentsState[contents].isVisible}
+                ContentsName={ContentName}
+                isVisible={isVisible}
               />
             )
           );
