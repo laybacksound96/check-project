@@ -38,15 +38,14 @@ const ConfigAccount = () => {
       </Header>
       <GridContainer>
         {ContentNames.map((ContentName) => {
-          const { Gates, isVisible } = contentsState[ContentName];
+          const { Gates } = contentsState[ContentName];
           return (
             Gates && (
               <ContentCard
                 key={ContentName}
                 Gates={Gates}
                 ContentsName={ContentName}
-                ChracterName={ChracterName || ""}
-                isVisible={isVisible}
+                ChracterName={ChracterName}
               />
             )
           );

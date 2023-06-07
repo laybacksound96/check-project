@@ -1,10 +1,11 @@
 import styled from "styled-components";
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
-import { IGates } from "../../../../../atoms";
+import { CheckBoxConfig, IGates } from "../../../../../atoms";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ContentCardCheckBox from "./ContentCardCheckBox";
 
 import { useState } from "react";
+import { useIsVisibleGates } from "../../../../DashBoard/Functions/CustomHooks/CheckBoxConfig/CustomHooks";
 
 const IconContainer = styled.div`
   display: flex;
@@ -52,13 +53,24 @@ const DifficultySpan = styled.span`
 interface IProps {
   Difficulty: string | undefined;
   Gate: IGates;
+  ChracterName: string;
+  ContentsName: string;
+  index: number;
 }
 const ContentCardGate = ({
   Difficulty: DifficultyState,
-  Gate: { isVisible, Gate_No, isFixedDifficulty },
+  Gate: { Gate_No, isFixedDifficulty },
+  ChracterName,
+  ContentsName,
+  index,
 }: IProps) => {
   const [isHovered, setIsHovered] = useState(false);
-
+  const [isVisible, setIsVisible] = useIsVisibleGates(
+    CheckBoxConfig,
+    ChracterName,
+    ContentsName,
+    index
+  );
   return (
     <GateContainer
       isVisibled={isVisible}
@@ -71,7 +83,7 @@ const ContentCardGate = ({
         <DifficultySpan>{DifficultyState}</DifficultySpan>
       </GateNumberContainer>
       <DifficultyContainer>
-        <IconContainer onClick={() => {}}>
+        <IconContainer onClick={() => setIsVisible(!isVisible)}>
           {isVisible ? (
             <FontAwesomeIcon icon={faEye} />
           ) : (

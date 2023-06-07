@@ -5,12 +5,12 @@ export interface IGates {
   ["isActivated"]: boolean;
   ["isVisible"]: boolean;
   ["isFixedDifficulty"]: boolean;
-  ["Difficulty"]?: string;
+  ["Difficulty"]: string;
 }
 export interface IConfigObject {
   ["isCleared"]: boolean;
   ["isVisible"]: boolean;
-  ["Gates"]?: IGates[];
+  ["Gates"]: IGates[];
 }
 export interface IContentName {
   [ContentName: string]: IConfigObject;
@@ -77,9 +77,9 @@ type IModal = IModalObject;
 interface IModalObject {
   isModalOpen: boolean;
   modalType?: ModalEnum;
-  modalProp?: string;
+  modalProp: string;
 }
 export const ModalState = atom<IModal>({
   key: "ModalState",
-  default: { isModalOpen: false },
+  default: { isModalOpen: false, modalProp: "" },
 });

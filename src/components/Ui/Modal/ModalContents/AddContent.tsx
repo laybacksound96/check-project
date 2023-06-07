@@ -102,6 +102,7 @@ const AddContent = () => {
         copiedContents[`${inputValue}`] = {
           isCleared: false,
           isVisible: true,
+          Gates: [],
         };
         copiedCheckBoxConfig[CharacterName] = copiedContents;
       }

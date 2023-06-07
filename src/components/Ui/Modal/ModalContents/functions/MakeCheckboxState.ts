@@ -10,10 +10,6 @@ const MakeCheckboxState = (
   Account: ICharacterState,
   Column: IContents
 ): ICheckBoxconfig => {
-  console.log("------MakeCheckboxState--------");
-  console.log(Account);
-  console.log(Column);
-  console.log("------MakeCheckboxState--------");
   const result: ICheckBoxconfig = {};
 
   for (let CharacterName in Account) {

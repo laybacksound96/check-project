@@ -1,7 +1,7 @@
 import commander from "./commander.json";
 interface resultObject {
   ["isActivated"]: boolean;
-  ["Difficulty"]?: string;
+  ["Difficulty"]: string;
 }
 interface commanderInfo {
   gateNumber: number;
@@ -19,7 +19,7 @@ export const makeAvailableDifficulty = (
   content: string,
   gateNumber: number
 ): resultObject => {
-  const resultDifficulty: resultObject = {
+  const result: resultObject = {
     isActivated: false,
     Difficulty: "normal",
   };
@@ -27,11 +27,11 @@ export const makeAvailableDifficulty = (
   const gateData = commanderData[content][gateNumber - 1];
   for (let difficulty in gateData) {
     if (level >= gateData[difficulty].level) {
-      resultDifficulty.isActivated = true;
-      resultDifficulty.Difficulty = difficulty;
+      result.isActivated = true;
+      result.Difficulty = difficulty;
     }
   }
-  return resultDifficulty;
+  return result;
 };
 
 export default makeAvailableDifficulty;

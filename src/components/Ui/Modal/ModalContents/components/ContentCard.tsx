@@ -1,11 +1,12 @@
 import styled from "styled-components";
-import { IGates } from "../../../../../atoms";
+import { CheckBoxConfig, IGates } from "../../../../../atoms";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 
 import { useState } from "react";
 import ContentCardGate from "./ContentCardGate";
+import { useIsVisible } from "../../../../DashBoard/Functions/CustomHooks/CheckBoxConfig/CustomHooks";
 
 interface IStyel {
   isVisibled: boolean;
@@ -64,12 +65,15 @@ interface IProps {
   ContentsName: string;
   ChracterName: string;
   Gates: IGates[];
-  isVisible: boolean;
 }
 
-const ContentCard = ({ Gates, ContentsName, isVisible }: IProps) => {
+const ContentCard = ({ Gates, ContentsName, ChracterName }: IProps) => {
   const [isHovered, setIsHovered] = useState(false);
-
+  const [isVisible, setIsVisible] = useIsVisible(
+    CheckBoxConfig,
+    ChracterName,
+    ContentsName
+  );
   return (
     <ContentList
       isVisibled={isVisible}
@@ -79,7 +83,7 @@ const ContentCard = ({ Gates, ContentsName, isVisible }: IProps) => {
       <CardHeader>
         <h1>{ContentsName}</h1>
         {isHovered && (
-          <div onClick={() => {}}>
+          <div onClick={() => setIsVisible(!isVisible)}>
             {isVisible ? (
               <FontAwesomeIcon icon={faEye} />
             ) : (
@@ -92,7 +96,14 @@ const ContentCard = ({ Gates, ContentsName, isVisible }: IProps) => {
         {Gates.map((gate, index) => {
           const Difficulty = gate.Difficulty;
           return (
-            <ContentCardGate key={index} Difficulty={Difficulty} Gate={gate} />
+            <ContentCardGate
+              key={index}
+              Difficulty={Difficulty}
+              Gate={gate}
+              ChracterName={ChracterName}
+              ContentsName={ContentsName}
+              index={index}
+            />
           );
         })}
       </Card>

@@ -35,6 +35,7 @@ const makeConfigObject = (
   const CustomObject: IConfigObject = {
     isCleared: false,
     isVisible: true,
+    Gates: [],
   };
 
   return CustomObject;
