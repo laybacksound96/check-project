@@ -26,9 +26,9 @@ const GridContainer = styled.div`
 
 const ConfigAccount = () => {
   const { modalProp: ChracterName } = useRecoilValue(ModalState);
-  const { [`${ChracterName}`]: contents } = useRecoilValue(CheckBoxConfig);
-  const contentsState = contents;
-  const ContentNames = Object.keys(contents);
+  const { [`${ChracterName}`]: contentsState } = useRecoilValue(CheckBoxConfig);
+
+  const ContentNames = Object.keys(contentsState);
 
   return (
     <Container>
@@ -45,6 +45,7 @@ const ConfigAccount = () => {
                 key={ContentName}
                 Gates={Gates}
                 ContentsName={ContentName}
+                ChracterName={ChracterName || ""}
                 isVisible={isVisible}
               />
             )

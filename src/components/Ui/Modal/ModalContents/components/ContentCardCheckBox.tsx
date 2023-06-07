@@ -29,6 +29,8 @@ const ContentCardCheckBox = ({
 }: IProps) => {
   const onClickHandler = () => {
     if (Difficulty === "hard" && isFixedDifficulty === true) return;
+    console.log(Difficulty);
+    console.log(DifficultyState);
   };
 
   return (

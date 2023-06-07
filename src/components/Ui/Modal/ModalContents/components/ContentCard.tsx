@@ -1,11 +1,12 @@
 import styled from "styled-components";
-import { IGates } from "../../../../../atoms";
+import { CheckBoxConfig, IGates } from "../../../../../atoms";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 
 import { useState } from "react";
 import ContentCardGate from "./ContentCardGate";
+import { useSetRecoilState } from "recoil";
 
 interface IStyel {
   isVisibled: boolean;
@@ -62,29 +63,60 @@ const Card = styled.div`
 
 interface IProps {
   ContentsName: string;
+  ChracterName: string;
   Gates: IGates[];
   isVisible: boolean;
 }
 
-const ContentCard = ({ Gates, ContentsName, isVisible }: IProps) => {
+const ContentCard = ({
+  Gates,
+  ContentsName,
+  isVisible,
+  ChracterName,
+}: IProps) => {
   const [isHovered, setIsHovered] = useState(false);
-  const [isVisibled, setIsVisibled] = useState(isVisible);
+
+  const setCheckBoxConfig = useSetRecoilState(CheckBoxConfig);
+  const visibleHandler = () => {
+    setCheckBoxConfig((prev) => {
+      const {
+        [ChracterName]: {
+          [ContentsName]: { isVisible: copiedVisibleState },
+        },
+      } = prev;
+
+      const copiedPrev = {
+        ...prev,
+        [ChracterName]: {
+          ...prev[ChracterName],
+          [ContentsName]: {
+            ...prev[ChracterName][ContentsName],
+            isVisible: !copiedVisibleState,
+          },
+        },
+      };
+
+      return copiedPrev;
+    });
+  };
+  const gateVisibleHandler = (gateNo: number, isFixedDifficulty: boolean) => {
+    console.log(ChracterName);
+    console.log(ContentsName);
+    console.log(gateNo);
+    console.log(isFixedDifficulty);
+  };
 
   return (
     <ContentList
-      isVisibled={isVisibled}
+      isVisibled={isVisible}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       <CardHeader>
         <h1>{ContentsName}</h1>
         {isHovered && (
-          <div
-            onClick={() => {
-              setIsVisibled((prev) => !prev);
-            }}
-          >
-            {isVisibled ? (
+          <div onClick={visibleHandler}>
+            {isVisible ? (
               <FontAwesomeIcon icon={faEye} />
             ) : (
               <FontAwesomeIcon icon={faEyeSlash} />
@@ -96,7 +128,12 @@ const ContentCard = ({ Gates, ContentsName, isVisible }: IProps) => {
         {Gates.map((gate, index) => {
           const Difficulty = gate.Difficulty;
           return (
-            <ContentCardGate key={index} Difficulty={Difficulty} Gate={gate} />
+            <ContentCardGate
+              key={index}
+              Difficulty={Difficulty}
+              Gate={gate}
+              gateVisibleHandler={gateVisibleHandler}
+            />
           );
         })}
       </Card>

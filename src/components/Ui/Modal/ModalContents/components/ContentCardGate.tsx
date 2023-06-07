@@ -6,10 +6,6 @@ import ContentCardCheckBox from "./ContentCardCheckBox";
 
 import { useState } from "react";
 
-interface IProps {
-  Difficulty: string | undefined;
-  Gate: IGates;
-}
 const IconContainer = styled.div`
   display: flex;
   justify-content: end;
@@ -53,30 +49,32 @@ const DifficultySpan = styled.span`
   border-radius: 5px;
   padding: 5px;
 `;
-
-const ContentCardGate = ({ Difficulty, Gate }: IProps) => {
+interface IProps {
+  Difficulty: string | undefined;
+  Gate: IGates;
+  gateVisibleHandler: (gateNo: number, isFixedDifficulty: boolean) => void;
+}
+const ContentCardGate = ({
+  Difficulty: DifficultyState,
+  Gate: { isVisible, Gate_No, isFixedDifficulty },
+  gateVisibleHandler,
+}: IProps) => {
   const [isHovered, setIsHovered] = useState(false);
-  const [isVisibled, setIsVisibled] = useState(Gate.isVisible);
-  const isFixedDifficulty = Gate.isFixedDifficulty;
+  const onClickHandler = () => gateVisibleHandler(Gate_No, isFixedDifficulty);
   return (
     <GateContainer
-      isVisibled={isVisibled}
+      isVisibled={isVisible}
       isHovered={isHovered}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       <GateNumberContainer style={{ display: "flex", flexDirection: "column" }}>
-        <GateNumber>{Gate.Gate_No}</GateNumber>
-        <DifficultySpan>{Difficulty}</DifficultySpan>
+        <GateNumber>{Gate_No}</GateNumber>
+        <DifficultySpan>{DifficultyState}</DifficultySpan>
       </GateNumberContainer>
       <DifficultyContainer>
-        <IconContainer
-          onClick={() => {
-            if (Gate.isFixedDifficulty) return;
-            setIsVisibled((prev) => !prev);
-          }}
-        >
-          {isVisibled ? (
+        <IconContainer onClick={onClickHandler}>
+          {isVisible ? (
             <FontAwesomeIcon icon={faEye} />
           ) : (
             <FontAwesomeIcon icon={faEyeSlash} />
@@ -84,12 +82,12 @@ const ContentCardGate = ({ Difficulty, Gate }: IProps) => {
         </IconContainer>
         <div style={{ display: "flex", margin: "10px 0", width: "100%" }}>
           <ContentCardCheckBox
-            DifficultyState={Difficulty}
+            DifficultyState={DifficultyState}
             Difficulty="normal"
             isFixedDifficulty={isFixedDifficulty}
           />
           <ContentCardCheckBox
-            DifficultyState={Difficulty}
+            DifficultyState={DifficultyState}
             Difficulty="hard"
             isFixedDifficulty={isFixedDifficulty}
           />
