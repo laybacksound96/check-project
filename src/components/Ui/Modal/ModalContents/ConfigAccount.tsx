@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Header } from "./ConfigContent";
 import { useRecoilValue } from "recoil";
 import { CheckBoxConfig, ModalState } from "../../../../atoms";
-import { useState } from "react";
 import styled from "styled-components";
 import ContentCard from "./components/ContentCard";
 
@@ -20,31 +19,34 @@ const Container = styled.div`
 const GridContainer = styled.div`
   padding: 10px;
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* 가로로 2개의 열을 생성합니다 */
-  grid-auto-rows: minmax(100px, auto); /* 세로로 자유로운 높이를 가집니다 */
-  grid-gap: 10px; /* 그리드 아이템 사이의 간격을 조정합니다 */
+  grid-template-columns: repeat(2, 1fr);
+  grid-auto-rows: minmax(100px, auto);
+  grid-gap: 10px;
 `;
 
 const ConfigAccount = () => {
-  const { modalProp } = useRecoilValue(ModalState);
-  const { [`${modalProp}`]: contents } = useRecoilValue(CheckBoxConfig);
-  const [contentsState] = useState(contents);
+  const { modalProp: ChracterName } = useRecoilValue(ModalState);
+  const { [`${ChracterName}`]: contentsState } = useRecoilValue(CheckBoxConfig);
+
+  const ContentNames = Object.keys(contentsState);
+
   return (
     <Container>
       <Header>
         <FontAwesomeIcon icon={faGear} size="lg" />
-        <h1>{modalProp === undefined ? "" : `${modalProp}`}'s Settings</h1>
+        <h1>{ChracterName && `${ChracterName}`}'s Settings</h1>
       </Header>
       <GridContainer>
-        {Object.keys(contentsState).map((contents) => {
-          const { Gates } = contentsState[contents];
+        {ContentNames.map((ContentName) => {
+          const { Gates, isVisible } = contentsState[ContentName];
           return (
             Gates && (
               <ContentCard
-                key={contents}
+                key={ContentName}
                 Gates={Gates}
-                ContentsName={contents}
-                isVisible={contentsState[contents].isVisible}
+                ContentsName={ContentName}
+                ChracterName={ChracterName || ""}
+                isVisible={isVisible}
               />
             )
           );

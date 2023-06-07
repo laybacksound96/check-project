@@ -27,14 +27,10 @@ const ContentCardCheckBox = ({
   Difficulty,
   isFixedDifficulty,
 }: IProps) => {
-  const onClickHandler = () => {
-    if (Difficulty === "hard" && isFixedDifficulty === true) return;
-  };
-
   return (
     <CheckBoxContainer isFixedDifficulty={isFixedDifficulty}>
       <span>{Difficulty}</span>
-      <CheckBox onClick={onClickHandler}>
+      <CheckBox onClick={() => {}}>
         {DifficultyState === Difficulty ? (
           <FontAwesomeIcon icon={faSquareCheck} size="lg" />
         ) : (

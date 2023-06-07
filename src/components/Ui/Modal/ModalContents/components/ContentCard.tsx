@@ -62,29 +62,25 @@ const Card = styled.div`
 
 interface IProps {
   ContentsName: string;
+  ChracterName: string;
   Gates: IGates[];
   isVisible: boolean;
 }
 
 const ContentCard = ({ Gates, ContentsName, isVisible }: IProps) => {
   const [isHovered, setIsHovered] = useState(false);
-  const [isVisibled, setIsVisibled] = useState(isVisible);
 
   return (
     <ContentList
-      isVisibled={isVisibled}
+      isVisibled={isVisible}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       <CardHeader>
         <h1>{ContentsName}</h1>
         {isHovered && (
-          <div
-            onClick={() => {
-              setIsVisibled((prev) => !prev);
-            }}
-          >
-            {isVisibled ? (
+          <div onClick={() => {}}>
+            {isVisible ? (
               <FontAwesomeIcon icon={faEye} />
             ) : (
               <FontAwesomeIcon icon={faEyeSlash} />

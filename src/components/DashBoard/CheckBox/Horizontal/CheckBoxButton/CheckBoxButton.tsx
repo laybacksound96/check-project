@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import styled from "styled-components";
 import { dragIcon } from "../../../../../Settings";
+
 interface IStyle {
   isVisible: boolean;
   Width: number;
