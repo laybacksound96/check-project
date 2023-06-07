@@ -3,8 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import styled from "styled-components";
 import { dragIcon } from "../../../../../Settings";
-import { CheckBoxConfig } from "../../../../../atoms";
-import { useIsCleared } from "../../../../Ui/Modal/ModalContents/functions/setter";
+
 interface IStyle {
   isVisible: boolean;
   Width: number;
