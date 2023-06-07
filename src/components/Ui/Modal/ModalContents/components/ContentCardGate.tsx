@@ -53,14 +53,31 @@ interface IProps {
   Difficulty: string | undefined;
   Gate: IGates;
   gateVisibleHandler: (gateNo: number, isFixedDifficulty: boolean) => void;
+  difficultySetter: (
+    gateNo: number,
+    isFixedDifficulty: boolean,
+    Difficulty: string,
+    DifficultyState: string
+  ) => void;
 }
 const ContentCardGate = ({
   Difficulty: DifficultyState,
   Gate: { isVisible, Gate_No, isFixedDifficulty },
   gateVisibleHandler,
+  difficultySetter,
 }: IProps) => {
   const [isHovered, setIsHovered] = useState(false);
   const onClickHandler = () => gateVisibleHandler(Gate_No, isFixedDifficulty);
+  const difficultySetterHandler = (Difficulty: string) => {
+    if (Difficulty === "hard" && isFixedDifficulty === true) return;
+    difficultySetter(
+      Gate_No,
+      isFixedDifficulty,
+      Difficulty,
+      DifficultyState || ""
+    );
+  };
+
   return (
     <GateContainer
       isVisibled={isVisible}
@@ -85,11 +102,13 @@ const ContentCardGate = ({
             DifficultyState={DifficultyState}
             Difficulty="normal"
             isFixedDifficulty={isFixedDifficulty}
+            difficultySetterHandler={difficultySetterHandler}
           />
           <ContentCardCheckBox
             DifficultyState={DifficultyState}
             Difficulty="hard"
             isFixedDifficulty={isFixedDifficulty}
+            difficultySetterHandler={difficultySetterHandler}
           />
         </div>
       </DifficultyContainer>

@@ -20,17 +20,17 @@ interface IProps {
   DifficultyState: string | undefined;
   Difficulty: string;
   isFixedDifficulty: boolean;
+  difficultySetterHandler: (Difficulty: string) => void;
 }
 
 const ContentCardCheckBox = ({
   DifficultyState,
   Difficulty,
   isFixedDifficulty,
+  difficultySetterHandler,
 }: IProps) => {
   const onClickHandler = () => {
-    if (Difficulty === "hard" && isFixedDifficulty === true) return;
-    console.log(Difficulty);
-    console.log(DifficultyState);
+    difficultySetterHandler(Difficulty);
   };
 
   return (

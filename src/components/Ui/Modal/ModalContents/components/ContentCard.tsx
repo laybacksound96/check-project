@@ -100,12 +100,47 @@ const ContentCard = ({
     });
   };
   const gateVisibleHandler = (gateNo: number, isFixedDifficulty: boolean) => {
-    console.log(ChracterName);
-    console.log(ContentsName);
+    if (isFixedDifficulty) return;
+    setCheckBoxConfig((prev) => {
+      const targetGateIndex = gateNo - 1;
+      const {
+        [ChracterName]: {
+          [ContentsName]: { Gates },
+        },
+      } = prev;
+      if (!Gates) return prev;
+      const copiedGates = [...Gates];
+      const targetGate = {
+        ...Gates[targetGateIndex],
+        isVisible: !Gates[targetGateIndex].isVisible,
+      };
+      copiedGates.splice(targetGateIndex, 1, targetGate);
+
+      const copiedPrev = {
+        ...prev,
+        [ChracterName]: {
+          ...prev[ChracterName],
+          [ContentsName]: {
+            ...prev[ChracterName][ContentsName],
+            Gates: copiedGates,
+          },
+        },
+      };
+
+      return copiedPrev;
+    });
+  };
+  const difficultySetter = (
+    gateNo: number,
+    isFixedDifficulty: boolean,
+    Difficulty: string,
+    DifficultyState: string
+  ) => {
     console.log(gateNo);
     console.log(isFixedDifficulty);
+    console.log(Difficulty);
+    console.log(DifficultyState);
   };
-
   return (
     <ContentList
       isVisibled={isVisible}
@@ -133,6 +168,7 @@ const ContentCard = ({
               Difficulty={Difficulty}
               Gate={gate}
               gateVisibleHandler={gateVisibleHandler}
+              difficultySetter={difficultySetter}
             />
           );
         })}
