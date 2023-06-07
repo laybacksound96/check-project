@@ -19,9 +19,9 @@ const Container = styled.div`
 const GridContainer = styled.div`
   padding: 10px;
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* 가로로 2개의 열을 생성합니다 */
-  grid-auto-rows: minmax(100px, auto); /* 세로로 자유로운 높이를 가집니다 */
-  grid-gap: 10px; /* 그리드 아이템 사이의 간격을 조정합니다 */
+  grid-template-columns: repeat(2, 1fr);
+  grid-auto-rows: minmax(100px, auto);
+  grid-gap: 10px;
 `;
 
 const ConfigAccount = () => {

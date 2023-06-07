@@ -1,12 +1,11 @@
 import styled from "styled-components";
-import { CheckBoxConfig, IGates } from "../../../../../atoms";
+import { IGates } from "../../../../../atoms";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 
 import { useState } from "react";
 import ContentCardGate from "./ContentCardGate";
-import { useSetRecoilState } from "recoil";
 
 interface IStyel {
   isVisibled: boolean;
@@ -68,79 +67,9 @@ interface IProps {
   isVisible: boolean;
 }
 
-const ContentCard = ({
-  Gates,
-  ContentsName,
-  isVisible,
-  ChracterName,
-}: IProps) => {
+const ContentCard = ({ Gates, ContentsName, isVisible }: IProps) => {
   const [isHovered, setIsHovered] = useState(false);
 
-  const setCheckBoxConfig = useSetRecoilState(CheckBoxConfig);
-  const visibleHandler = () => {
-    setCheckBoxConfig((prev) => {
-      const {
-        [ChracterName]: {
-          [ContentsName]: { isVisible: copiedVisibleState },
-        },
-      } = prev;
-
-      const copiedPrev = {
-        ...prev,
-        [ChracterName]: {
-          ...prev[ChracterName],
-          [ContentsName]: {
-            ...prev[ChracterName][ContentsName],
-            isVisible: !copiedVisibleState,
-          },
-        },
-      };
-
-      return copiedPrev;
-    });
-  };
-  const gateVisibleHandler = (gateNo: number, isFixedDifficulty: boolean) => {
-    if (isFixedDifficulty) return;
-    setCheckBoxConfig((prev) => {
-      const targetGateIndex = gateNo - 1;
-      const {
-        [ChracterName]: {
-          [ContentsName]: { Gates },
-        },
-      } = prev;
-      if (!Gates) return prev;
-      const copiedGates = [...Gates];
-      const targetGate = {
-        ...Gates[targetGateIndex],
-        isVisible: !Gates[targetGateIndex].isVisible,
-      };
-      copiedGates.splice(targetGateIndex, 1, targetGate);
-
-      const copiedPrev = {
-        ...prev,
-        [ChracterName]: {
-          ...prev[ChracterName],
-          [ContentsName]: {
-            ...prev[ChracterName][ContentsName],
-            Gates: copiedGates,
-          },
-        },
-      };
-
-      return copiedPrev;
-    });
-  };
-  const difficultySetter = (
-    gateNo: number,
-    isFixedDifficulty: boolean,
-    Difficulty: string,
-    DifficultyState: string
-  ) => {
-    console.log(gateNo);
-    console.log(isFixedDifficulty);
-    console.log(Difficulty);
-    console.log(DifficultyState);
-  };
   return (
     <ContentList
       isVisibled={isVisible}
@@ -150,7 +79,7 @@ const ContentCard = ({
       <CardHeader>
         <h1>{ContentsName}</h1>
         {isHovered && (
-          <div onClick={visibleHandler}>
+          <div onClick={() => {}}>
             {isVisible ? (
               <FontAwesomeIcon icon={faEye} />
             ) : (
@@ -163,13 +92,7 @@ const ContentCard = ({
         {Gates.map((gate, index) => {
           const Difficulty = gate.Difficulty;
           return (
-            <ContentCardGate
-              key={index}
-              Difficulty={Difficulty}
-              Gate={gate}
-              gateVisibleHandler={gateVisibleHandler}
-              difficultySetter={difficultySetter}
-            />
+            <ContentCardGate key={index} Difficulty={Difficulty} Gate={gate} />
           );
         })}
       </Card>
