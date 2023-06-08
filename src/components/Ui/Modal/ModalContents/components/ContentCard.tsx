@@ -114,10 +114,17 @@ interface IProps {
   ContentsName: string;
   ChracterName: string;
   Gates: IGates[];
+  modifyGoldContentsArray: (ContentsName: string) => void;
 }
 
-const ContentCard = ({ Gates, ContentsName, ChracterName }: IProps) => {
+const ContentCard = ({
+  Gates,
+  ContentsName,
+  ChracterName,
+  modifyGoldContentsArray,
+}: IProps) => {
   const [isHovered, setIsHovered] = useState(false);
+
   const [isGoldContents, setIsGoldContents] = useIsGoldContents(
     CheckBoxConfig,
     ChracterName,
@@ -132,6 +139,11 @@ const ContentCard = ({ Gates, ContentsName, ChracterName }: IProps) => {
     if (!isHovered) return;
     setIsVisible(!isVisible);
   };
+  const goldContentsHandler = () => {
+    setIsGoldContents(!isGoldContents);
+    modifyGoldContentsArray(ContentsName);
+  };
+
   return (
     <ContentList
       isVisibled={isVisible}
@@ -145,7 +157,7 @@ const ContentCard = ({ Gates, ContentsName, ChracterName }: IProps) => {
             <FontAwesomeIcon icon={faCoins} />
           </GoldIcon>
 
-          <div onClick={() => setIsGoldContents(!isGoldContents)}>
+          <div onClick={goldContentsHandler}>
             <span>골드획득 컨텐츠</span>
             <Icon>
               {isGoldContents ? (

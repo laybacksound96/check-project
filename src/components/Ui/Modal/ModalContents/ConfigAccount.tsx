@@ -5,6 +5,7 @@ import { useRecoilValue } from "recoil";
 import { CheckBoxConfig, ModalState } from "../../../../atoms";
 import styled from "styled-components";
 import ContentCard from "./components/ContentCard";
+import { useState } from "react";
 
 const Container = styled.div`
   width: auto;
@@ -27,15 +28,29 @@ const GridContainer = styled.div`
 const ConfigAccount = () => {
   const { modalProp: ChracterName } = useRecoilValue(ModalState);
   const { [`${ChracterName}`]: contentsState } = useRecoilValue(CheckBoxConfig);
-
   const ContentNames = Object.keys(contentsState);
-
+  const [GoldContentsArray, setGoldContentsArray] = useState<string[]>([]);
+  const modifyGoldContentsArray = (ContentsName: string) => {
+    setGoldContentsArray((prev) => {
+      if (GoldContentsArray.includes(ContentsName)) {
+        const copiedPrev = [...prev];
+        const index = GoldContentsArray.indexOf(ContentsName);
+        copiedPrev.splice(index, 1);
+        return copiedPrev;
+      }
+      return [...prev, ContentsName];
+    });
+    console.log(ContentsName);
+  };
   return (
     <Container>
       <Header>
         <FontAwesomeIcon icon={faGear} size="lg" />
         <h1>{ChracterName && `${ChracterName}`}'s Settings</h1>
       </Header>
+      {GoldContentsArray.map((goldContents) => (
+        <span>{goldContents}</span>
+      ))}
       <GridContainer>
         {ContentNames.map((ContentName) => {
           const { Gates } = contentsState[ContentName];
@@ -46,6 +61,7 @@ const ConfigAccount = () => {
                 Gates={Gates}
                 ContentsName={ContentName}
                 ChracterName={ChracterName}
+                modifyGoldContentsArray={modifyGoldContentsArray}
               />
             )
           );

@@ -28,6 +28,8 @@ interface ICharacterInfo {
   ["ServerName"]: string;
   ["CharacterClassName"]: string;
   ["ItemMaxLevel"]: number;
+  ["IsGoldCharacter"]: boolean;
+  ["GoldContents"]: string[];
 }
 export interface ICharacterState {
   [Character: string]: ICharacterInfo;

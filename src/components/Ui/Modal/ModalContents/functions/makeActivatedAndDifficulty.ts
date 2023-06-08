@@ -8,13 +8,13 @@ interface commanderInfo {
   level: number;
   gold: number;
 }
-interface commaderNames {
+export interface commaderNames {
   [difficulty: string]: commanderInfo;
 }
-interface IData {
+export interface IData {
   [name: string]: commaderNames[];
 }
-export const makeAvailableDifficulty = (
+const makeAvailableDifficulty = (
   level: number,
   content: string,
   gateNumber: number
