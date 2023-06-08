@@ -10,7 +10,6 @@ import {
 } from "../../../../atoms";
 import styled from "styled-components";
 import ContentCard from "./components/ContentCard";
-import { useState } from "react";
 
 const Container = styled.div`
   width: auto;
@@ -47,8 +46,25 @@ const ConfigAccount = () => {
   ] = useRecoilState(AccountState);
   const modifyGoldContents = (ContentsName: string) => {
     setGoldContents((prev) => {
-      const copiedPrev: IAccountState = { ...prev ,[``]};
-      return prev;
+      let copiedGoldContents = [...GoldContents];
+      if (copiedGoldContents.includes(ContentsName)) {
+        copiedGoldContents.splice(copiedGoldContents.indexOf(ContentsName), 1);
+      } else {
+        copiedGoldContents = [...GoldContents, ContentsName];
+      }
+
+      const copiedPrev: IAccountState = {
+        ...prev,
+        [`${AccountName}`]: {
+          ...prev[`${AccountName}`],
+          [`${CharacterName}`]: {
+            ...prev[`${AccountName}`][`${CharacterName}`],
+            GoldContents: copiedGoldContents,
+          },
+        },
+      };
+
+      return copiedPrev;
     });
   };
   return (
