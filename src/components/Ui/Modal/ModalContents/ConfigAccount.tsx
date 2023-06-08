@@ -1,8 +1,13 @@
 import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Header } from "./ConfigContent";
-import { useRecoilValue } from "recoil";
-import { AccountState, CheckBoxConfig, ModalState } from "../../../../atoms";
+import { useRecoilState, useRecoilValue } from "recoil";
+import {
+  AccountState,
+  CheckBoxConfig,
+  IAccountState,
+  ModalState,
+} from "../../../../atoms";
 import styled from "styled-components";
 import ContentCard from "./components/ContentCard";
 import { useState } from "react";
@@ -32,24 +37,20 @@ const ConfigAccount = () => {
   const { [`${CharacterName}`]: contentsState } =
     useRecoilValue(CheckBoxConfig);
   const ContentNames = Object.keys(contentsState);
-  const [GoldContentsArray, setGoldContentsArray] = useState<string[]>([]);
-  const modifyGoldContentsArray = (ContentsName: string) => {
-    setGoldContentsArray((prev) => {
-      if (GoldContentsArray.includes(ContentsName)) {
-        const copiedPrev = [...prev];
-        const index = GoldContentsArray.indexOf(ContentsName);
-        copiedPrev.splice(index, 1);
-        return copiedPrev;
-      }
-      return [...prev, ContentsName];
+  const [
+    {
+      [`${AccountName}`]: {
+        [`${CharacterName}`]: { GoldContents },
+      },
+    },
+    setGoldContents,
+  ] = useRecoilState(AccountState);
+  const modifyGoldContents = (ContentsName: string) => {
+    setGoldContents((prev) => {
+      const copiedPrev: IAccountState = { ...prev ,[``]};
+      return prev;
     });
   };
-  const {
-    [`${AccountName}`]: {
-      [`${CharacterName}`]: { GoldContents },
-    },
-  } = useRecoilValue(AccountState);
-
   return (
     <Container>
       <Header>
@@ -69,7 +70,7 @@ const ConfigAccount = () => {
                 Gates={Gates}
                 ContentsName={ContentName}
                 ChracterName={CharacterName}
-                modifyGoldContentsArray={modifyGoldContentsArray}
+                modifyGoldContents={modifyGoldContents}
               />
             )
           );
