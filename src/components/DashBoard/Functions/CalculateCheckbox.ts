@@ -8,8 +8,6 @@ export const CalculateCheckbox = (
   Contents: IContents,
   Prev: IContentsFrequency
 ) => {
-  console.log("CalculateCheckbox===========================");
-  console.log(Prev);
   const resultObj: IContentsFrequency = {};
   for (const CharacterName in Accounts) {
     for (const ContentName in Contents) {
@@ -20,8 +18,6 @@ export const CalculateCheckbox = (
         if (state.Gates === undefined) continue;
         const gates = CalculateGateDifficulty(state.Gates);
         const Key = `${ContentName}_${gates.join("_")}`;
-        console.log(Prev);
-        console.log(Prev.hasOwnProperty(Key));
         if (resultObj[Key] === undefined) {
           resultObj[Key] = {
             Frequency: 0,
@@ -30,7 +26,7 @@ export const CalculateCheckbox = (
             ContentsOwner: [],
             Color: Prev.hasOwnProperty(Key)
               ? Prev[Key].Color
-              : getRandomPastelColor(),
+              : getRandomPastelColor(ContentName),
           };
         }
         if (state.isCleared === false) resultObj[Key].Frequency++;
@@ -43,7 +39,7 @@ export const CalculateCheckbox = (
             GateState: [],
             ContentsName: ContentName,
             ContentsOwner: [],
-            Color: getRandomPastelColor(),
+            Color: getRandomPastelColor(ContentName),
           };
         }
         if (state.isCleared === false) resultObj[ContentName].Frequency++;
