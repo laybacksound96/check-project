@@ -7,6 +7,7 @@ import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 import { useState } from "react";
 import ContentCardGate from "./ContentCardGate";
 import { useIsVisible } from "../../../../DashBoard/Functions/CustomHooks/CheckBoxConfig/CustomHooks";
+import { faCoins } from "@fortawesome/free-solid-svg-icons";
 
 interface IStyel {
   isVisibled: boolean;
@@ -31,8 +32,9 @@ const ContentList = styled.div<IStyel>`
 
 const CardHeader = styled.div`
   display: flex;
-  align-items: start;
+  align-items: center;
   justify-content: space-between;
+  margin-bottom: 10px;
   span {
     margin: 0px 20px;
   }
@@ -61,6 +63,32 @@ const Card = styled.div`
   }
 `;
 
+interface IStyle {
+  isHovered: boolean;
+}
+const GoldCheck = styled.div<IStyle>`
+  display: flex;
+  opacity: ${(props) => (props.isHovered ? "100%" : "0%")};
+  transition: opacity 0.1s ease-in-out;
+  div {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+    span {
+      font-size: 0.9rem;
+      margin: 0;
+      margin-top: 5px;
+    }
+  }
+  svg {
+    color: yellow;
+  }
+`;
+const IconContainer = styled.div<IStyle>`
+  opacity: ${(props) => (props.isHovered ? "100%" : "0%")};
+  transition: opacity 0.1s ease-in-out;
+`;
 interface IProps {
   ContentsName: string;
   ChracterName: string;
@@ -74,6 +102,10 @@ const ContentCard = ({ Gates, ContentsName, ChracterName }: IProps) => {
     ChracterName,
     ContentsName
   );
+  const visibleHandler = () => {
+    if (!isHovered) return;
+    setIsVisible(!isVisible);
+  };
   return (
     <ContentList
       isVisibled={isVisible}
@@ -82,15 +114,21 @@ const ContentCard = ({ Gates, ContentsName, ChracterName }: IProps) => {
     >
       <CardHeader>
         <h1>{ContentsName}</h1>
-        {isHovered && (
-          <div onClick={() => setIsVisible(!isVisible)}>
-            {isVisible ? (
-              <FontAwesomeIcon icon={faEye} />
-            ) : (
-              <FontAwesomeIcon icon={faEyeSlash} />
-            )}
+        <GoldCheck isHovered={isHovered}>
+          <FontAwesomeIcon icon={faCoins} />
+          <div>
+            <span>골드획득 컨텐츠</span>
+            <input type="checkbox" />
           </div>
-        )}
+        </GoldCheck>
+
+        <IconContainer isHovered={isHovered} onClick={visibleHandler}>
+          {isVisible ? (
+            <FontAwesomeIcon icon={faEye} />
+          ) : (
+            <FontAwesomeIcon icon={faEyeSlash} />
+          )}
+        </IconContainer>
       </CardHeader>
       <Card>
         {Gates.map((gate, index) => {

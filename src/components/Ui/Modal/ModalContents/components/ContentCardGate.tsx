@@ -98,14 +98,14 @@ const ContentCardGate = ({
         <DifficultySpan>{Difficulty}</DifficultySpan>
       </GateNumberContainer>
       <DifficultyContainer>
-        <IconContainer onClick={() => setIsVisible(!isVisible)}>
-          {isVisible ? (
-            <FontAwesomeIcon icon={faEye} />
-          ) : (
-            <FontAwesomeIcon icon={faEyeSlash} />
-          )}
-        </IconContainer>
-        <div style={{ display: "flex", margin: "10px 0", width: "100%" }}>
+        <div
+          style={{
+            display: "flex",
+            margin: "10px 0",
+            marginTop: "20px",
+            width: "100%",
+          }}
+        >
           <ContentCardCheckBox
             DifficultyState={Difficulty}
             Difficulty="normal"
@@ -120,6 +120,13 @@ const ContentCardGate = ({
           />
         </div>
       </DifficultyContainer>
+      <IconContainer onClick={() => setIsVisible(!isVisible)}>
+        {isVisible ? (
+          <FontAwesomeIcon icon={faEye} />
+        ) : (
+          <FontAwesomeIcon icon={faEyeSlash} />
+        )}
+      </IconContainer>
     </GateContainer>
   );
 };
