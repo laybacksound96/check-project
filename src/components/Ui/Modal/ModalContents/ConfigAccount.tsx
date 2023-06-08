@@ -40,7 +40,6 @@ const ConfigAccount = () => {
       }
       return [...prev, ContentsName];
     });
-    console.log(ContentsName);
   };
   return (
     <Container>
@@ -48,9 +47,7 @@ const ConfigAccount = () => {
         <FontAwesomeIcon icon={faGear} size="lg" />
         <h1>{ChracterName && `${ChracterName}`}'s Settings</h1>
       </Header>
-      {GoldContentsArray.map((goldContents) => (
-        <span>{goldContents}</span>
-      ))}
+
       <GridContainer>
         {ContentNames.map((ContentName) => {
           const { Gates } = contentsState[ContentName];

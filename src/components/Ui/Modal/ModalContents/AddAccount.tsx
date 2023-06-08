@@ -126,12 +126,6 @@ const AddAccount = () => {
     setIsDisabled(() => IsDisabled(isDupplicated, isNull, isInValid));
   }, [isDupplicated, isNull, isInValid]);
 
-  useEffect(() => {
-    console.log("called for Debug------");
-    console.log(option);
-    console.log("----------------------");
-  }, [option]);
-
   return (
     <>
       <Header>
