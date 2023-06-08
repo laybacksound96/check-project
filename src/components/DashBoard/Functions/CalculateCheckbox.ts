@@ -1,10 +1,12 @@
-import { ICheckBoxconfig, IContents } from "../../../atoms";
-import { IContentsFrequency } from "../HeaderBox/Contents";
+import { ICheckBoxconfig, IContents, IContentsFrequency } from "../../../atoms";
+
 import CalculateGateDifficulty from "./CalculateGateDifficulty";
+import getRandomPastelColor from "./getRandomPastelColor";
 
 export const CalculateCheckbox = (
   Accounts: ICheckBoxconfig,
-  Contents: IContents
+  Contents: IContents,
+  Prev: IContentsFrequency
 ) => {
   const resultObj: IContentsFrequency = {};
   for (const CharacterName in Accounts) {
@@ -16,12 +18,14 @@ export const CalculateCheckbox = (
         if (state.Gates === undefined) continue;
         const gates = CalculateGateDifficulty(state.Gates);
         const Key = `${ContentName}_${gates.join("_")}`;
+
         if (resultObj[Key] === undefined) {
           resultObj[Key] = {
             Frequency: 0,
             GateState: gates,
             ContentsName: ContentName,
             ContentsOwner: [],
+            Color: getRandomPastelColor(),
           };
         }
         if (state.isCleared === false) resultObj[Key].Frequency++;
@@ -34,6 +38,7 @@ export const CalculateCheckbox = (
             GateState: [],
             ContentsName: ContentName,
             ContentsOwner: [],
+            Color: getRandomPastelColor(),
           };
         }
         if (state.isCleared === false) resultObj[ContentName].Frequency++;

@@ -1,13 +1,14 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import styled, { css, keyframes } from "styled-components";
-import { IContents } from "./Contents";
+
+import getLowerLightnessColor from "../Functions/getLowerLightnessColor";
+import { IFrequencyContents } from "../../../atoms";
 interface IpropStyle {
   shouldAnimate: boolean;
+  Color: string;
 }
-interface IProps {
-  contentState: IContents;
-}
+
 const bump = keyframes`
   0% {
     transform: scale(1);
@@ -33,8 +34,12 @@ const ContentsBox = styled.div`
   align-items: center;
   flex-basis: 70%;
 `;
-const OwnerBox = styled.div`
-  background-color: ${(props) => props.theme.Color_4};
+interface IColorStyle {
+  Color: string;
+}
+
+const OwnerBox = styled.div<IColorStyle>`
+  background-color: ${(props) => getLowerLightnessColor(props.Color)};
   flex-basis: 30%;
   border-radius: 0 0 10px 10px;
 `;
@@ -53,7 +58,7 @@ const ContentStyle = styled.li<IpropStyle>`
   * {
     color: ${(props) => props.theme.TextColor_A};
   }
-  background-color: ${(props) => props.theme.Color_3};
+  background-color: ${(props) => props.Color};
   ${(props) =>
     props.shouldAnimate &&
     css`
@@ -73,11 +78,12 @@ const HeaderContainer = styled.div`
     font-size: 40px;
   }
 `;
-const Icon = styled.div`
+
+const Icon = styled.div<IColorStyle>`
   width: 45px;
   height: 45px;
   border-radius: 7px;
-  background-color: ${(props) => props.theme.Color_4};
+  background-color: ${(props) => getLowerLightnessColor(props.Color)};
 `;
 const TextContainer = styled.div`
   margin-top: 5px;
@@ -96,8 +102,11 @@ const TextContainer = styled.div`
     font-size: 15px;
   }
 `;
-
-const Content = ({ contentState }: IProps) => {
+interface IProps {
+  contentState: IFrequencyContents;
+  Color: string;
+}
+const Content = ({ contentState, Color }: IProps) => {
   const [shouldAnimate, setShouldAnimate] = useState(false);
   useEffect(() => {
     setShouldAnimate(true);
@@ -109,10 +118,10 @@ const Content = ({ contentState }: IProps) => {
     return () => clearTimeout(timeoutId);
   }, [contentState.Frequency]);
   return (
-    <ContentStyle shouldAnimate={shouldAnimate}>
+    <ContentStyle shouldAnimate={shouldAnimate} Color={Color}>
       <ContentsBox>
         <HeaderContainer>
-          <Icon />
+          <Icon Color={Color} />
           <span>{contentState.Frequency}</span>
         </HeaderContainer>
         <TextContainer>
@@ -122,7 +131,7 @@ const Content = ({ contentState }: IProps) => {
           })}
         </TextContainer>
       </ContentsBox>
-      <OwnerBox />
+      <OwnerBox Color={Color} />
     </ContentStyle>
   );
 };

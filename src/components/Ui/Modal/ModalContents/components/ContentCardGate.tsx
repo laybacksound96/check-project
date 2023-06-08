@@ -5,7 +5,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ContentCardCheckBox from "./ContentCardCheckBox";
 
 import { useState } from "react";
-import { useIsVisibleGates } from "../../../../DashBoard/Functions/CustomHooks/CheckBoxConfig/CustomHooks";
+import {
+  useDifficultyState,
+  useIsVisibleGates,
+} from "../../../../DashBoard/Functions/CustomHooks/CheckBoxConfig/CustomHooks";
 
 const IconContainer = styled.div`
   display: flex;
@@ -71,6 +74,18 @@ const ContentCardGate = ({
     ContentsName,
     index
   );
+  const [Difficulty, setDifficulty] = useDifficultyState(
+    CheckBoxConfig,
+    ChracterName,
+    ContentsName,
+    index
+  );
+
+  const changeDifficultyHandler = () => {
+    if (isFixedDifficulty) return;
+    setDifficulty(Difficulty === "normal" ? "hard" : "normal");
+  };
+
   return (
     <GateContainer
       isVisibled={isVisible}
@@ -80,7 +95,7 @@ const ContentCardGate = ({
     >
       <GateNumberContainer style={{ display: "flex", flexDirection: "column" }}>
         <GateNumber>{Gate_No}</GateNumber>
-        <DifficultySpan>{DifficultyState}</DifficultySpan>
+        <DifficultySpan>{Difficulty}</DifficultySpan>
       </GateNumberContainer>
       <DifficultyContainer>
         <IconContainer onClick={() => setIsVisible(!isVisible)}>
@@ -92,14 +107,16 @@ const ContentCardGate = ({
         </IconContainer>
         <div style={{ display: "flex", margin: "10px 0", width: "100%" }}>
           <ContentCardCheckBox
-            DifficultyState={DifficultyState}
+            DifficultyState={Difficulty}
             Difficulty="normal"
             isFixedDifficulty={isFixedDifficulty}
+            handler={changeDifficultyHandler}
           />
           <ContentCardCheckBox
-            DifficultyState={DifficultyState}
+            DifficultyState={Difficulty}
             Difficulty="hard"
             isFixedDifficulty={isFixedDifficulty}
+            handler={changeDifficultyHandler}
           />
         </div>
       </DifficultyContainer>

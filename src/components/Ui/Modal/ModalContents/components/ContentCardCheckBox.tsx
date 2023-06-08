@@ -20,17 +20,19 @@ interface IProps {
   DifficultyState: string | undefined;
   Difficulty: string;
   isFixedDifficulty: boolean;
+  handler: () => void;
 }
 
 const ContentCardCheckBox = ({
   DifficultyState,
   Difficulty,
   isFixedDifficulty,
+  handler,
 }: IProps) => {
   return (
     <CheckBoxContainer isFixedDifficulty={isFixedDifficulty}>
       <span>{Difficulty}</span>
-      <CheckBox onClick={() => {}}>
+      <CheckBox onClick={handler}>
         {DifficultyState === Difficulty ? (
           <FontAwesomeIcon icon={faSquareCheck} size="lg" />
         ) : (

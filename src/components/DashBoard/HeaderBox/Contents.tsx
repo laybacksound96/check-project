@@ -1,7 +1,11 @@
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { CheckBoxConfig, ContentsState } from "../../../atoms";
-import { useEffect, useState } from "react";
+import {
+  CheckBoxConfig,
+  ContentsFrequency,
+  ContentsState,
+} from "../../../atoms";
+import { useEffect } from "react";
 import Content from "./Content";
 import CalculateCheckbox from "../Functions/CalculateCheckbox";
 import React from "react";
@@ -14,31 +18,29 @@ const ContainerStyle = styled.ul`
   margin-top: 30px;
 `;
 
-export interface IContents {
-  [`ContentsName`]: string;
-  [`GateState`]: string[];
-  [`Frequency`]: number;
-  [`ContentsOwner`]: string[];
-}
-export interface IContentsFrequency {
-  [contentKey: string]: IContents;
-}
-
 const Contents = () => {
-  const [contentState, setContentState] = useState<IContentsFrequency>({});
+  const [contentState, setContentState] = useRecoilState(ContentsFrequency);
   const checkBoxConfig = useRecoilValue(CheckBoxConfig);
   const Contents = useRecoilValue(ContentsState);
 
   useEffect(() => {
-    setContentState(() => CalculateCheckbox(checkBoxConfig, Contents));
-  }, [checkBoxConfig, Contents]);
+    setContentState((prev) =>
+      CalculateCheckbox(checkBoxConfig, Contents, prev)
+    );
+  }, [checkBoxConfig, Contents, setContentState]);
 
   return (
     <ContainerStyle>
       {Object.keys(contentState).map((key) => {
         if (!contentState[key]) return null;
         if (contentState[key].Frequency === 0) return null;
-        return <Content key={key} contentState={contentState[key]} />;
+        return (
+          <Content
+            key={key}
+            contentState={contentState[key]}
+            Color={contentState[key].Color}
+          />
+        );
       })}
     </ContainerStyle>
   );

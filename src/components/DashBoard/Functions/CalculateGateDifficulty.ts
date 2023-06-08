@@ -6,6 +6,7 @@ function CalculateGateDifficulty(gate: IGates[]): string[] {
   let LeftDiff = gate[0].Difficulty;
   let CurrentNo;
   for (let i in gate) {
+    if (!gate[i].isVisible) continue;
     const RightDiff = gate[i].Difficulty;
     CurrentNo = gate[i].Gate_No;
     if (LeftDiff !== RightDiff) {

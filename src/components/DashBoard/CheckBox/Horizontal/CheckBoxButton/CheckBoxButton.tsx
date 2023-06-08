@@ -7,9 +7,11 @@ import { dragIcon } from "../../../../../Settings";
 interface IStyle {
   isVisible: boolean;
   Width: number;
+  Color: string;
 }
 const CheckBox = styled.div<IStyle>`
   opacity: ${(props) => (props.isVisible ? "100%" : "0%")};
+
   display: flex;
   justify-content: center;
   align-items: center;
@@ -17,7 +19,13 @@ const CheckBox = styled.div<IStyle>`
   width: ${(props) => props.Width}px;
   height: ${dragIcon.icon.edgeLength}px;
   border-radius: 5px;
-  color: ${(props) => props.theme.Color_3};
+
+  svg {
+    border-radius: 5px;
+    path {
+      color: ${(props) => props.Color};
+    }
+  }
   &:hover {
     background-color: rgba(255, 255, 255, 0.258);
     transition: ease-in-out 0.1s;
@@ -31,6 +39,7 @@ interface ICheckboxProps {
   ContentName: string;
   isVisible: boolean;
   Width: number;
+  Color: string;
 }
 
 function CheckBoxButton({
@@ -40,6 +49,7 @@ function CheckBoxButton({
   ContentName,
   isVisible,
   Width,
+  Color,
 }: ICheckboxProps) {
   function onClickHandler() {
     if (!isVisible) return;
@@ -47,7 +57,12 @@ function CheckBoxButton({
   }
 
   return (
-    <CheckBox onClick={onClickHandler} isVisible={isVisible} Width={Width}>
+    <CheckBox
+      onClick={onClickHandler}
+      isVisible={isVisible}
+      Width={Width}
+      Color={Color}
+    >
       {isChecked ? (
         <FontAwesomeIcon icon={faSquareCheck} size="lg" />
       ) : (

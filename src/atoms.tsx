@@ -54,6 +54,22 @@ export const ContentsState = atom<IContents>({
   },
 });
 
+export interface IFrequencyContents {
+  [`ContentsName`]: string;
+  [`GateState`]: string[];
+  [`Frequency`]: number;
+  [`ContentsOwner`]: string[];
+  [`Color`]: string;
+}
+export interface IContentsFrequency {
+  [contentKey: string]: IFrequencyContents;
+}
+
+export const ContentsFrequency = atom<IContentsFrequency>({
+  key: "IContentsFrequency",
+  default: {},
+});
+
 export interface Contents {
   ["name"]: string;
   ["width"]: number;

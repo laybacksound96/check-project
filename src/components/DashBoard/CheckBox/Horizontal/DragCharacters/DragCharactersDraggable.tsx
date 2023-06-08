@@ -8,6 +8,7 @@ import Checkbox from "../CheckBoxButton/CheckBoxButton";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import {
   CheckBoxConfig,
+  ContentsFrequency,
   ContentsState,
   ModalEnum,
   ModalState,
@@ -15,6 +16,7 @@ import {
 } from "../../../../../atoms";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGear } from "@fortawesome/free-solid-svg-icons";
+import getColorInFrequencyCounter from "../../../Functions/getColorFrequencyCounter";
 
 const Name = styled.div`
   display: flex;
@@ -61,6 +63,7 @@ interface IProps {
 }
 function DragCharactersDraggable({ boardId, CharacterName, index }: IProps) {
   const Contents = useRecoilValue(ContentsState);
+  const contentsFrequency = useRecoilValue(ContentsFrequency);
   const visibledColumns = useRecoilValue(VisibledColumns);
   const setIsModalOpen = useSetRecoilState(ModalState);
   const setCheckboxState = useSetRecoilState(CheckBoxConfig);
@@ -112,6 +115,11 @@ function DragCharactersDraggable({ boardId, CharacterName, index }: IProps) {
           </Name>
 
           {visibledColumns.map((Content, ColumnIndex) => {
+            const color = getColorInFrequencyCounter(
+              contentsFrequency,
+              Content.name,
+              CharacterName
+            );
             return (
               Contents[Content.name].isVisible && (
                 <Checkbox
@@ -122,6 +130,7 @@ function DragCharactersDraggable({ boardId, CharacterName, index }: IProps) {
                   ContentName={Content.name}
                   CharacterName={CharacterName}
                   Width={Content.width}
+                  Color={color}
                 />
               )
             );

@@ -91,3 +91,37 @@ export function useIsVisibleGates(
   };
   return [isVisible, setNewValue];
 }
+export function useDifficultyState(
+  atom: RecoilState<ICheckBoxconfig>,
+  CharacterName: string,
+  ContentName: string,
+  GateIndex: number
+): [string, (newValue: string) => void] {
+  const [value, setValue] = useRecoilState<ICheckBoxconfig>(atom);
+  const {
+    [CharacterName]: {
+      [ContentName]: { Gates },
+    },
+  } = value;
+  const { Difficulty } = Gates[GateIndex];
+  const setNewValue = (newValue: string): void => {
+    setValue((prev) => {
+      const prevGatesArray = [...prev[CharacterName][ContentName].Gates];
+      const copiedGate = { ...prevGatesArray[GateIndex], Difficulty: newValue };
+
+      prevGatesArray.splice(GateIndex, 1, copiedGate);
+      const copiedPrev = {
+        ...prev,
+        [CharacterName]: {
+          ...prev[CharacterName],
+          [ContentName]: {
+            ...prev[CharacterName][ContentName],
+            Gates: prevGatesArray,
+          },
+        },
+      };
+      return copiedPrev;
+    });
+  };
+  return [Difficulty, setNewValue];
+}
