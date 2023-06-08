@@ -100,6 +100,7 @@ const AddContent = () => {
       for (let CharacterName in copiedCheckBoxConfig) {
         const copiedContents = { ...copiedCheckBoxConfig[CharacterName] };
         copiedContents[`${inputValue}`] = {
+          isGoldContents: false,
           isCleared: false,
           isVisible: true,
           Gates: [],

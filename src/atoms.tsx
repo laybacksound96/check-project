@@ -8,6 +8,7 @@ export interface IGates {
   ["Difficulty"]: string;
 }
 export interface IConfigObject {
+  ["isGoldContents"]: boolean;
   ["isCleared"]: boolean;
   ["isVisible"]: boolean;
   ["Gates"]: IGates[];

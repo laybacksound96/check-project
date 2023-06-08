@@ -13,6 +13,7 @@ const makeConfigObject = (
     const DefaultObject: IConfigObject = {
       isCleared: false,
       isVisible: IsValidLevel(content, level),
+      isGoldContents: false,
       Gates: [],
     };
     for (let gateNumber = 1; gateNumber < gateCount + 1; gateNumber++) {
@@ -33,6 +34,7 @@ const makeConfigObject = (
     return DefaultObject;
   }
   const CustomObject: IConfigObject = {
+    isGoldContents: false,
     isCleared: false,
     isVisible: true,
     Gates: [],

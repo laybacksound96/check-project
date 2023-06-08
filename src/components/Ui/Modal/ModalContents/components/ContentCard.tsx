@@ -6,8 +6,15 @@ import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 
 import { useState } from "react";
 import ContentCardGate from "./ContentCardGate";
-import { useIsVisible } from "../../../../DashBoard/Functions/CustomHooks/CheckBoxConfig/CustomHooks";
-import { faCoins } from "@fortawesome/free-solid-svg-icons";
+import {
+  useIsGoldContents,
+  useIsVisible,
+} from "../../../../DashBoard/Functions/CustomHooks/CheckBoxConfig/CustomHooks";
+import {
+  faCoins,
+  faSquare,
+  faSquareCheck,
+} from "@fortawesome/free-solid-svg-icons";
 
 interface IStyel {
   isVisibled: boolean;
@@ -45,7 +52,7 @@ const CardHeader = styled.div`
     vertical-align: text-top;
     opacity: 40%;
     padding: 5px;
-    transition: 0.5s ease;
+    transition: 0.2s ease;
   }
   svg:hover {
     border-radius: 5px;
@@ -53,6 +60,7 @@ const CardHeader = styled.div`
     transition: 0.1s ease-in-out;
   }
 `;
+
 const Card = styled.div`
   display: flex;
   flex-direction: column;
@@ -81,13 +89,26 @@ const GoldCheck = styled.div<IStyle>`
       margin-top: 5px;
     }
   }
+`;
+interface IGoldIcon {
+  isGoldContents: boolean;
+}
+const GoldIcon = styled.div<IGoldIcon>`
   svg {
-    color: yellow;
+    color: ${(props) => (props.isGoldContents ? "yellow" : "gray")};
   }
 `;
 const IconContainer = styled.div<IStyle>`
   opacity: ${(props) => (props.isHovered ? "100%" : "0%")};
   transition: opacity 0.1s ease-in-out;
+`;
+const Icon = styled.div`
+  svg {
+    color: ${(props) => props.theme.TextColor_A};
+    margin: 0px;
+    padding: 0px;
+    font-size: 20px;
+  }
 `;
 interface IProps {
   ContentsName: string;
@@ -97,6 +118,11 @@ interface IProps {
 
 const ContentCard = ({ Gates, ContentsName, ChracterName }: IProps) => {
   const [isHovered, setIsHovered] = useState(false);
+  const [isGoldContents, setIsGoldContents] = useIsGoldContents(
+    CheckBoxConfig,
+    ChracterName,
+    ContentsName
+  );
   const [isVisible, setIsVisible] = useIsVisible(
     CheckBoxConfig,
     ChracterName,
@@ -115,10 +141,19 @@ const ContentCard = ({ Gates, ContentsName, ChracterName }: IProps) => {
       <CardHeader>
         <h1>{ContentsName}</h1>
         <GoldCheck isHovered={isHovered}>
-          <FontAwesomeIcon icon={faCoins} />
-          <div>
+          <GoldIcon isGoldContents={isGoldContents}>
+            <FontAwesomeIcon icon={faCoins} />
+          </GoldIcon>
+
+          <div onClick={() => setIsGoldContents(!isGoldContents)}>
             <span>골드획득 컨텐츠</span>
-            <input type="checkbox" />
+            <Icon>
+              {isGoldContents ? (
+                <FontAwesomeIcon icon={faSquareCheck} />
+              ) : (
+                <FontAwesomeIcon icon={faSquare} />
+              )}
+            </Icon>
           </div>
         </GoldCheck>
 

@@ -61,7 +61,6 @@ interface IProps {
   index: number;
 }
 const ContentCardGate = ({
-  Difficulty: DifficultyState,
   Gate: { Gate_No, isFixedDifficulty },
   ChracterName,
   ContentsName,
