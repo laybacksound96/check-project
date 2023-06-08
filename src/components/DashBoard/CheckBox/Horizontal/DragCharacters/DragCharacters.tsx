@@ -110,6 +110,7 @@ function DragCharacters({ parentProvided, style, accountName }: IProps) {
                 {Account.map((CharacterName, index) => {
                   return (
                     <DragCharactersDraggable
+                      AccountName={accountName}
                       CharacterName={CharacterName}
                       index={index}
                       boardId={CharacterName + "_" + index}

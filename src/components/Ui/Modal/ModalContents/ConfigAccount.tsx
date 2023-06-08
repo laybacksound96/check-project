@@ -2,7 +2,7 @@ import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Header } from "./ConfigContent";
 import { useRecoilValue } from "recoil";
-import { CheckBoxConfig, ModalState } from "../../../../atoms";
+import { AccountState, CheckBoxConfig, ModalState } from "../../../../atoms";
 import styled from "styled-components";
 import ContentCard from "./components/ContentCard";
 import { useState } from "react";
@@ -26,8 +26,11 @@ const GridContainer = styled.div`
 `;
 
 const ConfigAccount = () => {
-  const { modalProp: ChracterName } = useRecoilValue(ModalState);
-  const { [`${ChracterName}`]: contentsState } = useRecoilValue(CheckBoxConfig);
+  const {
+    modalProp: { CharacterName, AccountName },
+  } = useRecoilValue(ModalState);
+  const { [`${CharacterName}`]: contentsState } =
+    useRecoilValue(CheckBoxConfig);
   const ContentNames = Object.keys(contentsState);
   const [GoldContentsArray, setGoldContentsArray] = useState<string[]>([]);
   const modifyGoldContentsArray = (ContentsName: string) => {
@@ -41,13 +44,21 @@ const ConfigAccount = () => {
       return [...prev, ContentsName];
     });
   };
+  const {
+    [`${AccountName}`]: {
+      [`${CharacterName}`]: { GoldContents },
+    },
+  } = useRecoilValue(AccountState);
+
   return (
     <Container>
       <Header>
         <FontAwesomeIcon icon={faGear} size="lg" />
-        <h1>{ChracterName && `${ChracterName}`}'s Settings</h1>
+        <h1>{CharacterName && `${CharacterName}`}'s Settings</h1>
       </Header>
-
+      {GoldContents.map((contents) => (
+        <span key={contents}>{contents}</span>
+      ))}
       <GridContainer>
         {ContentNames.map((ContentName) => {
           const { Gates } = contentsState[ContentName];
@@ -57,7 +68,7 @@ const ConfigAccount = () => {
                 key={ContentName}
                 Gates={Gates}
                 ContentsName={ContentName}
-                ChracterName={ChracterName}
+                ChracterName={CharacterName}
                 modifyGoldContentsArray={modifyGoldContentsArray}
               />
             )

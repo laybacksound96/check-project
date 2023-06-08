@@ -10,6 +10,7 @@ import {
   CheckBoxConfig,
   ContentsFrequency,
   ContentsState,
+  IModalObject,
   ModalEnum,
   ModalState,
   VisibledColumns,
@@ -59,9 +60,15 @@ export const ButtonContainer = styled.div`
 interface IProps {
   boardId: string;
   CharacterName: string;
+  AccountName: string;
   index: number;
 }
-function DragCharactersDraggable({ boardId, CharacterName, index }: IProps) {
+function DragCharactersDraggable({
+  boardId,
+  CharacterName,
+  index,
+  AccountName,
+}: IProps) {
   const Contents = useRecoilValue(ContentsState);
   const contentsFrequency = useRecoilValue(ContentsFrequency);
   const visibledColumns = useRecoilValue(VisibledColumns);
@@ -87,10 +94,17 @@ function DragCharactersDraggable({ boardId, CharacterName, index }: IProps) {
 
   const openModal = () => {
     setIsModalOpen((prev) => {
-      const copiedPrev = { ...prev };
-      copiedPrev.isModalOpen = true;
-      copiedPrev.modalType = ModalEnum.CONFIG_ACCOUNT;
-      copiedPrev.modalProp = CharacterName;
+      const copiedPrev: IModalObject = {
+        ...prev,
+        modalType: ModalEnum.CONFIG_ACCOUNT,
+        isModalOpen: true,
+        modalProp: {
+          ...prev.modalProp,
+          AccountName: AccountName,
+          CharacterName: CharacterName,
+        },
+      };
+
       return { ...copiedPrev };
     });
   };

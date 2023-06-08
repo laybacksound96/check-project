@@ -1,6 +1,7 @@
 import { IConfigObject, IGates } from "../../../../../atoms";
 import CountGates from "./CountGates";
 import IsValidLevel from "./IsValidLevel";
+import calculateGoldContents from "./calculateGoldContents";
 import makeActivatedAndDifficulty from "./makeActivatedAndDifficulty";
 
 const makeConfigObject = (
@@ -13,7 +14,7 @@ const makeConfigObject = (
     const DefaultObject: IConfigObject = {
       isCleared: false,
       isVisible: IsValidLevel(content, level),
-      isGoldContents: false,
+      isGoldContents: calculateGoldContents(level).includes(content),
       Gates: [],
     };
     for (let gateNumber = 1; gateNumber < gateCount + 1; gateNumber++) {
