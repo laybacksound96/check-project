@@ -10,6 +10,7 @@ import { useEffect } from "react";
 import Content from "./Content";
 import CalculateCheckbox from "../Functions/CalculateCheckbox";
 import React from "react";
+import sortContentsFrequency from "../Functions/sortContentsFrequency";
 
 const ContainerStyle = styled.ul`
   display: grid;
@@ -30,10 +31,10 @@ const Contents = () => {
       CalculateCheckbox(checkBoxConfig, contentsState, accountState, prev)
     );
   }, [checkBoxConfig, contentsState, setContentsFrequency, accountState]);
-
+  sortContentsFrequency(contentsFrequency);
   return (
     <ContainerStyle>
-      {Object.keys(contentsFrequency).map((key) => {
+      {sortContentsFrequency(contentsFrequency).map((key) => {
         if (!contentsFrequency[key]) return null;
         if (contentsFrequency[key].Frequency === 0) return null;
         return (
