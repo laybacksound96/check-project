@@ -5,7 +5,7 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import {
   AccountState,
   CheckBoxConfig,
-  IAccountState,
+  ICharacterState,
 } from "../../../../atoms/atoms";
 import styled from "styled-components";
 import ContentCard from "./components/ContentCard";
@@ -31,7 +31,7 @@ const GridContainer = styled.div`
 
 const ConfigAccount = () => {
   const {
-    modalProp: { CharacterName, AccountName },
+    modalProp: { CharacterName },
   } = useRecoilValue(ModalState);
 
   const { [`${CharacterName}`]: contentsState } =
@@ -39,9 +39,7 @@ const ConfigAccount = () => {
   const ContentNames = Object.keys(contentsState);
   const [
     {
-      [`${AccountName}`]: {
-        [`${CharacterName}`]: { GoldContents },
-      },
+      [`${CharacterName}`]: { GoldContents },
     },
     setGoldContents,
   ] = useRecoilState(AccountState);
@@ -55,14 +53,11 @@ const ConfigAccount = () => {
         copiedGoldContents = [...GoldContents, ContentsName];
       }
 
-      const copiedPrev: IAccountState = {
+      const copiedPrev: ICharacterState = {
         ...prev,
-        [`${AccountName}`]: {
-          ...prev[`${AccountName}`],
-          [`${CharacterName}`]: {
-            ...prev[`${AccountName}`][`${CharacterName}`],
-            GoldContents: copiedGoldContents,
-          },
+        [`${CharacterName}`]: {
+          ...prev[`${CharacterName}`],
+          GoldContents: copiedGoldContents,
         },
       };
 

@@ -104,13 +104,11 @@ const AddAccount = () => {
     const Character = SortByLevel(fetchedCharacters);
     const AccountOwner = Character[0].CharacterName;
     const AccountState = MakeAccountState(Character);
-    console.log("AccountState===============================");
-    console.log(AccountState);
-    console.log("AccountState===============================");
+
     setAccountState((prev) => {
       const copiedPrev = {
         ...prev,
-        [`${AccountOwner}`]: AccountState,
+        ...AccountState,
       };
       return copiedPrev;
     });

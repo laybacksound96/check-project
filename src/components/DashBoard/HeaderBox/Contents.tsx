@@ -1,6 +1,7 @@
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import {
+  AccountState,
   CheckBoxConfig,
   ContentsFrequency,
   ContentsState,
@@ -22,13 +23,13 @@ const Contents = () => {
   const [contentsFrequency, setContentsFrequency] =
     useRecoilState(ContentsFrequency);
   const checkBoxConfig = useRecoilValue(CheckBoxConfig);
-  const Contents = useRecoilValue(ContentsState);
-
+  const contentsState = useRecoilValue(ContentsState);
+  const accountState = useRecoilValue(AccountState);
   useEffect(() => {
     setContentsFrequency((prev) =>
-      CalculateCheckbox(checkBoxConfig, Contents, prev)
+      CalculateCheckbox(checkBoxConfig, contentsState, accountState, prev)
     );
-  }, [checkBoxConfig, Contents, setContentsFrequency]);
+  }, [checkBoxConfig, contentsState, setContentsFrequency, accountState]);
 
   return (
     <ContainerStyle>

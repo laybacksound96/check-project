@@ -1,6 +1,9 @@
-import { IAccountState } from "../../../../../atoms/atoms";
+import { ICharacterState } from "../../../../../atoms/atoms";
 
-const IsDupplicated = (name: string, accountState: IAccountState): boolean => {
+const IsDupplicated = (
+  name: string,
+  accountState: ICharacterState
+): boolean => {
   const Characters = [];
   for (let elem in accountState) {
     Characters.push(...Object.keys(accountState[elem]));

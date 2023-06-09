@@ -36,8 +36,8 @@ interface ICharacterInfo {
 export interface ICharacterState {
   [Character: string]: ICharacterInfo;
 }
-export type IAccountState = { [accountOwner: string]: ICharacterState };
-export const AccountState = atom<IAccountState>({
+
+export const AccountState = atom<ICharacterState>({
   key: "AccountState",
   default: {},
 });
