@@ -14,6 +14,7 @@ const makeConfigObject = (
     const DefaultObject: IConfigObject = {
       isCleared: false,
       isVisible: IsValidLevel(content, level),
+      isActivated: IsValidLevel(content, level),
       isGoldContents: calculateGoldContents(level).includes(content),
       Gates: [],
     };
@@ -38,6 +39,7 @@ const makeConfigObject = (
     isGoldContents: false,
     isCleared: false,
     isVisible: true,
+    isActivated: true,
     Gates: [],
   };
 

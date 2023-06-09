@@ -12,7 +12,7 @@ import {
 
 const IconContainer = styled.div`
   display: flex;
-  justify-content: end;
+  align-items: center;
 `;
 interface IconContainerStyle {
   isHovered: boolean;
@@ -30,8 +30,7 @@ const GateContainer = styled.div<IconContainerStyle>`
   transition: opacity 0.1s ease-in-out;
   ${IconContainer} {
     svg {
-      margin-top: 10px;
-      margin-right: 10px;
+      font-size: 30px;
       opacity: ${(props) => (props.isHovered ? "100%" : "0%")};
       transition: opacity 0.1s ease-in-out;
     }
@@ -55,6 +54,7 @@ const DifficultySpan = styled.span`
 `;
 interface IProps {
   Difficulty: string | undefined;
+  isContentVisible: boolean;
   Gate: IGates;
   ChracterName: string;
   ContentsName: string;
@@ -65,6 +65,7 @@ const ContentCardGate = ({
   ChracterName,
   ContentsName,
   index,
+  isContentVisible,
 }: IProps) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isVisible, setIsVisible] = useIsVisibleGates(
@@ -81,7 +82,7 @@ const ContentCardGate = ({
   );
 
   const changeDifficultyHandler = () => {
-    if (isFixedDifficulty) return;
+    if (isFixedDifficulty || !isContentVisible || !isVisible) return;
     setDifficulty(Difficulty === "normal" ? "hard" : "normal");
   };
 

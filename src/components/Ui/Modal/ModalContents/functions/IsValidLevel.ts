@@ -1,6 +1,6 @@
 const IsValidLevel = (ContentName: string, level: number) => {
   if (ContentName === "아브렐슈드") {
-    if (level >= 1520) return true;
+    if (level >= 1490) return true;
     return false;
   }
   if (ContentName === "쿠크세이튼") {

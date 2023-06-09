@@ -26,6 +26,10 @@ function Dashboard() {
     setIsModalOpen((prev) => {
       const copiedPrev = { ...prev };
       copiedPrev.isModalOpen = false;
+      copiedPrev.modalProp = {
+        AccountName: "",
+        CharacterName: "",
+      };
       return copiedPrev;
     });
   };

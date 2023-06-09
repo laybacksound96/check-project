@@ -104,6 +104,7 @@ const AddContent = () => {
           isGoldContents: false,
           isCleared: false,
           isVisible: true,
+          isActivated: true,
           Gates: [],
         };
         copiedCheckBoxConfig[CharacterName] = copiedContents;

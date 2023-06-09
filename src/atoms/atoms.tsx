@@ -11,6 +11,7 @@ export interface IConfigObject {
   ["isGoldContents"]: boolean;
   ["isCleared"]: boolean;
   ["isVisible"]: boolean;
+  ["isActivated"]: boolean;
   ["Gates"]: IGates[];
 }
 export interface IContentName {

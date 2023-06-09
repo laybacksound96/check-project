@@ -33,6 +33,7 @@ const ConfigAccount = () => {
   const {
     modalProp: { CharacterName, AccountName },
   } = useRecoilValue(ModalState);
+
   const { [`${CharacterName}`]: contentsState } =
     useRecoilValue(CheckBoxConfig);
   const ContentNames = Object.keys(contentsState);
@@ -44,6 +45,7 @@ const ConfigAccount = () => {
     },
     setGoldContents,
   ] = useRecoilState(AccountState);
+
   const modifyGoldContents = (ContentsName: string) => {
     setGoldContents((prev) => {
       let copiedGoldContents = [...GoldContents];
@@ -78,9 +80,9 @@ const ConfigAccount = () => {
       ))}
       <GridContainer>
         {ContentNames.map((ContentName) => {
-          const { Gates } = contentsState[ContentName];
+          const { Gates, isActivated } = contentsState[ContentName];
           return (
-            Gates && (
+            isActivated && (
               <ContentCard
                 key={ContentName}
                 Gates={Gates}

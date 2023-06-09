@@ -59,7 +59,7 @@ const CardHeader = styled.div`
   }
 `;
 
-const Card = styled.div`
+const GateContainer = styled.div`
   display: flex;
   flex-direction: column;
   ul {
@@ -138,6 +138,7 @@ const ContentCard = ({
     setIsVisible(!isVisible);
   };
   const goldContentsHandler = () => {
+    if (!isVisible) return;
     setIsGoldContents(!isGoldContents);
     modifyGoldContents(ContentsName);
   };
@@ -154,7 +155,6 @@ const ContentCard = ({
           <GoldIcon isGoldContents={isGoldContents}>
             <FontAwesomeIcon icon={faCoins} />
           </GoldIcon>
-
           <div onClick={goldContentsHandler}>
             <span>골드획득 컨텐츠</span>
             <Icon>
@@ -166,7 +166,6 @@ const ContentCard = ({
             </Icon>
           </div>
         </GoldCheck>
-
         <IconContainer isHovered={isHovered} onClick={visibleHandler}>
           {isVisible ? (
             <FontAwesomeIcon icon={faEye} />
@@ -175,7 +174,7 @@ const ContentCard = ({
           )}
         </IconContainer>
       </CardHeader>
-      <Card>
+      <GateContainer>
         {Gates.map((gate, index) => {
           const Difficulty = gate.Difficulty;
           return (
@@ -186,10 +185,11 @@ const ContentCard = ({
               ChracterName={ChracterName}
               ContentsName={ContentsName}
               index={index}
+              isContentVisible={isVisible}
             />
           );
         })}
-      </Card>
+      </GateContainer>
     </ContentList>
   );
 };
