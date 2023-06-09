@@ -14,9 +14,8 @@ import sortContentsFrequency from "../Functions/sortContentsFrequency";
 
 const ContainerStyle = styled.ul`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   grid-auto-rows: auto;
-  gap: 10px;
   margin-top: 30px;
 `;
 

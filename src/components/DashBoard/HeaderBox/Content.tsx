@@ -26,33 +26,19 @@ const bump = keyframes`
     transform: scale(1);}
  `;
 
-const ContentsBox = styled.div`
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-  justify-content: start;
-  align-items: center;
-  flex-basis: 70%;
-`;
 interface IColorStyle {
   Color: string;
 }
 
-const OwnerBox = styled.div<IColorStyle>`
-  background-color: ${(props) => getLowerLightnessColor(props.Color)};
-  flex-basis: 30%;
-  border-radius: 0 0 10px 10px;
-`;
-
 const ContentStyle = styled.li<IpropStyle>`
   display: flex;
+
   flex-direction: column;
   justify-content: space-between;
-  margin: 0 10px;
-  text-align: center;
+  align-items: center;
+  margin: 5px 5px;
   border-radius: 10px;
-  width: 170px;
-  min-height: 200px;
+  width: auto;
   height: auto;
 
   * {
@@ -67,40 +53,51 @@ const ContentStyle = styled.li<IpropStyle>`
 `;
 const HeaderContainer = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  width: 100%;
-  flex-basis: 50%;
-  height: 40%;
-  span {
-    text-align: start;
-    margin-right: 5px;
-    font-size: 40px;
+  width: auto;
+
+  h1 {
+    font-weight: bold;
+    font-size: 20px;
   }
 `;
 
 const Icon = styled.div<IColorStyle>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 45px;
   height: 45px;
   border-radius: 7px;
   background-color: ${(props) => getLowerLightnessColor(props.Color)};
-`;
-const TextContainer = styled.div`
-  margin-top: 5px;
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-  width: 100%;
-  height: 60%;
 
-  h1 {
-    font-size: 25px;
+  span {
     margin-bottom: 5px;
+    font-size: 30px;
   }
-  p {
-    margin-left: 5px;
-    font-size: 15px;
-  }
+`;
+const OwnerBox = styled.div<IColorStyle>`
+  display: grid;
+  grid-template-columns: repeat(2, minmax(30px, auto));
+  grid-auto-rows: auto;
+  width: 100%;
+  padding: 5px;
+  height: auto;
+  border-radius: 0 0 10px 10px;
+  background-color: ${(props) => getLowerLightnessColor(props.Color)};
+`;
+const OwnerCard = styled.span<IColorStyle>`
+  width: auto;
+  height: auto;
+  margin: 0 5px;
+  padding: 3px;
+  font-size: 0.8rem;
+
+  color: ${(props) => props.theme.Color_4};
+  background-color: ${(props) => props.theme.TextColor_A};
+  border-radius: 5px;
 `;
 interface IProps {
   contentState: IFrequencyContents;
@@ -119,19 +116,31 @@ const Content = ({ contentState, Color }: IProps) => {
   }, [contentState.Frequency]);
   return (
     <ContentStyle shouldAnimate={shouldAnimate} Color={Color}>
-      <ContentsBox>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-evenly",
+          alignItems: "center",
+          width: "100%",
+          padding: "10px",
+        }}
+      >
         <HeaderContainer>
-          <Icon Color={Color} />
-          <span>{contentState.Frequency}</span>
-        </HeaderContainer>
-        <TextContainer>
           <h1>{contentState.ContentsName}</h1>
           {contentState.GateState.map((elem) => {
             return <p key={elem}>{elem}</p>;
           })}
-        </TextContainer>
-      </ContentsBox>
-      <OwnerBox Color={Color} />
+        </HeaderContainer>
+
+        <Icon Color={Color}>
+          <span>{contentState.Frequency}</span>
+        </Icon>
+      </div>
+      <OwnerBox Color={Color}>
+        {contentState.ContentsOwner.map((name) => (
+          <OwnerCard Color={Color}>{name}</OwnerCard>
+        ))}
+      </OwnerBox>
     </ContentStyle>
   );
 };
