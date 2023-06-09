@@ -1,14 +1,16 @@
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import {
+  AccountState,
   CheckBoxConfig,
   ContentsFrequency,
   ContentsState,
-} from "../../../atoms";
+} from "../../../atoms/atoms";
 import { useEffect } from "react";
 import Content from "./Content";
 import CalculateCheckbox from "../Functions/CalculateCheckbox";
 import React from "react";
+import sortContentsFrequency from "../Functions/sortContentsFrequency";
 
 const ContainerStyle = styled.ul`
   display: grid;
@@ -19,26 +21,27 @@ const ContainerStyle = styled.ul`
 `;
 
 const Contents = () => {
-  const [contentState, setContentState] = useRecoilState(ContentsFrequency);
+  const [contentsFrequency, setContentsFrequency] =
+    useRecoilState(ContentsFrequency);
   const checkBoxConfig = useRecoilValue(CheckBoxConfig);
-  const Contents = useRecoilValue(ContentsState);
-
+  const contentsState = useRecoilValue(ContentsState);
+  const accountState = useRecoilValue(AccountState);
   useEffect(() => {
-    setContentState((prev) =>
-      CalculateCheckbox(checkBoxConfig, Contents, prev)
+    setContentsFrequency((prev) =>
+      CalculateCheckbox(checkBoxConfig, contentsState, accountState, prev)
     );
-  }, [checkBoxConfig, Contents, setContentState]);
-
+  }, [checkBoxConfig, contentsState, setContentsFrequency, accountState]);
+  sortContentsFrequency(contentsFrequency);
   return (
     <ContainerStyle>
-      {Object.keys(contentState).map((key) => {
-        if (!contentState[key]) return null;
-        if (contentState[key].Frequency === 0) return null;
+      {sortContentsFrequency(contentsFrequency).map((key) => {
+        if (!contentsFrequency[key]) return null;
+        if (contentsFrequency[key].Frequency === 0) return null;
         return (
           <Content
             key={key}
-            contentState={contentState[key]}
-            Color={contentState[key].Color}
+            contentState={contentsFrequency[key]}
+            Color={contentsFrequency[key].Color}
           />
         );
       })}

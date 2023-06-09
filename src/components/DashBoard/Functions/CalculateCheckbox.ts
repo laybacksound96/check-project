@@ -1,4 +1,9 @@
-import { ICheckBoxconfig, IContents, IContentsFrequency } from "../../../atoms";
+import {
+  ICharacterState,
+  ICheckBoxconfig,
+  IContents,
+  IContentsFrequency,
+} from "../../../atoms/atoms";
 
 import CalculateGateDifficulty from "./CalculateGateDifficulty";
 import getRandomPastelColor from "./getRandomPastelColor";
@@ -6,17 +11,20 @@ import getRandomPastelColor from "./getRandomPastelColor";
 export const CalculateCheckbox = (
   Accounts: ICheckBoxconfig,
   Contents: IContents,
+  accountState: ICharacterState,
   Prev: IContentsFrequency
 ) => {
   const resultObj: IContentsFrequency = {};
   for (const CharacterName in Accounts) {
+    if (!accountState[`${CharacterName}`].IsGoldCharacter) continue;
     for (const ContentName in Contents) {
-      const state = Accounts[CharacterName][ContentName];
-      if (state.isVisible === false) continue;
-      if (Contents[ContentName].isVisible === false) continue;
-      if (Contents[ContentName].type === "Default") {
-        if (state.Gates === undefined) continue;
-        const gates = CalculateGateDifficulty(state.Gates);
+      const { type, isVisible: contentsVisible } = Contents[ContentName];
+      const { isActivated, isVisible, Gates, isCleared } =
+        Accounts[CharacterName][ContentName];
+
+      if (!contentsVisible || !isVisible || !isActivated) continue;
+      if (type === "Default") {
+        const gates = CalculateGateDifficulty(Gates);
         const Key = `${ContentName}_${gates.join("_")}`;
         if (resultObj[Key] === undefined) {
           resultObj[Key] = {
@@ -29,10 +37,10 @@ export const CalculateCheckbox = (
               : getRandomPastelColor(ContentName),
           };
         }
-        if (state.isCleared === false) resultObj[Key].Frequency++;
+        if (!isCleared) resultObj[Key].Frequency++;
         resultObj[Key].ContentsOwner.push(CharacterName);
       }
-      if (Contents[ContentName].type === "Custom") {
+      if (type === "Custom") {
         if (resultObj[ContentName] === undefined) {
           resultObj[ContentName] = {
             Frequency: 0,
@@ -42,7 +50,7 @@ export const CalculateCheckbox = (
             Color: getRandomPastelColor(ContentName),
           };
         }
-        if (state.isCleared === false) resultObj[ContentName].Frequency++;
+        if (!isCleared) resultObj[ContentName].Frequency++;
         resultObj[ContentName].ContentsOwner.push(CharacterName);
       }
     }

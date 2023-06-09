@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
-import { CheckBoxConfig, IGates } from "../../../../../atoms";
+import { CheckBoxConfig, IGates } from "../../../../../atoms/atoms";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ContentCardCheckBox from "./ContentCardCheckBox";
 
@@ -12,7 +12,7 @@ import {
 
 const IconContainer = styled.div`
   display: flex;
-  justify-content: end;
+  align-items: center;
 `;
 interface IconContainerStyle {
   isHovered: boolean;
@@ -30,8 +30,7 @@ const GateContainer = styled.div<IconContainerStyle>`
   transition: opacity 0.1s ease-in-out;
   ${IconContainer} {
     svg {
-      margin-top: 10px;
-      margin-right: 10px;
+      font-size: 30px;
       opacity: ${(props) => (props.isHovered ? "100%" : "0%")};
       transition: opacity 0.1s ease-in-out;
     }
@@ -53,8 +52,15 @@ const DifficultySpan = styled.span`
   border-radius: 5px;
   padding: 5px;
 `;
+const CheckBoxContainer = styled.div`
+  display: flex;
+  margin: 10px 0;
+  margin-top: 20px;
+  width: 100%;
+`;
 interface IProps {
   Difficulty: string | undefined;
+  isContentVisible: boolean;
   Gate: IGates;
   ChracterName: string;
   ContentsName: string;
@@ -65,6 +71,7 @@ const ContentCardGate = ({
   ChracterName,
   ContentsName,
   index,
+  isContentVisible,
 }: IProps) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isVisible, setIsVisible] = useIsVisibleGates(
@@ -81,7 +88,7 @@ const ContentCardGate = ({
   );
 
   const changeDifficultyHandler = () => {
-    if (isFixedDifficulty) return;
+    if (isFixedDifficulty || !isContentVisible || !isVisible) return;
     setDifficulty(Difficulty === "normal" ? "hard" : "normal");
   };
 
@@ -97,14 +104,7 @@ const ContentCardGate = ({
         <DifficultySpan>{Difficulty}</DifficultySpan>
       </GateNumberContainer>
       <DifficultyContainer>
-        <div
-          style={{
-            display: "flex",
-            margin: "10px 0",
-            marginTop: "20px",
-            width: "100%",
-          }}
-        >
+        <CheckBoxContainer>
           <ContentCardCheckBox
             DifficultyState={Difficulty}
             Difficulty="normal"
@@ -117,7 +117,7 @@ const ContentCardGate = ({
             isFixedDifficulty={isFixedDifficulty}
             handler={changeDifficultyHandler}
           />
-        </div>
+        </CheckBoxContainer>
       </DifficultyContainer>
       <IconContainer onClick={() => setIsVisible(!isVisible)}>
         {isVisible ? (

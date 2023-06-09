@@ -5,11 +5,11 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import {
   AccountState,
   CheckBoxConfig,
-  IAccountState,
-  ModalState,
-} from "../../../../atoms";
+  ICharacterState,
+} from "../../../../atoms/atoms";
 import styled from "styled-components";
 import ContentCard from "./components/ContentCard";
+import { ModalState } from "../../../../atoms/modal";
 
 const Container = styled.div`
   width: auto;
@@ -31,19 +31,19 @@ const GridContainer = styled.div`
 
 const ConfigAccount = () => {
   const {
-    modalProp: { CharacterName, AccountName },
+    modalProp: { CharacterName },
   } = useRecoilValue(ModalState);
+
   const { [`${CharacterName}`]: contentsState } =
     useRecoilValue(CheckBoxConfig);
   const ContentNames = Object.keys(contentsState);
   const [
     {
-      [`${AccountName}`]: {
-        [`${CharacterName}`]: { GoldContents },
-      },
+      [`${CharacterName}`]: { GoldContents },
     },
     setGoldContents,
   ] = useRecoilState(AccountState);
+
   const modifyGoldContents = (ContentsName: string) => {
     setGoldContents((prev) => {
       let copiedGoldContents = [...GoldContents];
@@ -53,14 +53,11 @@ const ConfigAccount = () => {
         copiedGoldContents = [...GoldContents, ContentsName];
       }
 
-      const copiedPrev: IAccountState = {
+      const copiedPrev: ICharacterState = {
         ...prev,
-        [`${AccountName}`]: {
-          ...prev[`${AccountName}`],
-          [`${CharacterName}`]: {
-            ...prev[`${AccountName}`][`${CharacterName}`],
-            GoldContents: copiedGoldContents,
-          },
+        [`${CharacterName}`]: {
+          ...prev[`${CharacterName}`],
+          GoldContents: copiedGoldContents,
         },
       };
 
@@ -78,9 +75,9 @@ const ConfigAccount = () => {
       ))}
       <GridContainer>
         {ContentNames.map((ContentName) => {
-          const { Gates } = contentsState[ContentName];
+          const { Gates, isActivated } = contentsState[ContentName];
           return (
-            Gates && (
+            isActivated && (
               <ContentCard
                 key={ContentName}
                 Gates={Gates}

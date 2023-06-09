@@ -2,7 +2,7 @@ import {
   ICharacterState,
   ICheckBoxconfig,
   IContents,
-} from "../../../../../atoms";
+} from "../../../../../atoms/atoms";
 
 import makeConfigObject from "./makeConfigObject";
 

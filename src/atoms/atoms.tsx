@@ -1,4 +1,5 @@
 import { atom } from "recoil";
+import makeDefaultCommander from "../components/Ui/Modal/ModalContents/functions/makeDefaultCommander";
 
 export interface IGates {
   ["Gate_No"]: number;
@@ -11,6 +12,7 @@ export interface IConfigObject {
   ["isGoldContents"]: boolean;
   ["isCleared"]: boolean;
   ["isVisible"]: boolean;
+  ["isActivated"]: boolean;
   ["Gates"]: IGates[];
 }
 export interface IContentName {
@@ -34,8 +36,8 @@ interface ICharacterInfo {
 export interface ICharacterState {
   [Character: string]: ICharacterInfo;
 }
-export type IAccountState = { [accountOwner: string]: ICharacterState };
-export const AccountState = atom<IAccountState>({
+
+export const AccountState = atom<ICharacterState>({
   key: "AccountState",
   default: {},
 });
@@ -47,14 +49,10 @@ export interface IContentState {
 export interface IContents {
   [ContentsName: string]: IContentState;
 }
+
 export const ContentsState = atom<IContents>({
   key: "ContentsState",
-  default: {
-    발탄: { type: "Default", isVisible: true },
-    비아키스: { type: "Default", isVisible: true },
-    쿠크세이튼: { type: "Default", isVisible: true },
-    아브렐슈드: { type: "Default", isVisible: true },
-  },
+  default: makeDefaultCommander(),
 });
 
 export interface IFrequencyContents {
@@ -71,42 +69,4 @@ export interface IContentsFrequency {
 export const ContentsFrequency = atom<IContentsFrequency>({
   key: "IContentsFrequency",
   default: {},
-});
-
-export interface Contents {
-  ["name"]: string;
-  ["width"]: number;
-}
-export const VisibledColumns = atom<Contents[]>({
-  key: "visibledColumns",
-  default: [],
-});
-export const AccountOrder = atom<string[]>({
-  key: "AccountOrder",
-  default: [],
-});
-
-export enum ModalEnum {
-  CONFIG_CONTENT = "Value 1",
-  CONFIG_ACCOUNT = "Value 2",
-  ADD_CONTENT = "Value 3",
-  ADD_ACCOUNT = "Value 4",
-}
-
-interface modalProp {
-  AccountName: string;
-  CharacterName: string;
-}
-type IModal = IModalObject;
-export interface IModalObject {
-  isModalOpen: boolean;
-  modalType?: ModalEnum;
-  modalProp: modalProp;
-}
-export const ModalState = atom<IModal>({
-  key: "ModalState",
-  default: {
-    isModalOpen: false,
-    modalProp: { AccountName: "", CharacterName: "" },
-  },
 });

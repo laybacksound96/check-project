@@ -4,7 +4,7 @@
       "normal": {
         "gateNumber": 1,
         "level": 1385,
-        "gold": 1200
+        "gold": 1000
       }
     }
   ],
@@ -34,7 +34,6 @@
       }
     }
   ],
-
   "비아키스": [
     {
       "normal": {
@@ -170,6 +169,56 @@
       }
     }
   ],
+  "카양겔": [
+    {
+      "normal": {
+        "gateNumber": 1,
+        "level": 1540,
+        "gold": 800
+      },
+      "hard": {
+        "gateNumber": 1,
+        "level": 1580,
+        "gold": 1000
+      }
+    },
+    {
+      "normal": {
+        "gateNumber": 2,
+        "level": 1540,
+        "gold": 800
+      },
+      "hard": {
+        "gateNumber": 2,
+        "level": 1580,
+        "gold": 1000
+      }
+    },
+    {
+      "normal": {
+        "gateNumber": 3,
+        "level": 1540,
+        "gold": 1200
+      },
+      "hard": {
+        "gateNumber": 3,
+        "level": 1580,
+        "gold": 1500
+      }
+    },
+    {
+      "normal": {
+        "gateNumber": 4,
+        "level": 1540,
+        "gold": 1700
+      },
+      "hard": {
+        "gateNumber": 4,
+        "level": 1580,
+        "gold": 2000
+      }
+    }
+  ],
   "일리아칸": [
     {
       "normal": {
@@ -205,6 +254,57 @@
         "gateNumber": 3,
         "level": 1600,
         "gold": 3750
+      }
+    }
+  ],
+
+  "상아탑": [
+    {
+      "normal": {
+        "gateNumber": 1,
+        "level": 1600,
+        "gold": 1200
+      },
+      "hard": {
+        "gateNumber": 1,
+        "level": 1620,
+        "gold": 1500
+      }
+    },
+    {
+      "normal": {
+        "gateNumber": 2,
+        "level": 1600,
+        "gold": 1500
+      },
+      "hard": {
+        "gateNumber": 2,
+        "level": 1620,
+        "gold": 2000
+      }
+    },
+    {
+      "normal": {
+        "gateNumber": 3,
+        "level": 1600,
+        "gold": 2000
+      },
+      "hard": {
+        "gateNumber": 3,
+        "level": 1620,
+        "gold": 3000
+      }
+    },
+    {
+      "normal": {
+        "gateNumber": 4,
+        "level": 1600,
+        "gold": 2750
+      },
+      "hard": {
+        "gateNumber": 4,
+        "level": 1620,
+        "gold": 4500
       }
     }
   ]

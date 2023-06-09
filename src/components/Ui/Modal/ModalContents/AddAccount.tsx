@@ -3,12 +3,10 @@ import { Header } from "./ConfigContent";
 import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {
-  AccountOrder,
   AccountState,
   CheckBoxConfig,
   ContentsState,
-  ModalState,
-} from "../../../../atoms";
+} from "../../../../atoms/atoms";
 import { fetchSearchAccount } from "../../../../util/fetch";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
@@ -21,6 +19,9 @@ import IsDupplicated from "./functions/IsDupplicated";
 import MakeAccountState from "./functions/MakeAccountState";
 import MakeCheckboxState from "./functions/MakeCheckboxState";
 import SortByLevel from "./functions/SortByLevel";
+import { ModalState } from "../../../../atoms/modal";
+import { AccountOrder } from "../../../../atoms/order";
+import initializerCharacterOrder from "./functions/initializerCharacterOrder";
 
 const Container = styled.div`
   display: flex;
@@ -107,7 +108,7 @@ const AddAccount = () => {
     setAccountState((prev) => {
       const copiedPrev = {
         ...prev,
-        [`${AccountOwner}`]: AccountState,
+        ...AccountState,
       };
       return copiedPrev;
     });
@@ -118,7 +119,13 @@ const AddAccount = () => {
       };
       return copiedPrev;
     });
-    setAccountOrder((prev) => [...prev, AccountOwner]);
+    setAccountOrder((prev) => [
+      ...prev,
+      {
+        AccountName: AccountOwner,
+        CharacterOrder: initializerCharacterOrder(AccountState),
+      },
+    ]);
     setModalState((prev) => ({ ...prev, isModalOpen: false }));
   };
 

@@ -1,4 +1,4 @@
-import { IConfigObject, IGates } from "../../../../../atoms";
+import { IConfigObject, IGates } from "../../../../../atoms/atoms";
 import CountGates from "./CountGates";
 import IsValidLevel from "./IsValidLevel";
 import calculateGoldContents from "./calculateGoldContents";
@@ -13,7 +13,8 @@ const makeConfigObject = (
     const gateCount = CountGates(content);
     const DefaultObject: IConfigObject = {
       isCleared: false,
-      isVisible: IsValidLevel(content, level),
+      isVisible: calculateGoldContents(level).includes(content),
+      isActivated: IsValidLevel(content, level),
       isGoldContents: calculateGoldContents(level).includes(content),
       Gates: [],
     };
@@ -38,6 +39,7 @@ const makeConfigObject = (
     isGoldContents: false,
     isCleared: false,
     isVisible: true,
+    isActivated: true,
     Gates: [],
   };
 
