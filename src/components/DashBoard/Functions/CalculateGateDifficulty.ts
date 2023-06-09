@@ -1,4 +1,4 @@
-import { IGates } from "../../../atoms";
+import { IGates } from "../../../atoms/atoms";
 
 function CalculateGateDifficulty(gate: IGates[]): string[] {
   let result = [];

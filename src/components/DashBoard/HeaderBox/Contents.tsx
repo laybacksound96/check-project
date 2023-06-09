@@ -4,7 +4,7 @@ import {
   CheckBoxConfig,
   ContentsFrequency,
   ContentsState,
-} from "../../../atoms";
+} from "../../../atoms/atoms";
 import { useEffect } from "react";
 import Content from "./Content";
 import CalculateCheckbox from "../Functions/CalculateCheckbox";

@@ -1,8 +1,9 @@
 import { useState, useRef, useEffect } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import styled, { keyframes, css } from "styled-components";
-import { ContentsState, ModalState, CheckBoxConfig } from "../../../../atoms";
+import { ContentsState, CheckBoxConfig } from "../../../../atoms/atoms";
 import { Header } from "./ConfigContent";
+import { ModalState } from "../../../../atoms/modal";
 
 interface IStyle {
   isDisabled: boolean;

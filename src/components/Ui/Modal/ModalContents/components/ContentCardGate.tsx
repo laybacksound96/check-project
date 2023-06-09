@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
-import { CheckBoxConfig, IGates } from "../../../../../atoms";
+import { CheckBoxConfig, IGates } from "../../../../../atoms/atoms";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ContentCardCheckBox from "./ContentCardCheckBox";
 

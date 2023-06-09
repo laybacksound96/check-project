@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import styled, { css, keyframes } from "styled-components";
 
 import getLowerLightnessColor from "../Functions/getLowerLightnessColor";
-import { IFrequencyContents } from "../../../atoms";
+import { IFrequencyContents } from "../../../atoms/atoms";
 interface IpropStyle {
   shouldAnimate: boolean;
   Color: string;

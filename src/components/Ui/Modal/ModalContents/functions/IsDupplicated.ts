@@ -1,4 +1,4 @@
-import { IAccountState } from "../../../../../atoms";
+import { IAccountState } from "../../../../../atoms/atoms";
 
 const IsDupplicated = (name: string, accountState: IAccountState): boolean => {
   const Characters = [];

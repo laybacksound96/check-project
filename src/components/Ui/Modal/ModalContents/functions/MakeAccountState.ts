@@ -1,4 +1,4 @@
-import { ICharacterState } from "../../../../../atoms";
+import { ICharacterState } from "../../../../../atoms/atoms";
 import { IFetchedCharacter } from "../AddAccount";
 import SortByLevel from "./SortByLevel";
 import calculateGoldContents from "./calculateGoldContents";

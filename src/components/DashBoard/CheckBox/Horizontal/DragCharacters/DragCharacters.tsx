@@ -9,7 +9,7 @@ import {
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useRecoilValue } from "recoil";
-import { AccountState } from "../../../../../atoms";
+import { AccountState } from "../../../../../atoms/atoms";
 import DragCharactersDraggable from "./DragCharactersDraggable";
 import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

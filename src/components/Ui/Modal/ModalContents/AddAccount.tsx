@@ -7,8 +7,7 @@ import {
   AccountState,
   CheckBoxConfig,
   ContentsState,
-  ModalState,
-} from "../../../../atoms";
+} from "../../../../atoms/atoms";
 import { fetchSearchAccount } from "../../../../util/fetch";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
@@ -21,6 +20,7 @@ import IsDupplicated from "./functions/IsDupplicated";
 import MakeAccountState from "./functions/MakeAccountState";
 import MakeCheckboxState from "./functions/MakeCheckboxState";
 import SortByLevel from "./functions/SortByLevel";
+import { ModalState } from "../../../../atoms/modal";
 
 const Container = styled.div`
   display: flex;

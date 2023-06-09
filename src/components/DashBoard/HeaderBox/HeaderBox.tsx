@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import Contents from "./Contents";
 import { useSetRecoilState } from "recoil";
-import { ModalEnum, ModalState } from "../../../atoms";
+import { ModalState, ModalEnum } from "../../../atoms/modal";
 
 const HeaderBoxStyle = styled.header`
   position: relative;

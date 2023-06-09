@@ -10,15 +10,14 @@ import {
   AccountState,
   Contents,
   ContentsState,
-  ModalEnum,
-  ModalState,
   VisibledColumns,
-} from "../../../../atoms";
+} from "../../../../atoms/atoms";
 
 import Card, { Name } from "./Vertical__card";
 import { AxisLocker } from "../../Functions/AxisLocker";
 import styled from "styled-components";
 import { dragIcon } from "../../../../Settings";
+import { ModalEnum, ModalState } from "../../../../atoms/modal";
 const CardContainer = styled.div`
   display: flex;
 `;

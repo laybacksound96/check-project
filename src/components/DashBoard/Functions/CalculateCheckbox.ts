@@ -1,4 +1,8 @@
-import { ICheckBoxconfig, IContents, IContentsFrequency } from "../../../atoms";
+import {
+  ICheckBoxconfig,
+  IContents,
+  IContentsFrequency,
+} from "../../../atoms/atoms";
 
 import CalculateGateDifficulty from "./CalculateGateDifficulty";
 import getRandomPastelColor from "./getRandomPastelColor";

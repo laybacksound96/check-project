@@ -1,4 +1,4 @@
-import { IConfigObject, IGates } from "../../../../../atoms";
+import { IConfigObject, IGates } from "../../../../../atoms/atoms";
 import CountGates from "./CountGates";
 import IsValidLevel from "./IsValidLevel";
 import calculateGoldContents from "./calculateGoldContents";

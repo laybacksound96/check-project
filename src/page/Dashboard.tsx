@@ -5,10 +5,8 @@ import {
   AccountState,
   CheckBoxConfig,
   ContentsState,
-  ModalEnum,
-  ModalState,
   VisibledColumns,
-} from "../atoms";
+} from "../atoms/atoms";
 
 import HeaderBox from "../components/DashBoard/HeaderBox/HeaderBox";
 import CheckBox from "../components/DashBoard/CheckBox/Checkbox";
@@ -17,6 +15,7 @@ import AddContent from "../components/Ui/Modal/ModalContents/AddContent";
 import AddAccount from "../components/Ui/Modal/ModalContents/AddAccount";
 import { useEffect } from "react";
 import ConfigAccount from "../components/Ui/Modal/ModalContents/ConfigAccount";
+import { ModalState, ModalEnum } from "../atoms/modal";
 
 function Dashboard() {
   const [IsModalOpen, setIsModalOpen] = useRecoilState(ModalState);

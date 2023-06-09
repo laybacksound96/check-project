@@ -10,14 +10,16 @@ import {
   CheckBoxConfig,
   ContentsFrequency,
   ContentsState,
-  IModalObject,
-  ModalEnum,
-  ModalState,
   VisibledColumns,
-} from "../../../../../atoms";
+} from "../../../../../atoms/atoms";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGear } from "@fortawesome/free-solid-svg-icons";
 import getColorInFrequencyCounter from "../../../Functions/getColorFrequencyCounter";
+import {
+  ModalState,
+  IModalObject,
+  ModalEnum,
+} from "../../../../../atoms/modal";
 
 const Name = styled.div`
   display: flex;

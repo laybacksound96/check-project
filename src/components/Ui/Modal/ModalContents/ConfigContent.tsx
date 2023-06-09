@@ -1,5 +1,5 @@
 import { useRecoilState } from "recoil";
-import { ContentsState } from "../../../../atoms";
+import { ContentsState } from "../../../../atoms/atoms";
 
 import Switch from "../../UiComponents/Switch";
 

@@ -1,9 +1,10 @@
 import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { AccountOrder, ModalEnum, ModalState } from "../../../../atoms";
+import { AccountOrder } from "../../../../atoms/atoms";
 
 import DragAccounts from "./DragAccounts/DragAccounts";
 import { DropResult } from "react-beautiful-dnd";
+import { ModalState, ModalEnum } from "../../../../atoms/modal";
 
 const AddAccountBtn = styled.button`
   height: 100px;

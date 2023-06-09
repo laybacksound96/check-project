@@ -6,10 +6,10 @@ import {
   AccountState,
   CheckBoxConfig,
   IAccountState,
-  ModalState,
-} from "../../../../atoms";
+} from "../../../../atoms/atoms";
 import styled from "styled-components";
 import ContentCard from "./components/ContentCard";
+import { ModalState } from "../../../../atoms/modal";
 
 const Container = styled.div`
   width: auto;
