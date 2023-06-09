@@ -1,13 +1,8 @@
-const CountGates = (content: string) => {
-  const gateCounts: { [key: string]: number } = {
-    아브렐슈드: 6,
-    쿠크세이튼: 3,
-    비아키스: 3,
-    일리아칸: 3,
-    발탄: 2,
-  };
-
-  return gateCounts[content] || 1;
+import commander from "./commander.json";
+import { IData } from "./makeActivatedAndDifficulty";
+const CountGates = (contentName: string) => {
+  const commanderData: IData = commander;
+  return commanderData[contentName].length;
 };
 
 export default CountGates;

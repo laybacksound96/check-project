@@ -1,21 +1,12 @@
+import commander from "./commander.json";
+import { IData } from "./makeActivatedAndDifficulty";
+
 const IsValidLevel = (ContentName: string, level: number) => {
-  if (ContentName === "아브렐슈드") {
-    if (level >= 1490) return true;
-    return false;
+  const commanderData: IData = commander;
+  if (level >= commanderData[`${ContentName}`][0]["normal"].level) {
+    return true;
   }
-  if (ContentName === "쿠크세이튼") {
-    if (level >= 1475) return true;
-    return false;
-  }
-  if (ContentName === "비아키스") {
-    if (level >= 1445) return true;
-    return false;
-  }
-  if (ContentName === "발탄") {
-    if (level >= 1415) return true;
-    return false;
-  }
-  return true;
+  return false;
 };
 
 export default IsValidLevel;

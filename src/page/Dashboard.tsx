@@ -1,6 +1,11 @@
 import Modal from "../components/Ui/Modal/Modal";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { AccountState, CheckBoxConfig, ContentsState } from "../atoms/atoms";
+import {
+  AccountState,
+  CheckBoxConfig,
+  ContentsFrequency,
+  ContentsState,
+} from "../atoms/atoms";
 
 import HeaderBox from "../components/DashBoard/HeaderBox/HeaderBox";
 import CheckBox from "../components/DashBoard/CheckBox/Checkbox";
@@ -22,6 +27,7 @@ function Dashboard() {
   const visibledColumns = useRecoilValue(VisibledColumns);
   const accountOrder = useRecoilValue(AccountOrder);
   const accountState = useRecoilValue(AccountState);
+  const contentsFrequency = useRecoilValue(ContentsFrequency);
   const closeModal = () => {
     setIsModalOpen((prev) => {
       const copiedPrev = { ...prev };
@@ -43,6 +49,9 @@ function Dashboard() {
     console.log("visibledColumns");
     console.log(visibledColumns);
 
+    console.log("ContentsFrequency");
+    console.log(contentsFrequency);
+
     console.log("accountOrder.");
     console.log(accountOrder);
 
@@ -54,6 +63,7 @@ function Dashboard() {
     checkBoxConfig,
     contentsState,
     visibledColumns,
+    contentsFrequency,
     accountOrder,
     accountState,
   ]);

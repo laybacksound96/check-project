@@ -52,6 +52,12 @@ const DifficultySpan = styled.span`
   border-radius: 5px;
   padding: 5px;
 `;
+const CheckBoxContainer = styled.div`
+  display: flex;
+  margin: 10px 0;
+  margin-top: 20px;
+  width: 100%;
+`;
 interface IProps {
   Difficulty: string | undefined;
   isContentVisible: boolean;
@@ -98,14 +104,7 @@ const ContentCardGate = ({
         <DifficultySpan>{Difficulty}</DifficultySpan>
       </GateNumberContainer>
       <DifficultyContainer>
-        <div
-          style={{
-            display: "flex",
-            margin: "10px 0",
-            marginTop: "20px",
-            width: "100%",
-          }}
-        >
+        <CheckBoxContainer>
           <ContentCardCheckBox
             DifficultyState={Difficulty}
             Difficulty="normal"
@@ -118,7 +117,7 @@ const ContentCardGate = ({
             isFixedDifficulty={isFixedDifficulty}
             handler={changeDifficultyHandler}
           />
-        </div>
+        </CheckBoxContainer>
       </DifficultyContainer>
       <IconContainer onClick={() => setIsVisible(!isVisible)}>
         {isVisible ? (

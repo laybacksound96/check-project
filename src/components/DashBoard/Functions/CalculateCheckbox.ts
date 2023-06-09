@@ -19,7 +19,6 @@ export const CalculateCheckbox = (
       if (state.isVisible === false) continue;
       if (Contents[ContentName].isVisible === false) continue;
       if (Contents[ContentName].type === "Default") {
-        if (state.Gates === undefined) continue;
         const gates = CalculateGateDifficulty(state.Gates);
         const Key = `${ContentName}_${gates.join("_")}`;
         if (resultObj[Key] === undefined) {

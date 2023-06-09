@@ -19,26 +19,27 @@ const ContainerStyle = styled.ul`
 `;
 
 const Contents = () => {
-  const [contentState, setContentState] = useRecoilState(ContentsFrequency);
+  const [contentsFrequency, setContentsFrequency] =
+    useRecoilState(ContentsFrequency);
   const checkBoxConfig = useRecoilValue(CheckBoxConfig);
   const Contents = useRecoilValue(ContentsState);
 
   useEffect(() => {
-    setContentState((prev) =>
+    setContentsFrequency((prev) =>
       CalculateCheckbox(checkBoxConfig, Contents, prev)
     );
-  }, [checkBoxConfig, Contents, setContentState]);
+  }, [checkBoxConfig, Contents, setContentsFrequency]);
 
   return (
     <ContainerStyle>
-      {Object.keys(contentState).map((key) => {
-        if (!contentState[key]) return null;
-        if (contentState[key].Frequency === 0) return null;
+      {Object.keys(contentsFrequency).map((key) => {
+        if (!contentsFrequency[key]) return null;
+        if (contentsFrequency[key].Frequency === 0) return null;
         return (
           <Content
             key={key}
-            contentState={contentState[key]}
-            Color={contentState[key].Color}
+            contentState={contentsFrequency[key]}
+            Color={contentsFrequency[key].Color}
           />
         );
       })}
