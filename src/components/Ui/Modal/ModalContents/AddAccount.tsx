@@ -21,6 +21,7 @@ import MakeCheckboxState from "./functions/MakeCheckboxState";
 import SortByLevel from "./functions/SortByLevel";
 import { ModalState } from "../../../../atoms/modal";
 import { AccountOrder } from "../../../../atoms/order";
+import initializerCharacterOrder from "./functions/initializerCharacterOrder";
 
 const Container = styled.div`
   display: flex;
@@ -103,7 +104,9 @@ const AddAccount = () => {
     const Character = SortByLevel(fetchedCharacters);
     const AccountOwner = Character[0].CharacterName;
     const AccountState = MakeAccountState(Character);
-
+    console.log("AccountState===============================");
+    console.log(AccountState);
+    console.log("AccountState===============================");
     setAccountState((prev) => {
       const copiedPrev = {
         ...prev,
@@ -120,7 +123,10 @@ const AddAccount = () => {
     });
     setAccountOrder((prev) => [
       ...prev,
-      { AccountName: AccountOwner, CharacterOrder: Object.keys(AccountState) },
+      {
+        AccountName: AccountOwner,
+        CharacterOrder: initializerCharacterOrder(AccountState),
+      },
     ]);
     setModalState((prev) => ({ ...prev, isModalOpen: false }));
   };
