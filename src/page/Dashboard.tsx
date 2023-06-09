@@ -1,7 +1,6 @@
 import Modal from "../components/Ui/Modal/Modal";
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
-  AccountOrder,
   AccountState,
   CheckBoxConfig,
   ContentsState,
@@ -16,10 +15,13 @@ import AddAccount from "../components/Ui/Modal/ModalContents/AddAccount";
 import { useEffect } from "react";
 import ConfigAccount from "../components/Ui/Modal/ModalContents/ConfigAccount";
 import { ModalState, ModalEnum } from "../atoms/modal";
-
+import styled from "styled-components";
+import { AccountOrder } from "../atoms/order";
+const DashboardStyle = styled.div`
+  min-width: 800px;
+`;
 function Dashboard() {
   const [IsModalOpen, setIsModalOpen] = useRecoilState(ModalState);
-
   const checkBoxConfig = useRecoilValue(CheckBoxConfig);
   const contentsState = useRecoilValue(ContentsState);
   const visibledColumns = useRecoilValue(VisibledColumns);
@@ -70,10 +72,10 @@ function Dashboard() {
           {IsModalOpen.modalType === ModalEnum.ADD_ACCOUNT && <AddAccount />}
         </Modal>
       )}
-      <div style={{ minWidth: "800px" }}>
+      <DashboardStyle>
         <HeaderBox />
         <CheckBox />
-      </div>
+      </DashboardStyle>
     </>
   );
 }

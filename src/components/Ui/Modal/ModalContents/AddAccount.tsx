@@ -3,7 +3,6 @@ import { Header } from "./ConfigContent";
 import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {
-  AccountOrder,
   AccountState,
   CheckBoxConfig,
   ContentsState,
@@ -21,6 +20,7 @@ import MakeAccountState from "./functions/MakeAccountState";
 import MakeCheckboxState from "./functions/MakeCheckboxState";
 import SortByLevel from "./functions/SortByLevel";
 import { ModalState } from "../../../../atoms/modal";
+import { AccountOrder } from "../../../../atoms/order";
 
 const Container = styled.div`
   display: flex;
@@ -118,7 +118,10 @@ const AddAccount = () => {
       };
       return copiedPrev;
     });
-    setAccountOrder((prev) => [...prev, AccountOwner]);
+    setAccountOrder((prev) => [
+      ...prev,
+      { AccountName: AccountOwner, CharacterOrder: Object.keys(AccountState) },
+    ]);
     setModalState((prev) => ({ ...prev, isModalOpen: false }));
   };
 

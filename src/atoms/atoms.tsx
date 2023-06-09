@@ -81,7 +81,3 @@ export const VisibledColumns = atom<Contents[]>({
   key: "visibledColumns",
   default: [],
 });
-export const AccountOrder = atom<string[]>({
-  key: "AccountOrder",
-  default: [],
-});
