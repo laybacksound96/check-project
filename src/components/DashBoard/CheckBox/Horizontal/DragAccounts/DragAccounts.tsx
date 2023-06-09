@@ -57,7 +57,7 @@ const DragAccounts = () => {
         <Droppable droppableId="accounts" direction="vertical">
           {(provided) => (
             <AccountStyle ref={provided.innerRef} {...provided.droppableProps}>
-              {accountOrder.map(({ AccountName }, index) => (
+              {accountOrder.map(({ AccountName, CharacterOrder }, index) => (
                 <Draggable
                   draggableId={`draggableID_${AccountName}`}
                   key={`draggableID_${AccountName}`}
@@ -71,8 +71,9 @@ const DragAccounts = () => {
                     >
                       <DragCharacters
                         DragHandleProps={provided.dragHandleProps}
-                        accountName={AccountName}
-                        accountIndex={index}
+                        AccountName={AccountName}
+                        AccountIndex={index}
+                        CharacterOrder={CharacterOrder}
                       />
                     </div>
                   )}
