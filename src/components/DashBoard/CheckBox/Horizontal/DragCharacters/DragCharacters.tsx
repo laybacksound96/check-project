@@ -1,6 +1,7 @@
 import {
   DragDropContext,
   DraggableProvided,
+  DraggableProvidedDragHandleProps,
   DraggingStyle,
   DropResult,
   Droppable,
@@ -13,13 +14,6 @@ import { AccountState } from "../../../../../atoms/atoms";
 import DragCharactersDraggable from "./DragCharactersDraggable";
 import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
-interface IProps {
-  parentProvided: DraggableProvided;
-  style: DraggingStyle | NotDraggingStyle;
-  accountName: string;
-  accountIndex: number;
-}
 interface Istyle {
   isHovered: boolean;
 }
@@ -72,8 +66,13 @@ const ButtonContainer = styled.div`
     }
   }
 `;
+interface IProps {
+  DragHandleProps: DraggableProvidedDragHandleProps | null | undefined;
+  accountName: string;
+  accountIndex: number;
+}
 
-function DragCharacters({ parentProvided, style, accountName }: IProps) {
+function DragCharacters({ DragHandleProps, accountName }: IProps) {
   const accountState = useRecoilValue(AccountState);
   const [Account, setAccount] = useState(
     Object.keys(accountState[accountName])
@@ -96,9 +95,6 @@ function DragCharacters({ parentProvided, style, accountName }: IProps) {
 
   return (
     <div
-      ref={parentProvided.innerRef}
-      {...parentProvided.draggableProps}
-      style={style}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -135,10 +131,7 @@ function DragCharacters({ parentProvided, style, accountName }: IProps) {
                 >
                   <FontAwesomeIcon icon={faGear} size="lg" />
                 </ButtonContainer>
-                <DragAccount
-                  {...parentProvided.dragHandleProps}
-                  isHovered={isHovered}
-                />
+                <DragAccount {...DragHandleProps} isHovered={isHovered} />
               </div>
             </Area>
           )}

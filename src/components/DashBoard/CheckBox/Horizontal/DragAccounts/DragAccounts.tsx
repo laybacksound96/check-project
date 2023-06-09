@@ -64,12 +64,17 @@ const DragAccounts = () => {
                   index={index}
                 >
                   {(provided) => (
-                    <DragCharacters
-                      parentProvided={provided}
-                      accountName={AccountName}
-                      accountIndex={index}
+                    <div
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
                       style={AxisLocker(provided.draggableProps.style!, false)}
-                    />
+                    >
+                      <DragCharacters
+                        DragHandleProps={provided.dragHandleProps}
+                        accountName={AccountName}
+                        accountIndex={index}
+                      />
+                    </div>
                   )}
                 </Draggable>
               ))}
