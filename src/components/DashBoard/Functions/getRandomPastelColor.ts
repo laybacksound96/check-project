@@ -5,16 +5,23 @@ function getRandomPastelColor(ContentName: string): string {
   let maxLightness = 60; // 최대 명도 (0 ~ 100)
 
   let hue = Math.floor(Math.random() * 360); // 0 ~ 359 사이의 랜덤한 색상
+  if (ContentName === "아르고스" || ContentName === "상아탑") {
+    hue = 203;
+    maxSaturation = 25;
+    minLightness = 20;
+    maxLightness = 30;
+  }
   if (ContentName === "아브렐슈드") hue = 240;
   if (ContentName === "발탄") hue = 180;
   if (ContentName === "비아키스") hue = 300;
   if (ContentName === "쿠크세이튼") hue = 0;
   if (ContentName === "일리아칸") hue = 134;
-  if (ContentName === "아르고스") {
-    hue = 203;
-    maxSaturation = 25;
-    minLightness = 20;
-    maxLightness = 30;
+  if (ContentName === "카양겔") {
+    hue = 51;
+    minSaturation = 40;
+    maxSaturation = 60;
+    minLightness = 60;
+    maxLightness = 65;
   }
 
   const saturation = Math.floor(

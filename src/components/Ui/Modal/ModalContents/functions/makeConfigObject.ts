@@ -13,7 +13,7 @@ const makeConfigObject = (
     const gateCount = CountGates(content);
     const DefaultObject: IConfigObject = {
       isCleared: false,
-      isVisible: IsValidLevel(content, level),
+      isVisible: calculateGoldContents(level).includes(content),
       isActivated: IsValidLevel(content, level),
       isGoldContents: calculateGoldContents(level).includes(content),
       Gates: [],
