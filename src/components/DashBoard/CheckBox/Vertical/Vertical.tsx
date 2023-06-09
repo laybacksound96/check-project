@@ -6,22 +6,24 @@ import {
   DropResult,
 } from "react-beautiful-dnd";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { AccountState, ContentsState } from "../../../../atoms/atoms";
+import { ContentsState } from "../../../../atoms/atoms";
 
 import Card, { Name } from "./Vertical__card";
 import { AxisLocker } from "../../Functions/AxisLocker";
 import styled from "styled-components";
 
 import { ModalEnum, ModalState } from "../../../../atoms/modal";
-import { VisibledColumns } from "../../../../atoms/order";
+import { AccountOrder, VisibledColumns } from "../../../../atoms/order";
 import syncWidth from "../../Functions/syncWidth";
-
+const VerticalContainer = styled.div`
+  display: flex;
+`;
 const CardContainer = styled.div`
   display: flex;
 `;
 function CheckBoxColumn() {
   const Contents = useRecoilValue(ContentsState);
-  const Accounts = useRecoilValue(AccountState);
+  const accountOrder = useRecoilValue(AccountOrder);
   const [visibledColumns, setVisibledColumns] = useRecoilState(VisibledColumns);
 
   useEffect(() => {
@@ -53,22 +55,22 @@ function CheckBoxColumn() {
     });
   };
 
-  return Object.keys(Accounts).length ? (
-    <div style={{ display: "flex" }}>
+  return accountOrder.length ? (
+    <VerticalContainer>
       <div style={{ width: "210px" }} />
       <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId="one" direction="horizontal">
+        <Droppable droppableId="Vertical" direction="horizontal">
           {(provided) => (
             <CardContainer ref={provided.innerRef} {...provided.droppableProps}>
-              {visibledColumns.map((contents, index) => (
+              {visibledColumns.map(({ name: contentName }, index) => (
                 <Draggable
-                  draggableId={contents.name}
+                  draggableId={contentName}
                   index={index}
-                  key={contents.name}
+                  key={contentName}
                 >
                   {(provided) => (
                     <Card
-                      Column={contents.name}
+                      Column={contentName}
                       parentProvided={provided}
                       index={index}
                       style={AxisLocker(provided.draggableProps.style!, true)}
@@ -82,7 +84,7 @@ function CheckBoxColumn() {
           )}
         </Droppable>
       </DragDropContext>
-    </div>
+    </VerticalContainer>
   ) : null;
 }
 export default React.memo(CheckBoxColumn);
