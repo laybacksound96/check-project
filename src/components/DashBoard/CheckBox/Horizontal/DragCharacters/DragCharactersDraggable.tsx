@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { AxisLocker } from "../../../Functions/AxisLocker";
 import { dragIcon } from "../../../../../Settings";
 import Checkbox from "../CheckBoxButton/CheckBoxButton";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {
   CheckBoxConfig,
   ContentsFrequency,
@@ -21,7 +21,7 @@ import {
   ModalEnum,
 } from "../../../../../atoms/modal";
 
-const Name = styled.div`
+const Character = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -38,7 +38,7 @@ const Name = styled.div`
     margin-top: 0px;
   }
 `;
-const NameBox = styled.div`
+const CharactersContainer = styled.div`
   display: flex;
 `;
 export const ButtonContainer = styled.div`
@@ -71,25 +71,26 @@ function DragCharactersDraggable({
   index,
   AccountName,
 }: IProps) {
+  const setIsModalOpen = useSetRecoilState(ModalState);
   const Contents = useRecoilValue(ContentsState);
   const contentsFrequency = useRecoilValue(ContentsFrequency);
   const visibledColumns = useRecoilValue(VisibledColumns);
-  const setIsModalOpen = useSetRecoilState(ModalState);
-  const setCheckboxState = useSetRecoilState(CheckBoxConfig);
-  const { [`${CharacterName}`]: ContentState } = useRecoilValue(CheckBoxConfig);
+
+  const [{ [`${CharacterName}`]: checkBoxConfig }, setCheckboxState] =
+    useRecoilState(CheckBoxConfig);
 
   const [isHovered, setIsHovered] = useState(false);
 
-  const CheckBoxOnclick = (char: string, cont: string) => {
+  const CheckBoxOnclick = (character: string, content: string) => {
     setCheckboxState((Characters) => {
       const copiedCharacters = { ...Characters };
-      const ContentName = { ...copiedCharacters[char] };
-      const ConfigObject = { ...ContentName[cont] };
-      const state = copiedCharacters[char][cont].isCleared;
+      const ContentName = { ...copiedCharacters[character] };
+      const ConfigObject = { ...ContentName[content] };
+      const state = copiedCharacters[character][content].isCleared;
 
       ConfigObject.isCleared = !state;
-      ContentName[cont] = ConfigObject;
-      copiedCharacters[char] = ContentName;
+      ContentName[content] = ConfigObject;
+      copiedCharacters[character] = ContentName;
       return copiedCharacters;
     });
   };
@@ -114,44 +115,44 @@ function DragCharactersDraggable({
   return (
     <Draggable draggableId={boardId} index={index}>
       {(provided) => (
-        <NameBox
+        <CharactersContainer
           ref={provided.innerRef}
           {...provided.draggableProps}
           style={AxisLocker(provided.draggableProps.style!, false)}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
-          <Name {...provided.dragHandleProps}>
+          <Character {...provided.dragHandleProps}>
             {CharacterName}
             <ButtonContainer>
               {isHovered && (
                 <FontAwesomeIcon onClick={openModal} icon={faGear} size="lg" />
               )}
             </ButtonContainer>
-          </Name>
+          </Character>
 
-          {visibledColumns.map((Content, ColumnIndex) => {
+          {visibledColumns.map(({ name: ContentName, width }, ColumnIndex) => {
             const color = getColorInFrequencyCounter(
               contentsFrequency,
-              Content.name,
+              ContentName,
               CharacterName
             );
             return (
-              Contents[Content.name].isVisible && (
+              Contents[ContentName].isVisible && (
                 <Checkbox
-                  key={index + ColumnIndex + Content.name}
-                  isChecked={ContentState[Content.name].isCleared}
-                  isVisible={ContentState[Content.name].isVisible}
+                  key={index + ColumnIndex + ContentName}
+                  isChecked={checkBoxConfig[ContentName].isCleared}
+                  isVisible={checkBoxConfig[ContentName].isVisible}
                   CheckBoxOnclick={CheckBoxOnclick}
-                  ContentName={Content.name}
+                  ContentName={ContentName}
                   CharacterName={CharacterName}
-                  Width={Content.width}
+                  Width={width}
                   Color={color}
                 />
               )
             );
           })}
-        </NameBox>
+        </CharactersContainer>
       )}
     </Draggable>
   );
