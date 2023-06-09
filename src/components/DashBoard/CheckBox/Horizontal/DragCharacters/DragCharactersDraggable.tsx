@@ -10,7 +10,6 @@ import {
   CheckBoxConfig,
   ContentsFrequency,
   ContentsState,
-  VisibledColumns,
 } from "../../../../../atoms/atoms";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGear } from "@fortawesome/free-solid-svg-icons";
@@ -20,6 +19,7 @@ import {
   IModalObject,
   ModalEnum,
 } from "../../../../../atoms/modal";
+import { VisibledColumns } from "../../../../../atoms/order";
 
 const Character = styled.div`
   display: flex;

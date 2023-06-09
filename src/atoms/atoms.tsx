@@ -72,12 +72,3 @@ export const ContentsFrequency = atom<IContentsFrequency>({
   key: "IContentsFrequency",
   default: {},
 });
-
-export interface Contents {
-  ["name"]: string;
-  ["width"]: number;
-}
-export const VisibledColumns = atom<Contents[]>({
-  key: "visibledColumns",
-  default: [],
-});

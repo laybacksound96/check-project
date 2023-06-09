@@ -7,7 +7,7 @@ import styled from "styled-components";
 import { dragIcon } from "../../../../Settings";
 import { useEffect, useRef } from "react";
 import { useSetRecoilState } from "recoil";
-import { VisibledColumns } from "../../../../atoms/atoms";
+import { VisibledColumns } from "../../../../atoms/order";
 
 export const Name = styled.div`
   display: flex;

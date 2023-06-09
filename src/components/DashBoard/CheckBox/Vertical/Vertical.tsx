@@ -6,41 +6,27 @@ import {
   DropResult,
 } from "react-beautiful-dnd";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import {
-  AccountState,
-  Contents,
-  ContentsState,
-  VisibledColumns,
-} from "../../../../atoms/atoms";
+import { AccountState, ContentsState } from "../../../../atoms/atoms";
 
 import Card, { Name } from "./Vertical__card";
 import { AxisLocker } from "../../Functions/AxisLocker";
 import styled from "styled-components";
-import { dragIcon } from "../../../../Settings";
+
 import { ModalEnum, ModalState } from "../../../../atoms/modal";
+import { VisibledColumns } from "../../../../atoms/order";
+import syncWidth from "../../Functions/syncWidth";
+
 const CardContainer = styled.div`
   display: flex;
 `;
 function CheckBoxColumn() {
-  const Columns = useRecoilValue(ContentsState);
+  const Contents = useRecoilValue(ContentsState);
   const Accounts = useRecoilValue(AccountState);
   const [visibledColumns, setVisibledColumns] = useRecoilState(VisibledColumns);
 
   useEffect(() => {
-    setVisibledColumns((prev) => {
-      const newColumnArray = [];
-      for (let key in Columns) {
-        const find = prev.find((obj) => obj.name === key);
-        if (Columns[key].isVisible === false) continue;
-        const content: Contents = {
-          name: key,
-          width: !find ? dragIcon.icon.edgeLength : find.width,
-        };
-        newColumnArray.push(content);
-      }
-      return [...newColumnArray];
-    });
-  }, [Columns, setVisibledColumns]);
+    setVisibledColumns((prev) => syncWidth(Contents, prev));
+  }, [Contents, setVisibledColumns]);
 
   const onDragEnd = (dragInfo: DropResult) => {
     const { destination, source } = dragInfo;

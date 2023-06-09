@@ -1,11 +1,6 @@
 import Modal from "../components/Ui/Modal/Modal";
 import { useRecoilState, useRecoilValue } from "recoil";
-import {
-  AccountState,
-  CheckBoxConfig,
-  ContentsState,
-  VisibledColumns,
-} from "../atoms/atoms";
+import { AccountState, CheckBoxConfig, ContentsState } from "../atoms/atoms";
 
 import HeaderBox from "../components/DashBoard/HeaderBox/HeaderBox";
 import CheckBox from "../components/DashBoard/CheckBox/Checkbox";
@@ -16,7 +11,7 @@ import { useEffect } from "react";
 import ConfigAccount from "../components/Ui/Modal/ModalContents/ConfigAccount";
 import { ModalState, ModalEnum } from "../atoms/modal";
 import styled from "styled-components";
-import { AccountOrder } from "../atoms/order";
+import { AccountOrder, VisibledColumns } from "../atoms/order";
 const DashboardStyle = styled.div`
   min-width: 800px;
 `;
