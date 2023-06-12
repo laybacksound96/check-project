@@ -12,6 +12,7 @@ import DragCharactersDraggable from "./DragCharactersDraggable";
 import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { AccountOrder } from "../../../../../atoms/order";
+
 interface Istyle {
   isHovered: boolean;
 }
@@ -85,6 +86,7 @@ function DragCharacters({
 }: IProps) {
   const [isHovered, setIsHovered] = useState(false);
   const setAccount = useSetRecoilState(AccountOrder);
+
   const dragCharacterHandler = (dragInfo: DropResult) => {
     const { destination, source } = dragInfo;
     if (!destination) return;

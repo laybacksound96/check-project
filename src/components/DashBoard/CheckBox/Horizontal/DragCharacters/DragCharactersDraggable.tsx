@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Draggable } from "react-beautiful-dnd";
 import styled from "styled-components";
-
+import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 import { AxisLocker } from "../../../Functions/AxisLocker";
 import { dragIcon } from "../../../../../Settings";
 import Checkbox from "../CheckBoxButton/CheckBoxButton";
@@ -44,7 +44,7 @@ const CharactersContainer = styled.div`
 `;
 export const ButtonContainer = styled.div`
   display: flex;
-  flex-direction: column;
+
   justify-content: start;
   height: 100%;
   padding-right: 5px;
@@ -143,6 +143,12 @@ function DragCharactersDraggable({
               <span>Lv {ItemMaxLevel}</span>
             </NameContainer>
             <ButtonContainer>
+              {isHovered &&
+                (true ? (
+                  <FontAwesomeIcon icon={faEye} />
+                ) : (
+                  <FontAwesomeIcon icon={faEyeSlash} />
+                ))}
               {isHovered && (
                 <FontAwesomeIcon onClick={openModal} icon={faGear} size="lg" />
               )}
@@ -161,6 +167,7 @@ function DragCharactersDraggable({
                   key={index + ColumnIndex + ContentName}
                   isChecked={checkBoxConfig[ContentName].isCleared}
                   isVisible={checkBoxConfig[ContentName].isVisible}
+                  isActivated={checkBoxConfig[ContentName].isActivated}
                   CheckBoxOnclick={CheckBoxOnclick}
                   ContentName={ContentName}
                   CharacterName={CharacterName}

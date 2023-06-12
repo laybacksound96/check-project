@@ -6,11 +6,12 @@ import { dragIcon } from "../../../../../Settings";
 
 interface IStyle {
   isVisible: boolean;
+  isActivated: boolean;
   Width: number;
   Color: string;
 }
 const CheckBox = styled.div<IStyle>`
-  opacity: ${(props) => (props.isVisible ? "100%" : "0%")};
+  opacity: ${(props) => (props.isVisible && props.isActivated ? "100%" : "0%")};
 
   display: flex;
   justify-content: center;
@@ -40,6 +41,7 @@ interface ICheckboxProps {
   isVisible: boolean;
   Width: number;
   Color: string;
+  isActivated: boolean;
 }
 
 function CheckBoxButton({
@@ -48,11 +50,12 @@ function CheckBoxButton({
   CharacterName,
   ContentName,
   isVisible,
+  isActivated,
   Width,
   Color,
 }: ICheckboxProps) {
   function onClickHandler() {
-    if (!isVisible) return;
+    if (!isVisible || !isActivated) return;
     CheckBoxOnclick(CharacterName, ContentName);
   }
 
@@ -60,6 +63,7 @@ function CheckBoxButton({
     <CheckBox
       onClick={onClickHandler}
       isVisible={isVisible}
+      isActivated={isActivated}
       Width={Width}
       Color={Color}
     >

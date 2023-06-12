@@ -143,7 +143,12 @@ const Content = ({ contentState, Color }: IProps) => {
           const { isCleared } =
             checkboxConfig[`${name}`][contentState.ContentsName];
           return (
-            index < 3 && !isCleared && <OwnerBox Color={Color}>{name}</OwnerBox>
+            index < 3 &&
+            !isCleared && (
+              <OwnerBox key={index} Color={Color}>
+                {name}
+              </OwnerBox>
+            )
           );
         })}
         {contentState.ContentsOwner.length > 3 && (

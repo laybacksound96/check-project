@@ -32,6 +32,7 @@ interface ICharacterInfo {
   ["ItemMaxLevel"]: number;
   ["IsGoldCharacter"]: boolean;
   ["GoldContents"]: string[];
+  ["isVisible"]: boolean;
 }
 export interface ICharacterState {
   [Character: string]: ICharacterInfo;

@@ -16,12 +16,11 @@ import CharacterContainer from "./components/CharacterContainer";
 import IsInValidName from "./functions/IsValidName";
 import IsDisabled from "./functions/IsDisabled";
 import IsDupplicated from "./functions/IsDupplicated";
-import MakeAccountState from "./functions/MakeAccountState";
-import MakeCheckboxState from "./functions/MakeCheckboxState";
+import MakeAccountState from "./functions/makeAccountState";
+import MakeCheckboxState from "./functions/makeCheckboxState";
 import SortByLevel from "./functions/SortByLevel";
 import { ModalState } from "../../../../atoms/modal";
 import { AccountOrder } from "../../../../atoms/order";
-import initializerCharacterOrder from "./functions/initializerCharacterOrder";
 
 const Container = styled.div`
   display: flex;
@@ -123,7 +122,7 @@ const AddAccount = () => {
       ...prev,
       {
         AccountName: AccountOwner,
-        CharacterOrder: initializerCharacterOrder(AccountState),
+        CharacterOrder: Object.keys(AccountState),
       },
     ]);
     setModalState((prev) => ({ ...prev, isModalOpen: false }));

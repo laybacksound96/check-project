@@ -51,6 +51,7 @@ const DragAccounts = () => {
       return [...copiedPrev];
     });
   };
+
   return (
     <>
       <DragDropContext onDragEnd={dragAccountHandler}>

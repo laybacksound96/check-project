@@ -1,7 +1,6 @@
 import { ICharacterState } from "../../../../../atoms/atoms";
 
 const initializerCharacterOrder = (characters: ICharacterState): string[] => {
-  console.log(characters);
   const result = [];
   for (let name in characters) {
     if (characters[name].IsGoldCharacter) result.push(name);
