@@ -21,11 +21,14 @@ const HeaderBoxStyle = styled.header`
   * {
     color: ${(props) => props.theme.TextColor_A};
   }
-  h1 {
-    display: inline;
-    font-size: 30px;
-    color: ${(props) => props.theme.TextColor_A};
+  header {
+    h1 {
+      display: inline;
+      font-size: 30px;
+      color: ${(props) => props.theme.TextColor_A};
+    }
   }
+
   svg {
     height: 40px;
     width: 40px;

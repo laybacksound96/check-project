@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Draggable } from "react-beautiful-dnd";
 import styled from "styled-components";
-import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
+import { faEye } from "@fortawesome/free-regular-svg-icons";
 import { AxisLocker } from "../../../Functions/AxisLocker";
 import { dragIcon } from "../../../../../Settings";
 import Checkbox from "../CheckBoxButton/CheckBoxButton";
@@ -87,9 +87,12 @@ function DragCharactersDraggable({
   const Contents = useRecoilValue(ContentsState);
   const contentsFrequency = useRecoilValue(ContentsFrequency);
   const visibledColumns = useRecoilValue(VisibledColumns);
-  const {
-    [`${CharacterName}`]: { ItemMaxLevel, CharacterClassName },
-  } = useRecoilValue(AccountState);
+  const [
+    {
+      [`${CharacterName}`]: { ItemMaxLevel, CharacterClassName },
+    },
+    setAccountState,
+  ] = useRecoilState(AccountState);
   const [{ [`${CharacterName}`]: checkBoxConfig }, setCheckboxState] =
     useRecoilState(CheckBoxConfig);
 
@@ -108,7 +111,17 @@ function DragCharactersDraggable({
       return copiedCharacters;
     });
   };
+  const handleVisible = () => {
+    setAccountState((prev) => {
+      const currentVisible = prev[CharacterName].isVisible;
+      const copiedPrev = {
+        ...prev,
+        [CharacterName]: { ...prev[CharacterName], isVisible: !currentVisible },
+      };
 
+      return copiedPrev;
+    });
+  };
   const openModal = () => {
     setIsModalOpen((prev) => {
       const copiedPrev: IModalObject = {
@@ -142,17 +155,12 @@ function DragCharactersDraggable({
               <span>{CharacterClassName}</span>
               <span>Lv {ItemMaxLevel}</span>
             </NameContainer>
-            <ButtonContainer>
-              {isHovered &&
-                (true ? (
-                  <FontAwesomeIcon icon={faEye} />
-                ) : (
-                  <FontAwesomeIcon icon={faEyeSlash} />
-                ))}
-              {isHovered && (
+            {isHovered && (
+              <ButtonContainer>
+                <FontAwesomeIcon onClick={handleVisible} icon={faEye} />
                 <FontAwesomeIcon onClick={openModal} icon={faGear} size="lg" />
-              )}
-            </ButtonContainer>
+              </ButtonContainer>
+            )}
           </Character>
 
           {visibledColumns.map(({ name: ContentName, width }, ColumnIndex) => {

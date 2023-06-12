@@ -113,7 +113,10 @@ interface IProps {
   contentState: IFrequencyContents;
   Color: string;
 }
-const Content = ({ contentState, Color }: IProps) => {
+const Content = ({
+  contentState: { Frequency, ContentsName, GateState, ContentsOwner },
+  Color,
+}: IProps) => {
   const [shouldAnimate, setShouldAnimate] = useState(false);
   const checkboxConfig = useRecoilValue(CheckBoxConfig);
   useEffect(() => {
@@ -124,36 +127,36 @@ const Content = ({ contentState, Color }: IProps) => {
     }, 300);
 
     return () => clearTimeout(timeoutId);
-  }, [contentState.Frequency]);
+  }, [Frequency]);
   return (
     <ContentStyle shouldAnimate={shouldAnimate} Color={Color}>
       <HeaderContainer>
         <NameBox>
-          <h1>{contentState.ContentsName}</h1>
-          {contentState.GateState.map((elem) => {
+          <h1>
+            {ContentsName.length >= 12
+              ? `${ContentsName.slice(0, 12)}...`
+              : ContentsName}
+          </h1>
+          {GateState.map((elem) => {
             return <p key={elem}>{elem}</p>;
           })}
         </NameBox>
         <FrequencyBox Color={Color}>
-          <span>{contentState.Frequency}</span>
+          <span>{Frequency}</span>
         </FrequencyBox>
       </HeaderContainer>
       <OwnerContainer Color={Color}>
-        {contentState.ContentsOwner.map((name, index) => {
-          const { isCleared } =
-            checkboxConfig[`${name}`][contentState.ContentsName];
+        {ContentsOwner.map((name, index) => {
+          const { isCleared } = checkboxConfig[`${name}`][ContentsName];
           return (
-            index < 3 &&
+            index < 4 &&
             !isCleared && (
               <OwnerBox key={index} Color={Color}>
-                {name}
+                {ContentsOwner.length > 4 && index > 2 ? `${name} ...` : name}
               </OwnerBox>
             )
           );
         })}
-        {contentState.ContentsOwner.length > 3 && (
-          <OwnerBox Color={Color}>...</OwnerBox>
-        )}
       </OwnerContainer>
     </ContentStyle>
   );
