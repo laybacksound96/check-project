@@ -20,7 +20,6 @@ const reOrderVisibledColumns = (
 
     // for (let account in accountOrder) {
     //   const { CharacterOrder } = accountOrder[account];
-
     //   for (let characterIndex in CharacterOrder) {
     //     const characterName = CharacterOrder[characterIndex];
     //     const { isVisible } = checkBoxConfig[characterName][contentName];

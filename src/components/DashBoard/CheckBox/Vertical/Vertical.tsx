@@ -7,14 +7,11 @@ import {
 } from "react-beautiful-dnd";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { CheckBoxConfig, ContentsState } from "../../../../atoms/atoms";
-
 import Card, { Name } from "./Vertical__card";
 import { AxisLocker } from "../../Functions/AxisLocker";
 import styled from "styled-components";
-
 import { ModalEnum, ModalState } from "../../../../atoms/modal";
 import { AccountOrder, VisibledColumns } from "../../../../atoms/order";
-
 import reOrderVisibledColumns from "../../Functions/reOrderVisibledColumns";
 const VerticalContainer = styled.div`
   display: flex;
@@ -22,7 +19,7 @@ const VerticalContainer = styled.div`
 const CardContainer = styled.div`
   display: flex;
 `;
-function CheckBoxColumn() {
+function Vertical() {
   const [Contents, setContents] = useRecoilState(ContentsState);
   const accountOrder = useRecoilValue(AccountOrder);
   const [visibledColumns, setVisibledColumns] = useRecoilState(VisibledColumns);
@@ -91,4 +88,4 @@ function CheckBoxColumn() {
     </VerticalContainer>
   ) : null;
 }
-export default React.memo(CheckBoxColumn);
+export default React.memo(Vertical);

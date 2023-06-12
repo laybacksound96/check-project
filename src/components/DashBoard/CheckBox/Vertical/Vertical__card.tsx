@@ -56,7 +56,6 @@ function ColumnCard({ Column, parentProvided, style, index }: IColumnCardProp) {
     >
       <Name ref={elementRef}>
         {Column.length >= 7 ? `${Column.slice(0, 7)}...` : Column}
-        {}
       </Name>
     </div>
   );
