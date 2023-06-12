@@ -81,6 +81,7 @@ const AddAccount = () => {
     if (IsDupplicated(inputValue, accountState)) {
       return setOption((prev) => ({ ...prev, isDupplicated: true }));
     }
+
     const data = await fetchSearchAccount(inputValue);
     setOption((prev) => ({
       ...prev,
