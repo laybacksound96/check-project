@@ -31,6 +31,7 @@ const AddAccountBtn = styled.button`
 const DragAccounts = () => {
   const [accountOrder, setAccountOrder] = useRecoilState(AccountOrder);
   const setIsModalOpen = useSetRecoilState(ModalState);
+
   const openModal = () => {
     setIsModalOpen((prev) => {
       const copiedPrev = { ...prev };

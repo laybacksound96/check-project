@@ -6,7 +6,7 @@ import {
   DropResult,
 } from "react-beautiful-dnd";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { ContentsState } from "../../../../atoms/atoms";
+import { CheckBoxConfig, ContentsState } from "../../../../atoms/atoms";
 
 import Card, { Name } from "./Vertical__card";
 import { AxisLocker } from "../../Functions/AxisLocker";
@@ -14,7 +14,8 @@ import styled from "styled-components";
 
 import { ModalEnum, ModalState } from "../../../../atoms/modal";
 import { AccountOrder, VisibledColumns } from "../../../../atoms/order";
-import syncWidth from "../../Functions/syncWidth";
+
+import reOrderVisibledColumns from "../../Functions/reOrderVisibledColumns";
 const VerticalContainer = styled.div`
   display: flex;
 `;
@@ -25,10 +26,13 @@ function CheckBoxColumn() {
   const Contents = useRecoilValue(ContentsState);
   const accountOrder = useRecoilValue(AccountOrder);
   const [visibledColumns, setVisibledColumns] = useRecoilState(VisibledColumns);
+  const checkBoxConfig = useRecoilValue(CheckBoxConfig);
 
   useEffect(() => {
-    setVisibledColumns((prev) => syncWidth(Contents, prev));
-  }, [Contents, setVisibledColumns]);
+    setVisibledColumns((prev) =>
+      reOrderVisibledColumns(prev, Contents, accountOrder, checkBoxConfig)
+    );
+  }, [Contents, setVisibledColumns, accountOrder, checkBoxConfig]);
 
   const onDragEnd = (dragInfo: DropResult) => {
     const { destination, source } = dragInfo;

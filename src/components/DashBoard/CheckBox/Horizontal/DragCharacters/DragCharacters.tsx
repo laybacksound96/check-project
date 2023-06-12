@@ -13,7 +13,7 @@ import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { AccountOrder } from "../../../../../atoms/order";
 import { AccountState } from "../../../../../atoms/atoms";
-import reOrderAccountOreder from "../../../Functions/reOrderAccountOreder";
+import reOrderAccountOreder from "../../../Functions/reOrderAccountOrder";
 
 interface Istyle {
   isHovered: boolean;
@@ -87,14 +87,14 @@ function DragCharacters({
   AccountIndex,
 }: IProps) {
   const [isHovered, setIsHovered] = useState(false);
-  const setAccount = useSetRecoilState(AccountOrder);
+  const setAccountOrder = useSetRecoilState(AccountOrder);
   const accountState = useRecoilValue(AccountState);
 
   const dragCharacterHandler = (dragInfo: DropResult) => {
     const { destination, source } = dragInfo;
     if (!destination) return;
     if (destination?.droppableId !== source.droppableId) return;
-    setAccount((prev) => {
+    setAccountOrder((prev) => {
       const copiedCharacterOrder = [...CharacterOrder];
       const copiedObject = copiedCharacterOrder[source.index];
       copiedCharacterOrder.splice(source.index, 1);
@@ -113,10 +113,11 @@ function DragCharacters({
   };
 
   useEffect(() => {
-    setAccount((prev) =>
+    setAccountOrder((prev) =>
       reOrderAccountOreder(accountState, prev, AccountIndex)
     );
-  }, [accountState, setAccount, AccountIndex]);
+  }, [accountState, setAccountOrder, AccountIndex]);
+
   return (
     <div
       onMouseEnter={() => setIsHovered(true)}

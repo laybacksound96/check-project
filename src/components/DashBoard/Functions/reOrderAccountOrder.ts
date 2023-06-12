@@ -1,7 +1,7 @@
 import { ICharacterState } from "../../../atoms/atoms";
 import { IAccountOrder } from "../../../atoms/order";
 
-const reOrderAccountOreder = (
+const reOrderAccountOrder = (
   AccountState: ICharacterState,
   prev: IAccountOrder[],
   AccountIndex: number
@@ -19,4 +19,4 @@ const reOrderAccountOreder = (
 
   return copiedPrev;
 };
-export default reOrderAccountOreder;
+export default reOrderAccountOrder;
