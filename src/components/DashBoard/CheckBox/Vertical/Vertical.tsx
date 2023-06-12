@@ -23,7 +23,7 @@ const CardContainer = styled.div`
   display: flex;
 `;
 function CheckBoxColumn() {
-  const Contents = useRecoilValue(ContentsState);
+  const [Contents, setContents] = useRecoilState(ContentsState);
   const accountOrder = useRecoilValue(AccountOrder);
   const [visibledColumns, setVisibledColumns] = useRecoilState(VisibledColumns);
   const checkBoxConfig = useRecoilValue(CheckBoxConfig);
@@ -32,7 +32,7 @@ function CheckBoxColumn() {
     setVisibledColumns((prev) =>
       reOrderVisibledColumns(prev, Contents, accountOrder, checkBoxConfig)
     );
-  }, [Contents, setVisibledColumns, accountOrder, checkBoxConfig]);
+  }, [Contents, setVisibledColumns, accountOrder, checkBoxConfig, setContents]);
 
   const onDragEnd = (dragInfo: DropResult) => {
     const { destination, source } = dragInfo;

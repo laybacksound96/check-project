@@ -40,7 +40,7 @@ const MainDiv = styled.div`
 `;
 const ButtonContainer = styled.div`
   position: absolute;
-  right: 40px;
+  right: 60px;
   button {
     width: 40px;
     height: 40px;

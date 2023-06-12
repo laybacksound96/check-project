@@ -1,12 +1,19 @@
-import { useRecoilState } from "recoil";
-import { ContentsState } from "../../../../atoms/atoms";
+import { useRecoilState, useRecoilValue } from "recoil";
+import {
+  AccountState,
+  ContentsState,
+  IContents,
+} from "../../../../atoms/atoms";
 
 import Switch from "../../UiComponents/Switch";
 
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGear } from "@fortawesome/free-solid-svg-icons";
-
+const Container = styled.div`
+  overflow-y: auto;
+  height: 80vh;
+`;
 const ContentsContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -15,12 +22,32 @@ const ContentsContainer = styled.div`
     font-size: 30px;
   }
 `;
-const Container = styled.div`
+const SwitchContainer = styled.div`
   display: flex;
   justify-content: space-evenly;
 `;
-const ContentCard = styled.div`
+const NameContainer = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+`;
+interface IStyle {
+  isVisible: boolean;
+}
+const NameBox = styled.div<IStyle>`
+  display: flex;
+  height: 30px;
+  margin: 5px;
+  padding: 10px;
+  border-radius: 10px;
+  opacity: ${(props) => (props.isVisible ? "100%" : "30%")};
+  background-color: ${(props) => props.theme.Color_4};
+  justify-content: center;
+  align-items: center;
+`;
+
+const ContentCard = styled.div<IStyle>`
   background-color: ${(props) => props.theme.TextColor_A};
+  opacity: ${(props) => (props.isVisible ? "100%" : "30%")};
   border-radius: 20px;
   padding: 20px;
   margin-left: 20px;
@@ -32,7 +59,7 @@ const ContentCard = styled.div`
   align-items: center;
   font-size: 20px;
   p {
-    color: ${(props) => props.theme.Color_2};
+    color: ${(props) => props.theme.Color_4};
   }
 `;
 export const Header = styled.header`
@@ -52,6 +79,7 @@ export const Header = styled.header`
 `;
 const ConfigContent = () => {
   const [content, setContent] = useRecoilState(ContentsState);
+  const accountState = useRecoilValue(AccountState);
   const DefaultContents = Object.keys(content).filter(
     (contentName) => content[contentName].type === "Default"
   );
@@ -60,53 +88,82 @@ const ConfigContent = () => {
     (contentName) => content[contentName].type === "Custom"
   );
 
-  function getValueHandler(isOn: boolean, contentName: string): void {
+  const visibleHandlerContents = (contentName: string): void => {
     setContent((prev) => {
-      const copiedPrev = { ...prev };
-      const CopiedTargetPrev = { ...copiedPrev[contentName] };
-      CopiedTargetPrev.isVisible = isOn;
-      copiedPrev[contentName] = CopiedTargetPrev;
+      const currentVisible = prev[contentName].isVisible;
+      const copiedPrev: IContents = {
+        ...prev,
+        [`${contentName}`]: {
+          ...prev[`${contentName}`],
+          isVisible: !currentVisible,
+        },
+      };
       return copiedPrev;
     });
-  }
-
+  };
+  const visibleHandler = (Name: string) => {
+    console.log(Name);
+  };
   return (
-    <div>
+    <Container>
       <Header>
         <FontAwesomeIcon icon={faGear} size="lg" />
         <h1>Settings</h1>
       </Header>
       <hr></hr>
-      <Container>
+      <SwitchContainer>
+        <ContentsContainer>
+          <span>Account</span>
+          <NameContainer>
+            {Object.keys(accountState).map((CharacterName) => {
+              const { isVisible } = accountState[CharacterName];
+              return (
+                <NameBox
+                  isVisible={isVisible}
+                  key={CharacterName}
+                  onClick={() => visibleHandler(CharacterName)}
+                >
+                  <p>{CharacterName}</p>
+                </NameBox>
+              );
+            })}
+          </NameContainer>
+        </ContentsContainer>
+
         <ContentsContainer>
           <span>Basic</span>
-          {DefaultContents.map((contentName) => (
-            <ContentCard key={contentName}>
-              <p>{contentName}</p>
-              <Switch
-                switchKey={contentName}
-                switchState={content[contentName].isVisible}
-                getValue={getValueHandler}
-              />
-            </ContentCard>
-          ))}
+          {DefaultContents.map((contentName) => {
+            const { isVisible } = content[contentName];
+            return (
+              <ContentCard
+                isVisible={isVisible}
+                key={contentName}
+                onClick={() => visibleHandlerContents(contentName)}
+              >
+                <p>{contentName}</p>
+              </ContentCard>
+            );
+          })}
         </ContentsContainer>
 
         <ContentsContainer>
           <span>Custom</span>
-          {CustomContents.map((contentName) => (
-            <ContentCard key={contentName}>
-              {contentName}
-              <Switch
-                switchKey={contentName}
-                switchState={content[contentName].isVisible}
-                getValue={getValueHandler}
-              />
-            </ContentCard>
-          ))}
+          {CustomContents.map((contentName) => {
+            const { isVisible } = content[contentName];
+            return (
+              <ContentCard
+                isVisible={isVisible}
+                key={contentName}
+                onClick={() => visibleHandlerContents(contentName)}
+              >
+                <p> {contentName}</p>
+                <p>x</p>
+              </ContentCard>
+            );
+          })}
         </ContentsContainer>
-      </Container>
-    </div>
+      </SwitchContainer>
+    </Container>
   );
 };
 
