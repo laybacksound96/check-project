@@ -13,10 +13,10 @@ export const CalculateCheckbox = (
   Contents: IContents,
   accountState: ICharacterState,
   Prev: IContentsFrequency
-) => {
+): IContentsFrequency => {
   const resultObj: IContentsFrequency = {};
   for (const CharacterName in Accounts) {
-    if (!accountState[`${CharacterName}`].IsGoldCharacter) continue;
+    if (!accountState[`${CharacterName}`].isVisible) continue;
     for (const ContentName in Contents) {
       const { type, isVisible: contentsVisible } = Contents[ContentName];
       const { isActivated, isVisible, Gates, isCleared } =

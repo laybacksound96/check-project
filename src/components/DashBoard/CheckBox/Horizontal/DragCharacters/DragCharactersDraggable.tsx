@@ -169,13 +169,15 @@ function DragCharactersDraggable({
               ContentName,
               CharacterName
             );
+            const { isCleared, isVisible, isActivated } =
+              checkBoxConfig[ContentName];
             return (
               Contents[ContentName].isVisible && (
                 <Checkbox
                   key={index + ColumnIndex + ContentName}
-                  isChecked={checkBoxConfig[ContentName].isCleared}
-                  isVisible={checkBoxConfig[ContentName].isVisible}
-                  isActivated={checkBoxConfig[ContentName].isActivated}
+                  isChecked={isCleared}
+                  isVisible={isVisible}
+                  isActivated={isActivated}
                   CheckBoxOnclick={CheckBoxOnclick}
                   ContentName={ContentName}
                   CharacterName={CharacterName}

@@ -31,6 +31,7 @@ const Contents = () => {
     );
   }, [checkBoxConfig, contentsState, setContentsFrequency, accountState]);
   sortContentsFrequency(contentsFrequency);
+
   return (
     <ContainerStyle>
       {sortContentsFrequency(contentsFrequency).map((key) => {

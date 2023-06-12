@@ -9,8 +9,7 @@ import styled from "styled-components";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 
 import DragCharactersDraggable from "./DragCharactersDraggable";
-import { faGear } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 import { AccountOrder } from "../../../../../atoms/order";
 import { AccountState } from "../../../../../atoms/atoms";
 import reOrderAccountOreder from "../../../Functions/reOrderAccountOrder";
@@ -44,28 +43,7 @@ const DragAccount = styled.div`
   transition: ease-in-out 0.1s;
   border-radius: 10px;
 `;
-const IconContainer = styled.div`
-  width: 45px;
-  height: 45px;
-  margin-left: 15px;
-  margin-top: 15px;
-  margin-bottom: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 
-  svg {
-    opacity: 50%;
-    width: 45px;
-    height: 45px;
-    padding: 5px 5px;
-    border-radius: 10px;
-    &:hover {
-      background-color: rgba(100, 100, 100, 0.5);
-      opacity: 100%;
-    }
-  }
-`;
 interface IProps {
   DragHandleProps: DraggableProvidedDragHandleProps | null | undefined;
   AccountName: string;
@@ -76,9 +54,10 @@ interface IProps {
 const ButtonContainer = styled.div<Istyle>`
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
   margin-left: 10px;
   opacity: ${(props) => (props.isHovered ? "100" : "0")};
-  margin-bottom: 20px;
 `;
 function DragCharacters({
   DragHandleProps,
@@ -142,9 +121,6 @@ function DragCharacters({
                 {provided.placeholder}
               </div>
               <ButtonContainer isHovered={isHovered}>
-                <IconContainer>
-                  <FontAwesomeIcon icon={faGear} size="lg" />
-                </IconContainer>
                 <DragAccount {...DragHandleProps} />
               </ButtonContainer>
             </Area>

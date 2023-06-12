@@ -23,6 +23,7 @@ const CheckBox = styled.div<IStyle>`
 
   svg {
     border-radius: 5px;
+
     path {
       color: ${(props) => props.Color};
     }
@@ -51,6 +52,7 @@ function CheckBoxButton({
   ContentName,
   isVisible,
   isActivated,
+
   Width,
   Color,
 }: ICheckboxProps) {
