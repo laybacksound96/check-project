@@ -7,6 +7,7 @@ import { dragIcon } from "../../../../../Settings";
 import Checkbox from "../CheckBoxButton/CheckBoxButton";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {
+  AccountState,
   CheckBoxConfig,
   ContentsFrequency,
   ContentsState,
@@ -58,7 +59,18 @@ export const ButtonContainer = styled.div`
     }
   }
 `;
-
+const NameContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  span {
+    font-size: 0.9rem;
+    opacity: 40%;
+    color: ${(props) => props.theme.TextColor_A};
+    &:nth-child(2) {
+      font-size: 0.85rem;
+    }
+  }
+`;
 interface IProps {
   boardId: string;
   CharacterName: string;
@@ -75,7 +87,9 @@ function DragCharactersDraggable({
   const Contents = useRecoilValue(ContentsState);
   const contentsFrequency = useRecoilValue(ContentsFrequency);
   const visibledColumns = useRecoilValue(VisibledColumns);
-
+  const {
+    [`${CharacterName}`]: { ItemMaxLevel, CharacterClassName },
+  } = useRecoilValue(AccountState);
   const [{ [`${CharacterName}`]: checkBoxConfig }, setCheckboxState] =
     useRecoilState(CheckBoxConfig);
 
@@ -123,7 +137,11 @@ function DragCharactersDraggable({
           onMouseLeave={() => setIsHovered(false)}
         >
           <Character {...provided.dragHandleProps}>
-            {CharacterName}
+            <NameContainer>
+              {CharacterName}
+              <span>{CharacterClassName}</span>
+              <span>Lv {ItemMaxLevel}</span>
+            </NameContainer>
             <ButtonContainer>
               {isHovered && (
                 <FontAwesomeIcon onClick={openModal} icon={faGear} size="lg" />
