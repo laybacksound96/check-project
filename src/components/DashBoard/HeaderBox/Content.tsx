@@ -3,7 +3,8 @@ import { useEffect, useState } from "react";
 import styled, { css, keyframes } from "styled-components";
 
 import getLowerLightnessColor from "../Functions/getLowerLightnessColor";
-import { IFrequencyContents } from "../../../atoms/atoms";
+import { CheckBoxConfig, IFrequencyContents } from "../../../atoms/atoms";
+import { useRecoilValue } from "recoil";
 interface IpropStyle {
   shouldAnimate: boolean;
   Color: string;
@@ -51,7 +52,7 @@ const ContentStyle = styled.li<IpropStyle>`
       animation: ${bump} 300ms ease-out;
     `};
 `;
-const HeaderContainer = styled.div`
+const NameBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -64,39 +65,48 @@ const HeaderContainer = styled.div`
   }
 `;
 
-const Icon = styled.div<IColorStyle>`
+const FrequencyBox = styled.div<IColorStyle>`
   display: flex;
   justify-content: center;
   align-items: center;
   width: 45px;
   height: 45px;
   border-radius: 7px;
-  background-color: ${(props) => getLowerLightnessColor(props.Color)};
+  background-color: ${(props) => getLowerLightnessColor(props.Color, 20)};
 
   span {
     margin-bottom: 5px;
     font-size: 30px;
   }
 `;
-const OwnerBox = styled.div<IColorStyle>`
+const HeaderContainer = styled.div`
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 100%;
+  padding: 10px;
+`;
+const OwnerContainer = styled.div<IColorStyle>`
   display: grid;
-  grid-template-columns: repeat(2, minmax(30px, auto));
+  grid-template-columns: repeat(2, auto);
   grid-auto-rows: auto;
   width: 100%;
   padding: 5px;
   height: auto;
   border-radius: 0 0 10px 10px;
-  background-color: ${(props) => getLowerLightnessColor(props.Color)};
+  background-color: ${(props) => getLowerLightnessColor(props.Color, 15)};
 `;
-const OwnerCard = styled.span<IColorStyle>`
+const OwnerBox = styled.span<IColorStyle>`
+  display: flex;
+  justify-content: center;
   width: auto;
   height: auto;
-  margin: 0 5px;
+  margin: 2px;
   padding: 3px;
   font-size: 0.8rem;
 
-  color: ${(props) => props.theme.Color_4};
-  background-color: ${(props) => props.theme.TextColor_A};
+  color: ${(props) => props.theme.TextColor_A};
+  background-color: ${(props) => getLowerLightnessColor(props.Color, 20)};
   border-radius: 5px;
 `;
 interface IProps {
@@ -105,6 +115,7 @@ interface IProps {
 }
 const Content = ({ contentState, Color }: IProps) => {
   const [shouldAnimate, setShouldAnimate] = useState(false);
+  const checkboxConfig = useRecoilValue(CheckBoxConfig);
   useEffect(() => {
     setShouldAnimate(true);
 
@@ -116,31 +127,29 @@ const Content = ({ contentState, Color }: IProps) => {
   }, [contentState.Frequency]);
   return (
     <ContentStyle shouldAnimate={shouldAnimate} Color={Color}>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-evenly",
-          alignItems: "center",
-          width: "100%",
-          padding: "10px",
-        }}
-      >
-        <HeaderContainer>
+      <HeaderContainer>
+        <NameBox>
           <h1>{contentState.ContentsName}</h1>
           {contentState.GateState.map((elem) => {
             return <p key={elem}>{elem}</p>;
           })}
-        </HeaderContainer>
-
-        <Icon Color={Color}>
+        </NameBox>
+        <FrequencyBox Color={Color}>
           <span>{contentState.Frequency}</span>
-        </Icon>
-      </div>
-      <OwnerBox Color={Color}>
-        {contentState.ContentsOwner.map((name) => (
-          <OwnerCard Color={Color}>{name}</OwnerCard>
-        ))}
-      </OwnerBox>
+        </FrequencyBox>
+      </HeaderContainer>
+      <OwnerContainer Color={Color}>
+        {contentState.ContentsOwner.map((name, index) => {
+          const { isCleared } =
+            checkboxConfig[`${name}`][contentState.ContentsName];
+          return (
+            index < 3 && !isCleared && <OwnerBox Color={Color}>{name}</OwnerBox>
+          );
+        })}
+        {contentState.ContentsOwner.length > 3 && (
+          <OwnerBox Color={Color}>...</OwnerBox>
+        )}
+      </OwnerContainer>
     </ContentStyle>
   );
 };
