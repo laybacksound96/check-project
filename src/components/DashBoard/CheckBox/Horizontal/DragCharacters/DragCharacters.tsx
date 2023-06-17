@@ -4,15 +4,13 @@ import {
   DropResult,
   Droppable,
 } from "react-beautiful-dnd";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 
 import DragCharactersDraggable from "./DragCharactersDraggable";
 
 import { AccountOrder } from "../../../../../atoms/order";
-import { AccountState } from "../../../../../atoms/atoms";
-import reOrderAccountOreder from "../../../Functions/reOrderAccountOrder";
 
 interface Istyle {
   isHovered: boolean;
@@ -67,7 +65,6 @@ function DragCharacters({
 }: IProps) {
   const [isHovered, setIsHovered] = useState(false);
   const setAccountOrder = useSetRecoilState(AccountOrder);
-  const accountState = useRecoilValue(AccountState);
 
   const dragCharacterHandler = (dragInfo: DropResult) => {
     const { destination, source } = dragInfo;
@@ -90,12 +87,6 @@ function DragCharacters({
     });
     return;
   };
-
-  useEffect(() => {
-    setAccountOrder((prev) =>
-      reOrderAccountOreder(accountState, prev, AccountIndex)
-    );
-  }, [accountState, setAccountOrder, AccountIndex]);
 
   return (
     <div

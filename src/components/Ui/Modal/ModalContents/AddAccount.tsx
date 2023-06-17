@@ -123,7 +123,9 @@ const AddAccount = () => {
       ...prev,
       {
         AccountName: AccountOwner,
-        CharacterOrder: Object.keys(AccountState),
+        CharacterOrder: Object.keys(AccountState).filter(
+          (name) => AccountState[name].isVisible
+        ),
       },
     ]);
     setModalState((prev) => ({ ...prev, isModalOpen: false }));

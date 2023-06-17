@@ -18,18 +18,6 @@ const reOrderVisibledColumns = (
 
     if (isVisible === false) continue;
 
-    // for (let account in accountOrder) {
-    //   const { CharacterOrder } = accountOrder[account];
-    //   for (let characterIndex in CharacterOrder) {
-    //     const characterName = CharacterOrder[characterIndex];
-    //     const { isVisible } = checkBoxConfig[characterName][contentName];
-    //     if (!isVisible) continue;
-    //     result[contentName] = true;
-    //   }
-    // }
-
-    // if (!result[contentName]) continue;
-
     const foundColumn = visibledColumns.find((obj) => obj.name === contentName);
     const content: Contents = {
       name: contentName,
