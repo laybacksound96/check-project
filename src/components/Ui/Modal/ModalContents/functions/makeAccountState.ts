@@ -1,7 +1,6 @@
 import { ICharacterState } from "../../../../../atoms/atoms";
 import { IFetchedCharacter } from "../AddAccount";
 import SortByLevel from "./SortByLevel";
-import calculateGoldContents from "./calculateGoldContents";
 
 const makeAccountState = (Account: IFetchedCharacter[]) => {
   const result: ICharacterState = {};
@@ -16,7 +15,7 @@ const makeAccountState = (Account: IFetchedCharacter[]) => {
       CharacterClassName: CharacterClassName,
       ItemMaxLevel: level,
       IsGoldCharacter: +index < 6 ? true : false,
-      GoldContents: calculateGoldContents(level),
+      GoldContents: [],
       isVisible: +index < 6 ? true : false,
     };
   }
