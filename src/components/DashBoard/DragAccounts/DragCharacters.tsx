@@ -8,14 +8,15 @@ import {
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { AccountOrder, VisibledColumns } from "../../../../atoms/order";
-import { AxisLocker } from "../../Functions/AxisLocker";
-import { ModalEnum, ModalState } from "../../../../atoms/modal";
+
 import DragCharactersDraggable, { Character } from "./DragCharactersDraggable";
-import { dragIcon } from "../../../../Settings";
-import { CheckBoxConfig, ContentsFrequency } from "../../../../atoms/atoms";
-import CheckBoxButton from "../CheckBoxButton/CheckBoxButton";
-import getColorInFrequencyCounter from "../../Functions/getColorFrequencyCounter";
+import { dragIcon } from "../../../Settings";
+import { ContentsFrequency, CheckBoxConfig } from "../../../atoms/atoms";
+import { ModalState, ModalEnum } from "../../../atoms/modal";
+import { AccountOrder, VisibledColumns } from "../../../atoms/order";
+import { AxisLocker } from "../Functions/AxisLocker";
+import getColorInFrequencyCounter from "../Functions/getColorFrequencyCounter";
+import CheckBoxButton from "./CheckBoxButton";
 
 interface Istyle {
   isHovered: boolean;

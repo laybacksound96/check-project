@@ -10,7 +10,7 @@ import {
   ContentsFrequency,
 } from "../atoms/atoms";
 import { VisibledColumns, AccountOrder } from "../atoms/order";
-import DragAccounts from "../components/DashBoard/Horizontal/DragAccounts/DragAccounts";
+import DragAccounts from "../components/DashBoard/DragAccounts/DragAccounts";
 
 const DashboardStyle = styled.div`
   min-width: 800px;

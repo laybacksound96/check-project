@@ -11,7 +11,7 @@ import { useRecoilState, useSetRecoilState } from "recoil";
 import { AccountOrder } from "../../../atoms/order";
 import { ModalEnum, ModalState } from "../../../atoms/modal";
 import { AxisLocker } from "../Functions/AxisLocker";
-import DragCharacters from "../Horizontal/DragCharacters/DragCharacters";
+import DragCharacters from "./DragCharacters";
 
 const DragBoxStyle = styled.div`
   width: 100%;
