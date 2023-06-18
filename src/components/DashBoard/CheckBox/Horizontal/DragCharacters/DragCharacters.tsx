@@ -7,12 +7,15 @@ import {
 } from "react-beautiful-dnd";
 import React, { useState } from "react";
 import styled from "styled-components";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { AccountOrder, VisibledColumns } from "../../../../../atoms/order";
 import { AxisLocker } from "../../../Functions/AxisLocker";
 import { ModalEnum, ModalState } from "../../../../../atoms/modal";
-import Card, { Name } from "../../Vertical/Card";
 import DragCharactersDraggable, { Character } from "./DragCharactersDraggable";
+import { dragIcon } from "../../../../../Settings";
+import { CheckBoxConfig, ContentsFrequency } from "../../../../../atoms/atoms";
+import CheckBoxButton from "../CheckBoxButton/CheckBoxButton";
+import getColorInFrequencyCounter from "../../../Functions/getColorFrequencyCounter";
 
 interface Istyle {
   isHovered: boolean;
@@ -59,6 +62,26 @@ const DragAccountBtn = styled.div<Istyle>`
   margin-left: 10px;
   opacity: ${(props) => (props.isHovered ? "100" : "0")};
 `;
+const Name = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  min-width: ${dragIcon.icon.edgeLength}px;
+  height: ${dragIcon.icon.edgeLength}px;
+
+  border-radius: 5px;
+  font-size: ${dragIcon.column.fontSize}px;
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.231);
+    transition: ease-in-out 0.1s;
+  }
+`;
+const ColumnContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
 const Row = styled.div``;
 const Column = styled.div``;
 function DragCharacters({
@@ -70,6 +93,7 @@ function DragCharacters({
   const [isHovered, setIsHovered] = useState(false);
   const [accountOrder, setAccountOrder] = useRecoilState(AccountOrder);
   const [visibledColumns, setVisibledColumns] = useRecoilState(VisibledColumns);
+  const contentsFrequency = useRecoilValue(ContentsFrequency);
   const dragCharacterHandler = (dragInfo: DropResult) => {
     const { destination, source } = dragInfo;
     if (!destination) return;
@@ -91,7 +115,7 @@ function DragCharacters({
     });
     return;
   };
-  const onDragEnd = (dragInfo: DropResult) => {
+  const dragContentHandler = (dragInfo: DropResult) => {
     const { destination, source } = dragInfo;
     if (!destination) return;
     if (destination?.droppableId === source.droppableId) {
@@ -105,6 +129,20 @@ function DragCharacters({
     }
     return;
   };
+  const CheckBoxOnclick = (character: string, content: string) => {
+    setCheckboxState((Characters) => {
+      const copiedCharacters = { ...Characters };
+      const ContentName = { ...copiedCharacters[character] };
+      const ConfigObject = { ...ContentName[content] };
+      const state = copiedCharacters[character][content].isCleared;
+
+      ConfigObject.isCleared = !state;
+      ContentName[content] = ConfigObject;
+      copiedCharacters[character] = ContentName;
+      return copiedCharacters;
+    });
+  };
+  const setCheckboxState = useSetRecoilState(CheckBoxConfig);
   const setIsModalOpen = useSetRecoilState(ModalState);
   const openModal = () => {
     setIsModalOpen((prev) => {
@@ -114,75 +152,99 @@ function DragCharacters({
       return { ...copiedPrev };
     });
   };
+
   return (
-    <div
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      <DragDropContext onDragEnd={dragCharacterHandler}>
-        <Droppable droppableId={AccountName}>
-          {(provided, snapshot) => (
-            <Area isHovered={isHovered}>
-              <Row ref={provided.innerRef} {...provided.droppableProps}>
-                <Character />
-                {accountOrder[AccountIndex].CharacterOrder.map(
-                  (CharacterName, index) => {
-                    return (
-                      <DragCharactersDraggable
-                        AccountName={AccountName}
-                        CharacterName={CharacterName}
+    <DragDropContext onDragEnd={dragCharacterHandler}>
+      <Droppable droppableId={AccountName}>
+        {(provided, snapshot) => (
+          <Area
+            isHovered={isHovered}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+          >
+            <Row ref={provided.innerRef} {...provided.droppableProps}>
+              <Character />
+              {accountOrder[AccountIndex].CharacterOrder.map(
+                (CharacterName, index) => {
+                  return (
+                    <DragCharactersDraggable
+                      AccountName={AccountName}
+                      CharacterName={CharacterName}
+                      index={index}
+                      boardId={CharacterName + "_" + index}
+                      key={CharacterName + "_" + index}
+                    />
+                  );
+                }
+              )}
+              {provided.placeholder}
+            </Row>
+
+            <DragDropContext onDragEnd={dragContentHandler}>
+              <Droppable droppableId="Column" direction="horizontal">
+                {(provided) => (
+                  <div
+                    ref={provided.innerRef}
+                    {...provided.droppableProps}
+                    style={{ display: "flex" }}
+                  >
+                    {visibledColumns.map((ContentName, index) => (
+                      <Draggable
+                        draggableId={ContentName}
                         index={index}
-                        boardId={CharacterName + "_" + index}
-                        key={CharacterName + "_" + index}
-                      />
-                    );
-                  }
-                )}
-                {provided.placeholder}
-              </Row>
-              <Column>
-                <DragDropContext onDragEnd={onDragEnd}>
-                  <Droppable droppableId="Vertical" direction="horizontal">
-                    {(provided) => (
-                      <div
-                        ref={provided.innerRef}
-                        {...provided.droppableProps}
-                        style={{ display: "flex" }}
+                        key={ContentName}
                       >
-                        {visibledColumns.map((contentName, index) => (
-                          <Draggable
-                            draggableId={contentName}
-                            index={index}
-                            key={contentName}
-                          >
-                            {(provided) => (
-                              <Card
-                                Column={contentName}
-                                parentProvided={provided}
-                                index={index}
-                                style={AxisLocker(
-                                  provided.draggableProps.style!,
-                                  true
-                                )}
-                              />
+                        {(provided) => (
+                          <ColumnContainer
+                            ref={provided.innerRef}
+                            {...provided.dragHandleProps}
+                            {...provided.draggableProps}
+                            style={AxisLocker(
+                              provided.draggableProps.style!,
+                              true
                             )}
-                          </Draggable>
-                        ))}
-                        {provided.placeholder}
-                        <Name onClick={openModal}>+</Name>
-                      </div>
-                    )}
-                  </Droppable>
-                </DragDropContext>
-              </Column>
-              <DragAccountBtn isHovered={isHovered}>
-                <DragAccount {...DragHandleProps} />
-              </DragAccountBtn>
-            </Area>
-          )}
-        </Droppable>
-      </DragDropContext>
-    </div>
+                          >
+                            <Name>
+                              {ContentName.length >= 7
+                                ? `${ContentName.slice(0, 7)}...`
+                                : ContentName}
+                            </Name>
+                            {accountOrder[AccountIndex].CharacterOrder.map(
+                              (CharacterName) => {
+                                const color = getColorInFrequencyCounter(
+                                  contentsFrequency,
+                                  ContentName,
+                                  CharacterName
+                                );
+                                return (
+                                  <CheckBoxButton
+                                    key={CharacterName + ContentName}
+                                    CharacterName={CharacterName}
+                                    ContentName={ContentName}
+                                    CheckBoxOnclick={CheckBoxOnclick}
+                                    Color={color}
+                                  />
+                                );
+                              }
+                            )}
+                          </ColumnContainer>
+                        )}
+                      </Draggable>
+                    ))}
+                    {provided.placeholder}
+                    <Name onClick={openModal}>+</Name>
+                  </div>
+                )}
+              </Droppable>
+            </DragDropContext>
+
+            <DragAccountBtn isHovered={isHovered}>
+              <DragAccount {...DragHandleProps} />
+            </DragAccountBtn>
+          </Area>
+        )}
+      </Droppable>
+    </DragDropContext>
   );
 }
 export default React.memo(DragCharacters);

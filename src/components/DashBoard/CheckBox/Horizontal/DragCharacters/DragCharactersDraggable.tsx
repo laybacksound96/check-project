@@ -6,7 +6,7 @@ import { AxisLocker } from "../../../Functions/AxisLocker";
 import { dragIcon } from "../../../../../Settings";
 
 import { useRecoilState, useSetRecoilState } from "recoil";
-import { AccountState, CheckBoxConfig } from "../../../../../atoms/atoms";
+import { AccountState } from "../../../../../atoms/atoms";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGear } from "@fortawesome/free-solid-svg-icons";
 
@@ -85,23 +85,9 @@ function DragCharactersDraggable({
     },
     setAccountState,
   ] = useRecoilState(AccountState);
-  const setCheckboxState = useSetRecoilState(CheckBoxConfig);
 
   const [isHovered, setIsHovered] = useState(false);
 
-  const CheckBoxOnclick = (character: string, content: string) => {
-    setCheckboxState((Characters) => {
-      const copiedCharacters = { ...Characters };
-      const ContentName = { ...copiedCharacters[character] };
-      const ConfigObject = { ...ContentName[content] };
-      const state = copiedCharacters[character][content].isCleared;
-
-      ConfigObject.isCleared = !state;
-      ContentName[content] = ConfigObject;
-      copiedCharacters[character] = ContentName;
-      return copiedCharacters;
-    });
-  };
   const handleVisible = () => {
     setAccountState((prev) => {
       const currentVisible = prev[CharacterName].isVisible;

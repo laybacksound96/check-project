@@ -3,11 +3,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import styled from "styled-components";
 import { dragIcon } from "../../../../../Settings";
+import { useRecoilValue } from "recoil";
+import { CheckBoxConfig } from "../../../../../atoms/atoms";
 
 interface IStyle {
   isVisible: boolean;
   isActivated: boolean;
-  Width: number;
   Color: string;
 }
 const CheckBox = styled.div<IStyle>`
@@ -17,7 +18,6 @@ const CheckBox = styled.div<IStyle>`
   justify-content: center;
   align-items: center;
   font-size: ${dragIcon.icon.fontSize}px;
-  width: ${(props) => props.Width}px;
   height: ${dragIcon.icon.edgeLength}px;
   border-radius: 5px;
 
@@ -34,28 +34,23 @@ const CheckBox = styled.div<IStyle>`
   }
 `;
 interface ICheckboxProps {
-  key: string;
   CheckBoxOnclick: (char: string, cont: string) => void;
-  isChecked: boolean;
   CharacterName: string;
   ContentName: string;
-  isVisible: boolean;
-  Width: number;
   Color: string;
-  isActivated: boolean;
 }
 
 function CheckBoxButton({
-  isChecked,
   CheckBoxOnclick,
   CharacterName,
   ContentName,
-  isVisible,
-  isActivated,
-
-  Width,
   Color,
 }: ICheckboxProps) {
+  const {
+    [CharacterName]: {
+      [ContentName]: { isCleared, isActivated, isVisible },
+    },
+  } = useRecoilValue(CheckBoxConfig);
   function onClickHandler() {
     if (!isVisible || !isActivated) return;
     CheckBoxOnclick(CharacterName, ContentName);
@@ -66,10 +61,9 @@ function CheckBoxButton({
       onClick={onClickHandler}
       isVisible={isVisible}
       isActivated={isActivated}
-      Width={Width}
       Color={Color}
     >
-      {isChecked ? (
+      {isCleared ? (
         <FontAwesomeIcon icon={faSquareCheck} size="lg" />
       ) : (
         <FontAwesomeIcon icon={faSquare} size="lg" />
