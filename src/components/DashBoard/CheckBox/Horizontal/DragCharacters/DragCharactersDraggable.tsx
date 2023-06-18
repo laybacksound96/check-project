@@ -163,7 +163,8 @@ function DragCharactersDraggable({
             )}
           </Character>
 
-          {visibledColumns.map(({ name: ContentName, width }, ColumnIndex) => {
+          {visibledColumns.map((ContentName, ColumnIndex) => {
+            const width = Contents[ContentName].width;
             const color = getColorInFrequencyCounter(
               contentsFrequency,
               ContentName,

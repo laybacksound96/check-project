@@ -1,44 +1,31 @@
-import Modal from "../components/Ui/Modal/Modal";
-import { useRecoilState, useRecoilValue } from "recoil";
-import {
-  AccountState,
-  CheckBoxConfig,
-  ContentsFrequency,
-  ContentsState,
-} from "../atoms/atoms";
-
 import HeaderBox from "../components/DashBoard/HeaderBox/HeaderBox";
 import CheckBox from "../components/DashBoard/CheckBox/Checkbox";
-import ConfigContent from "../components/Ui/Modal/ModalContents/ConfigContent";
-import AddContent from "../components/Ui/Modal/ModalContents/AddContent";
-import AddAccount from "../components/Ui/Modal/ModalContents/AddAccount";
-import { useEffect } from "react";
-import ConfigAccount from "../components/Ui/Modal/ModalContents/ConfigAccount";
-import { ModalState, ModalEnum } from "../atoms/modal";
 import styled from "styled-components";
-import { AccountOrder, VisibledColumns } from "../atoms/order";
+import Modal from "../components/Ui/Modal/Modal";
+import { useEffect } from "react";
+import { useRecoilValue } from "recoil";
+import {
+  CheckBoxConfig,
+  ContentsState,
+  AccountState,
+  ContentsFrequency,
+} from "../atoms/atoms";
+import { VisibledColumns, AccountOrder } from "../atoms/order";
+
 const DashboardStyle = styled.div`
   min-width: 800px;
 `;
+
 function Dashboard() {
-  const [IsModalOpen, setIsModalOpen] = useRecoilState(ModalState);
+  useEffect(() => {
+    localStorage.setItem("myAtom", "asdd");
+  }, []);
   const checkBoxConfig = useRecoilValue(CheckBoxConfig);
   const contentsState = useRecoilValue(ContentsState);
   const visibledColumns = useRecoilValue(VisibledColumns);
   const accountOrder = useRecoilValue(AccountOrder);
   const accountState = useRecoilValue(AccountState);
   const contentsFrequency = useRecoilValue(ContentsFrequency);
-  const closeModal = () => {
-    setIsModalOpen((prev) => {
-      const copiedPrev = { ...prev };
-      copiedPrev.isModalOpen = false;
-      copiedPrev.modalProp = {
-        AccountName: "",
-        CharacterName: "",
-      };
-      return copiedPrev;
-    });
-  };
   useEffect(() => {
     console.log("checkBoxConfig");
     console.log(checkBoxConfig);
@@ -69,18 +56,7 @@ function Dashboard() {
   ]);
   return (
     <>
-      {IsModalOpen.isModalOpen && (
-        <Modal onClose={closeModal}>
-          {IsModalOpen.modalType === ModalEnum.CONFIG_CONTENT && (
-            <ConfigContent />
-          )}
-          {IsModalOpen.modalType === ModalEnum.CONFIG_ACCOUNT && (
-            <ConfigAccount />
-          )}
-          {IsModalOpen.modalType === ModalEnum.ADD_CONTENT && <AddContent />}
-          {IsModalOpen.modalType === ModalEnum.ADD_ACCOUNT && <AddAccount />}
-        </Modal>
-      )}
+      <Modal />
       <DashboardStyle>
         <HeaderBox />
         <CheckBox />

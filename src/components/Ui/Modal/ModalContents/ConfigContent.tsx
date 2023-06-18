@@ -100,7 +100,9 @@ const ConfigContent = () => {
     });
   };
   const visibleHandler = (Name: string) => {
+    const storedValue = localStorage.getItem("myAtom");
     console.log(Name);
+    console.log(storedValue);
   };
   return (
     <Container>

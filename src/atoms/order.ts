@@ -1,14 +1,9 @@
 import { atom } from "recoil";
 import makeDefaultCommander from "../components/Ui/Modal/ModalContents/functions/makeDefaultCommander";
-import { dragIcon } from "../Settings";
 
 export interface IAccountOrder {
   AccountName: string;
   CharacterOrder: string[];
-}
-export interface Contents {
-  ["name"]: string;
-  ["width"]: number;
 }
 
 export const AccountOrder = atom<IAccountOrder[]>({
@@ -16,14 +11,12 @@ export const AccountOrder = atom<IAccountOrder[]>({
   default: [],
 });
 
-export const VisibledColumns = atom<Contents[]>({
+export const VisibledColumns = atom<string[]>({
   key: "visibledColumns",
   default: initializerColumnOrder(),
 });
 
-function initializerColumnOrder(): Contents[] {
+function initializerColumnOrder(): string[] {
   const contents = makeDefaultCommander();
-  return Object.keys(contents).map((contentName) => {
-    return { name: contentName, width: dragIcon.icon.edgeLength };
-  });
+  return Object.keys(contents);
 }

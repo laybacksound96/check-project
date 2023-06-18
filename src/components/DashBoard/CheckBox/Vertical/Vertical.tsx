@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   DragDropContext,
   Draggable,
@@ -6,13 +6,13 @@ import {
   DropResult,
 } from "react-beautiful-dnd";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { CheckBoxConfig, ContentsState } from "../../../../atoms/atoms";
+
 import Card, { Name } from "./Vertical__card";
 import { AxisLocker } from "../../Functions/AxisLocker";
 import styled from "styled-components";
 import { ModalEnum, ModalState } from "../../../../atoms/modal";
 import { AccountOrder, VisibledColumns } from "../../../../atoms/order";
-import reOrderVisibledColumns from "../../Functions/reOrderVisibledColumns";
+
 const VerticalContainer = styled.div`
   display: flex;
 `;
@@ -20,16 +20,8 @@ const CardContainer = styled.div`
   display: flex;
 `;
 function Vertical() {
-  const [Contents, setContents] = useRecoilState(ContentsState);
   const accountOrder = useRecoilValue(AccountOrder);
   const [visibledColumns, setVisibledColumns] = useRecoilState(VisibledColumns);
-  const checkBoxConfig = useRecoilValue(CheckBoxConfig);
-
-  useEffect(() => {
-    setVisibledColumns((prev) =>
-      reOrderVisibledColumns(prev, Contents, accountOrder, checkBoxConfig)
-    );
-  }, [Contents, setVisibledColumns, accountOrder, checkBoxConfig, setContents]);
 
   const onDragEnd = (dragInfo: DropResult) => {
     const { destination, source } = dragInfo;
@@ -63,7 +55,7 @@ function Vertical() {
         <Droppable droppableId="Vertical" direction="horizontal">
           {(provided) => (
             <CardContainer ref={provided.innerRef} {...provided.droppableProps}>
-              {visibledColumns.map(({ name: contentName }, index) => (
+              {visibledColumns.map((contentName, index) => (
                 <Draggable
                   draggableId={contentName}
                   index={index}

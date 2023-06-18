@@ -7,7 +7,8 @@ import styled from "styled-components";
 import { dragIcon } from "../../../../Settings";
 import { useEffect, useRef } from "react";
 import { useSetRecoilState } from "recoil";
-import { VisibledColumns } from "../../../../atoms/order";
+
+import { ContentsState, IContents } from "../../../../atoms/atoms";
 
 export const Name = styled.div`
   display: flex;
@@ -33,19 +34,22 @@ interface IColumnCardProp {
 
 function ColumnCard({ Column, parentProvided, style, index }: IColumnCardProp) {
   const elementRef = useRef<HTMLDivElement>(null);
-  const setVisibledColumns = useSetRecoilState(VisibledColumns);
+
+  const setContentsState = useSetRecoilState(ContentsState);
+
   useEffect(() => {
     if (elementRef.current) {
       const elementWidth = elementRef.current.offsetWidth;
-      setVisibledColumns((prev) => {
-        const copiedPrev = [...prev];
-        const copiedContents = { ...copiedPrev[index] };
-        copiedContents.width = elementWidth;
-        copiedPrev[index] = copiedContents;
+      setContentsState((prev) => {
+        const copiedPrev: IContents = {
+          ...prev,
+          [Column]: { ...prev[Column], width: elementWidth },
+        };
+
         return copiedPrev;
       });
     }
-  }, [setVisibledColumns, index]);
+  }, [setContentsState, Column]);
 
   return (
     <div
