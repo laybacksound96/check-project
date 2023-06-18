@@ -22,7 +22,7 @@ import {
 } from "../../../../../atoms/modal";
 import { VisibledColumns } from "../../../../../atoms/order";
 
-const Character = styled.div`
+export const Character = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -59,7 +59,7 @@ export const ButtonContainer = styled.div`
     }
   }
 `;
-const NameContainer = styled.div`
+export const NameContainer = styled.div`
   display: flex;
   flex-direction: column;
   span {

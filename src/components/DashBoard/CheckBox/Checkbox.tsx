@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import Vertical from "./Vertical/Vertical";
 import DragAccounts from "./Horizontal/DragAccounts/DragAccounts";
 
 export const CheckBoxStyle = styled.div`
@@ -24,7 +23,6 @@ export const CheckBoxStyle = styled.div`
 const CheckBox = () => {
   return (
     <CheckBoxStyle>
-      <Vertical />
       <DragAccounts />
     </CheckBoxStyle>
   );

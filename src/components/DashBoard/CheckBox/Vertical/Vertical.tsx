@@ -12,6 +12,7 @@ import { AxisLocker } from "../../Functions/AxisLocker";
 import styled from "styled-components";
 import { ModalEnum, ModalState } from "../../../../atoms/modal";
 import { AccountOrder, VisibledColumns } from "../../../../atoms/order";
+import { Character } from "../Horizontal/DragCharacters/DragCharactersDraggable";
 
 const VerticalContainer = styled.div`
   display: flex;
@@ -50,7 +51,7 @@ function Vertical() {
 
   return accountOrder.length ? (
     <VerticalContainer>
-      <div style={{ width: "210px" }} />
+      <Character />
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="Vertical" direction="horizontal">
           {(provided) => (

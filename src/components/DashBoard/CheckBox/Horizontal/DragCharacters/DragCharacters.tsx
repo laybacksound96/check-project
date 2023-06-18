@@ -11,6 +11,7 @@ import { useSetRecoilState } from "recoil";
 import DragCharactersDraggable from "./DragCharactersDraggable";
 
 import { AccountOrder } from "../../../../../atoms/order";
+import Vertical from "../../Vertical/Vertical";
 
 interface Istyle {
   isHovered: boolean;
@@ -98,6 +99,7 @@ function DragCharacters({
           {(provided, snapshot) => (
             <Area isHovered={isHovered}>
               <div ref={provided.innerRef} {...provided.droppableProps}>
+                <Vertical />
                 {CharacterOrder.map((CharacterName, index) => {
                   return (
                     <DragCharactersDraggable
