@@ -1,17 +1,18 @@
 import {
   DragDropContext,
+  Draggable,
   DraggableProvidedDragHandleProps,
   DropResult,
   Droppable,
 } from "react-beautiful-dnd";
 import React, { useState } from "react";
 import styled from "styled-components";
-import { useSetRecoilState } from "recoil";
-
-import DragCharactersDraggable from "./DragCharactersDraggable";
-
-import { AccountOrder } from "../../../../../atoms/order";
-import Vertical from "../../Vertical/Vertical";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { AccountOrder, VisibledColumns } from "../../../../../atoms/order";
+import { AxisLocker } from "../../../Functions/AxisLocker";
+import { ModalEnum, ModalState } from "../../../../../atoms/modal";
+import Card, { Name } from "../../Vertical/Card";
+import DragCharactersDraggable, { Character } from "./DragCharactersDraggable";
 
 interface Istyle {
   isHovered: boolean;
@@ -23,7 +24,7 @@ const Area = styled.div<Istyle>`
     color: ${(props) => props.theme.TextColor_A};
   }
   font-weight: 500;
-  flex-grow: 1;
+
   border-radius: 10px;
   background-color: ${(props) => props.theme.Color_3};
   transition: background-color 0.2s ease-in-out;
@@ -50,7 +51,7 @@ interface IProps {
   AccountIndex: number;
 }
 
-const ButtonContainer = styled.div<Istyle>`
+const DragAccountBtn = styled.div<Istyle>`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -58,6 +59,8 @@ const ButtonContainer = styled.div<Istyle>`
   margin-left: 10px;
   opacity: ${(props) => (props.isHovered ? "100" : "0")};
 `;
+const Row = styled.div``;
+const Column = styled.div``;
 function DragCharacters({
   DragHandleProps,
   AccountName,
@@ -65,8 +68,8 @@ function DragCharacters({
   AccountIndex,
 }: IProps) {
   const [isHovered, setIsHovered] = useState(false);
-  const setAccountOrder = useSetRecoilState(AccountOrder);
-
+  const [accountOrder, setAccountOrder] = useRecoilState(AccountOrder);
+  const [visibledColumns, setVisibledColumns] = useRecoilState(VisibledColumns);
   const dragCharacterHandler = (dragInfo: DropResult) => {
     const { destination, source } = dragInfo;
     if (!destination) return;
@@ -88,7 +91,29 @@ function DragCharacters({
     });
     return;
   };
-
+  const onDragEnd = (dragInfo: DropResult) => {
+    const { destination, source } = dragInfo;
+    if (!destination) return;
+    if (destination?.droppableId === source.droppableId) {
+      setVisibledColumns((prev) => {
+        const copiedPrev = [...prev];
+        const copiedObject = copiedPrev[source.index];
+        copiedPrev.splice(source.index, 1);
+        copiedPrev.splice(destination?.index, 0, copiedObject);
+        return [...copiedPrev];
+      });
+    }
+    return;
+  };
+  const setIsModalOpen = useSetRecoilState(ModalState);
+  const openModal = () => {
+    setIsModalOpen((prev) => {
+      const copiedPrev = { ...prev };
+      copiedPrev.isModalOpen = true;
+      copiedPrev.modalType = ModalEnum.ADD_CONTENT;
+      return { ...copiedPrev };
+    });
+  };
   return (
     <div
       onMouseEnter={() => setIsHovered(true)}
@@ -98,24 +123,61 @@ function DragCharacters({
         <Droppable droppableId={AccountName}>
           {(provided, snapshot) => (
             <Area isHovered={isHovered}>
-              <div ref={provided.innerRef} {...provided.droppableProps}>
-                <Vertical />
-                {CharacterOrder.map((CharacterName, index) => {
-                  return (
-                    <DragCharactersDraggable
-                      AccountName={AccountName}
-                      CharacterName={CharacterName}
-                      index={index}
-                      boardId={CharacterName + "_" + index}
-                      key={CharacterName + "_" + index}
-                    />
-                  );
-                })}
+              <Row ref={provided.innerRef} {...provided.droppableProps}>
+                <Character />
+                {accountOrder[AccountIndex].CharacterOrder.map(
+                  (CharacterName, index) => {
+                    return (
+                      <DragCharactersDraggable
+                        AccountName={AccountName}
+                        CharacterName={CharacterName}
+                        index={index}
+                        boardId={CharacterName + "_" + index}
+                        key={CharacterName + "_" + index}
+                      />
+                    );
+                  }
+                )}
                 {provided.placeholder}
-              </div>
-              <ButtonContainer isHovered={isHovered}>
+              </Row>
+              <Column>
+                <DragDropContext onDragEnd={onDragEnd}>
+                  <Droppable droppableId="Vertical" direction="horizontal">
+                    {(provided) => (
+                      <div
+                        ref={provided.innerRef}
+                        {...provided.droppableProps}
+                        style={{ display: "flex" }}
+                      >
+                        {visibledColumns.map((contentName, index) => (
+                          <Draggable
+                            draggableId={contentName}
+                            index={index}
+                            key={contentName}
+                          >
+                            {(provided) => (
+                              <Card
+                                Column={contentName}
+                                parentProvided={provided}
+                                index={index}
+                                style={AxisLocker(
+                                  provided.draggableProps.style!,
+                                  true
+                                )}
+                              />
+                            )}
+                          </Draggable>
+                        ))}
+                        {provided.placeholder}
+                        <Name onClick={openModal}>+</Name>
+                      </div>
+                    )}
+                  </Droppable>
+                </DragDropContext>
+              </Column>
+              <DragAccountBtn isHovered={isHovered}>
                 <DragAccount {...DragHandleProps} />
-              </ButtonContainer>
+              </DragAccountBtn>
             </Area>
           )}
         </Droppable>

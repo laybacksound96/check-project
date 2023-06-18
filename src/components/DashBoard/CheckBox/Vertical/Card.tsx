@@ -12,6 +12,7 @@ import { ContentsState, IContents } from "../../../../atoms/atoms";
 
 export const Name = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 10px;

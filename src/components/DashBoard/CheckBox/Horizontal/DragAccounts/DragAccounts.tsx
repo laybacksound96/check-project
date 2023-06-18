@@ -11,7 +11,25 @@ import DragCharacters from "../DragCharacters/DragCharacters";
 import { AccountOrder } from "../../../../../atoms/order";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { ModalState, ModalEnum } from "../../../../../atoms/modal";
+const DragBoxStyle = styled.div`
+  width: 100%;
+  height: auto;
+  background-color: ${(props) => props.theme.Color_1};
+  * {
+    color: ${(props) => props.theme.TextColor_A};
+  }
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
 
+  border-style: solid;
+  border-color: ${(props) => props.theme.Color_4};
+  border-width: 3px;
+
+  padding: 30px 40px;
+  border-radius: 15px;
+  margin-bottom: 150px;
+`;
 const AccountStyle = styled.div`
   display: flex;
   flex-direction: column;
@@ -54,7 +72,7 @@ const DragAccounts = () => {
   };
 
   return (
-    <>
+    <DragBoxStyle>
       <DragDropContext onDragEnd={dragAccountHandler}>
         <Droppable droppableId="accounts" direction="vertical">
           {(provided) => (
@@ -87,7 +105,7 @@ const DragAccounts = () => {
         </Droppable>
       </DragDropContext>
       <AddAccountBtn onClick={openModal}>+ add new account?</AddAccountBtn>
-    </>
+    </DragBoxStyle>
   );
 };
 export default React.memo(DragAccounts);

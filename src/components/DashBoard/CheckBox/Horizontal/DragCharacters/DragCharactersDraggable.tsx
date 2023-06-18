@@ -4,23 +4,17 @@ import styled from "styled-components";
 import { faEye } from "@fortawesome/free-regular-svg-icons";
 import { AxisLocker } from "../../../Functions/AxisLocker";
 import { dragIcon } from "../../../../../Settings";
-import Checkbox from "../CheckBoxButton/CheckBoxButton";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import {
-  AccountState,
-  CheckBoxConfig,
-  ContentsFrequency,
-  ContentsState,
-} from "../../../../../atoms/atoms";
+
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { AccountState, CheckBoxConfig } from "../../../../../atoms/atoms";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGear } from "@fortawesome/free-solid-svg-icons";
-import getColorInFrequencyCounter from "../../../Functions/getColorFrequencyCounter";
+
 import {
   ModalState,
   IModalObject,
   ModalEnum,
 } from "../../../../../atoms/modal";
-import { VisibledColumns } from "../../../../../atoms/order";
 
 export const Character = styled.div`
   display: flex;
@@ -84,17 +78,14 @@ function DragCharactersDraggable({
   AccountName,
 }: IProps) {
   const setIsModalOpen = useSetRecoilState(ModalState);
-  const Contents = useRecoilValue(ContentsState);
-  const contentsFrequency = useRecoilValue(ContentsFrequency);
-  const visibledColumns = useRecoilValue(VisibledColumns);
+
   const [
     {
       [`${CharacterName}`]: { ItemMaxLevel, CharacterClassName },
     },
     setAccountState,
   ] = useRecoilState(AccountState);
-  const [{ [`${CharacterName}`]: checkBoxConfig }, setCheckboxState] =
-    useRecoilState(CheckBoxConfig);
+  const setCheckboxState = useSetRecoilState(CheckBoxConfig);
 
   const [isHovered, setIsHovered] = useState(false);
 
@@ -162,32 +153,6 @@ function DragCharactersDraggable({
               </ButtonContainer>
             )}
           </Character>
-
-          {visibledColumns.map((ContentName, ColumnIndex) => {
-            const width = Contents[ContentName].width;
-            const color = getColorInFrequencyCounter(
-              contentsFrequency,
-              ContentName,
-              CharacterName
-            );
-            const { isCleared, isVisible, isActivated } =
-              checkBoxConfig[ContentName];
-            return (
-              Contents[ContentName].isVisible && (
-                <Checkbox
-                  key={index + ColumnIndex + ContentName}
-                  isChecked={isCleared}
-                  isVisible={isVisible}
-                  isActivated={isActivated}
-                  CheckBoxOnclick={CheckBoxOnclick}
-                  ContentName={ContentName}
-                  CharacterName={CharacterName}
-                  Width={width}
-                  Color={color}
-                />
-              )
-            );
-          })}
         </CharactersContainer>
       )}
     </Draggable>

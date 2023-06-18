@@ -1,5 +1,4 @@
 import HeaderBox from "../components/DashBoard/HeaderBox/HeaderBox";
-import CheckBox from "../components/DashBoard/CheckBox/Checkbox";
 import styled from "styled-components";
 import Modal from "../components/Ui/Modal/Modal";
 import { useEffect } from "react";
@@ -11,6 +10,7 @@ import {
   ContentsFrequency,
 } from "../atoms/atoms";
 import { VisibledColumns, AccountOrder } from "../atoms/order";
+import DragAccounts from "../components/DashBoard/CheckBox/Horizontal/DragAccounts/DragAccounts";
 
 const DashboardStyle = styled.div`
   min-width: 800px;
@@ -59,7 +59,7 @@ function Dashboard() {
       <Modal />
       <DashboardStyle>
         <HeaderBox />
-        <CheckBox />
+        <DragAccounts />
       </DashboardStyle>
     </>
   );
