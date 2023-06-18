@@ -6,11 +6,11 @@ import {
   Droppable,
 } from "react-beautiful-dnd";
 import styled from "styled-components";
-import { AxisLocker } from "../../../Functions/AxisLocker";
+import { AxisLocker } from "../../Functions/AxisLocker";
 import DragCharacters from "../DragCharacters/DragCharacters";
-import { AccountOrder } from "../../../../../atoms/order";
+import { AccountOrder } from "../../../../atoms/order";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import { ModalState, ModalEnum } from "../../../../../atoms/modal";
+import { ModalState, ModalEnum } from "../../../../atoms/modal";
 const DragBoxStyle = styled.div`
   width: 100%;
   height: auto;

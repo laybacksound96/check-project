@@ -2,9 +2,9 @@ import { faSquare, faSquareCheck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import styled from "styled-components";
-import { dragIcon } from "../../../../../Settings";
+import { dragIcon } from "../../../../Settings";
 import { useRecoilValue } from "recoil";
-import { CheckBoxConfig } from "../../../../../atoms/atoms";
+import { CheckBoxConfig } from "../../../../atoms/atoms";
 
 interface IStyle {
   isVisible: boolean;
