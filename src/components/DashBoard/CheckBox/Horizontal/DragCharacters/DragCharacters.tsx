@@ -8,14 +8,14 @@ import {
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { AccountOrder, VisibledColumns } from "../../../../../atoms/order";
-import { AxisLocker } from "../../../Functions/AxisLocker";
-import { ModalEnum, ModalState } from "../../../../../atoms/modal";
+import { AccountOrder, VisibledColumns } from "../../../../atoms/order";
+import { AxisLocker } from "../../Functions/AxisLocker";
+import { ModalEnum, ModalState } from "../../../../atoms/modal";
 import DragCharactersDraggable, { Character } from "./DragCharactersDraggable";
-import { dragIcon } from "../../../../../Settings";
-import { CheckBoxConfig, ContentsFrequency } from "../../../../../atoms/atoms";
+import { dragIcon } from "../../../../Settings";
+import { CheckBoxConfig, ContentsFrequency } from "../../../../atoms/atoms";
 import CheckBoxButton from "../CheckBoxButton/CheckBoxButton";
-import getColorInFrequencyCounter from "../../../Functions/getColorFrequencyCounter";
+import getColorInFrequencyCounter from "../../Functions/getColorFrequencyCounter";
 
 interface Istyle {
   isHovered: boolean;
@@ -47,13 +47,6 @@ const DragAccount = styled.div`
   border-radius: 10px;
 `;
 
-interface IProps {
-  DragHandleProps: DraggableProvidedDragHandleProps | null | undefined;
-  AccountName: string;
-  CharacterOrder: string[];
-  AccountIndex: number;
-}
-
 const DragAccountBtn = styled.div<Istyle>`
   display: flex;
   flex-direction: column;
@@ -82,8 +75,12 @@ const ColumnContainer = styled.div`
   display: flex;
   flex-direction: column;
 `;
-const Row = styled.div``;
-const Column = styled.div``;
+interface IProps {
+  DragHandleProps: DraggableProvidedDragHandleProps | null | undefined;
+  AccountName: string;
+  CharacterOrder: string[];
+  AccountIndex: number;
+}
 function DragCharacters({
   DragHandleProps,
   AccountName,
@@ -94,6 +91,8 @@ function DragCharacters({
   const [accountOrder, setAccountOrder] = useRecoilState(AccountOrder);
   const [visibledColumns, setVisibledColumns] = useRecoilState(VisibledColumns);
   const contentsFrequency = useRecoilValue(ContentsFrequency);
+  const setCheckboxState = useSetRecoilState(CheckBoxConfig);
+  const setIsModalOpen = useSetRecoilState(ModalState);
   const dragCharacterHandler = (dragInfo: DropResult) => {
     const { destination, source } = dragInfo;
     if (!destination) return;
@@ -142,8 +141,7 @@ function DragCharacters({
       return copiedCharacters;
     });
   };
-  const setCheckboxState = useSetRecoilState(CheckBoxConfig);
-  const setIsModalOpen = useSetRecoilState(ModalState);
+
   const openModal = () => {
     setIsModalOpen((prev) => {
       const copiedPrev = { ...prev };
@@ -162,7 +160,7 @@ function DragCharacters({
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
           >
-            <Row ref={provided.innerRef} {...provided.droppableProps}>
+            <div ref={provided.innerRef} {...provided.droppableProps}>
               <Character />
               {accountOrder[AccountIndex].CharacterOrder.map(
                 (CharacterName, index) => {
@@ -178,7 +176,7 @@ function DragCharacters({
                 }
               )}
               {provided.placeholder}
-            </Row>
+            </div>
 
             <DragDropContext onDragEnd={dragContentHandler}>
               <Droppable droppableId="Column" direction="horizontal">

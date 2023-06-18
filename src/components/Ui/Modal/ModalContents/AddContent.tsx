@@ -4,7 +4,6 @@ import styled, { keyframes, css } from "styled-components";
 import { ContentsState, CheckBoxConfig } from "../../../../atoms/atoms";
 import { Header } from "./ConfigContent";
 import { ModalState } from "../../../../atoms/modal";
-import { dragIcon } from "../../../../Settings";
 
 interface IStyle {
   isDisabled: boolean;
@@ -92,7 +91,6 @@ const AddContent = () => {
       copiedPrev[inputValue] = {
         type: "Custom",
         isVisible: true,
-        width: dragIcon.icon.edgeLength,
       };
 
       return { ...copiedPrev };

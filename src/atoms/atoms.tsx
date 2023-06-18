@@ -46,7 +46,6 @@ export const AccountState = atom<ICharacterState>({
 export interface IContentState {
   type: "Default" | "Custom";
   isVisible: boolean;
-  width: number;
 }
 export interface IContents {
   [ContentsName: string]: IContentState;

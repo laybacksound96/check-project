@@ -1,7 +1,7 @@
 import { IContents } from "../../../../../atoms/atoms";
 import { IData } from "./makeActivatedAndDifficulty";
 import commander from "./commander.json";
-import { dragIcon } from "../../../../../Settings";
+
 const makeDefaultCommander = () => {
   const result: IContents = {};
   const commanderData: IData = commander;
@@ -10,7 +10,6 @@ const makeDefaultCommander = () => {
     result[`${commanderName}`] = {
       type: "Default",
       isVisible: true,
-      width: dragIcon.icon.edgeLength,
     };
   }
 
