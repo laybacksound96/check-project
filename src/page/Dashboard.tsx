@@ -9,7 +9,7 @@ import {
   AccountState,
   ContentsFrequency,
 } from "../atoms/atoms";
-import { VisibledColumns, AccountOrder } from "../atoms/order";
+import { AccountOrder, ContentsOrder } from "../atoms/order";
 import DragAccounts from "../components/DashBoard/DragAccounts/DragAccounts";
 
 const DashboardStyle = styled.div`
@@ -22,7 +22,7 @@ function Dashboard() {
   }, []);
   const checkBoxConfig = useRecoilValue(CheckBoxConfig);
   const contentsState = useRecoilValue(ContentsState);
-  const visibledColumns = useRecoilValue(VisibledColumns);
+  const contentsOrder = useRecoilValue(ContentsOrder);
   const accountOrder = useRecoilValue(AccountOrder);
   const accountState = useRecoilValue(AccountState);
   const contentsFrequency = useRecoilValue(ContentsFrequency);
@@ -34,23 +34,24 @@ function Dashboard() {
     console.log("contentsState");
     console.log(contentsState);
 
-    console.log("visibledColumns");
-    console.log(visibledColumns);
-
     console.log("ContentsFrequency");
     console.log(contentsFrequency);
+
+    console.log("AccountState");
+    console.log(accountState);
 
     console.log("accountOrder.");
     console.log(accountOrder);
 
-    console.log("AccountState");
-    console.log(accountState);
+    console.log("contentsOrder");
+    console.log(contentsOrder);
+
     console.log("-------------------------");
     console.log("-------------------------");
   }, [
     checkBoxConfig,
     contentsState,
-    visibledColumns,
+    contentsOrder,
     contentsFrequency,
     accountOrder,
     accountState,

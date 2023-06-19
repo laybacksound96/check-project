@@ -20,7 +20,7 @@ import MakeAccountState from "./functions/makeAccountState";
 import MakeCheckboxState from "./functions/makeCheckboxState";
 import SortByLevel from "./functions/SortByLevel";
 import { ModalState } from "../../../../atoms/modal";
-import { AccountOrder } from "../../../../atoms/order";
+import { AccountOrder, ContentsOrder } from "../../../../atoms/order";
 
 const Container = styled.div`
   display: flex;
@@ -77,6 +77,7 @@ const AddAccount = () => {
   const setModalState = useSetRecoilState(ModalState);
   const setAccountOrder = useSetRecoilState(AccountOrder);
   const setCheckBoxConfig = useSetRecoilState(CheckBoxConfig);
+  const setContentsOrder = useSetRecoilState(ContentsOrder);
   const [accountState, setAccountState] = useRecoilState(AccountState);
   const Column = useRecoilValue(ContentsState);
 
@@ -137,11 +138,13 @@ const AddAccount = () => {
       ...prev,
       {
         AccountName: AccountOwner,
-        CharacterOrder: Object.keys(AccountState).filter(
-          (name) => AccountState[name].isVisible
-        ),
+        CharacterOrder: [],
       },
     ]);
+    setContentsOrder((prev) => {
+      return { ...prev, [`${AccountOwner}`]: [] };
+    });
+
     setModalState((prev) => ({ ...prev, isModalOpen: false }));
   };
 

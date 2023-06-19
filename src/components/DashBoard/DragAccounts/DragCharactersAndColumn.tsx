@@ -5,14 +5,25 @@ import {
   DropResult,
   Droppable,
 } from "react-beautiful-dnd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
 import DragCharactersDraggable, { Character } from "./DragCharactersDraggable";
 import { dragIcon } from "../../../Settings";
-import { ContentsFrequency, CheckBoxConfig } from "../../../atoms/atoms";
-import { AccountOrder, VisibledColumns } from "../../../atoms/order";
+import {
+  ContentsFrequency,
+  CheckBoxConfig,
+  AccountState,
+  ContentsState,
+  IContentName,
+  ICheckBoxconfig,
+} from "../../../atoms/atoms";
+import {
+  AccountOrder,
+  ContentsOrder,
+  IAccountOrder,
+} from "../../../atoms/order";
 import { AxisLocker } from "../Functions/AxisLocker";
 import getColorInFrequencyCounter from "../Functions/getColorFrequencyCounter";
 import CheckBoxButton from "./CheckBoxButton";
@@ -82,6 +93,7 @@ interface IProps {
   CharacterOrder: string[];
   AccountIndex: number;
 }
+
 function DragCharacters({
   DragHandleProps,
   AccountName,
@@ -91,10 +103,55 @@ function DragCharacters({
   const [isHovered, setIsHovered] = useState(false);
   const [openModal] = useModal("ADD_CONTENT");
   const [accountOrder, setAccountOrder] = useRecoilState(AccountOrder);
-  const [visibledColumns, setVisibledColumns] = useRecoilState(VisibledColumns);
+  const [contentsOrder, setContentsOrder] = useRecoilState(ContentsOrder);
+  const [checkboxState, setCheckboxState] = useRecoilState(CheckBoxConfig);
   const contentsFrequency = useRecoilValue(ContentsFrequency);
-  const setCheckboxState = useSetRecoilState(CheckBoxConfig);
+  const accountState = useRecoilValue(AccountState);
+  const contentsState = useRecoilValue(ContentsState);
+  useEffect(() => {
+    setAccountOrder((prev) => {
+      const order = {
+        ...prev[AccountIndex],
+        CharacterOrder: Object.keys(accountState[AccountName]).filter(
+          (name) => accountState[AccountName][name].isVisible
+        ),
+      };
+      const copiedPrev = [...prev];
+      copiedPrev.splice(AccountIndex, 1);
+      copiedPrev.splice(AccountIndex, 0, order);
+      return copiedPrev;
+    });
+  }, [AccountIndex, AccountName, accountState, setAccountOrder]);
+  useEffect(() => {
+    setContentsOrder((prev) => {
+      const { CharacterOrder } = accountOrder[AccountIndex];
+      const contentOrder = prev[AccountName];
+      const {} = checkboxState;
 
+      function IsAllTrue(
+        ContentName: string,
+        CharacterOrder: string[],
+        Content: ICheckBoxconfig
+      ) {
+        for (let index in CharacterOrder) {
+          const CharacterName = CharacterOrder[index];
+          if (Content[CharacterName][ContentName].isVisible) return true;
+        }
+        return false;
+      }
+      IsAllTrue("asd", CharacterOrder, checkboxState);
+      const array = CharacterOrder.filter((content) => {});
+
+      const copiedPrev = { ...prev, [`${AccountName}`]: array };
+      return copiedPrev;
+    });
+  }, [
+    AccountIndex,
+    AccountName,
+    accountOrder,
+    contentsState,
+    setContentsOrder,
+  ]);
   const dragCharacterHandler = (dragInfo: DropResult) => {
     const { destination, source } = dragInfo;
     if (!destination) return;
@@ -120,12 +177,17 @@ function DragCharacters({
     const { destination, source } = dragInfo;
     if (!destination) return;
     if (destination?.droppableId === source.droppableId) {
-      setVisibledColumns((prev) => {
-        const copiedPrev = [...prev];
-        const copiedObject = copiedPrev[source.index];
-        copiedPrev.splice(source.index, 1);
-        copiedPrev.splice(destination?.index, 0, copiedObject);
-        return [...copiedPrev];
+      setContentsOrder((prev) => {
+        const copiedArray = prev[AccountName];
+
+        copiedArray.splice(source.index, 1);
+        copiedArray.splice(
+          destination?.index,
+          0,
+          prev[AccountName][source.index]
+        );
+        const copiedPrev = { ...prev, [AccountName]: [...copiedArray] };
+        return copiedPrev;
       });
     }
     return;
@@ -179,7 +241,7 @@ function DragCharacters({
                     {...provided.droppableProps}
                     style={{ display: "flex" }}
                   >
-                    {visibledColumns.map((ContentName, index) => (
+                    {contentsOrder[AccountName].map((ContentName, index) => (
                       <Draggable
                         draggableId={ContentName}
                         index={index}

@@ -1,5 +1,4 @@
 import { atom } from "recoil";
-import makeDefaultCommander from "../components/Ui/Modal/ModalContents/functions/makeDefaultCommander";
 
 export interface IAccountOrder {
   AccountName: string;
@@ -11,12 +10,10 @@ export const AccountOrder = atom<IAccountOrder[]>({
   default: [],
 });
 
-export const VisibledColumns = atom<string[]>({
-  key: "visibledColumns",
-  default: initializerColumnOrder(),
-});
-
-function initializerColumnOrder(): string[] {
-  const contents = makeDefaultCommander();
-  return Object.keys(contents);
+export interface IContentsOrder {
+  [AccountName: string]: string[];
 }
+export const ContentsOrder = atom<IContentsOrder>({
+  key: "ContentOrder",
+  default: {},
+});
