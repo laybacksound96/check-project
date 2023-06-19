@@ -7,12 +7,11 @@ import {
 } from "react-beautiful-dnd";
 import styled from "styled-components";
 
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { AccountOrder } from "../../../atoms/order";
 import { AxisLocker } from "../Functions/AxisLocker";
 import DragCharacters from "./DragCharactersAndColumn";
 import useModal from "../../../CustomHooks/Modal/useModal";
-import { AccountState } from "../../../atoms/atoms";
 
 const DragBoxStyle = styled.div`
   width: 100%;

@@ -7,7 +7,7 @@ import {
 } from "react-beautiful-dnd";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 
 import DragCharactersDraggable, { Character } from "./DragCharactersDraggable";
 import { dragIcon } from "../../../Settings";
@@ -15,19 +15,13 @@ import {
   ContentsFrequency,
   CheckBoxConfig,
   AccountState,
-  ContentsState,
-  IContentName,
-  ICheckBoxconfig,
 } from "../../../atoms/atoms";
-import {
-  AccountOrder,
-  ContentsOrder,
-  IAccountOrder,
-} from "../../../atoms/order";
+import { AccountOrder, ContentsOrder } from "../../../atoms/order";
 import { AxisLocker } from "../Functions/AxisLocker";
 import getColorInFrequencyCounter from "../Functions/getColorFrequencyCounter";
 import CheckBoxButton from "./CheckBoxButton";
 import useModal from "../../../CustomHooks/Modal/useModal";
+import isAllTrue from "../Functions/isAllTrue";
 
 interface Istyle {
   isHovered: boolean;
@@ -107,7 +101,7 @@ function DragCharacters({
   const [checkboxState, setCheckboxState] = useRecoilState(CheckBoxConfig);
   const contentsFrequency = useRecoilValue(ContentsFrequency);
   const accountState = useRecoilValue(AccountState);
-  const contentsState = useRecoilValue(ContentsState);
+
   useEffect(() => {
     setAccountOrder((prev) => {
       const order = {
@@ -126,22 +120,9 @@ function DragCharacters({
     setContentsOrder((prev) => {
       const { CharacterOrder } = accountOrder[AccountIndex];
       const contentOrder = prev[AccountName];
-      const {} = checkboxState;
-
-      function IsAllTrue(
-        ContentName: string,
-        CharacterOrder: string[],
-        Content: ICheckBoxconfig
-      ) {
-        for (let index in CharacterOrder) {
-          const CharacterName = CharacterOrder[index];
-          if (Content[CharacterName][ContentName].isVisible) return true;
-        }
-        return false;
-      }
-      IsAllTrue("asd", CharacterOrder, checkboxState);
-      const array = CharacterOrder.filter((content) => {});
-
+      const array = contentOrder.filter((contentName) =>
+        isAllTrue(contentName, CharacterOrder, checkboxState)
+      );
       const copiedPrev = { ...prev, [`${AccountName}`]: array };
       return copiedPrev;
     });
@@ -149,7 +130,7 @@ function DragCharacters({
     AccountIndex,
     AccountName,
     accountOrder,
-    contentsState,
+    checkboxState,
     setContentsOrder,
   ]);
   const dragCharacterHandler = (dragInfo: DropResult) => {
