@@ -10,6 +10,7 @@ import { useEffect } from "react";
 import Content from "./Content";
 import React from "react";
 import sortContentsFrequency from "../Functions/sortContentsFrequency";
+import CalculateCheckbox from "../Functions/CalculateCheckbox";
 
 const ContainerStyle = styled.ul`
   display: grid;
@@ -26,9 +27,9 @@ const Contents = () => {
   const accountState = useRecoilValue(AccountState);
 
   useEffect(() => {
-    // setContentsFrequency((prev) =>
-    //   CalculateCheckbox(checkBoxConfig, contentsState, accountState, prev)
-    // );
+    setContentsFrequency((prev) =>
+      CalculateCheckbox(checkBoxConfig, contentsState, accountState, prev)
+    );
   }, [checkBoxConfig, contentsState, setContentsFrequency, accountState]);
 
   return (

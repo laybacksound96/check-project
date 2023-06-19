@@ -26,7 +26,7 @@ export const CheckBoxConfig = atom<ICheckBoxconfig>({
   default: {},
 });
 
-interface ICharacterInfo {
+interface ICharacterSettings {
   ["ServerName"]: string;
   ["CharacterClassName"]: string;
   ["ItemMaxLevel"]: number;
@@ -34,7 +34,7 @@ interface ICharacterInfo {
   ["isVisible"]: boolean;
 }
 export interface ICharacterState {
-  [Character: string]: ICharacterInfo;
+  [Character: string]: ICharacterSettings;
 }
 export interface IAccountState {
   [Account: string]: ICharacterState;
@@ -64,6 +64,7 @@ export interface IFrequencyContents {
   [`ContentsOwner`]: string[];
   [`Color`]: string;
 }
+
 export interface IContentsFrequency {
   [contentKey: string]: IFrequencyContents;
 }
