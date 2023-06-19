@@ -4,13 +4,11 @@ import styled from "styled-components";
 import { faEye } from "@fortawesome/free-regular-svg-icons";
 import { AxisLocker } from "../Functions/AxisLocker";
 import { dragIcon } from "../../../Settings";
-
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { AccountState } from "../../../atoms/atoms";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGear } from "@fortawesome/free-solid-svg-icons";
-
-import { ModalState, IModalObject, ModalEnum } from "../../../atoms/modal";
+import useModal from "../../../CustomHooks/Modal/useModal";
 
 export const Character = styled.div`
   display: flex;
@@ -73,7 +71,8 @@ function DragCharactersDraggable({
   index,
   AccountName,
 }: IProps) {
-  const setIsModalOpen = useSetRecoilState(ModalState);
+  const [openModal] = useModal("CONFIG_ACCOUNT");
+  const [isHovered, setIsHovered] = useState(false);
 
   const [
     {
@@ -81,8 +80,6 @@ function DragCharactersDraggable({
     },
     setAccountState,
   ] = useRecoilState(AccountState);
-
-  const [isHovered, setIsHovered] = useState(false);
 
   const handleVisible = () => {
     setAccountState((prev) => {
@@ -93,22 +90,6 @@ function DragCharactersDraggable({
       };
 
       return copiedPrev;
-    });
-  };
-  const openModal = () => {
-    setIsModalOpen((prev) => {
-      const copiedPrev: IModalObject = {
-        ...prev,
-        modalType: ModalEnum.CONFIG_ACCOUNT,
-        isModalOpen: true,
-        modalProp: {
-          ...prev.modalProp,
-          AccountName: AccountName,
-          CharacterName: CharacterName,
-        },
-      };
-
-      return { ...copiedPrev };
     });
   };
 
@@ -131,7 +112,11 @@ function DragCharactersDraggable({
             {isHovered && (
               <ButtonContainer>
                 <FontAwesomeIcon onClick={handleVisible} icon={faEye} />
-                <FontAwesomeIcon onClick={openModal} icon={faGear} size="lg" />
+                <FontAwesomeIcon
+                  onClick={() => openModal({ AccountName, CharacterName })}
+                  icon={faGear}
+                  size="lg"
+                />
               </ButtonContainer>
             )}
           </Character>

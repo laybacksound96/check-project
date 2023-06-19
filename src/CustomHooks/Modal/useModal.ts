@@ -3,16 +3,16 @@ import { ModalEnum, ModalState, modalProp } from "../../atoms/modal";
 type ModalKey = keyof typeof ModalEnum;
 
 function useModal(
-  Mode: ModalKey,
-  Prop?: modalProp
-): [(openModal: void) => void, (closeModal: void) => void] {
+  Mode: ModalKey
+): [(modalProp?: modalProp) => void, () => void] {
   const setIsModalOpen = useSetRecoilState(ModalState);
-  const openModal = () => {
+
+  const openModal = (modalProp?: modalProp) => {
     setIsModalOpen((prev) => {
       const copiedPrev = { ...prev };
       copiedPrev.isModalOpen = true;
       copiedPrev.modalType = ModalEnum[Mode];
-      if (Prop) return { ...copiedPrev, modalProp: Prop };
+      if (modalProp) return { ...copiedPrev, modalProp };
       return { ...copiedPrev };
     });
   };

@@ -7,11 +7,11 @@ import {
 } from "react-beautiful-dnd";
 import styled from "styled-components";
 
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { AccountOrder } from "../../../atoms/order";
-import { ModalEnum, ModalState } from "../../../atoms/modal";
 import { AxisLocker } from "../Functions/AxisLocker";
 import DragCharacters from "./DragCharactersAndColumn";
+import useModal from "../../../CustomHooks/Modal/useModal";
 
 const DragBoxStyle = styled.div`
   width: 100%;
@@ -50,16 +50,8 @@ const AddAccountBtn = styled.button`
 
 const DragAccounts = () => {
   const [accountOrder, setAccountOrder] = useRecoilState(AccountOrder);
-  const setIsModalOpen = useSetRecoilState(ModalState);
+  const [openModal] = useModal("ADD_ACCOUNT");
 
-  const openModal = () => {
-    setIsModalOpen((prev) => {
-      const copiedPrev = { ...prev };
-      copiedPrev.isModalOpen = true;
-      copiedPrev.modalType = ModalEnum.ADD_ACCOUNT;
-      return { ...copiedPrev };
-    });
-  };
   const dragAccountHandler = (dragInfo: DropResult) => {
     const { destination, source } = dragInfo;
     if (!destination) return;
@@ -106,7 +98,9 @@ const DragAccounts = () => {
           )}
         </Droppable>
       </DragDropContext>
-      <AddAccountBtn onClick={openModal}>+ add new account?</AddAccountBtn>
+      <AddAccountBtn onClick={() => openModal()}>
+        + add new account?
+      </AddAccountBtn>
     </DragBoxStyle>
   );
 };

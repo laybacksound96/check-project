@@ -12,11 +12,11 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import DragCharactersDraggable, { Character } from "./DragCharactersDraggable";
 import { dragIcon } from "../../../Settings";
 import { ContentsFrequency, CheckBoxConfig } from "../../../atoms/atoms";
-import { ModalState, ModalEnum } from "../../../atoms/modal";
 import { AccountOrder, VisibledColumns } from "../../../atoms/order";
 import { AxisLocker } from "../Functions/AxisLocker";
 import getColorInFrequencyCounter from "../Functions/getColorFrequencyCounter";
 import CheckBoxButton from "./CheckBoxButton";
+import useModal from "../../../CustomHooks/Modal/useModal";
 
 interface Istyle {
   isHovered: boolean;
@@ -89,11 +89,12 @@ function DragCharacters({
   AccountIndex,
 }: IProps) {
   const [isHovered, setIsHovered] = useState(false);
+  const [openModal] = useModal("ADD_CONTENT");
   const [accountOrder, setAccountOrder] = useRecoilState(AccountOrder);
   const [visibledColumns, setVisibledColumns] = useRecoilState(VisibledColumns);
   const contentsFrequency = useRecoilValue(ContentsFrequency);
   const setCheckboxState = useSetRecoilState(CheckBoxConfig);
-  const setIsModalOpen = useSetRecoilState(ModalState);
+
   const dragCharacterHandler = (dragInfo: DropResult) => {
     const { destination, source } = dragInfo;
     if (!destination) return;
@@ -140,15 +141,6 @@ function DragCharacters({
       ContentName[content] = ConfigObject;
       copiedCharacters[character] = ContentName;
       return copiedCharacters;
-    });
-  };
-
-  const openModal = () => {
-    setIsModalOpen((prev) => {
-      const copiedPrev = { ...prev };
-      copiedPrev.isModalOpen = true;
-      copiedPrev.modalType = ModalEnum.ADD_CONTENT;
-      return { ...copiedPrev };
     });
   };
 
@@ -231,7 +223,7 @@ function DragCharacters({
                       </Draggable>
                     ))}
                     {provided.placeholder}
-                    <Name onClick={openModal}>+</Name>
+                    <Name onClick={() => openModal()}>+</Name>
                   </div>
                 )}
               </Droppable>

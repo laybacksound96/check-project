@@ -3,10 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import Contents from "./Contents";
-import { useRecoilValue } from "recoil";
-import { ModalState } from "../../../atoms/modal";
 import useModal from "../../../CustomHooks/Modal/useModal";
-import { useEffect } from "react";
 
 const HeaderBoxStyle = styled.header`
   position: relative;
