@@ -15,6 +15,7 @@ import {
   ContentsFrequency,
   CheckBoxConfig,
   AccountState,
+  ContentsState,
 } from "../../../atoms/atoms";
 import { AccountOrder, ContentsOrder } from "../../../atoms/order";
 import { AxisLocker } from "../Functions/AxisLocker";
@@ -99,6 +100,8 @@ function DragCharacters({
   const [accountOrder, setAccountOrder] = useRecoilState(AccountOrder);
   const [contentsOrder, setContentsOrder] = useRecoilState(ContentsOrder);
   const [checkboxState, setCheckboxState] = useRecoilState(CheckBoxConfig);
+
+  const contentsState = useRecoilValue(ContentsState);
   const contentsFrequency = useRecoilValue(ContentsFrequency);
   const accountState = useRecoilValue(AccountState);
 
@@ -119,9 +122,10 @@ function DragCharacters({
   useEffect(() => {
     setContentsOrder((prev) => {
       const { CharacterOrder } = accountOrder[AccountIndex];
-      const contentOrder = prev[AccountName];
-      const array = contentOrder.filter((contentName) =>
-        isAllTrue(contentName, CharacterOrder, checkboxState)
+      const array = Object.keys(contentsState).filter(
+        (contentName) =>
+          isAllTrue(contentName, CharacterOrder, checkboxState) &&
+          contentsState[contentName].isVisible
       );
       const copiedPrev = { ...prev, [`${AccountName}`]: array };
       return copiedPrev;
@@ -131,6 +135,7 @@ function DragCharacters({
     AccountName,
     accountOrder,
     checkboxState,
+    contentsState,
     setContentsOrder,
   ]);
   const dragCharacterHandler = (dragInfo: DropResult) => {
@@ -159,7 +164,7 @@ function DragCharacters({
     if (!destination) return;
     if (destination?.droppableId === source.droppableId) {
       setContentsOrder((prev) => {
-        const copiedArray = prev[AccountName];
+        const copiedArray = [...prev[AccountName]];
 
         copiedArray.splice(source.index, 1);
         copiedArray.splice(
