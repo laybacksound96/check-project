@@ -13,14 +13,12 @@ interface IStyle {
 }
 const CheckBox = styled.div<IStyle>`
   opacity: ${(props) => (props.isVisible && props.isActivated ? "100%" : "0%")};
-
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: ${dragIcon.icon.fontSize}px;
   height: ${dragIcon.icon.edgeLength}px;
   border-radius: 5px;
-
   svg {
     border-radius: 5px;
 

@@ -8,7 +8,7 @@ import { useState } from "react";
 import {
   useDifficultyState,
   useIsVisibleGates,
-} from "../../../../DashBoard/Functions/CustomHooks/CheckBoxConfig/CustomHooks";
+} from "../../../../../CustomHooks/CheckBoxConfig/CustomHooks";
 
 const IconContainer = styled.div`
   display: flex;

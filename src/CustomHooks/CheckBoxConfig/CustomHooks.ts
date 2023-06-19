@@ -1,5 +1,5 @@
 import { RecoilState, useRecoilState } from "recoil";
-import { ICheckBoxconfig } from "../../../../../atoms/atoms";
+import { ICheckBoxconfig } from "../../atoms/atoms";
 
 export function useIsVisible(
   atom: RecoilState<ICheckBoxconfig>,

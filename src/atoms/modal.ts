@@ -7,19 +7,20 @@ export enum ModalEnum {
   ADD_ACCOUNT = "Value 4",
 }
 
-interface modalProp {
+export interface modalProp {
   AccountName: string;
   CharacterName: string;
 }
 type IModal = IModalObject;
 export interface IModalObject {
   isModalOpen: boolean;
-  modalType?: ModalEnum;
+  modalType: ModalEnum;
   modalProp: modalProp;
 }
 export const ModalState = atom<IModal>({
   key: "ModalState",
   default: {
+    modalType: ModalEnum.CONFIG_CONTENT,
     isModalOpen: false,
     modalProp: { AccountName: "", CharacterName: "" },
   },

@@ -4,15 +4,16 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 import { useState } from "react";
 import ContentCardGate from "./ContentCardGate";
-import {
-  useIsGoldContents,
-  useIsVisible,
-} from "../../../../DashBoard/Functions/CustomHooks/CheckBoxConfig/CustomHooks";
+
 import {
   faCoins,
   faSquare,
   faSquareCheck,
 } from "@fortawesome/free-solid-svg-icons";
+import {
+  useIsGoldContents,
+  useIsVisible,
+} from "../../../../../CustomHooks/CheckBoxConfig/CustomHooks";
 
 interface IStyel {
   isVisibled: boolean;
