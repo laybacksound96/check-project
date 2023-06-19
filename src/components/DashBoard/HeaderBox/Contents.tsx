@@ -25,12 +25,12 @@ const Contents = () => {
   const checkBoxConfig = useRecoilValue(CheckBoxConfig);
   const contentsState = useRecoilValue(ContentsState);
   const accountState = useRecoilValue(AccountState);
+
   useEffect(() => {
     setContentsFrequency((prev) =>
       CalculateCheckbox(checkBoxConfig, contentsState, accountState, prev)
     );
   }, [checkBoxConfig, contentsState, setContentsFrequency, accountState]);
-  sortContentsFrequency(contentsFrequency);
 
   return (
     <ContainerStyle>
