@@ -17,9 +17,9 @@ const DashboardStyle = styled.div`
 `;
 
 function Dashboard() {
-  useEffect(() => {
-    localStorage.setItem("myAtom", "asdd");
-  }, []);
+  // useEffect(() => {
+  //   localStorage.setItem("myAtom", "asdd");
+  // }, []);
   const checkBoxConfig = useRecoilValue(CheckBoxConfig);
   const contentsState = useRecoilValue(ContentsState);
   const contentsOrder = useRecoilValue(ContentsOrder);

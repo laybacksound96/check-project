@@ -227,7 +227,12 @@ function DragCharacters({
             onMouseLeave={() => setIsHovered(false)}
           >
             <div ref={provided.innerRef} {...provided.droppableProps}>
-              <Character isHovered={isHovered} onClick={() => ConfigContent()}>
+              <Character
+                isHovered={isHovered}
+                onClick={() =>
+                  ConfigContent({ AccountName, CharacterName: "" })
+                }
+              >
                 <FontAwesomeIcon icon={faGear} size="lg" />
               </Character>
               {accountOrder[AccountIndex].CharacterOrder.map(
