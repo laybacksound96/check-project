@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Draggable } from "react-beautiful-dnd";
 import styled from "styled-components";
 import { faEye } from "@fortawesome/free-regular-svg-icons";
@@ -22,9 +22,21 @@ export const Character = styled.div`
   &:hover {
     background-color: rgba(100, 100, 100, 0.5);
     transition: ease-in-out 0.1s;
+    svg {
+      opacity: 50%;
+    }
   }
   button {
     margin-top: 0px;
+  }
+  svg {
+    border-radius: 10px;
+    opacity: 0%;
+    padding: 10px 10px;
+  }
+  svg:hover {
+    opacity: 100%;
+    background-color: rgba(100, 100, 100, 0.7);
   }
 `;
 const CharactersContainer = styled.div`
@@ -32,20 +44,10 @@ const CharactersContainer = styled.div`
 `;
 export const ButtonContainer = styled.div`
   display: flex;
-
   justify-content: start;
   height: 100%;
   padding-right: 5px;
   padding-top: 5px;
-  svg {
-    opacity: 60%;
-    border-radius: 10px;
-    padding: 10px 10px;
-    &:hover {
-      opacity: 100%;
-      background-color: rgba(100, 100, 100, 0.7);
-    }
-  }
 `;
 export const NameContainer = styled.div`
   display: flex;
@@ -72,8 +74,6 @@ function DragCharactersDraggable({
   AccountName,
 }: IProps) {
   const [openModal] = useModal("CONFIG_ACCOUNT");
-  const [isHovered, setIsHovered] = useState(false);
-
   const [
     {
       [`${AccountName}`]: {
@@ -108,8 +108,6 @@ function DragCharactersDraggable({
           ref={provided.innerRef}
           {...provided.draggableProps}
           style={AxisLocker(provided.draggableProps.style!, false)}
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
         >
           <Character {...provided.dragHandleProps}>
             <NameContainer>
@@ -117,16 +115,14 @@ function DragCharactersDraggable({
               <span>{CharacterClassName}</span>
               <span>Lv {ItemMaxLevel}</span>
             </NameContainer>
-            {isHovered && (
-              <ButtonContainer>
-                <FontAwesomeIcon onClick={handleVisible} icon={faEye} />
-                <FontAwesomeIcon
-                  onClick={() => openModal({ AccountName, CharacterName })}
-                  icon={faGear}
-                  size="lg"
-                />
-              </ButtonContainer>
-            )}
+            <ButtonContainer>
+              <FontAwesomeIcon onClick={handleVisible} icon={faEye} />
+              <FontAwesomeIcon
+                onClick={() => openModal({ AccountName, CharacterName })}
+                icon={faGear}
+                size="lg"
+              />
+            </ButtonContainer>
           </Character>
         </CharactersContainer>
       )}

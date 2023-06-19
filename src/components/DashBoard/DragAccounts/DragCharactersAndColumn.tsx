@@ -10,7 +10,7 @@ import styled from "styled-components";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import DragCharactersDraggable, { Character } from "./DragCharactersDraggable";
+import DragCharactersDraggable from "./DragCharactersDraggable";
 import { dragIcon } from "../../../Settings";
 import {
   ContentsFrequency,
@@ -45,6 +45,29 @@ const Area = styled.div<Istyle>`
     background-color: ${(props) =>
       props.isHovered ? "rgba(0, 0, 0, 0.3)" : "initial"};
     transition: ease-in-out 0.1s;
+  }
+`;
+const Character = styled.div<Istyle>`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 200px;
+  padding-left: 5px;
+
+  height: ${dragIcon.icon.edgeLength}px;
+  border-radius: 5px;
+  svg {
+    opacity: 20%;
+    font-size: 30px;
+    margin-left: 5px;
+  }
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.231);
+    transition: ease-in-out 0.1s;
+    svg {
+      opacity: 100%;
+    }
   }
 `;
 const DragAccount = styled.div`
@@ -204,12 +227,8 @@ function DragCharacters({
             onMouseLeave={() => setIsHovered(false)}
           >
             <div ref={provided.innerRef} {...provided.droppableProps}>
-              <Character>
-                <FontAwesomeIcon
-                  onClick={() => ConfigContent()}
-                  icon={faGear}
-                  size="lg"
-                />
+              <Character isHovered={isHovered} onClick={() => ConfigContent()}>
+                <FontAwesomeIcon icon={faGear} size="lg" />
               </Character>
               {accountOrder[AccountIndex].CharacterOrder.map(
                 (CharacterName, index) => {
