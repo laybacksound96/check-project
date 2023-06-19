@@ -1,13 +1,13 @@
+import { faGear } from "@fortawesome/free-solid-svg-icons";
+import { faEye } from "@fortawesome/free-regular-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { AccountState } from "../../../atoms/atoms";
 import React from "react";
 import { Draggable } from "react-beautiful-dnd";
 import styled from "styled-components";
-import { faEye } from "@fortawesome/free-regular-svg-icons";
 import { AxisLocker } from "../Functions/AxisLocker";
 import { dragIcon } from "../../../Settings";
 import { useRecoilState } from "recoil";
-import { AccountState } from "../../../atoms/atoms";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGear } from "@fortawesome/free-solid-svg-icons";
 import useModal from "../../../CustomHooks/Modal/useModal";
 
 export const Character = styled.div`

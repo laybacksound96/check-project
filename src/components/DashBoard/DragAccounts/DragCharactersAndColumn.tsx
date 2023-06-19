@@ -120,8 +120,8 @@ function DragCharacters({
   AccountIndex,
 }: IProps) {
   const [ConfigContent] = useModal("CONFIG_CONTENT");
+  const [AddContent] = useModal("ADD_CONTENT");
   const [isHovered, setIsHovered] = useState(false);
-  const [openModal] = useModal("ADD_CONTENT");
   const [accountOrder, setAccountOrder] = useRecoilState(AccountOrder);
   const [contentsOrder, setContentsOrder] = useRecoilState(ContentsOrder);
   const [checkboxState, setCheckboxState] = useRecoilState(CheckBoxConfig);
@@ -298,7 +298,7 @@ function DragCharacters({
                       </Draggable>
                     ))}
                     {provided.placeholder}
-                    <Name onClick={() => openModal()}>+</Name>
+                    <Name onClick={() => AddContent()}>+</Name>
                   </div>
                 )}
               </Droppable>
