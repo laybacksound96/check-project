@@ -8,7 +8,8 @@ import {
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useRecoilState, useRecoilValue } from "recoil";
-
+import { faGear } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import DragCharactersDraggable, { Character } from "./DragCharactersDraggable";
 import { dragIcon } from "../../../Settings";
 import {
@@ -95,6 +96,7 @@ function DragCharacters({
   CharacterOrder,
   AccountIndex,
 }: IProps) {
+  const [ConfigContent] = useModal("CONFIG_CONTENT");
   const [isHovered, setIsHovered] = useState(false);
   const [openModal] = useModal("ADD_CONTENT");
   const [accountOrder, setAccountOrder] = useRecoilState(AccountOrder);
@@ -202,7 +204,13 @@ function DragCharacters({
             onMouseLeave={() => setIsHovered(false)}
           >
             <div ref={provided.innerRef} {...provided.droppableProps}>
-              <Character />
+              <Character>
+                <FontAwesomeIcon
+                  onClick={() => ConfigContent()}
+                  icon={faGear}
+                  size="lg"
+                />
+              </Character>
               {accountOrder[AccountIndex].CharacterOrder.map(
                 (CharacterName, index) => {
                   return (

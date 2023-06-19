@@ -1,9 +1,6 @@
-import { faGear } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import Contents from "./Contents";
-import useModal from "../../../CustomHooks/Modal/useModal";
 
 const HeaderBoxStyle = styled.header`
   position: relative;
@@ -48,14 +45,12 @@ interface RouteParams {
   userId: string;
 }
 const HeaderBox = () => {
-  const [openModal] = useModal("CONFIG_CONTENT");
   const { userId } = useParams<RouteParams>();
 
   return (
     <HeaderBoxStyle>
       <header>
         <h1>{userId}님의 Sheet</h1>
-        <FontAwesomeIcon onClick={() => openModal()} icon={faGear} size="lg" />
       </header>
       <Contents />
     </HeaderBoxStyle>
