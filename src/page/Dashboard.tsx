@@ -26,6 +26,7 @@ function Dashboard() {
   const accountOrder = useRecoilValue(AccountOrder);
   const accountState = useRecoilValue(AccountState);
   const contentsFrequency = useRecoilValue(ContentsFrequency);
+
   useEffect(() => {
     console.log("checkBoxConfig");
     console.log(checkBoxConfig);
