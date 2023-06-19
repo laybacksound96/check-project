@@ -5,17 +5,13 @@ import {
   DropResult,
   Droppable,
 } from "react-beautiful-dnd";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
 import DragCharactersDraggable, { Character } from "./DragCharactersDraggable";
 import { dragIcon } from "../../../Settings";
-import {
-  ContentsFrequency,
-  CheckBoxConfig,
-  AccountState,
-} from "../../../atoms/atoms";
+import { ContentsFrequency, CheckBoxConfig } from "../../../atoms/atoms";
 import { AccountOrder, VisibledColumns } from "../../../atoms/order";
 import { AxisLocker } from "../Functions/AxisLocker";
 import getColorInFrequencyCounter from "../Functions/getColorFrequencyCounter";
@@ -97,7 +93,6 @@ function DragCharacters({
   const [accountOrder, setAccountOrder] = useRecoilState(AccountOrder);
   const [visibledColumns, setVisibledColumns] = useRecoilState(VisibledColumns);
   const contentsFrequency = useRecoilValue(ContentsFrequency);
-  const accountState = useRecoilValue(AccountState);
   const setCheckboxState = useSetRecoilState(CheckBoxConfig);
 
   const dragCharacterHandler = (dragInfo: DropResult) => {
@@ -149,13 +144,6 @@ function DragCharacters({
     });
   };
 
-  useEffect(() => {
-    console.log(
-      CharacterOrder.filter(
-        (character) => accountState[character].isVisible === true
-      )
-    );
-  }, [CharacterOrder, accountState]);
   return (
     <DragDropContext onDragEnd={dragCharacterHandler}>
       <Droppable droppableId={AccountName}>

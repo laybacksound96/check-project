@@ -113,15 +113,9 @@ interface IProps {
   ContentsName: string;
   ChracterName: string;
   Gates: IGates[];
-  modifyGoldContents: (ContentsName: string) => void;
 }
 
-const ContentCard = ({
-  Gates,
-  ContentsName,
-  ChracterName,
-  modifyGoldContents,
-}: IProps) => {
+const ContentCard = ({ Gates, ContentsName, ChracterName }: IProps) => {
   const [isHovered, setIsHovered] = useState(false);
 
   const [isGoldContents, setIsGoldContents] = useIsGoldContents(
@@ -141,7 +135,6 @@ const ContentCard = ({
   const goldContentsHandler = () => {
     if (!isVisible) return;
     setIsGoldContents(!isGoldContents);
-    modifyGoldContents(ContentsName);
   };
 
   return (

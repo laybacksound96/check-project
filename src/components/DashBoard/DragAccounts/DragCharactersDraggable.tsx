@@ -76,17 +76,25 @@ function DragCharactersDraggable({
 
   const [
     {
-      [`${CharacterName}`]: { ItemMaxLevel, CharacterClassName },
+      [`${AccountName}`]: {
+        [`${CharacterName}`]: { ItemMaxLevel, CharacterClassName },
+      },
     },
     setAccountState,
   ] = useRecoilState(AccountState);
 
   const handleVisible = () => {
     setAccountState((prev) => {
-      const currentVisible = prev[CharacterName].isVisible;
+      const currentVisible = prev[AccountName][CharacterName].isVisible;
       const copiedPrev = {
         ...prev,
-        [CharacterName]: { ...prev[CharacterName], isVisible: !currentVisible },
+        [AccountName]: {
+          ...prev[AccountName],
+          [CharacterName]: {
+            ...prev[AccountName][CharacterName],
+            isVisible: !currentVisible,
+          },
+        },
       };
 
       return copiedPrev;

@@ -31,14 +31,15 @@ interface ICharacterInfo {
   ["CharacterClassName"]: string;
   ["ItemMaxLevel"]: number;
   ["IsGoldCharacter"]: boolean;
-  ["GoldContents"]: string[];
   ["isVisible"]: boolean;
 }
 export interface ICharacterState {
   [Character: string]: ICharacterInfo;
 }
-
-export const AccountState = atom<ICharacterState>({
+export interface IAccountState {
+  [Account: string]: ICharacterState;
+}
+export const AccountState = atom<IAccountState>({
   key: "AccountState",
   default: {},
 });

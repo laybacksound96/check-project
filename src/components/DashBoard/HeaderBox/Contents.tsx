@@ -8,7 +8,6 @@ import {
 } from "../../../atoms/atoms";
 import { useEffect } from "react";
 import Content from "./Content";
-import CalculateCheckbox from "../Functions/CalculateCheckbox";
 import React from "react";
 import sortContentsFrequency from "../Functions/sortContentsFrequency";
 
@@ -27,9 +26,9 @@ const Contents = () => {
   const accountState = useRecoilValue(AccountState);
 
   useEffect(() => {
-    setContentsFrequency((prev) =>
-      CalculateCheckbox(checkBoxConfig, contentsState, accountState, prev)
-    );
+    // setContentsFrequency((prev) =>
+    //   CalculateCheckbox(checkBoxConfig, contentsState, accountState, prev)
+    // );
   }, [checkBoxConfig, contentsState, setContentsFrequency, accountState]);
 
   return (

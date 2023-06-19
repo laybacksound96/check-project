@@ -1,15 +1,12 @@
 import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Header } from "./ConfigContent";
-import { useRecoilState, useRecoilValue } from "recoil";
-import {
-  AccountState,
-  CheckBoxConfig,
-  ICharacterState,
-} from "../../../../atoms/atoms";
+
+import { useRecoilValue } from "recoil";
+import { CheckBoxConfig } from "../../../../atoms/atoms";
 import styled from "styled-components";
 import ContentCard from "./components/ContentCard";
 import { ModalState } from "../../../../atoms/modal";
+import { Header } from "./AddAccount";
 
 const Container = styled.div`
   width: auto;
@@ -36,45 +33,15 @@ const ConfigAccount = () => {
 
   const { [`${CharacterName}`]: contentsState } =
     useRecoilValue(CheckBoxConfig);
-  const ContentNames = Object.keys(contentsState);
-  const [
-    {
-      [`${CharacterName}`]: { GoldContents },
-    },
-    setGoldContents,
-  ] = useRecoilState(AccountState);
 
-  const modifyGoldContents = (ContentsName: string) => {
-    setGoldContents((prev) => {
-      let copiedGoldContents = [...GoldContents];
-      if (copiedGoldContents.includes(ContentsName)) {
-        copiedGoldContents.splice(copiedGoldContents.indexOf(ContentsName), 1);
-      } else {
-        copiedGoldContents = [...GoldContents, ContentsName];
-      }
-
-      const copiedPrev: ICharacterState = {
-        ...prev,
-        [`${CharacterName}`]: {
-          ...prev[`${CharacterName}`],
-          GoldContents: copiedGoldContents,
-        },
-      };
-
-      return copiedPrev;
-    });
-  };
   return (
     <Container>
       <Header>
         <FontAwesomeIcon icon={faGear} size="lg" />
         <h1>{CharacterName && `${CharacterName}`}'s Settings</h1>
       </Header>
-      {GoldContents.map((contents) => (
-        <span key={contents}>{contents}</span>
-      ))}
       <GridContainer>
-        {ContentNames.map((ContentName) => {
+        {Object.keys(contentsState).map((ContentName) => {
           const { Gates, isActivated } = contentsState[ContentName];
           return (
             isActivated && (
@@ -83,7 +50,6 @@ const ConfigAccount = () => {
                 Gates={Gates}
                 ContentsName={ContentName}
                 ChracterName={CharacterName}
-                modifyGoldContents={modifyGoldContents}
               />
             )
           );

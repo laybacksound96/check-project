@@ -15,7 +15,6 @@ const makeAccountState = (Account: IFetchedCharacter[]) => {
       CharacterClassName: CharacterClassName,
       ItemMaxLevel: level,
       IsGoldCharacter: +index < 6 ? true : false,
-      GoldContents: [],
       isVisible: +index < 6 ? true : false,
     };
   }

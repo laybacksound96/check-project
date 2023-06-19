@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Header } from "./ConfigContent";
+
 import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {
@@ -58,7 +58,21 @@ interface IOptions {
   isNull: boolean;
   isInValid: boolean;
 }
-
+export const Header = styled.header`
+  display: flex;
+  align-items: center;
+  margin-right: 50px;
+  svg {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+  }
+  h1 {
+    color: ${(props) => props.theme.TextColor_A};
+    font-size: 40px;
+    font-weight: bolder;
+  }
+`;
 const AddAccount = () => {
   const setModalState = useSetRecoilState(ModalState);
   const setAccountOrder = useSetRecoilState(AccountOrder);
@@ -108,7 +122,7 @@ const AddAccount = () => {
     setAccountState((prev) => {
       const copiedPrev = {
         ...prev,
-        ...AccountState,
+        [`${AccountOwner}`]: { ...AccountState },
       };
       return copiedPrev;
     });
