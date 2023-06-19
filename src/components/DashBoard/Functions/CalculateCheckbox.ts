@@ -34,15 +34,17 @@ export const CalculateCheckbox = (
               Frequency: 0,
               GateState: gates,
               ContentsName: ContentName,
-              ContentsOwner: [],
+              Owner: [],
+              ReamainOwner: [],
               Color: Prev.hasOwnProperty(Key)
                 ? Prev[Key].Color
                 : getRandomPastelColor(ContentName),
             };
           }
+          resultObj[Key].Owner.push(CharacterName);
           if (!isCleared) {
             resultObj[Key].Frequency++;
-            resultObj[Key].ContentsOwner.push(CharacterName);
+            resultObj[Key].ReamainOwner.push(CharacterName);
           }
         }
         if (type === "Custom") {
@@ -51,12 +53,16 @@ export const CalculateCheckbox = (
               Frequency: 0,
               GateState: [],
               ContentsName: ContentName,
-              ContentsOwner: [],
+              Owner: [],
+              ReamainOwner: [],
               Color: getRandomPastelColor(ContentName),
             };
           }
-          if (!isCleared) resultObj[ContentName].Frequency++;
-          resultObj[ContentName].ContentsOwner.push(CharacterName);
+          resultObj[ContentName].Owner.push(CharacterName);
+          if (!isCleared) {
+            resultObj[ContentName].Frequency++;
+            resultObj[ContentName].ReamainOwner.push(CharacterName);
+          }
         }
       }
     }

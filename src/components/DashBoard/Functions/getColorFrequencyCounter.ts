@@ -9,7 +9,7 @@ const getColorInFrequencyCounter = (
     if (!obj.hasOwnProperty(key)) continue;
     const Contents = obj[key];
     if (Contents.ContentsName === contentsName) {
-      if (Contents.ContentsOwner.includes(ownerName)) {
+      if (Contents.Owner.includes(ownerName)) {
         const result = Contents.Color;
         return result;
       }

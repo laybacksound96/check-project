@@ -114,7 +114,7 @@ interface IProps {
   Color: string;
 }
 const Content = ({
-  contentState: { Frequency, ContentsName, GateState, ContentsOwner },
+  contentState: { Frequency, ContentsName, GateState, ReamainOwner },
   Color,
 }: IProps) => {
   const [shouldAnimate, setShouldAnimate] = useState(false);
@@ -146,13 +146,13 @@ const Content = ({
         </FrequencyBox>
       </HeaderContainer>
       <OwnerContainer Color={Color}>
-        {ContentsOwner.map((name, index) => {
+        {ReamainOwner.map((name, index) => {
           const { isCleared } = checkboxConfig[`${name}`][ContentsName];
           return (
             index < 4 &&
             !isCleared && (
               <OwnerBox key={index} Color={Color}>
-                {ContentsOwner.length > 4 && index > 2 ? `${name} ...` : name}
+                {ReamainOwner.length > 4 && index > 2 ? `${name} ...` : name}
               </OwnerBox>
             )
           );
