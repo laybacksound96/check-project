@@ -1,10 +1,10 @@
 import { atom } from "recoil";
 
 export enum ModalEnum {
-  CONFIG_CONTENT = "Value 1",
-  CONFIG_ACCOUNT = "Value 2",
-  ADD_CONTENT = "Value 3",
-  ADD_ACCOUNT = "Value 4",
+  CONFIG_CONTENT = "계정 설정",
+  CONFIG_ACCOUNT = "컨텐츠 설정",
+  ADD_CONTENT = "컨텐츠 추가",
+  ADD_ACCOUNT = "계정 추가",
 }
 
 export interface modalProp {

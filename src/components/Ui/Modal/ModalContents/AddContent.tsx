@@ -4,7 +4,6 @@ import styled, { keyframes, css } from "styled-components";
 import { ContentsState, CheckBoxConfig } from "../../../../atoms/atoms";
 
 import { ModalState } from "../../../../atoms/modal";
-import { Header } from "./AddAccount";
 
 interface IStyle {
   isDisabled: boolean;
@@ -127,10 +126,6 @@ const AddContent = () => {
   };
   return (
     <div>
-      <Header>
-        <h1>일정 설정</h1>
-      </Header>
-      <hr></hr>
       <Input
         isDisabled={false}
         value={inputValue}

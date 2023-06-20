@@ -1,5 +1,8 @@
 import React from "react";
+import { useRecoilValue } from "recoil";
 import styled, { keyframes } from "styled-components";
+import { ModalEnum, ModalState } from "../../../atoms/modal";
+
 const fadeInAnimation = keyframes`
   0% {
     opacity: 0;
@@ -39,7 +42,6 @@ const MainDiv = styled.div`
   position: relative;
 `;
 const ButtonContainer = styled.div`
-  position: absolute;
   right: 60px;
   button {
     width: 40px;
@@ -57,21 +59,51 @@ const ButtonContainer = styled.div`
     }
   }
 `;
+const Header = styled.header`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  svg {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+  }
+  h1 {
+    color: ${(props) => props.theme.TextColor_A};
+    font-size: 40px;
+    font-weight: bolder;
+  }
+  span {
+    font-size: 40px;
+  }
+`;
 interface ModalProps {
   onClose: () => void;
   children: React.ReactNode;
 }
 
 const ModalContainer = ({ children, onClose }: ModalProps) => {
+  const {
+    modalType: type,
+    modalProp: { CharacterName: name },
+  } = useRecoilValue(ModalState);
   return (
     <Container>
       <Background onClick={onClose}></Background>
       <MainDiv>
-        <ButtonContainer>
-          <button onClick={onClose} style={{ fontSize: "20px" }}>
-            <span>X</span>
-          </button>
-        </ButtonContainer>
+        <Header>
+          {type === ModalEnum.CONFIG_ACCOUNT ? (
+            <h1>{`${name}의 ${type}`}</h1>
+          ) : (
+            <h1>{type}</h1>
+          )}
+          <ButtonContainer>
+            <button onClick={onClose}>
+              <span>X</span>
+            </button>
+          </ButtonContainer>
+        </Header>
         {children}
       </MainDiv>
     </Container>

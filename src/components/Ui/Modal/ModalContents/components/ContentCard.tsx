@@ -36,7 +36,7 @@ const ContentList = styled.div<IStyel>`
   transition: opacity 0.3s ease-in-out;
 `;
 
-const CardHeader = styled.div`
+export const CardHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -60,7 +60,7 @@ const CardHeader = styled.div`
   }
 `;
 
-const GateContainer = styled.div`
+export const GateContainer = styled.div`
   display: flex;
   flex-direction: column;
   ul {

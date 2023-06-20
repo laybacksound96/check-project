@@ -1,14 +1,10 @@
-import { faGear } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
 import { useRecoilValue } from "recoil";
 import { CheckBoxConfig } from "../../../../atoms/atoms";
 import styled from "styled-components";
 import ContentCard from "./components/ContentCard";
 import { ModalState } from "../../../../atoms/modal";
-import { Header } from "./AddAccount";
 
-const Container = styled.div`
+export const Container = styled.div`
   width: auto;
   height: 80vh;
   display: flex;
@@ -18,7 +14,7 @@ const Container = styled.div`
   align-items: center;
   overflow-y: auto;
 `;
-const GridContainer = styled.div`
+export const GridContainer = styled.div`
   padding: 10px;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -36,10 +32,6 @@ const ConfigAccount = () => {
 
   return (
     <Container>
-      <Header>
-        <FontAwesomeIcon icon={faGear} size="lg" />
-        <h1>{CharacterName && `${CharacterName}`}'s Settings</h1>
-      </Header>
       <GridContainer>
         {Object.keys(contentsState).map((ContentName) => {
           const { Gates, isActivated } = contentsState[ContentName];
