@@ -1,7 +1,11 @@
 import { useState, useRef, useEffect } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import styled, { keyframes, css } from "styled-components";
-import { ContentsState, CheckBoxConfig } from "../../../../atoms/atoms";
+import {
+  ContentsState,
+  CheckBoxConfig,
+  IContentsState,
+} from "../../../../atoms/atoms";
 
 import { ModalState } from "../../../../atoms/modal";
 
@@ -72,7 +76,12 @@ const AddContent = () => {
   const [isDupplicated, setIsDupplicated] = useState(false);
 
   const [contentState, setContentsState] = useRecoilState(ContentsState);
-  const setModalState = useSetRecoilState(ModalState);
+  const [
+    {
+      modalProp: { AccountName },
+    },
+    setModalState,
+  ] = useRecoilState(ModalState);
   const setCheckBoxConfig = useSetRecoilState(CheckBoxConfig);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -87,10 +96,15 @@ const AddContent = () => {
       return;
     }
     setContentsState((prev) => {
-      const copiedPrev = { ...prev };
-      copiedPrev[inputValue] = {
-        type: "Custom",
-        isVisible: true,
+      const copiedPrev: IContentsState = {
+        ...prev,
+        [`${AccountName}`]: {
+          ...prev[`${AccountName}`],
+          [`${inputValue}`]: {
+            type: "Custom",
+            isVisible: true,
+          },
+        },
       };
 
       return { ...copiedPrev };

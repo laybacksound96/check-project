@@ -51,12 +51,14 @@ export interface IContentState {
 export interface IContents {
   [ContentsName: string]: IContentState;
 }
-
-export const ContentsState = atom<IContents>({
+export interface IContentsState {
+  [AccountOwner: string]: IContents;
+}
+export const ContentsState = atom<IContentsState>({
   key: "ContentsState",
-  default: makeDefaultCommander(),
+  default: {},
 });
-
+//makeDefaultCommander()
 export interface IFrequencyContents {
   [`ContentsName`]: string;
   [`GateState`]: string[];

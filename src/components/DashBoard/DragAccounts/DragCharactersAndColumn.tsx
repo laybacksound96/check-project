@@ -303,7 +303,13 @@ function DragCharacters({
                       </Draggable>
                     ))}
                     {provided.placeholder}
-                    <Name onClick={() => AddContent()}>+</Name>
+                    <Name
+                      onClick={() =>
+                        AddContent({ AccountName, CharacterName: "" })
+                      }
+                    >
+                      +
+                    </Name>
                   </div>
                 )}
               </Droppable>

@@ -1,8 +1,8 @@
 import {
   IAccountState,
   ICheckBoxconfig,
-  IContents,
   IContentsFrequency,
+  IContentsState,
 } from "../../../atoms/atoms";
 
 import CalculateGateDifficulty from "./CalculateGateDifficulty";
@@ -10,7 +10,7 @@ import getRandomPastelColor from "./getRandomPastelColor";
 
 export const CalculateCheckbox = (
   Accounts: ICheckBoxconfig,
-  Contents: IContents,
+  Contents: IContentsState,
   accountState: IAccountState,
   Prev: IContentsFrequency
 ): IContentsFrequency => {
@@ -21,8 +21,9 @@ export const CalculateCheckbox = (
       const { isVisible: CharacterVisible } =
         accountState[AccountName][CharacterName];
       if (!CharacterVisible) continue;
-      for (const ContentName in Contents) {
-        const { type, isVisible: contentsVisible } = Contents[ContentName];
+      for (const ContentName in Contents[AccountName]) {
+        const { type, isVisible: contentsVisible } =
+          Contents[AccountName][ContentName];
         const { isActivated, isVisible, Gates, isCleared } =
           Accounts[CharacterName][ContentName];
         if (!contentsVisible || !isVisible || !isActivated) continue;
