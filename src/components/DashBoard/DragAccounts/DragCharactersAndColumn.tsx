@@ -146,11 +146,13 @@ function DragCharacters({
   }, [AccountIndex, AccountName, accountState, setAccountOrder]);
   useEffect(() => {
     setContentsOrder((prev) => {
-      const { CharacterOrder } = accountOrder[AccountIndex];
-      const array = Object.keys(contentsState).filter(
+      const { AccountName, CharacterOrder } = accountOrder[AccountIndex];
+      const characterObject = contentsState[AccountName];
+
+      const array = Object.keys(characterObject).filter(
         (contentName) =>
           isAllTrue(contentName, CharacterOrder, checkboxState) &&
-          contentsState[contentName].isVisible
+          characterObject[contentName].isVisible
       );
       const copiedPrev = { ...prev, [`${AccountName}`]: array };
       return copiedPrev;

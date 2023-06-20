@@ -1,5 +1,4 @@
 import { atom } from "recoil";
-import makeDefaultCommander from "../components/Ui/Modal/ModalContents/functions/makeDefaultCommander";
 
 export interface IGates {
   ["Gate_No"]: number;
@@ -58,7 +57,7 @@ export const ContentsState = atom<IContentsState>({
   key: "ContentsState",
   default: {},
 });
-//makeDefaultCommander()
+
 export interface IFrequencyContents {
   [`ContentsName`]: string;
   [`GateState`]: string[];

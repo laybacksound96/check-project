@@ -1,4 +1,4 @@
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import {
   AccountState,
   CheckBoxConfig,
@@ -18,6 +18,7 @@ import MakeCheckboxState from "./functions/makeCheckboxState";
 import SortByLevel from "./functions/SortByLevel";
 import { ModalState } from "../../../../atoms/modal";
 import { AccountOrder, ContentsOrder } from "../../../../atoms/order";
+import makeDefaultCommander from "./functions/makeDefaultCommander";
 
 const Container = styled.div`
   display: flex;
@@ -61,9 +62,8 @@ const AddAccount = () => {
   const setAccountOrder = useSetRecoilState(AccountOrder);
   const setCheckBoxConfig = useSetRecoilState(CheckBoxConfig);
   const setContentsOrder = useSetRecoilState(ContentsOrder);
+  const setContentsState = useSetRecoilState(ContentsState);
   const [accountState, setAccountState] = useRecoilState(AccountState);
-  const Column = useRecoilValue(ContentsState);
-
   const [inputValue, setInputValue] = useState("");
   const [isDisabled, setIsDisabled] = useState(false);
   const [option, setOption] = useState<IOptions>({
@@ -102,7 +102,9 @@ const AddAccount = () => {
     const Character = SortByLevel(fetchedCharacters);
     const AccountOwner = Character[0].CharacterName;
     const AccountState = MakeAccountState(Character);
-
+    setContentsState((prev) => {
+      return { ...prev, [`${AccountOwner}`]: makeDefaultCommander() };
+    });
     setAccountState((prev) => {
       const copiedPrev = {
         ...prev,
@@ -113,7 +115,7 @@ const AddAccount = () => {
     setCheckBoxConfig((prev) => {
       const copiedPrev = {
         ...prev,
-        ...MakeCheckboxState(AccountState, Column[AccountOwner]),
+        ...MakeCheckboxState(AccountState),
       };
       return copiedPrev;
     });
