@@ -1,6 +1,6 @@
 import { useRecoilState, useRecoilValue } from "recoil";
 import { ModalState } from "../../../../atoms/modal";
-import { AccountState } from "../../../../atoms/atoms";
+import { AccountState, ContentsState } from "../../../../atoms/atoms";
 import { Container, GridContainer } from "./ConfigAccount";
 import styled from "styled-components";
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
@@ -87,8 +87,9 @@ export const ConfigContent = () => {
     modalProp: { AccountName },
   } = useRecoilValue(ModalState);
   const [accountState, setAccountState] = useRecoilState(AccountState);
+  const [contentsState, setContentsState] = useRecoilState(ContentsState);
 
-  const handleVisible = (CharacterName: string) => {
+  const handleAccountVisible = (CharacterName: string) => {
     setAccountState((prev) => {
       const currentVisible = prev[AccountName][CharacterName].isVisible;
       const copiedPrev = {
@@ -102,6 +103,22 @@ export const ConfigContent = () => {
         },
       };
 
+      return copiedPrev;
+    });
+  };
+  const handleContentVisible = (CharacterName: string) => {
+    setContentsState((prev) => {
+      const currentVisible = prev[AccountName][CharacterName].isVisible;
+      const copiedPrev = {
+        ...prev,
+        [AccountName]: {
+          ...prev[AccountName],
+          [CharacterName]: {
+            ...prev[AccountName][CharacterName],
+            isVisible: !currentVisible,
+          },
+        },
+      };
       return copiedPrev;
     });
   };
@@ -125,7 +142,27 @@ export const ConfigContent = () => {
                 </NameContainer>
                 <ButtonContainer>
                   <FontAwesomeIcon
-                    onClick={() => handleVisible(character)}
+                    onClick={() => handleAccountVisible(character)}
+                    icon={isVisible ? faEye : faEyeSlash}
+                  />
+                </ButtonContainer>
+              </Character>
+            );
+          })}
+        </ContentList>
+        <ContentList>
+          <header>
+            <FontAwesomeIcon icon={faGear} />
+            <span>컨텐츠 표시 설정</span>
+          </header>
+          {Object.keys(contentsState[AccountName]).map((contentName) => {
+            const { isVisible } = contentsState[AccountName][contentName];
+            return (
+              <Character key={contentName} isVisible={isVisible}>
+                <NameContainer>{contentName}</NameContainer>
+                <ButtonContainer>
+                  <FontAwesomeIcon
+                    onClick={() => handleContentVisible(contentName)}
                     icon={isVisible ? faEye : faEyeSlash}
                   />
                 </ButtonContainer>
