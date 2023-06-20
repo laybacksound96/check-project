@@ -63,7 +63,7 @@ export interface IFrequencyContents {
   [`GateState`]: string[];
   [`Frequency`]: number;
   [`Owner`]: string[];
-  [`ReamainOwner`]: string[];
+  [`RemainOwner`]: string[];
   [`Color`]: string;
 }
 

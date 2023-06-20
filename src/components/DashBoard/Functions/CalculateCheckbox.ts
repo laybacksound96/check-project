@@ -31,14 +31,16 @@ export const CalculateCheckbox = (
           type === "Default"
             ? `${ContentName}_${CalculateGateDifficulty(Gates).join("_")}`
             : ContentName;
+        const gateState =
+          type === "Default" ? CalculateGateDifficulty(Gates) : [];
 
         if (!resultObj[resultName]) {
           resultObj[resultName] = {
             Frequency: 0,
-            GateState: CalculateGateDifficulty(Gates),
+            GateState: gateState,
             ContentsName: ContentName,
             Owner: [],
-            ReamainOwner: [],
+            RemainOwner: [],
             Color: Prev.hasOwnProperty(resultName)
               ? Prev[resultName].Color
               : getRandomPastelColor(ContentName),
@@ -47,7 +49,7 @@ export const CalculateCheckbox = (
         resultObj[resultName].Owner.push(CharacterName);
         if (!isCleared) {
           resultObj[resultName].Frequency++;
-          resultObj[resultName].ReamainOwner.push(CharacterName);
+          resultObj[resultName].RemainOwner.push(CharacterName);
         }
       }
     }
