@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from "react";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import styled, { keyframes, css } from "styled-components";
-import { ContentsState, IContentsState } from "../../../../atoms/atoms";
 
 import { ModalState } from "../../../../atoms/modal";
 

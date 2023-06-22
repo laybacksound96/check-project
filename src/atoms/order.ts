@@ -1,19 +1,14 @@
 import { atom } from "recoil";
+type IContentsOrder = string[];
+type ICharacterOrder = string[];
 
 export interface IAccountOrder {
   AccountName: string;
-  CharacterOrder: string[];
+  ContentsOrder: IContentsOrder[];
+  CharacterOrder: ICharacterOrder[];
 }
 
 export const AccountOrder = atom<IAccountOrder[]>({
   key: "AccountOrder",
   default: [],
-});
-
-export interface IContentsOrder {
-  [AccountName: string]: string[];
-}
-export const ContentsOrder = atom<IContentsOrder>({
-  key: "ContentOrder",
-  default: {},
 });

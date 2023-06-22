@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Modal from "../components/Ui/Modal/Modal";
 import { useEffect } from "react";
 import { useRecoilValue } from "recoil";
-import { ContentsState, AccountState, ContentsFrequency } from "../atoms/atoms";
+import { ContentsFrequency, UserSetting } from "../atoms/atoms";
 import { AccountOrder, ContentsOrder } from "../atoms/order";
 import DragAccounts from "../components/DashBoard/DragAccounts/DragAccounts";
 
@@ -16,21 +16,17 @@ function Dashboard() {
   //   localStorage.setItem("myAtom", "asdd");
   // }, []);
 
-  const contentsState = useRecoilValue(ContentsState);
+  const userSetting = useRecoilValue(UserSetting);
+  const contentsFrequency = useRecoilValue(ContentsFrequency);
   const contentsOrder = useRecoilValue(ContentsOrder);
   const accountOrder = useRecoilValue(AccountOrder);
-  const accountState = useRecoilValue(AccountState);
-  const contentsFrequency = useRecoilValue(ContentsFrequency);
 
   useEffect(() => {
-    console.log("contentsState");
-    console.log(contentsState);
+    console.log("userSetting");
+    console.log(userSetting);
 
     console.log("ContentsFrequency");
     console.log(contentsFrequency);
-
-    console.log("AccountState");
-    console.log(accountState);
 
     console.log("accountOrder.");
     console.log(accountOrder);
@@ -40,13 +36,7 @@ function Dashboard() {
 
     console.log("-------------------------");
     console.log("-------------------------");
-  }, [
-    contentsState,
-    contentsOrder,
-    contentsFrequency,
-    accountOrder,
-    accountState,
-  ]);
+  }, [userSetting, contentsOrder, contentsFrequency, accountOrder]);
   return (
     <>
       <Modal />
