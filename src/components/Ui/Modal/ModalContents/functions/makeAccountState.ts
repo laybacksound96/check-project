@@ -3,7 +3,7 @@ import { IFetchedCharacter } from "../AddAccount";
 import SortByLevel from "./SortByLevel";
 import makeCheckboxState from "./makeCheckboxState";
 
-const makeAccountState = (Account: IFetchedCharacter[]) => {
+const makeAccountState = (Account: IFetchedCharacter[]): ICharacterState => {
   const result: ICharacterState = {};
   const SortedAccount = SortByLevel(Account);
   const contents = makeCheckboxState(Account);

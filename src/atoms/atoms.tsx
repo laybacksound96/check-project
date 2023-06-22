@@ -27,7 +27,7 @@ interface ICharacterSettings {
   ["Contents"]: IContentName;
 }
 export interface ICharacterState {
-  [Character: string]: ICharacterSettings;
+  [CharacterName: string]: ICharacterSettings;
 }
 export interface IContentState {
   type: "Default" | "Custom";
@@ -41,7 +41,7 @@ export interface IAccountState {
   ["CharacterState"]: ICharacterState;
 }
 export interface IUserSetting {
-  [Account: string]: IAccountState;
+  [AccountName: string]: IAccountState;
 }
 export const UserSetting = atom<IUserSetting>({
   key: "UserSetting",

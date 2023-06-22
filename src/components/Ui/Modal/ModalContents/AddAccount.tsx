@@ -89,11 +89,12 @@ const AddAccount = () => {
   };
 
   const AddAccountHandler = () => {
-    const Character = SortByLevel(fetchedCharacters);
-
-    const AccountState = MakeAccountState(Character);
+    const AccountState = MakeAccountState(SortByLevel(fetchedCharacters));
+    const AccountOwner = SortByLevel(fetchedCharacters)[0].CharacterName;
     makeDefaultCommander();
-
+    setUserSetting((prev) => {
+      return { ...prev };
+    });
     closeModal();
   };
 
