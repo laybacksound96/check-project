@@ -94,7 +94,11 @@ const DeleteContainer = styled.div`
   width: 200px;
   height: 50px;
 `;
-const DangerZone = () => {
+interface Iprops {
+  handleDelete: () => void;
+}
+
+const DangerZone = ({ handleDelete }: Iprops) => {
   const [isConfirmed, setIsConfirmed] = useState(false);
   return (
     <DangerZoneContainer>
@@ -122,7 +126,7 @@ const DangerZone = () => {
             >
               <span>확실합니까?</span>
               <ButtonBox>
-                <DeleteBtn onClick={() => {}}>삭제</DeleteBtn>
+                <DeleteBtn onClick={() => handleDelete()}>삭제</DeleteBtn>
                 <CancleBtn onClick={() => setIsConfirmed(false)}>
                   취소
                 </CancleBtn>

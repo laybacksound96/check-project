@@ -1,12 +1,17 @@
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { ModalState } from "../../../../atoms/modal";
-import { AccountState, ContentsState } from "../../../../atoms/atoms";
+import {
+  AccountState,
+  CheckBoxConfig,
+  ContentsState,
+} from "../../../../atoms/atoms";
 import { GridContainer } from "./ConfigAccount";
 import styled from "styled-components";
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGear } from "@fortawesome/free-solid-svg-icons";
 import DangerZone from "./components/DangerZone";
+import useModal from "../../../../CustomHooks/Modal/useModal";
 
 interface IStyel {
   isVisible: boolean;
@@ -94,12 +99,13 @@ const ContentList = styled.div`
   }
 `;
 export const ConfigContent = () => {
+  const [, closeModal] = useModal("CONFIG_CONTENT");
   const {
     modalProp: { AccountName },
   } = useRecoilValue(ModalState);
   const [accountState, setAccountState] = useRecoilState(AccountState);
   const [contentsState, setContentsState] = useRecoilState(ContentsState);
-
+  const setCheckboxConfig = useSetRecoilState(CheckBoxConfig);
   const handleAccountVisible = (CharacterName: string) => {
     setAccountState((prev) => {
       const currentVisible = prev[AccountName][CharacterName].isVisible;
@@ -132,6 +138,26 @@ export const ConfigContent = () => {
       };
       return copiedPrev;
     });
+  };
+  const handleDelete = () => {
+    setCheckboxConfig((prev) => {
+      const copiedPrev = { ...prev };
+      for (let name in accountState[AccountName]) {
+        delete copiedPrev[`${name}`];
+      }
+      return copiedPrev;
+    });
+    setAccountState((prev) => {
+      const copiedPrev = { ...prev };
+      delete copiedPrev[`${AccountName}`];
+      return copiedPrev;
+    });
+    setContentsState((prev) => {
+      const copiedPrev = { ...prev };
+      delete copiedPrev[`${AccountName}`];
+      return copiedPrev;
+    });
+    closeModal();
   };
   return (
     <>
@@ -184,7 +210,7 @@ export const ConfigContent = () => {
           </ContentList>
         </GridContainer>
       </Container>
-      <DangerZone />
+      <DangerZone handleDelete={handleDelete} />
     </>
   );
 };
