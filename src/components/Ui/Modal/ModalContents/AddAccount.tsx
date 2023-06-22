@@ -88,9 +88,14 @@ const AddAccount = () => {
   };
 
   const AddAccountHandler = () => {
+    const AccountName = fetchedCharacters[0].CharacterName;
     setUserSetting((prev) => {
       return { ...prev, ...makeNewAccount(fetchedCharacters) };
     });
+    setAccountOrder((prev) => [
+      ...prev,
+      { AccountName, CharacterOrder: [], ContentsOrder: [] },
+    ]);
     closeModal();
   };
 
