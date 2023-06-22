@@ -1,13 +1,12 @@
-import { RecoilState, useRecoilState } from "recoil";
-import { IUserSetting } from "../../atoms/atoms";
+import { useRecoilState } from "recoil";
+import { IUserSetting, UserSetting } from "../../atoms/atoms";
 
 function useAllContentsVisible(
-  atom: RecoilState<IUserSetting>,
   AccountName: string,
   ContentName: string
 ): [boolean, () => void] {
-  const [UserSetting, setUserSetting] = useRecoilState<IUserSetting>(atom);
-  const { isVisible } = UserSetting[AccountName].AllContentState[ContentName];
+  const [userSetting, setUserSetting] = useRecoilState(UserSetting);
+  const { isVisible } = userSetting[AccountName].AllContentState[ContentName];
 
   const setNewValue = (): void => {
     setUserSetting((prev) => {
