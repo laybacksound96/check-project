@@ -1,13 +1,13 @@
-import { ICheckBoxconfig } from "../../../atoms/atoms";
+import { ICharacterState } from "../../../atoms/atoms";
 
 function isAllTrue(
   ContentName: string,
   CharacterOrder: string[],
-  Content: ICheckBoxconfig
+  Content: ICharacterState
 ) {
   for (let index in CharacterOrder) {
     const CharacterName = CharacterOrder[index];
-    if (Content[CharacterName][ContentName].isVisible) return true;
+    if (Content[CharacterName].Contents[ContentName].isVisible) return true;
   }
   return false;
 }

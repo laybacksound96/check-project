@@ -14,9 +14,9 @@ import DragCharactersDraggable from "./DragCharactersDraggable";
 import { dragIcon } from "../../../Settings";
 import {
   ContentsFrequency,
-  CheckBoxConfig,
   AccountState,
   ContentsState,
+  IAccountState,
 } from "../../../atoms/atoms";
 import { AccountOrder, ContentsOrder } from "../../../atoms/order";
 import { AxisLocker } from "../Functions/AxisLocker";
@@ -124,11 +124,10 @@ function DragCharacters({
   const [isHovered, setIsHovered] = useState(false);
   const [accountOrder, setAccountOrder] = useRecoilState(AccountOrder);
   const [contentsOrder, setContentsOrder] = useRecoilState(ContentsOrder);
-  const [checkboxState, setCheckboxState] = useRecoilState(CheckBoxConfig);
 
   const contentsState = useRecoilValue(ContentsState);
   const contentsFrequency = useRecoilValue(ContentsFrequency);
-  const accountState = useRecoilValue(AccountState);
+  const [accountState, setAccountState] = useRecoilState(AccountState);
 
   useEffect(() => {
     setAccountOrder((prev) => {
@@ -151,7 +150,7 @@ function DragCharacters({
 
       const array = Object.keys(characterObject).filter(
         (contentName) =>
-          isAllTrue(contentName, CharacterOrder, checkboxState) &&
+          isAllTrue(contentName, CharacterOrder, accountState[AccountName]) &&
           characterObject[contentName].isVisible
       );
       const copiedPrev = { ...prev, [`${AccountName}`]: array };
@@ -161,7 +160,7 @@ function DragCharacters({
     AccountIndex,
     AccountName,
     accountOrder,
-    checkboxState,
+    accountState,
     contentsState,
     setContentsOrder,
   ]);
@@ -205,17 +204,27 @@ function DragCharacters({
     }
     return;
   };
-  const CheckBoxOnclick = (character: string, content: string) => {
-    setCheckboxState((Characters) => {
-      const copiedCharacters = { ...Characters };
-      const ContentName = { ...copiedCharacters[character] };
-      const ConfigObject = { ...ContentName[content] };
-      const state = copiedCharacters[character][content].isCleared;
-
-      ConfigObject.isCleared = !state;
-      ContentName[content] = ConfigObject;
-      copiedCharacters[character] = ContentName;
-      return copiedCharacters;
+  const CheckBoxOnclick = (CharacterName: string, ContentName: string) => {
+    setAccountState((prev) => {
+      const state =
+        prev[AccountName][CharacterName].Contents[ContentName].isCleared;
+      const copiedPrev: IAccountState = {
+        ...prev,
+        [`${AccountName}`]: {
+          ...prev[AccountName],
+          [`${CharacterName}`]: {
+            ...prev[AccountName][CharacterName],
+            Contents: {
+              ...prev[AccountName][CharacterName].Contents,
+              [`${ContentName}`]: {
+                ...prev[AccountName][CharacterName].Contents[ContentName],
+                isCleared: !state,
+              },
+            },
+          },
+        },
+      };
+      return copiedPrev;
     });
   };
 
@@ -293,6 +302,7 @@ function DragCharacters({
                                   <CheckBoxButton
                                     key={CharacterName + ContentName}
                                     CharacterName={CharacterName}
+                                    AccountName={AccountName}
                                     ContentName={ContentName}
                                     CheckBoxOnclick={CheckBoxOnclick}
                                     Color={color}

@@ -17,13 +17,6 @@ export interface IConfigObject {
 export interface IContentName {
   [ContentName: string]: IConfigObject;
 }
-export interface ICheckBoxconfig {
-  [ChracterName: string]: IContentName;
-}
-export const CheckBoxConfig = atom<ICheckBoxconfig>({
-  key: "CheckBoxConfig",
-  default: {},
-});
 
 interface ICharacterSettings {
   ["ServerName"]: string;
@@ -31,6 +24,7 @@ interface ICharacterSettings {
   ["ItemMaxLevel"]: number;
   ["IsGoldCharacter"]: boolean;
   ["isVisible"]: boolean;
+  ["Contents"]: IContentName;
 }
 export interface ICharacterState {
   [Character: string]: ICharacterSettings;

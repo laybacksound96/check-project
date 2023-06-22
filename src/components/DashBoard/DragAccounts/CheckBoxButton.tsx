@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
 import { dragIcon } from "../../../Settings";
 import { useRecoilValue } from "recoil";
-import { CheckBoxConfig } from "../../../atoms/atoms";
+import { AccountState } from "../../../atoms/atoms";
 
 interface IStyle {
   isVisible: boolean;
@@ -33,22 +33,28 @@ const CheckBox = styled.div<IStyle>`
 `;
 interface ICheckboxProps {
   CheckBoxOnclick: (char: string, cont: string) => void;
+  AccountName: string;
   CharacterName: string;
   ContentName: string;
   Color: string;
 }
 
 function CheckBoxButton({
+  AccountName,
   CheckBoxOnclick,
   CharacterName,
   ContentName,
   Color,
 }: ICheckboxProps) {
   const {
-    [CharacterName]: {
-      [ContentName]: { isCleared, isActivated, isVisible },
+    [AccountName]: {
+      [CharacterName]: {
+        Contents: {
+          [ContentName]: { isCleared, isActivated, isVisible },
+        },
+      },
     },
-  } = useRecoilValue(CheckBoxConfig);
+  } = useRecoilValue(AccountState);
   function onClickHandler() {
     if (!isVisible || !isActivated) return;
     CheckBoxOnclick(CharacterName, ContentName);

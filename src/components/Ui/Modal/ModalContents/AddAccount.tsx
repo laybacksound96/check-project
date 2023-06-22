@@ -1,9 +1,5 @@
 import { useRecoilState, useSetRecoilState } from "recoil";
-import {
-  AccountState,
-  CheckBoxConfig,
-  ContentsState,
-} from "../../../../atoms/atoms";
+import { AccountState, ContentsState } from "../../../../atoms/atoms";
 import { fetchSearchAccount } from "../../../../util/fetch";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
@@ -14,7 +10,6 @@ import IsInValidName from "./functions/IsValidName";
 import IsDisabled from "./functions/IsDisabled";
 import IsDupplicated from "./functions/IsDupplicated";
 import MakeAccountState from "./functions/makeAccountState";
-import MakeCheckboxState from "./functions/makeCheckboxState";
 import SortByLevel from "./functions/SortByLevel";
 import { ModalState } from "../../../../atoms/modal";
 import { AccountOrder, ContentsOrder } from "../../../../atoms/order";
@@ -60,8 +55,8 @@ interface IOptions {
 const AddAccount = () => {
   const setModalState = useSetRecoilState(ModalState);
   const setAccountOrder = useSetRecoilState(AccountOrder);
-  const setCheckBoxConfig = useSetRecoilState(CheckBoxConfig);
   const setContentsOrder = useSetRecoilState(ContentsOrder);
+
   const setContentsState = useSetRecoilState(ContentsState);
   const [accountState, setAccountState] = useRecoilState(AccountState);
   const [inputValue, setInputValue] = useState("");
@@ -109,13 +104,6 @@ const AddAccount = () => {
       const copiedPrev = {
         ...prev,
         [`${AccountOwner}`]: { ...AccountState },
-      };
-      return copiedPrev;
-    });
-    setCheckBoxConfig((prev) => {
-      const copiedPrev = {
-        ...prev,
-        ...MakeCheckboxState(AccountState),
       };
       return copiedPrev;
     });

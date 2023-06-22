@@ -140,13 +140,6 @@ export const ConfigContent = () => {
     });
   };
   const handleDelete = () => {
-    setCheckboxConfig((prev) => {
-      const copiedPrev = { ...prev };
-      for (let name in accountState[AccountName]) {
-        delete copiedPrev[`${name}`];
-      }
-      return copiedPrev;
-    });
     setAccountState((prev) => {
       const copiedPrev = { ...prev };
       delete copiedPrev[`${AccountName}`];

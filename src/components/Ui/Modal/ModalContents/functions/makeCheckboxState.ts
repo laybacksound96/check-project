@@ -1,18 +1,17 @@
-import { ICharacterState, ICheckBoxconfig } from "../../../../../atoms/atoms";
-
+import { IContentName } from "../../../../../atoms/atoms";
 import makeConfigObject from "./makeConfigObject";
 import commander from "./commander.json";
 import { IData } from "./makeActivatedAndDifficulty";
-const makeCheckboxState = (Account: ICharacterState): ICheckBoxconfig => {
-  const result: ICheckBoxconfig = {};
+import { IFetchedCharacter } from "../AddAccount";
+const makeCheckboxState = (Account: IFetchedCharacter[]): IContentName => {
+  const result: IContentName = {};
   const commanderData: IData = commander;
 
-  for (let CharacterName in Account) {
-    const { ItemMaxLevel: level } = Account[CharacterName];
-    result[`${CharacterName}`] = {};
+  for (let index in Account) {
+    const { ItemMaxLevel: level } = Account[index];
     for (let CommanderName in commanderData) {
-      result[`${CharacterName}`][CommanderName] = makeConfigObject(
-        level,
+      result[`${CommanderName}`] = makeConfigObject(
+        +level,
         CommanderName,
         "Default"
       );
