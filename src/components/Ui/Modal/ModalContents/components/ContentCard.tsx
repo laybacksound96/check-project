@@ -13,7 +13,7 @@ import {
 import {
   useIsGoldContents,
   useIsVisible,
-} from "../../../../../CustomHooks/CheckBoxConfig/CustomHooks";
+} from "../../../../../CustomHooks/UserSetting/CustomHooks";
 
 interface IStyel {
   isVisibled: boolean;

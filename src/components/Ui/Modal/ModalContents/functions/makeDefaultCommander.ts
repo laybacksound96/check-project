@@ -2,7 +2,7 @@ import { IAllContents } from "../../../../../atoms/atoms";
 import { IData } from "./makeActivatedAndDifficulty";
 import commander from "./commander.json";
 
-const makeDefaultCommander = () => {
+const makeDefaultCommander = (): IAllContents => {
   const result: IAllContents = {};
   const commanderData: IData = commander;
 

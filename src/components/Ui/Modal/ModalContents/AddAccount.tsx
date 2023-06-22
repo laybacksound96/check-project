@@ -7,12 +7,11 @@ import CharacterContainer from "./components/CharacterContainer";
 import IsInValidName from "./functions/IsValidName";
 import IsDisabled from "./functions/IsDisabled";
 import IsDupplicated from "./functions/IsDupplicated";
-import MakeAccountState from "./functions/makeAccountState";
 import SortByLevel from "./functions/SortByLevel";
-import makeDefaultCommander from "./functions/makeDefaultCommander";
 import { AccountOrder } from "../../../../atoms/order";
 import { UserSetting } from "../../../../atoms/atoms";
 import useModal from "../../../../CustomHooks/Modal/useModal";
+import makeNewAccount from "./functions/makeNewAccount";
 
 const Container = styled.div`
   display: flex;
@@ -73,7 +72,7 @@ const AddAccount = () => {
     const data = await fetchSearchAccount(inputValue);
     setOption((prev) => ({
       ...prev,
-      fetchedCharacters: data ?? [],
+      fetchedCharacters: SortByLevel(data) ?? [],
       isNull: data === null,
     }));
   };
@@ -89,11 +88,8 @@ const AddAccount = () => {
   };
 
   const AddAccountHandler = () => {
-    const AccountState = MakeAccountState(SortByLevel(fetchedCharacters));
-    const AccountOwner = SortByLevel(fetchedCharacters)[0].CharacterName;
-    makeDefaultCommander();
     setUserSetting((prev) => {
-      return { ...prev };
+      return { ...prev, ...makeNewAccount(fetchedCharacters) };
     });
     closeModal();
   };
