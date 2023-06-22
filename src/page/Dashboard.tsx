@@ -3,12 +3,7 @@ import styled from "styled-components";
 import Modal from "../components/Ui/Modal/Modal";
 import { useEffect } from "react";
 import { useRecoilValue } from "recoil";
-import {
-  CheckBoxConfig,
-  ContentsState,
-  AccountState,
-  ContentsFrequency,
-} from "../atoms/atoms";
+import { ContentsState, AccountState, ContentsFrequency } from "../atoms/atoms";
 import { AccountOrder, ContentsOrder } from "../atoms/order";
 import DragAccounts from "../components/DashBoard/DragAccounts/DragAccounts";
 
@@ -20,7 +15,7 @@ function Dashboard() {
   // useEffect(() => {
   //   localStorage.setItem("myAtom", "asdd");
   // }, []);
-  const checkBoxConfig = useRecoilValue(CheckBoxConfig);
+
   const contentsState = useRecoilValue(ContentsState);
   const contentsOrder = useRecoilValue(ContentsOrder);
   const accountOrder = useRecoilValue(AccountOrder);
@@ -28,9 +23,6 @@ function Dashboard() {
   const contentsFrequency = useRecoilValue(ContentsFrequency);
 
   useEffect(() => {
-    console.log("checkBoxConfig");
-    console.log(checkBoxConfig);
-
     console.log("contentsState");
     console.log(contentsState);
 
@@ -49,7 +41,6 @@ function Dashboard() {
     console.log("-------------------------");
     console.log("-------------------------");
   }, [
-    checkBoxConfig,
     contentsState,
     contentsOrder,
     contentsFrequency,
@@ -60,7 +51,7 @@ function Dashboard() {
     <>
       <Modal />
       <DashboardStyle>
-        <HeaderBox />
+        {/* <HeaderBox /> */}
         <DragAccounts />
       </DashboardStyle>
     </>

@@ -29,26 +29,22 @@ interface ICharacterSettings {
 export interface ICharacterState {
   [Character: string]: ICharacterSettings;
 }
-export interface IAccountState {
-  [Account: string]: ICharacterState;
-}
-export const AccountState = atom<IAccountState>({
-  key: "AccountState",
-  default: {},
-});
-
 export interface IContentState {
   type: "Default" | "Custom";
   isVisible: boolean;
 }
-export interface IContents {
+export interface IAllContents {
   [ContentsName: string]: IContentState;
 }
-export interface IContentsState {
-  [AccountOwner: string]: IContents;
+export interface IAccountState {
+  ["AllContentState"]: IAllContents;
+  ["CharacterState"]: ICharacterState;
 }
-export const ContentsState = atom<IContentsState>({
-  key: "ContentsState",
+export interface IUserSetting {
+  [Account: string]: IAccountState;
+}
+export const UserSetting = atom<IUserSetting>({
+  key: "UserSetting",
   default: {},
 });
 

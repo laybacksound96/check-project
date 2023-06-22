@@ -1,11 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import styled, { keyframes, css } from "styled-components";
-import {
-  ContentsState,
-  CheckBoxConfig,
-  IContentsState,
-} from "../../../../atoms/atoms";
+import { ContentsState, IContentsState } from "../../../../atoms/atoms";
 
 import { ModalState } from "../../../../atoms/modal";
 
@@ -82,7 +78,7 @@ const AddContent = () => {
     },
     setModalState,
   ] = useRecoilState(ModalState);
-  const setCheckBoxConfig = useSetRecoilState(CheckBoxConfig);
+
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -109,23 +105,23 @@ const AddContent = () => {
 
       return { ...copiedPrev };
     });
-    setCheckBoxConfig((prev) => {
-      const copiedCheckBoxConfig = { ...prev };
+    // setCheckBoxConfig((prev) => {
+    //   const copiedCheckBoxConfig = { ...prev };
 
-      for (let CharacterName in copiedCheckBoxConfig) {
-        const copiedContents = { ...copiedCheckBoxConfig[CharacterName] };
-        copiedContents[`${inputValue}`] = {
-          isGoldContents: false,
-          isCleared: false,
-          isVisible: true,
-          isActivated: true,
-          Gates: [],
-        };
-        copiedCheckBoxConfig[CharacterName] = copiedContents;
-      }
+    //   for (let CharacterName in copiedCheckBoxConfig) {
+    //     const copiedContents = { ...copiedCheckBoxConfig[CharacterName] };
+    //     copiedContents[`${inputValue}`] = {
+    //       isGoldContents: false,
+    //       isCleared: false,
+    //       isVisible: true,
+    //       isActivated: true,
+    //       Gates: [],
+    //     };
+    //     copiedCheckBoxConfig[CharacterName] = copiedContents;
+    //   }
 
-      return copiedCheckBoxConfig;
-    });
+    //   return copiedCheckBoxConfig;
+    // });
 
     setModalState((prev) => {
       const copiedPrev = { ...prev };
