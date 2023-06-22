@@ -4,7 +4,7 @@ import Modal from "../components/Ui/Modal/Modal";
 import { useEffect } from "react";
 import { useRecoilValue } from "recoil";
 import { ContentsFrequency, UserSetting } from "../atoms/atoms";
-import { AccountOrder, ContentsOrder } from "../atoms/order";
+import { AccountOrder } from "../atoms/order";
 import DragAccounts from "../components/DashBoard/DragAccounts/DragAccounts";
 
 const DashboardStyle = styled.div`
@@ -18,7 +18,6 @@ function Dashboard() {
 
   const userSetting = useRecoilValue(UserSetting);
   const contentsFrequency = useRecoilValue(ContentsFrequency);
-  const contentsOrder = useRecoilValue(ContentsOrder);
   const accountOrder = useRecoilValue(AccountOrder);
 
   useEffect(() => {
@@ -31,12 +30,9 @@ function Dashboard() {
     console.log("accountOrder.");
     console.log(accountOrder);
 
-    console.log("contentsOrder");
-    console.log(contentsOrder);
-
     console.log("-------------------------");
     console.log("-------------------------");
-  }, [userSetting, contentsOrder, contentsFrequency, accountOrder]);
+  }, [userSetting, contentsFrequency, accountOrder]);
   return (
     <>
       <Modal />
