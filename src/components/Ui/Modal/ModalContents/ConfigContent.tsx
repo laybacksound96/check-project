@@ -1,15 +1,25 @@
 import { useRecoilState, useRecoilValue } from "recoil";
 import { ModalState } from "../../../../atoms/modal";
 import { AccountState, ContentsState } from "../../../../atoms/atoms";
-import { Container, GridContainer } from "./ConfigAccount";
+import { GridContainer } from "./ConfigAccount";
 import styled from "styled-components";
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
 import { faGear } from "@fortawesome/free-solid-svg-icons";
+import DangerZone from "./components/DangerZone";
+
 interface IStyel {
   isVisible: boolean;
 }
+const Container = styled.div`
+  width: auto;
+  height: 60vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  overflow-y: auto;
+`;
+
 const Character = styled.div<IStyel>`
   opacity: ${(props) => (props.isVisible ? "100%" : "20%")};
   display: flex;
@@ -60,6 +70,7 @@ const NameContainer = styled.div`
     }
   }
 `;
+
 const ContentList = styled.div`
   display: flex;
   flex-direction: column;
@@ -123,55 +134,58 @@ export const ConfigContent = () => {
     });
   };
   return (
-    <Container>
-      <GridContainer>
-        <ContentList>
-          <header>
-            <FontAwesomeIcon icon={faGear} />
-            <span>캐릭터 표시 설정</span>
-          </header>
-          {Object.keys(accountState[AccountName]).map((character) => {
-            const { CharacterClassName, ItemMaxLevel, isVisible } =
-              accountState[AccountName][character];
-            return (
-              <Character key={character} isVisible={isVisible}>
-                <NameContainer>
-                  {character}
-                  <span>{CharacterClassName}</span>
-                  <span>Lv {ItemMaxLevel}</span>
-                </NameContainer>
-                <ButtonContainer>
-                  <FontAwesomeIcon
-                    onClick={() => handleAccountVisible(character)}
-                    icon={isVisible ? faEye : faEyeSlash}
-                  />
-                </ButtonContainer>
-              </Character>
-            );
-          })}
-        </ContentList>
-        <ContentList>
-          <header>
-            <FontAwesomeIcon icon={faGear} />
-            <span>컨텐츠 표시 설정</span>
-          </header>
-          {Object.keys(contentsState[AccountName]).map((contentName) => {
-            const { isVisible } = contentsState[AccountName][contentName];
-            return (
-              <Character key={contentName} isVisible={isVisible}>
-                <NameContainer>{contentName}</NameContainer>
-                <ButtonContainer>
-                  <FontAwesomeIcon
-                    onClick={() => handleContentVisible(contentName)}
-                    icon={isVisible ? faEye : faEyeSlash}
-                  />
-                </ButtonContainer>
-              </Character>
-            );
-          })}
-        </ContentList>
-      </GridContainer>
-    </Container>
+    <>
+      <Container>
+        <GridContainer>
+          <ContentList>
+            <header>
+              <FontAwesomeIcon icon={faGear} />
+              <span>캐릭터 표시 설정</span>
+            </header>
+            {Object.keys(accountState[AccountName]).map((character) => {
+              const { CharacterClassName, ItemMaxLevel, isVisible } =
+                accountState[AccountName][character];
+              return (
+                <Character key={character} isVisible={isVisible}>
+                  <NameContainer>
+                    {character}
+                    <span>{CharacterClassName}</span>
+                    <span>Lv {ItemMaxLevel}</span>
+                  </NameContainer>
+                  <ButtonContainer>
+                    <FontAwesomeIcon
+                      onClick={() => handleAccountVisible(character)}
+                      icon={isVisible ? faEye : faEyeSlash}
+                    />
+                  </ButtonContainer>
+                </Character>
+              );
+            })}
+          </ContentList>
+          <ContentList>
+            <header>
+              <FontAwesomeIcon icon={faGear} />
+              <span>컨텐츠 표시 설정</span>
+            </header>
+            {Object.keys(contentsState[AccountName]).map((contentName) => {
+              const { isVisible } = contentsState[AccountName][contentName];
+              return (
+                <Character key={contentName} isVisible={isVisible}>
+                  <NameContainer>{contentName}</NameContainer>
+                  <ButtonContainer>
+                    <FontAwesomeIcon
+                      onClick={() => handleContentVisible(contentName)}
+                      icon={isVisible ? faEye : faEyeSlash}
+                    />
+                  </ButtonContainer>
+                </Character>
+              );
+            })}
+          </ContentList>
+        </GridContainer>
+      </Container>
+      <DangerZone />
+    </>
   );
 };
 

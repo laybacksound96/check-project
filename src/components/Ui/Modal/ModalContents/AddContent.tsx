@@ -12,7 +12,7 @@ import { ModalState } from "../../../../atoms/modal";
 interface IStyle {
   isDisabled: boolean;
 }
-const vibration = keyframes`
+export const vibration = keyframes`
     from {
       transform: translateX(1%);
     }
