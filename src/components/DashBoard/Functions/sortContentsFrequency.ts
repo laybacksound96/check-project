@@ -2,7 +2,9 @@ import { IContentsFrequency } from "../../../atoms/atoms";
 import { IData } from "../../Ui/Modal/ModalContents/functions/makeActivatedAndDifficulty";
 import commander from "../../Ui/Modal/ModalContents/functions/commander.json";
 
-const sortContentsFrequency = (contentsFrequency: IContentsFrequency) => {
+const sortContentsFrequency = (
+  contentsFrequency: IContentsFrequency
+): string[] => {
   const keys = Object.keys(contentsFrequency);
   const commanderData: IData = commander;
 
@@ -12,8 +14,6 @@ const sortContentsFrequency = (contentsFrequency: IContentsFrequency) => {
   }
 
   keys.sort((a, b) => {
-    // 첫 번째 정렬 기준인 특정 키의 위치 비교
-
     const aIndex = reverseData.indexOf(contentsFrequency[a].ContentsName);
     const bIndex = reverseData.indexOf(contentsFrequency[b].ContentsName);
     if (aIndex !== -1 && bIndex !== -1) {

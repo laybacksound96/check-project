@@ -1,10 +1,6 @@
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { ModalState } from "../../../../atoms/modal";
-import {
-  AccountState,
-  CheckBoxConfig,
-  ContentsState,
-} from "../../../../atoms/atoms";
+import { UserSetting } from "../../../../atoms/atoms";
 import { GridContainer } from "./ConfigAccount";
 import styled from "styled-components";
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
@@ -12,6 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGear } from "@fortawesome/free-solid-svg-icons";
 import DangerZone from "./components/DangerZone";
 import useModal from "../../../../CustomHooks/Modal/useModal";
+import useCharacterSettings from "../../../../CustomHooks/UserSetting/useCharacterSettings";
 
 interface IStyel {
   isVisible: boolean;
@@ -99,59 +96,9 @@ const ContentList = styled.div`
   }
 `;
 export const ConfigContent = () => {
-  const [, closeModal] = useModal("CONFIG_CONTENT");
-  const {
-    modalProp: { AccountName },
-  } = useRecoilValue(ModalState);
-  const [accountState, setAccountState] = useRecoilState(AccountState);
-  const [contentsState, setContentsState] = useRecoilState(ContentsState);
-  const setCheckboxConfig = useSetRecoilState(CheckBoxConfig);
-  const handleAccountVisible = (CharacterName: string) => {
-    setAccountState((prev) => {
-      const currentVisible = prev[AccountName][CharacterName].isVisible;
-      const copiedPrev = {
-        ...prev,
-        [AccountName]: {
-          ...prev[AccountName],
-          [CharacterName]: {
-            ...prev[AccountName][CharacterName],
-            isVisible: !currentVisible,
-          },
-        },
-      };
-
-      return copiedPrev;
-    });
-  };
-  const handleContentVisible = (CharacterName: string) => {
-    setContentsState((prev) => {
-      const currentVisible = prev[AccountName][CharacterName].isVisible;
-      const copiedPrev = {
-        ...prev,
-        [AccountName]: {
-          ...prev[AccountName],
-          [CharacterName]: {
-            ...prev[AccountName][CharacterName],
-            isVisible: !currentVisible,
-          },
-        },
-      };
-      return copiedPrev;
-    });
-  };
-  const handleDelete = () => {
-    setAccountState((prev) => {
-      const copiedPrev = { ...prev };
-      delete copiedPrev[`${AccountName}`];
-      return copiedPrev;
-    });
-    setContentsState((prev) => {
-      const copiedPrev = { ...prev };
-      delete copiedPrev[`${AccountName}`];
-      return copiedPrev;
-    });
-    closeModal();
-  };
+  const [userSetting, setUserSetting] = useRecoilState(UserSetting);
+  const [, closeModal, { AccountName }] = useModal();
+  function handleDelete() {}
   return (
     <>
       <Container>
