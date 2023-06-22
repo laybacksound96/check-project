@@ -13,7 +13,7 @@ import {
 import {
   useIsGoldContents,
   useIsVisible,
-} from "../../../../../CustomHooks/UserSetting/CustomHooks";
+} from "../../../../../CustomHooks/UserSetting/useAllContentsVisible";
 
 interface IStyel {
   isVisibled: boolean;

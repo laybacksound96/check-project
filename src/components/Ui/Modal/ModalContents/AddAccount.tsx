@@ -86,7 +86,6 @@ const AddAccount = () => {
       isNull: false,
     }));
   };
-
   const AddAccountHandler = () => {
     const AccountName = fetchedCharacters[0].CharacterName;
     setUserSetting((prev) => {
@@ -98,11 +97,11 @@ const AddAccount = () => {
     ]);
     closeModal();
   };
-
   useEffect(() => {
     setIsDisabled(() => IsDisabled(isDupplicated, isNull, isInValid));
   }, [isDupplicated, isNull, isInValid]);
 
+  useEffect(() => {}, []);
   return (
     <Container>
       <form>
@@ -121,6 +120,7 @@ const AddAccount = () => {
         >
           검색
         </button>
+        <div onClick={() => {}}>test</div>
       </form>
       {isInValid && <Error>검색하려는 이름이 유효하지 않아요</Error>}
       {isDupplicated && <Error>같은 이름이 이미 일정에 있어요</Error>}

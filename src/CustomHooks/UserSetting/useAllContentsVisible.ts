@@ -1,13 +1,14 @@
 import { RecoilState, useRecoilState } from "recoil";
 import { IUserSetting } from "../../atoms/atoms";
 
-export function useAllContentsVisible(
+function useAllContentsVisible(
   atom: RecoilState<IUserSetting>,
   AccountName: string,
   ContentName: string
 ): [boolean, () => void] {
   const [UserSetting, setUserSetting] = useRecoilState<IUserSetting>(atom);
   const { isVisible } = UserSetting[AccountName].AllContentState[ContentName];
+
   const setNewValue = (): void => {
     setUserSetting((prev) => {
       const copiedPrev: IUserSetting = {
@@ -28,3 +29,5 @@ export function useAllContentsVisible(
   };
   return [isVisible, setNewValue];
 }
+
+export default useAllContentsVisible;
