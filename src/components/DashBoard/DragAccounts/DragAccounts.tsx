@@ -50,7 +50,7 @@ const AddAccountBtn = styled.button`
 
 const DragAccounts = () => {
   const [accountOrder, setAccountOrder] = useRecoilState(AccountOrder);
-  const [openModal] = useModal("ADD_ACCOUNT");
+  const [openModal] = useModal();
 
   const dragAccountHandler = (dragInfo: DropResult) => {
     const { destination, source } = dragInfo;
@@ -67,38 +67,44 @@ const DragAccounts = () => {
 
   return (
     <DragBoxStyle>
-      {/* <DragDropContext onDragEnd={dragAccountHandler}>
+      <DragDropContext onDragEnd={dragAccountHandler}>
         <Droppable droppableId="accounts" direction="vertical">
           {(provided) => (
             <AccountStyle ref={provided.innerRef} {...provided.droppableProps}>
-              {accountOrder.map(({ AccountName, CharacterOrder }, index) => (
-                <Draggable
-                  draggableId={`draggableID_${AccountName}`}
-                  key={`draggableID_${AccountName}`}
-                  index={index}
-                >
-                  {(provided) => (
-                    <div
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      style={AxisLocker(provided.draggableProps.style!, false)}
-                    >
-                      <DragCharacters
-                        DragHandleProps={provided.dragHandleProps}
-                        AccountName={AccountName}
-                        AccountIndex={index}
-                        CharacterOrder={CharacterOrder}
-                      />
-                    </div>
-                  )}
-                </Draggable>
-              ))}
+              {accountOrder.map(
+                ({ AccountName, CharacterOrder, ContentsOrder }, index) => (
+                  <Draggable
+                    draggableId={`draggableID_${AccountName}`}
+                    key={`draggableID_${AccountName}`}
+                    index={index}
+                  >
+                    {(provided) => (
+                      <div
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        style={AxisLocker(
+                          provided.draggableProps.style!,
+                          false
+                        )}
+                      >
+                        <DragCharacters
+                          DragHandleProps={provided.dragHandleProps}
+                          AccountName={AccountName}
+                          AccountIndex={index}
+                          CharacterOrder={CharacterOrder}
+                          ContentsOrder={ContentsOrder}
+                        />
+                      </div>
+                    )}
+                  </Draggable>
+                )
+              )}
               {provided.placeholder}
             </AccountStyle>
           )}
         </Droppable>
-      </DragDropContext> */}
-      <AddAccountBtn onClick={() => openModal()}>
+      </DragDropContext>
+      <AddAccountBtn onClick={() => openModal("ADD_ACCOUNT")}>
         + add new account?
       </AddAccountBtn>
     </DragBoxStyle>

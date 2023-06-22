@@ -1,11 +1,13 @@
 import { useRecoilState } from "recoil";
 import { UserSetting } from "../../atoms/atoms";
-
-function useCharacterSettings(
-  Key: "isGoldContents" | "isCleared" | "isVisible",
-  AccountName: string,
-  CharacterName: string,
-  ContentName: string
+interface Info {
+  AccountName: string;
+  CharacterName: string;
+  ContentName: string;
+}
+function useConfigObject(
+  Key: "isGoldContents" | "isCleared" | "isVisible" | "isActivated",
+  { AccountName, CharacterName, ContentName }: Info
 ): [boolean, () => void] {
   const [userSetting, setUserSetting] = useRecoilState(UserSetting);
   const value =
@@ -39,4 +41,4 @@ function useCharacterSettings(
   return [value, setter];
 }
 
-export default useCharacterSettings;
+export default useConfigObject;

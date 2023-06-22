@@ -1,10 +1,8 @@
 import { faSquare, faSquareCheck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
 import styled from "styled-components";
 import { dragIcon } from "../../../Settings";
-import { useRecoilValue } from "recoil";
-import { AccountState } from "../../../atoms/atoms";
+import useConfigObject from "../../../CustomHooks/UserSetting/useConfigObject";
 
 interface IStyle {
   isVisible: boolean;
@@ -32,7 +30,6 @@ const CheckBox = styled.div<IStyle>`
   }
 `;
 interface ICheckboxProps {
-  CheckBoxOnclick: (char: string, cont: string) => void;
   AccountName: string;
   CharacterName: string;
   ContentName: string;
@@ -41,23 +38,16 @@ interface ICheckboxProps {
 
 function CheckBoxButton({
   AccountName,
-  CheckBoxOnclick,
   CharacterName,
   ContentName,
   Color,
 }: ICheckboxProps) {
-  const {
-    [AccountName]: {
-      [CharacterName]: {
-        Contents: {
-          [ContentName]: { isCleared, isActivated, isVisible },
-        },
-      },
-    },
-  } = useRecoilValue(AccountState);
+  const info = { AccountName, CharacterName, ContentName };
+  const [isActivated] = useConfigObject("isActivated", info);
+  const [isVisible] = useConfigObject("isVisible", info);
+  const [isCleared] = useConfigObject("isCleared", info);
   function onClickHandler() {
     if (!isVisible || !isActivated) return;
-    CheckBoxOnclick(CharacterName, ContentName);
   }
 
   return (

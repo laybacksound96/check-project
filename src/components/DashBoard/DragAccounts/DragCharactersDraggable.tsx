@@ -1,14 +1,15 @@
 import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { faEye } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { AccountState } from "../../../atoms/atoms";
+import { UserSetting } from "../../../atoms/atoms";
 import React from "react";
 import { Draggable } from "react-beautiful-dnd";
 import styled from "styled-components";
 import { AxisLocker } from "../Functions/AxisLocker";
 import { dragIcon } from "../../../Settings";
-import { useRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import useModal from "../../../CustomHooks/Modal/useModal";
+import useCharacterSettings from "../../../CustomHooks/UserSetting/useCharacterSettings";
 
 export const Character = styled.div`
   display: flex;
@@ -73,33 +74,19 @@ function DragCharactersDraggable({
   index,
   AccountName,
 }: IProps) {
-  const [openModal] = useModal("CONFIG_ACCOUNT");
-  const [
-    {
-      [`${AccountName}`]: {
-        [`${CharacterName}`]: { ItemMaxLevel, CharacterClassName },
+  const [ConfigAccount] = useModal();
+  const {
+    [AccountName]: {
+      CharacterState: {
+        [CharacterName]: { ItemMaxLevel, CharacterClassName },
       },
     },
-    setAccountState,
-  ] = useRecoilState(AccountState);
-
-  const handleVisible = () => {
-    setAccountState((prev) => {
-      const currentVisible = prev[AccountName][CharacterName].isVisible;
-      const copiedPrev = {
-        ...prev,
-        [AccountName]: {
-          ...prev[AccountName],
-          [CharacterName]: {
-            ...prev[AccountName][CharacterName],
-            isVisible: !currentVisible,
-          },
-        },
-      };
-
-      return copiedPrev;
-    });
-  };
+  } = useRecoilValue(UserSetting);
+  const [, SetIsVisible] = useCharacterSettings(
+    "isVisible",
+    AccountName,
+    CharacterName
+  );
 
   return (
     <Draggable draggableId={boardId} index={index}>
@@ -116,9 +103,14 @@ function DragCharactersDraggable({
               <span>Lv {ItemMaxLevel}</span>
             </NameContainer>
             <ButtonContainer>
-              <FontAwesomeIcon onClick={handleVisible} icon={faEye} />
+              <FontAwesomeIcon onClick={() => SetIsVisible()} icon={faEye} />
               <FontAwesomeIcon
-                onClick={() => openModal({ AccountName, CharacterName })}
+                onClick={() =>
+                  ConfigAccount("CONFIG_ACCOUNT", {
+                    AccountName,
+                    CharacterName,
+                  })
+                }
                 icon={faGear}
                 size="lg"
               />

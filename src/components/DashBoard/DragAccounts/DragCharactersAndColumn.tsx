@@ -12,18 +12,19 @@ import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import DragCharactersDraggable from "./DragCharactersDraggable";
 import { dragIcon } from "../../../Settings";
+import { ContentsFrequency, UserSetting } from "../../../atoms/atoms";
 import {
-  ContentsFrequency,
-  AccountState,
-  ContentsState,
-  IAccountState,
-} from "../../../atoms/atoms";
-import { AccountOrder, ContentsOrder } from "../../../atoms/order";
+  AccountOrder,
+  IAccountOrder,
+  ICharacterOrder,
+  IContentsOrder,
+} from "../../../atoms/order";
 import { AxisLocker } from "../Functions/AxisLocker";
 import getColorInFrequencyCounter from "../Functions/getColorFrequencyCounter";
 import CheckBoxButton from "./CheckBoxButton";
 import useModal from "../../../CustomHooks/Modal/useModal";
 import isAllTrue from "../Functions/isAllTrue";
+import useConfigObject from "../../../CustomHooks/UserSetting/useConfigObject";
 
 interface Istyle {
   isHovered: boolean;
@@ -94,9 +95,8 @@ const Name = styled.div`
   padding: 10px;
   min-width: ${dragIcon.icon.edgeLength}px;
   height: ${dragIcon.icon.edgeLength}px;
-
-  border-radius: 5px;
   font-size: ${dragIcon.column.fontSize}px;
+  border-radius: 5px;
   &:hover {
     background-color: rgba(255, 255, 255, 0.231);
     transition: ease-in-out 0.1s;
@@ -109,7 +109,8 @@ const ColumnContainer = styled.div`
 interface IProps {
   DragHandleProps: DraggableProvidedDragHandleProps | null | undefined;
   AccountName: string;
-  CharacterOrder: string[];
+  CharacterOrder: ICharacterOrder;
+  ContentsOrder: IContentsOrder;
   AccountIndex: number;
 }
 
@@ -117,115 +118,82 @@ function DragCharacters({
   DragHandleProps,
   AccountName,
   CharacterOrder,
+  ContentsOrder,
   AccountIndex,
 }: IProps) {
-  const [ConfigContent] = useModal("CONFIG_CONTENT");
-  const [AddContent] = useModal("ADD_CONTENT");
+  const [ConfigContent] = useModal();
+  const [AddContent] = useModal();
   const [isHovered, setIsHovered] = useState(false);
   const [accountOrder, setAccountOrder] = useRecoilState(AccountOrder);
-  const [contentsOrder, setContentsOrder] = useRecoilState(ContentsOrder);
-
-  const contentsState = useRecoilValue(ContentsState);
   const contentsFrequency = useRecoilValue(ContentsFrequency);
-  const [accountState, setAccountState] = useRecoilState(AccountState);
-
+  const userSetting = useRecoilValue(UserSetting);
   useEffect(() => {
     setAccountOrder((prev) => {
-      const order = {
+      const CharacterState = userSetting[AccountName].CharacterState;
+      const CharacterOrder: ICharacterOrder = Object.keys(
+        CharacterState
+      ).filter((name) => CharacterState[name].isVisible);
+      const order: IAccountOrder = {
         ...prev[AccountIndex],
-        CharacterOrder: Object.keys(accountState[AccountName]).filter(
-          (name) => accountState[AccountName][name].isVisible
-        ),
+        CharacterOrder,
       };
       const copiedPrev = [...prev];
       copiedPrev.splice(AccountIndex, 1);
       copiedPrev.splice(AccountIndex, 0, order);
       return copiedPrev;
     });
-  }, [AccountIndex, AccountName, accountState, setAccountOrder]);
-  useEffect(() => {
-    setContentsOrder((prev) => {
-      const { AccountName, CharacterOrder } = accountOrder[AccountIndex];
-      const characterObject = contentsState[AccountName];
+  }, [AccountIndex, AccountName, setAccountOrder, userSetting]);
+  // useEffect(() => {
+  //   setContentsOrder((prev) => {
+  //     const { AccountName, CharacterOrder } = accountOrder[AccountIndex];
+  //     const characterObject = contentsState[AccountName];
 
-      const array = Object.keys(characterObject).filter(
-        (contentName) =>
-          isAllTrue(contentName, CharacterOrder, accountState[AccountName]) &&
-          characterObject[contentName].isVisible
-      );
-      const copiedPrev = { ...prev, [`${AccountName}`]: array };
-      return copiedPrev;
-    });
-  }, [
-    AccountIndex,
-    AccountName,
-    accountOrder,
-    accountState,
-    contentsState,
-    setContentsOrder,
-  ]);
+  //     const array = Object.keys(characterObject).filter(
+  //       (contentName) =>
+  //         isAllTrue(contentName, CharacterOrder, accountState[AccountName]) &&
+  //         characterObject[contentName].isVisible
+  //     );
+  //     const copiedPrev = { ...prev, [`${AccountName}`]: array };
+  //     return copiedPrev;
+  //   });
+  // }, []);
   const dragCharacterHandler = (dragInfo: DropResult) => {
-    const { destination, source } = dragInfo;
-    if (!destination) return;
-    if (destination?.droppableId !== source.droppableId) return;
-    setAccountOrder((prev) => {
-      const copiedCharacterOrder = [...CharacterOrder];
-      const copiedObject = copiedCharacterOrder[source.index];
-      copiedCharacterOrder.splice(source.index, 1);
-      copiedCharacterOrder.splice(destination?.index, 0, copiedObject);
-
-      const copiedPrev = [...prev];
-      const target = {
-        ...copiedPrev[AccountIndex],
-        CharacterOrder: copiedCharacterOrder,
-      };
-      copiedPrev.splice(AccountIndex, 1, target);
-
-      return copiedPrev;
-    });
-    return;
+    // const { destination, source } = dragInfo;
+    // if (!destination) return;
+    // if (destination?.droppableId !== source.droppableId) return;
+    // setAccountOrder((prev) => {
+    //   const copiedCharacterOrder = [...CharacterOrder];
+    //   const copiedObject = copiedCharacterOrder[source.index];
+    //   copiedCharacterOrder.splice(source.index, 1);
+    //   copiedCharacterOrder.splice(destination?.index, 0, copiedObject);
+    //   const copiedPrev = [...prev];
+    //   const target = {
+    //     ...copiedPrev[AccountIndex],
+    //     CharacterOrder: copiedCharacterOrder,
+    //   };
+    //   copiedPrev.splice(AccountIndex, 1, target);
+    //   return copiedPrev;
+    // });
+    // return;
   };
   const dragContentHandler = (dragInfo: DropResult) => {
-    const { destination, source } = dragInfo;
-    if (!destination) return;
-    if (destination?.droppableId === source.droppableId) {
-      setContentsOrder((prev) => {
-        const copiedArray = [...prev[AccountName]];
+    // const { destination, source } = dragInfo;
+    // if (!destination) return;
+    // if (destination?.droppableId === source.droppableId) {
+    //   setContentsOrder((prev) => {
+    //     const copiedArray = [...prev[AccountName]];
 
-        copiedArray.splice(source.index, 1);
-        copiedArray.splice(
-          destination?.index,
-          0,
-          prev[AccountName][source.index]
-        );
-        const copiedPrev = { ...prev, [AccountName]: [...copiedArray] };
-        return copiedPrev;
-      });
-    }
+    //     copiedArray.splice(source.index, 1);
+    //     copiedArray.splice(
+    //       destination?.index,
+    //       0,
+    //       prev[AccountName][source.index]
+    //     );
+    //     const copiedPrev = { ...prev, [AccountName]: [...copiedArray] };
+    //     return copiedPrev;
+    //   });
+    // }
     return;
-  };
-  const CheckBoxOnclick = (CharacterName: string, ContentName: string) => {
-    setAccountState((prev) => {
-      const state =
-        prev[AccountName][CharacterName].Contents[ContentName].isCleared;
-      const copiedPrev: IAccountState = {
-        ...prev,
-        [`${AccountName}`]: {
-          ...prev[AccountName],
-          [`${CharacterName}`]: {
-            ...prev[AccountName][CharacterName],
-            Contents: {
-              ...prev[AccountName][CharacterName].Contents,
-              [`${ContentName}`]: {
-                ...prev[AccountName][CharacterName].Contents[ContentName],
-                isCleared: !state,
-              },
-            },
-          },
-        },
-      };
-      return copiedPrev;
-    });
   };
 
   return (
@@ -241,7 +209,10 @@ function DragCharacters({
               <Character
                 isHovered={isHovered}
                 onClick={() =>
-                  ConfigContent({ AccountName, CharacterName: "" })
+                  ConfigContent("CONFIG_CONTENT", {
+                    AccountName,
+                    CharacterName: "",
+                  })
                 }
               >
                 <FontAwesomeIcon icon={faGear} size="lg" />
@@ -270,7 +241,7 @@ function DragCharacters({
                     {...provided.droppableProps}
                     style={{ display: "flex" }}
                   >
-                    {contentsOrder[AccountName].map((ContentName, index) => (
+                    {ContentsOrder.map((ContentName, index) => (
                       <Draggable
                         draggableId={ContentName}
                         index={index}
@@ -304,7 +275,6 @@ function DragCharacters({
                                     CharacterName={CharacterName}
                                     AccountName={AccountName}
                                     ContentName={ContentName}
-                                    CheckBoxOnclick={CheckBoxOnclick}
                                     Color={color}
                                   />
                                 );
@@ -317,7 +287,10 @@ function DragCharacters({
                     {provided.placeholder}
                     <Name
                       onClick={() =>
-                        AddContent({ AccountName, CharacterName: "" })
+                        AddContent("ADD_ACCOUNT", {
+                          AccountName,
+                          CharacterName: "",
+                        })
                       }
                     >
                       +
