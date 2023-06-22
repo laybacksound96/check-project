@@ -1,4 +1,5 @@
 import { atom } from "recoil";
+
 type IContentsOrder = string[];
 type ICharacterOrder = string[];
 

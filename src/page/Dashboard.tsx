@@ -6,6 +6,7 @@ import { useRecoilValue } from "recoil";
 import { ContentsFrequency, UserSetting } from "../atoms/atoms";
 import { AccountOrder } from "../atoms/order";
 import DragAccounts from "../components/DashBoard/DragAccounts/DragAccounts";
+import AddAccount from "../components/Ui/Modal/ModalContents/AddAccount";
 
 const DashboardStyle = styled.div`
   min-width: 800px;
@@ -35,10 +36,10 @@ function Dashboard() {
   }, [userSetting, contentsFrequency, accountOrder]);
   return (
     <>
-      <Modal />
+      {/* <Modal /> */}
       <DashboardStyle>
         {/* <HeaderBox /> */}
-        <DragAccounts />
+        <AddAccount />
       </DashboardStyle>
     </>
   );

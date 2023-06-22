@@ -23,13 +23,13 @@ const Modal = () => {
     <>
       {IsModalOpen.isModalOpen && (
         <ModalContainer onClose={closeModal}>
-          {IsModalOpen.modalType === ModalEnum.CONFIG_CONTENT && (
+          {/* {IsModalOpen.modalType === ModalEnum.CONFIG_CONTENT && (
             <ConfigContent />
           )}
           {IsModalOpen.modalType === ModalEnum.CONFIG_ACCOUNT && (
             <ConfigAccount />
           )}
-          {IsModalOpen.modalType === ModalEnum.ADD_CONTENT && <AddContent />}
+          {IsModalOpen.modalType === ModalEnum.ADD_CONTENT && <AddContent />} */}
           {IsModalOpen.modalType === ModalEnum.ADD_ACCOUNT && <AddAccount />}
         </ModalContainer>
       )}

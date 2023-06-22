@@ -67,7 +67,7 @@ const DragAccounts = () => {
 
   return (
     <DragBoxStyle>
-      <DragDropContext onDragEnd={dragAccountHandler}>
+      {/* <DragDropContext onDragEnd={dragAccountHandler}>
         <Droppable droppableId="accounts" direction="vertical">
           {(provided) => (
             <AccountStyle ref={provided.innerRef} {...provided.droppableProps}>
@@ -97,7 +97,7 @@ const DragAccounts = () => {
             </AccountStyle>
           )}
         </Droppable>
-      </DragDropContext>
+      </DragDropContext> */}
       <AddAccountBtn onClick={() => openModal()}>
         + add new account?
       </AddAccountBtn>
