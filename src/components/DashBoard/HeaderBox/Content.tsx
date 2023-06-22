@@ -3,8 +3,9 @@ import { useEffect, useState } from "react";
 import styled, { css, keyframes } from "styled-components";
 
 import getLowerLightnessColor from "../Functions/getLowerLightnessColor";
-import { CheckBoxConfig, IFrequencyContents } from "../../../atoms/atoms";
-import { useRecoilValue } from "recoil";
+import { IFrequencyContents } from "../../../atoms/atoms";
+
+import useConfigObject from "../../../CustomHooks/UserSetting/useConfigObject";
 interface IpropStyle {
   shouldAnimate: boolean;
   Color: string;
@@ -118,7 +119,7 @@ const Content = ({
   Color,
 }: IProps) => {
   const [shouldAnimate, setShouldAnimate] = useState(false);
-  const checkboxConfig = useRecoilValue(CheckBoxConfig);
+
   useEffect(() => {
     setShouldAnimate(true);
 
@@ -147,14 +148,10 @@ const Content = ({
       </HeaderContainer>
       <OwnerContainer Color={Color}>
         {RemainOwner.map((name, index) => {
-          const { isCleared } = checkboxConfig[`${name}`][ContentsName];
           return (
-            index < 4 &&
-            !isCleared && (
-              <OwnerBox key={index} Color={Color}>
-                {RemainOwner.length > 4 && index > 2 ? `${name} ...` : name}
-              </OwnerBox>
-            )
+            <OwnerBox key={index} Color={Color}>
+              {RemainOwner.length > 4 && index > 2 ? `${name} ...` : name}
+            </OwnerBox>
           );
         })}
       </OwnerContainer>
