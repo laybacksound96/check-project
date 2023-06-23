@@ -3,7 +3,9 @@ import { IFetchedCharacter } from "../AddAccount";
 import makeAccountState from "./makeCharacterSetting";
 import makeDefaultCommander from "./makeDefaultCommander";
 
-const makeNewAccount = (fetchedCharacters: IFetchedCharacter[]) => {
+const makeNewAccount = (
+  fetchedCharacters: IFetchedCharacter[]
+): IUserSetting => {
   const AccountOwner = fetchedCharacters[0].CharacterName;
   const AccountState = makeAccountState(fetchedCharacters);
   const result: IUserSetting = {

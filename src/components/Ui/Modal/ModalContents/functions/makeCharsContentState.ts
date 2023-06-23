@@ -1,7 +1,6 @@
 import { ICharsContentState, IGates } from "../../../../../atoms/userSetting";
 import CountGates from "./CountGates";
 import IsValidLevel from "./IsValidLevel";
-import calculateGoldContents from "./calculateGoldContents";
 import makeActivatedAndDifficulty from "./makeActivatedAndDifficulty";
 
 const makeCharsContentState = (
@@ -13,9 +12,9 @@ const makeCharsContentState = (
     const gateCount = CountGates(content);
     const DefaultObject: ICharsContentState = {
       isCleared: false,
-      isVisible: calculateGoldContents(level).includes(content),
+      isVisible: true,
       isActivated: IsValidLevel(content, level),
-      isGoldContents: calculateGoldContents(level).includes(content),
+      isGoldContents: false,
       Gates: [],
     };
     for (let gateNumber = 1; gateNumber < gateCount + 1; gateNumber++) {
