@@ -154,7 +154,36 @@ function DragCharacters({
     // }
     return;
   };
+  useEffect(() => {
+    setAccountOrder((prev) => {
+      const CharacterSetting = userSetting[AccountName].CharacterSetting;
+      const CharacterOrder: ICharacterOrder = Object.keys(
+        CharacterSetting
+      ).filter((name) => CharacterSetting[name].isVisible);
+      const order: IAccountOrder = {
+        ...prev[AccountIndex],
+        CharacterOrder,
+      };
+      const copiedPrev = [...prev];
+      copiedPrev.splice(AccountIndex, 1);
+      copiedPrev.splice(AccountIndex, 0, order);
+      return copiedPrev;
+    });
+  }, [AccountIndex, AccountName, setAccountOrder, userSetting]);
+  // useEffect(() => {
+  //   setContentsOrder((prev) => {
+  //     const { AccountName, CharacterOrder } = accountOrder[AccountIndex];
+  //     const characterObject = contentsState[AccountName];
 
+  //     const array = Object.keys(characterObject).filter(
+  //       (contentName) =>
+  //         isAllTrue(contentName, CharacterOrder, accountState[AccountName]) &&
+  //         characterObject[contentName].isVisible
+  //     );
+  //     const copiedPrev = { ...prev, [`${AccountName}`]: array };
+  //     return copiedPrev;
+  //   });
+  // }, []);
   return (
     <DragDropContext onDragEnd={dragCharacterHandler}>
       <Droppable droppableId={AccountName}>
@@ -189,7 +218,6 @@ function DragCharacters({
               })}
               {provided.placeholder}
             </div>
-
             <DragDropContext onDragEnd={dragContentHandler}>
               <Droppable droppableId="Column" direction="horizontal">
                 {(provided) => (
