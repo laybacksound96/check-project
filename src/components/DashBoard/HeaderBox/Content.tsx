@@ -1,11 +1,8 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import styled, { css, keyframes } from "styled-components";
-
 import getLowerLightnessColor from "../Functions/getLowerLightnessColor";
-import { IFrequencyContents } from "../../../atoms/userSetting";
-
-import useConfigObject from "../../../CustomHooks/UserSetting/useCharsContentSetting";
+import { IFrequencyContents } from "../../../atoms/frequency";
 interface IpropStyle {
   shouldAnimate: boolean;
   Color: string;
@@ -105,7 +102,6 @@ const OwnerBox = styled.span<IColorStyle>`
   margin: 2px;
   padding: 3px;
   font-size: 0.8rem;
-
   color: ${(props) => props.theme.TextColor_A};
   background-color: ${(props) => getLowerLightnessColor(props.Color, 20)};
   border-radius: 5px;

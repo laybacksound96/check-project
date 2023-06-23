@@ -1,12 +1,13 @@
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { ContentsFrequency, UserSetting } from "../../../atoms/userSetting";
+import { UserSetting } from "../../../atoms/userSetting";
 import { useEffect } from "react";
 import Content from "./Content";
 import React from "react";
 import sortContentsFrequency from "../Functions/sortContentsFrequency";
 import CalculateCheckbox from "../Functions/CalculateCheckbox";
 import { AccountOrder } from "../../../atoms/order";
+import { ContentsFrequency } from "../../../atoms/frequency";
 
 const ContainerStyle = styled.ul`
   display: grid;

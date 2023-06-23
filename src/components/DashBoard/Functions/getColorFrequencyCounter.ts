@@ -1,4 +1,4 @@
-import { IContentsFrequency } from "../../../atoms/userSetting";
+import { IContentsFrequency } from "../../../atoms/frequency";
 
 const getColorInFrequencyCounter = (
   obj: IContentsFrequency,

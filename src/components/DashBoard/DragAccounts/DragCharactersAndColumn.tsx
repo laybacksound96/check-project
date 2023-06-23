@@ -208,18 +208,17 @@ function DragCharacters({
                                 : ContentName}
                             </Name>
                             {CharacterOrder.map((CharacterName) => {
-                              const color = getColorInFrequencyCounter(
-                                contentsFrequency,
-                                ContentName,
-                                CharacterName
-                              );
                               return (
                                 <CheckBoxButton
                                   key={CharacterName + ContentName}
                                   CharacterName={CharacterName}
                                   AccountName={AccountName}
                                   ContentName={ContentName}
-                                  Color={color}
+                                  Color={getColorInFrequencyCounter(
+                                    contentsFrequency,
+                                    ContentName,
+                                    CharacterName
+                                  )}
                                 />
                               );
                             })}

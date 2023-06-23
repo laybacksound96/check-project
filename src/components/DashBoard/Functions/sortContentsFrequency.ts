@@ -1,6 +1,6 @@
-import { IContentsFrequency } from "../../../atoms/userSetting";
 import { IData } from "../../Ui/Modal/ModalContents/functions/makeActivatedAndDifficulty";
 import commander from "../../Ui/Modal/ModalContents/functions/commander.json";
+import { IContentsFrequency } from "../../../atoms/frequency";
 
 const sortContentsFrequency = (
   contentsFrequency: IContentsFrequency

@@ -1,8 +1,9 @@
-import { IContentsFrequency, IUserSetting } from "../../../atoms/userSetting";
+import { IUserSetting } from "../../../atoms/userSetting";
 import { IAccountOrder } from "../../../atoms/order";
 
 import CalculateGateDifficulty from "./CalculateGateDifficulty";
 import getRandomPastelColor from "./getRandomPastelColor";
+import { IContentsFrequency } from "../../../atoms/frequency";
 
 export const CalculateCheckbox = (
   AccountOrder: IAccountOrder[],
