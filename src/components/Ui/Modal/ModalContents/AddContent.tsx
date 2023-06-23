@@ -1,8 +1,11 @@
 import { useState, useRef, useEffect } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import styled, { keyframes, css } from "styled-components";
 
 import { ModalState } from "../../../../atoms/modal";
+import useContentsSetting from "../../../../CustomHooks/UserSetting/useContentsSetting";
+import { UserSetting } from "../../../../atoms/atoms";
+import useModal from "../../../../CustomHooks/Modal/useModal";
 
 interface IStyle {
   isDisabled: boolean;
@@ -69,15 +72,10 @@ const AddContent = () => {
   const [inputValue, setInputValue] = useState("");
   const [isdisabled, setIsdisabled] = useState(true);
   const [isDupplicated, setIsDupplicated] = useState(false);
-
-  const [contentState, setContentsState] = useRecoilState(ContentsState);
-  const [
-    {
-      modalProp: { AccountName },
-    },
-    setModalState,
-  ] = useRecoilState(ModalState);
-
+  const [, closeModal, { AccountName }] = useModal();
+  const {
+    [AccountName]: { ContentsSetting },
+  } = useRecoilValue(UserSetting);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -85,25 +83,25 @@ const AddContent = () => {
     inputRef.current.focus();
   }, []);
   const addContentHandler = () => {
-    if (Object.keys(contentState).find((elem) => elem === inputValue)) {
+    if (Object.keys(ContentsSetting).find((elem) => elem === inputValue)) {
       setIsDupplicated(true);
       setIsdisabled(true);
       return;
     }
-    setContentsState((prev) => {
-      const copiedPrev: IContentsState = {
-        ...prev,
-        [`${AccountName}`]: {
-          ...prev[`${AccountName}`],
-          [`${inputValue}`]: {
-            type: "Custom",
-            isVisible: true,
-          },
-        },
-      };
+    // setContentsState((prev) => {
+    //   const copiedPrev: IContentsState = {
+    //     ...prev,
+    //     [`${AccountName}`]: {
+    //       ...prev[`${AccountName}`],
+    //       [`${inputValue}`]: {
+    //         type: "Custom",
+    //         isVisible: true,
+    //       },
+    //     },
+    //   };
 
-      return { ...copiedPrev };
-    });
+    //   return { ...copiedPrev };
+    // });
     // setCheckBoxConfig((prev) => {
     //   const copiedCheckBoxConfig = { ...prev };
 
@@ -121,12 +119,7 @@ const AddContent = () => {
 
     //   return copiedCheckBoxConfig;
     // });
-
-    setModalState((prev) => {
-      const copiedPrev = { ...prev };
-      copiedPrev.isModalOpen = false;
-      return copiedPrev;
-    });
+    closeModal();
   };
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setIsDupplicated(false);

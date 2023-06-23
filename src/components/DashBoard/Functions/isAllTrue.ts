@@ -1,9 +1,9 @@
-import { ICharacterState } from "../../../atoms/atoms";
+import { ICharacterSetting } from "../../../atoms/atoms";
 
 function isAllTrue(
   ContentName: string,
   CharacterOrder: string[],
-  Content: ICharacterState
+  Content: ICharacterSetting
 ) {
   for (let index in CharacterOrder) {
     const CharacterName = CharacterOrder[index];

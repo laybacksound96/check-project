@@ -17,10 +17,10 @@ export const CalculateCheckbox = (
       for (let index in CharacterOrder) {
         const CharacterName = CharacterOrder[index];
         const { Gates, isCleared, isActivated, isVisible } =
-          UserSetting[AccountName].CharacterState[CharacterName].Contents[
+          UserSetting[AccountName].CharacterSetting[CharacterName].Contents[
             ContentName
           ];
-        const { type } = UserSetting[AccountName].AllContentState[ContentName];
+        const { type } = UserSetting[AccountName].ContentsSetting[ContentName];
         const resultName =
           type === "Default"
             ? `${ContentName}_${CalculateGateDifficulty(Gates).join("_")}`

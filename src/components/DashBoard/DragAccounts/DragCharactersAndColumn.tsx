@@ -129,7 +129,7 @@ function DragCharacters({
   const userSetting = useRecoilValue(UserSetting);
   useEffect(() => {
     setAccountOrder((prev) => {
-      const CharacterState = userSetting[AccountName].CharacterState;
+      const CharacterState = userSetting[AccountName].CharacterSetting;
       const CharacterOrder: ICharacterOrder = Object.keys(
         CharacterState
       ).filter((name) => CharacterState[name].isVisible);

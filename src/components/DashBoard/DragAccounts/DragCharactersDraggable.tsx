@@ -1,13 +1,11 @@
 import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { faEye } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { UserSetting } from "../../../atoms/atoms";
 import React from "react";
 import { Draggable } from "react-beautiful-dnd";
 import styled from "styled-components";
 import { AxisLocker } from "../Functions/AxisLocker";
 import { dragIcon } from "../../../Settings";
-import { useRecoilValue } from "recoil";
 import useModal from "../../../CustomHooks/Modal/useModal";
 import useCharacterSettings from "../../../CustomHooks/UserSetting/useCharacterSettings";
 
@@ -75,19 +73,10 @@ function DragCharactersDraggable({
   AccountName,
 }: IProps) {
   const [ConfigAccount] = useModal();
-  const {
-    [AccountName]: {
-      CharacterState: {
-        [CharacterName]: { ItemMaxLevel, CharacterClassName },
-      },
-    },
-  } = useRecoilValue(UserSetting);
-  const [, SetIsVisible] = useCharacterSettings(
-    "isVisible",
+  const [{ CharacterClassName, ItemMaxLevel }, setter] = useCharacterSettings(
     AccountName,
     CharacterName
   );
-
   return (
     <Draggable draggableId={boardId} index={index}>
       {(provided) => (
@@ -103,7 +92,10 @@ function DragCharactersDraggable({
               <span>Lv {ItemMaxLevel}</span>
             </NameContainer>
             <ButtonContainer>
-              <FontAwesomeIcon onClick={() => SetIsVisible()} icon={faEye} />
+              <FontAwesomeIcon
+                onClick={() => setter("isVisible")}
+                icon={faEye}
+              />
               <FontAwesomeIcon
                 onClick={() =>
                   ConfigAccount("CONFIG_ACCOUNT", {

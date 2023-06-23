@@ -48,7 +48,6 @@ function CheckBoxButton({
     if (!isVisible || !isActivated) return;
     setter("isCleared");
   }
-
   return (
     <CheckBox
       onClick={onClickHandler}
