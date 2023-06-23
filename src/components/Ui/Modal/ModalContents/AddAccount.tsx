@@ -9,7 +9,7 @@ import IsDisabled from "./functions/IsDisabled";
 import IsDupplicated from "./functions/IsDupplicated";
 import SortByLevel from "./functions/SortByLevel";
 import { AccountOrder } from "../../../../atoms/order";
-import { UserSetting } from "../../../../atoms/atoms";
+import { UserSetting } from "../../../../atoms/userSetting";
 import useModal from "../../../../CustomHooks/Modal/useModal";
 import makeNewAccount from "./functions/makeNewAccount";
 

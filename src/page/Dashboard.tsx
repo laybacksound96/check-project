@@ -3,19 +3,16 @@ import styled from "styled-components";
 import Modal from "../components/Ui/Modal/Modal";
 import { useEffect } from "react";
 import { useRecoilValue } from "recoil";
-import { ContentsFrequency, UserSetting } from "../atoms/atoms";
+import { UserSetting } from "../atoms/userSetting";
 import { AccountOrder } from "../atoms/order";
 import DragAccounts from "../components/DashBoard/DragAccounts/DragAccounts";
+import { ContentsFrequency } from "../atoms/frequency";
 
 const DashboardStyle = styled.div`
   min-width: 800px;
 `;
 
 function Dashboard() {
-  // useEffect(() => {
-  //   localStorage.setItem("myAtom", "asdd");
-  // }, []);
-
   const userSetting = useRecoilValue(UserSetting);
   const contentsFrequency = useRecoilValue(ContentsFrequency);
   const accountOrder = useRecoilValue(AccountOrder);

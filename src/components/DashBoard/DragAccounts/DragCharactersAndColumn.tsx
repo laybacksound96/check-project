@@ -5,26 +5,19 @@ import {
   DropResult,
   Droppable,
 } from "react-beautiful-dnd";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilValue } from "recoil";
 import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import DragCharactersDraggable from "./DragCharactersDraggable";
 import { dragIcon } from "../../../Settings";
-import { ContentsFrequency, UserSetting } from "../../../atoms/atoms";
-import {
-  AccountOrder,
-  IAccountOrder,
-  ICharacterOrder,
-  IContentsOrder,
-} from "../../../atoms/order";
+import { ICharacterOrder, IContentsOrder } from "../../../atoms/order";
 import { AxisLocker } from "../Functions/AxisLocker";
 import getColorInFrequencyCounter from "../Functions/getColorFrequencyCounter";
 import CheckBoxButton from "./CheckBoxButton";
 import useModal from "../../../CustomHooks/Modal/useModal";
-import isAllTrue from "../Functions/isAllTrue";
-import useConfigObject from "../../../CustomHooks/UserSetting/useCharsContentSetting";
+import { ContentsFrequency } from "../../../atoms/frequency";
 
 interface Istyle {
   isHovered: boolean;
@@ -111,7 +104,6 @@ interface IProps {
   AccountName: string;
   CharacterOrder: ICharacterOrder;
   ContentsOrder: IContentsOrder;
-  AccountIndex: number;
 }
 
 function DragCharacters({
@@ -119,14 +111,11 @@ function DragCharacters({
   AccountName,
   CharacterOrder,
   ContentsOrder,
-  AccountIndex,
 }: IProps) {
   const [ConfigContent] = useModal();
   const [AddContent] = useModal();
   const [isHovered, setIsHovered] = useState(false);
-  const [accountOrder, setAccountOrder] = useRecoilState(AccountOrder);
   const contentsFrequency = useRecoilValue(ContentsFrequency);
-  const userSetting = useRecoilValue(UserSetting);
 
   const dragCharacterHandler = (dragInfo: DropResult) => {
     const { destination, source } = dragInfo;
@@ -154,36 +143,7 @@ function DragCharacters({
     // }
     return;
   };
-  useEffect(() => {
-    setAccountOrder((prev) => {
-      const CharacterSetting = userSetting[AccountName].CharacterSetting;
-      const CharacterOrder: ICharacterOrder = Object.keys(
-        CharacterSetting
-      ).filter((name) => CharacterSetting[name].isVisible);
-      const order: IAccountOrder = {
-        ...prev[AccountIndex],
-        CharacterOrder,
-      };
-      const copiedPrev = [...prev];
-      copiedPrev.splice(AccountIndex, 1);
-      copiedPrev.splice(AccountIndex, 0, order);
-      return copiedPrev;
-    });
-  }, [AccountIndex, AccountName, setAccountOrder, userSetting]);
-  // useEffect(() => {
-  //   setContentsOrder((prev) => {
-  //     const { AccountName, CharacterOrder } = accountOrder[AccountIndex];
-  //     const characterObject = contentsState[AccountName];
 
-  //     const array = Object.keys(characterObject).filter(
-  //       (contentName) =>
-  //         isAllTrue(contentName, CharacterOrder, accountState[AccountName]) &&
-  //         characterObject[contentName].isVisible
-  //     );
-  //     const copiedPrev = { ...prev, [`${AccountName}`]: array };
-  //     return copiedPrev;
-  //   });
-  // }, []);
   return (
     <DragDropContext onDragEnd={dragCharacterHandler}>
       <Droppable droppableId={AccountName}>
@@ -247,24 +207,22 @@ function DragCharacters({
                                 ? `${ContentName.slice(0, 7)}...`
                                 : ContentName}
                             </Name>
-                            {accountOrder[AccountIndex].CharacterOrder.map(
-                              (CharacterName) => {
-                                const color = getColorInFrequencyCounter(
-                                  contentsFrequency,
-                                  ContentName,
-                                  CharacterName
-                                );
-                                return (
-                                  <CheckBoxButton
-                                    key={CharacterName + ContentName}
-                                    CharacterName={CharacterName}
-                                    AccountName={AccountName}
-                                    ContentName={ContentName}
-                                    Color={color}
-                                  />
-                                );
-                              }
-                            )}
+                            {CharacterOrder.map((CharacterName) => {
+                              const color = getColorInFrequencyCounter(
+                                contentsFrequency,
+                                ContentName,
+                                CharacterName
+                              );
+                              return (
+                                <CheckBoxButton
+                                  key={CharacterName + ContentName}
+                                  CharacterName={CharacterName}
+                                  AccountName={AccountName}
+                                  ContentName={ContentName}
+                                  Color={color}
+                                />
+                              );
+                            })}
                           </ColumnContainer>
                         )}
                       </Draggable>

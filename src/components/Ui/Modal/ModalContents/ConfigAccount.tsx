@@ -2,7 +2,7 @@ import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import ContentCard from "./components/ContentCard";
 import { ModalState } from "../../../../atoms/modal";
-import { UserSetting } from "../../../../atoms/atoms";
+import { UserSetting } from "../../../../atoms/userSetting";
 
 export const Container = styled.div`
   width: auto;

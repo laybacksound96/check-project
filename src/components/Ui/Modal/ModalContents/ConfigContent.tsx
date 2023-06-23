@@ -1,4 +1,4 @@
-import { UserSetting } from "../../../../atoms/atoms";
+import { UserSetting } from "../../../../atoms/userSetting";
 import { GridContainer } from "./ConfigAccount";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

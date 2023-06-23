@@ -1,4 +1,4 @@
-import { ICharsContentState, IGates } from "../../../../../atoms/atoms";
+import { ICharsContentState, IGates } from "../../../../../atoms/userSetting";
 import CountGates from "./CountGates";
 import IsValidLevel from "./IsValidLevel";
 import calculateGoldContents from "./calculateGoldContents";

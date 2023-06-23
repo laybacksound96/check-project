@@ -2,7 +2,7 @@ import makeCharsContentState from "./makeCharsContentState";
 import commander from "./commander.json";
 import { IData } from "./makeActivatedAndDifficulty";
 import { IFetchedCharacter } from "../AddAccount";
-import { ICharsContentSetting } from "../../../../../atoms/atoms";
+import { ICharsContentSetting } from "../../../../../atoms/userSetting";
 const makeCharsContentSetting = (
   Account: IFetchedCharacter[]
 ): ICharsContentSetting => {

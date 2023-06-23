@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useRecoilValue } from "recoil";
 import styled, { keyframes, css } from "styled-components";
-import { UserSetting } from "../../../../atoms/atoms";
+import { UserSetting } from "../../../../atoms/userSetting";
 import useModal from "../../../../CustomHooks/Modal/useModal";
 
 interface IStyle {

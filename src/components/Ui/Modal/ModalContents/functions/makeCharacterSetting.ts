@@ -1,4 +1,4 @@
-import { ICharacterSetting } from "../../../../../atoms/atoms";
+import { ICharacterSetting } from "../../../../../atoms/userSetting";
 import { IFetchedCharacter } from "../AddAccount";
 import SortByLevel from "./SortByLevel";
 import makeCheckboxState from "./makeCharsContentSetting";

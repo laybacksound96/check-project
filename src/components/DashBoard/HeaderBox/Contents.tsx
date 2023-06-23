@@ -1,6 +1,6 @@
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { ContentsFrequency, UserSetting } from "../../../atoms/atoms";
+import { ContentsFrequency, UserSetting } from "../../../atoms/userSetting";
 import { useEffect } from "react";
 import Content from "./Content";
 import React from "react";

@@ -1,5 +1,9 @@
 import { useRecoilState } from "recoil";
-import { IContentState, IUserSetting, UserSetting } from "../../atoms/atoms";
+import {
+  IContentState,
+  IUserSetting,
+  UserSetting,
+} from "../../atoms/userSetting";
 
 function useInsertContents(
   AccountName: string

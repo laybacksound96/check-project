@@ -1,4 +1,4 @@
-import { IUserSetting } from "../../../../../atoms/atoms";
+import { IUserSetting } from "../../../../../atoms/userSetting";
 import { IFetchedCharacter } from "../AddAccount";
 import makeAccountState from "./makeCharacterSetting";
 import makeDefaultCommander from "./makeDefaultCommander";

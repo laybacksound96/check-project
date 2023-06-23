@@ -47,21 +47,3 @@ export const UserSetting = atom<IUserSetting>({
   key: "UserSetting",
   default: {},
 });
-
-export interface IFrequencyContents {
-  [`ContentsName`]: string;
-  [`GateState`]: string[];
-  [`Frequency`]: number;
-  [`Owner`]: string[];
-  [`RemainOwner`]: string[];
-  [`Color`]: string;
-}
-
-export interface IContentsFrequency {
-  [contentKey: string]: IFrequencyContents;
-}
-
-export const ContentsFrequency = atom<IContentsFrequency>({
-  key: "IContentsFrequency",
-  default: {},
-});

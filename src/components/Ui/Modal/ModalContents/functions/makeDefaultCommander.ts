@@ -1,4 +1,4 @@
-import { IContentsSetting } from "../../../../../atoms/atoms";
+import { IContentsSetting } from "../../../../../atoms/userSetting";
 import { IData } from "./makeActivatedAndDifficulty";
 import commander from "./commander.json";
 

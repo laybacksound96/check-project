@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import styled, { css, keyframes } from "styled-components";
 
 import getLowerLightnessColor from "../Functions/getLowerLightnessColor";
-import { IFrequencyContents } from "../../../atoms/atoms";
+import { IFrequencyContents } from "../../../atoms/userSetting";
 
 import useConfigObject from "../../../CustomHooks/UserSetting/useCharsContentSetting";
 interface IpropStyle {

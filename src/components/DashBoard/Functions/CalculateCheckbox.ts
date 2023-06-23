@@ -1,4 +1,4 @@
-import { IContentsFrequency, IUserSetting } from "../../../atoms/atoms";
+import { IContentsFrequency, IUserSetting } from "../../../atoms/userSetting";
 import { IAccountOrder } from "../../../atoms/order";
 
 import CalculateGateDifficulty from "./CalculateGateDifficulty";
