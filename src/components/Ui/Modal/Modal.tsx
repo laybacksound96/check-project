@@ -4,7 +4,7 @@ import ModalContainer from "./ModalContainer";
 import AddAccount from "./ModalContents/AddAccount";
 import AddContent from "./ModalContents/AddContent";
 import ConfigAccount from "./ModalContents/ConfigAccount";
-import ConfigContent from "./ModalContents/ConfigContent";
+import ConfigContent from "./ModalContents/ConfigAccountSetting";
 
 const Modal = () => {
   const [IsModalOpen, setIsModalOpen] = useRecoilState(ModalState);

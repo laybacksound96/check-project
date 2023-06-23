@@ -20,19 +20,19 @@ function useCharsContentSetting(
     setUserSetting((prev) => {
       return {
         ...prev,
-        AccountName: {
+        [`${AccountName}`]: {
           ...prev[AccountName],
           CharacterSetting: {
             ...prev[AccountName].CharacterSetting,
-            CharacterName: {
+            [`${CharacterName}`]: {
               ...prev[AccountName].CharacterSetting[CharacterName],
               Contents: {
                 ...prev[AccountName].CharacterSetting[CharacterName].Contents,
-                ContentName: {
+                [`${ContentName}`]: {
                   ...prev[AccountName].CharacterSetting[CharacterName].Contents[
                     ContentName
                   ],
-                  [Key]: !value[Key],
+                  [`${Key}`]: !value[Key],
                 },
               },
             },

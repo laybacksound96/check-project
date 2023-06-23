@@ -90,6 +90,7 @@ const DragAccounts = () => {
                         <DragCharacters
                           DragHandleProps={provided.dragHandleProps}
                           AccountName={AccountName}
+                          AccountIndex={index}
                           CharacterOrder={CharacterOrder}
                           ContentsOrder={ContentsOrder}
                         />

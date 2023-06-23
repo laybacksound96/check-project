@@ -5,19 +5,25 @@ import {
   DropResult,
   Droppable,
 } from "react-beautiful-dnd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import DragCharactersDraggable from "./DragCharactersDraggable";
 import { dragIcon } from "../../../Settings";
-import { ICharacterOrder, IContentsOrder } from "../../../atoms/order";
+import {
+  AccountOrder,
+  IAccountOrder,
+  ICharacterOrder,
+  IContentsOrder,
+} from "../../../atoms/order";
 import { AxisLocker } from "../Functions/AxisLocker";
 import getColorInFrequencyCounter from "../Functions/getColorFrequencyCounter";
 import CheckBoxButton from "./CheckBoxButton";
 import useModal from "../../../CustomHooks/Modal/useModal";
 import { ContentsFrequency } from "../../../atoms/frequency";
+import { UserSetting } from "../../../atoms/userSetting";
 
 interface Istyle {
   isHovered: boolean;
@@ -104,6 +110,7 @@ interface IProps {
   AccountName: string;
   CharacterOrder: ICharacterOrder;
   ContentsOrder: IContentsOrder;
+  AccountIndex: number;
 }
 
 function DragCharacters({
@@ -111,12 +118,16 @@ function DragCharacters({
   AccountName,
   CharacterOrder,
   ContentsOrder,
+  AccountIndex,
 }: IProps) {
   const [ConfigContent] = useModal();
   const [AddContent] = useModal();
   const [isHovered, setIsHovered] = useState(false);
   const contentsFrequency = useRecoilValue(ContentsFrequency);
-
+  const {
+    [AccountName]: { ContentsSetting, CharacterSetting },
+  } = useRecoilValue(UserSetting);
+  const setAccountOrder = useSetRecoilState(AccountOrder);
   const dragCharacterHandler = (dragInfo: DropResult) => {
     const { destination, source } = dragInfo;
     if (!destination) return;
@@ -143,7 +154,27 @@ function DragCharacters({
     // }
     return;
   };
-
+  useEffect(() => {
+    const filteredArray = Object.keys(CharacterSetting).filter(
+      (name) => CharacterSetting[name].isVisible
+    );
+    setAccountOrder((prev) => {
+      const result: IAccountOrder = {
+        AccountName,
+        ContentsOrder,
+        CharacterOrder: filteredArray,
+      };
+      const copiedPrev = [...prev];
+      copiedPrev[AccountIndex] = result;
+      return copiedPrev;
+    });
+  }, [
+    AccountIndex,
+    AccountName,
+    CharacterSetting,
+    ContentsOrder,
+    setAccountOrder,
+  ]);
   return (
     <DragDropContext onDragEnd={dragCharacterHandler}>
       <Droppable droppableId={AccountName}>

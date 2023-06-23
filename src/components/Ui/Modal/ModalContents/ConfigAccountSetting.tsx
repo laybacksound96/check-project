@@ -40,7 +40,7 @@ const ContentList = styled.div`
     }
   }
 `;
-export const ConfigContent = () => {
+export const ConfigAccountSetting = () => {
   const [, , { AccountName }] = useModal();
   const {
     [`${AccountName}`]: { ContentsSetting, CharacterSetting },
@@ -58,6 +58,7 @@ export const ConfigContent = () => {
             {Object.keys(CharacterSetting).map((characterName) => {
               return (
                 <SettingCharacters
+                  key={characterName}
                   AccountName={AccountName}
                   CharacterName={characterName}
                 />
@@ -72,6 +73,7 @@ export const ConfigContent = () => {
             {Object.keys(ContentsSetting).map((ContentName) => {
               return (
                 <SettingContents
+                  key={ContentName}
                   AccountName={AccountName}
                   ContentName={ContentName}
                 />
@@ -85,4 +87,4 @@ export const ConfigContent = () => {
   );
 };
 
-export default ConfigContent;
+export default ConfigAccountSetting;

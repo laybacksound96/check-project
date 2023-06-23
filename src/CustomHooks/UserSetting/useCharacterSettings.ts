@@ -11,32 +11,33 @@ function useCharacterSettings(
 ] {
   const [userSetting, setUserSetting] = useRecoilState(UserSetting);
   const value = userSetting[AccountName].CharacterSetting[CharacterName];
-  const setter = (Key: "IsGoldCharacter" | "isVisible") =>
+  const setter = (Key: "IsGoldCharacter" | "isVisible") => {
     setUserSetting((prev) => {
       return {
         ...prev,
-        AccountName: {
+        [`${AccountName}`]: {
           ...prev[AccountName],
-          CharacterState: {
+          CharacterSetting: {
             ...prev[AccountName].CharacterSetting,
-            CharacterName: {
+            [`${CharacterName}`]: {
               ...prev[AccountName].CharacterSetting[CharacterName],
-              [Key]: !value,
+              [`${Key}`]: !value[Key],
             },
           },
         },
       };
     });
+  };
 
   const insertNewValue = (object: ICharacterState): void => {
     setUserSetting((prev) => {
       return {
         ...prev,
-        AccountName: {
+        [`${AccountName}`]: {
           ...prev[AccountName],
-          CharacterState: {
+          [`${CharacterName}`]: {
             ...prev[AccountName].CharacterSetting,
-            CharacterName: object,
+            [`${CharacterName}`]: object,
           },
         },
       };

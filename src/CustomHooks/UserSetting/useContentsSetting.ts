@@ -15,13 +15,13 @@ function useContentsSetting(
     setUserSetting((prev) => {
       const copiedPrev: IUserSetting = {
         ...prev,
-        [AccountName]: {
+        [`${AccountName}`]: {
           ...prev[AccountName],
           ContentsSetting: {
             ...prev[AccountName].ContentsSetting,
-            [ContentName]: {
+            [`${ContentName}`]: {
               ...prev[AccountName].ContentsSetting[ContentName],
-              isVisible: !value[key],
+              [`${key}`]: !value[key],
             },
           },
         },
