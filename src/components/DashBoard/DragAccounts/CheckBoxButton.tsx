@@ -2,7 +2,7 @@ import { faSquare, faSquareCheck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
 import { dragIcon } from "../../../Settings";
-import useConfigObject from "../../../CustomHooks/UserSetting/useConfigObject";
+import useCharsContentSetting from "../../../CustomHooks/UserSetting/useCharsContentSetting";
 
 interface IStyle {
   isVisible: boolean;
@@ -42,12 +42,11 @@ function CheckBoxButton({
   ContentName,
   Color,
 }: ICheckboxProps) {
-  const info = { AccountName, CharacterName, ContentName };
-  const [isActivated] = useConfigObject("isActivated", info);
-  const [isVisible] = useConfigObject("isVisible", info);
-  const [isCleared] = useConfigObject("isCleared", info);
+  const [{ isVisible, isActivated, isCleared }, setter] =
+    useCharsContentSetting(AccountName, CharacterName, ContentName);
   function onClickHandler() {
     if (!isVisible || !isActivated) return;
+    setter("isCleared");
   }
 
   return (
@@ -57,11 +56,7 @@ function CheckBoxButton({
       isActivated={isActivated}
       Color={Color}
     >
-      {isCleared ? (
-        <FontAwesomeIcon icon={faSquareCheck} size="lg" />
-      ) : (
-        <FontAwesomeIcon icon={faSquare} size="lg" />
-      )}
+      <FontAwesomeIcon icon={isCleared ? faSquareCheck : faSquare} size="lg" />
     </CheckBox>
   );
 }

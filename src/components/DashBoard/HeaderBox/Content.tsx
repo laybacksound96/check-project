@@ -5,7 +5,7 @@ import styled, { css, keyframes } from "styled-components";
 import getLowerLightnessColor from "../Functions/getLowerLightnessColor";
 import { IFrequencyContents } from "../../../atoms/atoms";
 
-import useConfigObject from "../../../CustomHooks/UserSetting/useConfigObject";
+import useConfigObject from "../../../CustomHooks/UserSetting/useCharsContentSetting";
 interface IpropStyle {
   shouldAnimate: boolean;
   Color: string;

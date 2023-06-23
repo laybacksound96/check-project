@@ -24,7 +24,7 @@ import getColorInFrequencyCounter from "../Functions/getColorFrequencyCounter";
 import CheckBoxButton from "./CheckBoxButton";
 import useModal from "../../../CustomHooks/Modal/useModal";
 import isAllTrue from "../Functions/isAllTrue";
-import useConfigObject from "../../../CustomHooks/UserSetting/useConfigObject";
+import useConfigObject from "../../../CustomHooks/UserSetting/useCharsContentSetting";
 
 interface Istyle {
   isHovered: boolean;

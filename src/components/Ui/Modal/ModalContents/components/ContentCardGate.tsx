@@ -8,7 +8,7 @@ import { useState } from "react";
 import {
   useDifficultyState,
   useIsVisibleGates,
-} from "../../../../../CustomHooks/UserSetting/useAllContentsVisible";
+} from "../../../../../CustomHooks/UserSetting/useContentsSetting";
 
 const IconContainer = styled.div`
   display: flex;

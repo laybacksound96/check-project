@@ -1,18 +1,14 @@
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { ModalState } from "../../../../atoms/modal";
 import { UserSetting } from "../../../../atoms/atoms";
 import { GridContainer } from "./ConfigAccount";
 import styled from "styled-components";
-import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGear } from "@fortawesome/free-solid-svg-icons";
 import DangerZone from "./components/DangerZone";
 import useModal from "../../../../CustomHooks/Modal/useModal";
-import useCharacterSettings from "../../../../CustomHooks/UserSetting/useCharacterSettings";
+import SettingCharacters from "./components/SettingVisibleContent";
+import { useRecoilValue } from "recoil";
+import SettingContents from "./components/SettingContents";
 
-interface IStyel {
-  isVisible: boolean;
-}
 const Container = styled.div`
   width: auto;
   height: 60vh;
@@ -20,57 +16,6 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: start;
   overflow-y: auto;
-`;
-
-const Character = styled.div<IStyel>`
-  opacity: ${(props) => (props.isVisible ? "100%" : "20%")};
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 200px;
-  padding-left: 5px;
-  font-size: 17px;
-  height: 70px;
-  border-radius: 5px;
-  background-color: rgba(100, 100, 100, 0.1);
-  margin-bottom: 10px;
-  &:hover {
-    background-color: rgba(100, 100, 100, 0.5);
-    transition: ease-in-out 0.1s;
-    svg {
-      opacity: 70%;
-    }
-  }
-
-  svg {
-    opacity: 20%;
-    border-radius: 10px;
-    font-size: 30px;
-    padding: 10px 10px;
-  }
-  svg:hover {
-    opacity: 100%;
-    background-color: rgba(100, 100, 100, 0.7);
-  }
-`;
-const ButtonContainer = styled.div`
-  display: flex;
-  justify-content: start;
-  align-items: center;
-  height: 100%;
-  margin-right: 10px;
-`;
-const NameContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  span {
-    font-size: 0.9rem;
-    opacity: 40%;
-    color: ${(props) => props.theme.TextColor_A};
-    &:nth-child(2) {
-      font-size: 0.85rem;
-    }
-  }
 `;
 
 const ContentList = styled.div`
@@ -96,8 +41,10 @@ const ContentList = styled.div`
   }
 `;
 export const ConfigContent = () => {
-  const [userSetting, setUserSetting] = useRecoilState(UserSetting);
-  const [, closeModal, { AccountName }] = useModal();
+  const [, , { AccountName }] = useModal();
+  const {
+    [`${AccountName}`]: { ContentsSetting, CharacterSetting },
+  } = useRecoilValue(UserSetting);
   function handleDelete() {}
   return (
     <>
@@ -108,23 +55,12 @@ export const ConfigContent = () => {
               <FontAwesomeIcon icon={faGear} />
               <span>캐릭터 표시 설정</span>
             </header>
-            {Object.keys(accountState[AccountName]).map((character) => {
-              const { CharacterClassName, ItemMaxLevel, isVisible } =
-                accountState[AccountName][character];
+            {Object.keys(CharacterSetting).map((characterName) => {
               return (
-                <Character key={character} isVisible={isVisible}>
-                  <NameContainer>
-                    {character}
-                    <span>{CharacterClassName}</span>
-                    <span>Lv {ItemMaxLevel}</span>
-                  </NameContainer>
-                  <ButtonContainer>
-                    <FontAwesomeIcon
-                      onClick={() => handleAccountVisible(character)}
-                      icon={isVisible ? faEye : faEyeSlash}
-                    />
-                  </ButtonContainer>
-                </Character>
+                <SettingCharacters
+                  AccountName={AccountName}
+                  CharacterName={characterName}
+                />
               );
             })}
           </ContentList>
@@ -133,18 +69,12 @@ export const ConfigContent = () => {
               <FontAwesomeIcon icon={faGear} />
               <span>컨텐츠 표시 설정</span>
             </header>
-            {Object.keys(contentsState[AccountName]).map((contentName) => {
-              const { isVisible } = contentsState[AccountName][contentName];
+            {Object.keys(ContentsSetting).map((ContentName) => {
               return (
-                <Character key={contentName} isVisible={isVisible}>
-                  <NameContainer>{contentName}</NameContainer>
-                  <ButtonContainer>
-                    <FontAwesomeIcon
-                      onClick={() => handleContentVisible(contentName)}
-                      icon={isVisible ? faEye : faEyeSlash}
-                    />
-                  </ButtonContainer>
-                </Character>
+                <SettingContents
+                  AccountName={AccountName}
+                  ContentName={ContentName}
+                />
               );
             })}
           </ContentList>

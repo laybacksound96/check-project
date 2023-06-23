@@ -7,38 +7,38 @@ export interface IGates {
   ["isFixedDifficulty"]: boolean;
   ["Difficulty"]: string;
 }
-export interface IConfigObject {
+export interface ICharsContentState {
   ["isGoldContents"]: boolean;
   ["isCleared"]: boolean;
   ["isVisible"]: boolean;
   ["isActivated"]: boolean;
   ["Gates"]: IGates[];
 }
-export interface IContentName {
-  [ContentName: string]: IConfigObject;
+export interface ICharsContentSetting {
+  [ContentName: string]: ICharsContentState;
 }
 
-interface ICharacterSettings {
+export interface ICharacterState {
   ["ServerName"]: string;
   ["CharacterClassName"]: string;
   ["ItemMaxLevel"]: number;
   ["IsGoldCharacter"]: boolean;
   ["isVisible"]: boolean;
-  ["Contents"]: IContentName;
+  ["Contents"]: ICharsContentSetting;
 }
-export interface ICharacterState {
-  [CharacterName: string]: ICharacterSettings;
+export interface ICharacterSetting {
+  [CharacterName: string]: ICharacterState;
 }
 export interface IContentState {
   type: "Default" | "Custom";
   isVisible: boolean;
 }
-export interface IAllContents {
+export interface IContentsSetting {
   [ContentsName: string]: IContentState;
 }
 export interface IAccountState {
-  ["AllContentState"]: IAllContents;
-  ["CharacterState"]: ICharacterState;
+  ["ContentsSetting"]: IContentsSetting;
+  ["CharacterSetting"]: ICharacterSetting;
 }
 export interface IUserSetting {
   [AccountName: string]: IAccountState;
