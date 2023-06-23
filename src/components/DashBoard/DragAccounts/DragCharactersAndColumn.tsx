@@ -154,15 +154,20 @@ function DragCharacters({
     // }
     return;
   };
+
   useEffect(() => {
-    const filteredArray = Object.keys(CharacterSetting).filter(
+    const filteredCharacterOrder = Object.keys(CharacterSetting).filter(
       (name) => CharacterSetting[name].isVisible
     );
+    const filteredContentsOrder = Object.keys(ContentsSetting).filter(
+      (name) => ContentsSetting[name].isVisible
+    );
+
     setAccountOrder((prev) => {
       const result: IAccountOrder = {
         AccountName,
-        ContentsOrder,
-        CharacterOrder: filteredArray,
+        ContentsOrder: filteredContentsOrder,
+        CharacterOrder: filteredCharacterOrder,
       };
       const copiedPrev = [...prev];
       copiedPrev[AccountIndex] = result;
@@ -172,7 +177,7 @@ function DragCharacters({
     AccountIndex,
     AccountName,
     CharacterSetting,
-    ContentsOrder,
+    ContentsSetting,
     setAccountOrder,
   ]);
   return (
