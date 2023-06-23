@@ -17,12 +17,16 @@ export interface ICharsContentState {
 export interface ICharsContentSetting {
   [ContentName: string]: ICharsContentState;
 }
-
+export interface IGoldContents {
+  ["CommanderName"]: string;
+  ["TotalGold"]: number;
+}
 export interface ICharacterState {
   ["ServerName"]: string;
   ["CharacterClassName"]: string;
   ["ItemMaxLevel"]: number;
   ["IsGoldCharacter"]: boolean;
+  ["GoldContents"]: IGoldContents[];
   ["isVisible"]: boolean;
   ["Contents"]: ICharsContentSetting;
 }

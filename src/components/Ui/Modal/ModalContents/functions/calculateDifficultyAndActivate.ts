@@ -8,13 +8,14 @@ interface commanderInfo {
   level: number;
   gold: number;
 }
-export interface commaderNames {
+export interface IGates {
   [difficulty: string]: commanderInfo;
 }
 export interface IData {
-  [name: string]: commaderNames[];
+  [name: string]: IGates[];
 }
-const makeAvailableDifficulty = (
+
+const calculateDifficultyAndActivate = (
   level: number,
   content: string,
   gateNumber: number
@@ -24,7 +25,7 @@ const makeAvailableDifficulty = (
     Difficulty: "normal",
   };
   const commanderData: IData = commander;
-  const gateData = commanderData[content][gateNumber - 1];
+  const gateData: IGates = commanderData[content][gateNumber - 1];
   for (let difficulty in gateData) {
     if (level >= gateData[difficulty].level) {
       result.isActivated = true;
@@ -34,4 +35,4 @@ const makeAvailableDifficulty = (
   return result;
 };
 
-export default makeAvailableDifficulty;
+export default calculateDifficultyAndActivate;

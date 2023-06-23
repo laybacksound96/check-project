@@ -15,7 +15,6 @@ const makeCharsContentState = (
     isGoldContents: false,
     Gates: isDefault ? makeGates(content, level) : [],
   };
-
   return DefaultObject;
 };
 
