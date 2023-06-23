@@ -1,6 +1,6 @@
 import { IUserSetting } from "../../../../../atoms/atoms";
 import { IFetchedCharacter } from "../AddAccount";
-import makeAccountState from "./makeAccountState";
+import makeAccountState from "./makeCharacterSetting";
 import makeDefaultCommander from "./makeDefaultCommander";
 
 const makeNewAccount = (fetchedCharacters: IFetchedCharacter[]) => {
@@ -8,8 +8,8 @@ const makeNewAccount = (fetchedCharacters: IFetchedCharacter[]) => {
   const AccountState = makeAccountState(fetchedCharacters);
   const result: IUserSetting = {
     [`${AccountOwner}`]: {
-      AllContentState: makeDefaultCommander(),
-      CharacterState: AccountState,
+      ContentsSetting: makeDefaultCommander(),
+      CharacterSetting: AccountState,
     },
   };
   return result;

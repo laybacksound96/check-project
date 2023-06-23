@@ -1,10 +1,12 @@
-import { ICharacterState } from "../../../../../atoms/atoms";
+import { ICharacterSetting } from "../../../../../atoms/atoms";
 import { IFetchedCharacter } from "../AddAccount";
 import SortByLevel from "./SortByLevel";
-import makeCheckboxState from "./makeCheckboxState";
+import makeCheckboxState from "./makeCharsContentSetting";
 
-const makeAccountState = (Account: IFetchedCharacter[]): ICharacterState => {
-  const result: ICharacterState = {};
+const makeCharacterSetting = (
+  Account: IFetchedCharacter[]
+): ICharacterSetting => {
+  const result: ICharacterSetting = {};
   const SortedAccount = SortByLevel(Account);
   const contents = makeCheckboxState(Account);
   if (!Account || !Account.length) return result;
@@ -24,4 +26,4 @@ const makeAccountState = (Account: IFetchedCharacter[]): ICharacterState => {
   return result;
 };
 
-export default makeAccountState;
+export default makeCharacterSetting;

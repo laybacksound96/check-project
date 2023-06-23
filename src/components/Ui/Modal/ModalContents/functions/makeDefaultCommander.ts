@@ -1,9 +1,9 @@
-import { IAllContents } from "../../../../../atoms/atoms";
+import { IContentsSetting } from "../../../../../atoms/atoms";
 import { IData } from "./makeActivatedAndDifficulty";
 import commander from "./commander.json";
 
-const makeDefaultCommander = (): IAllContents => {
-  const result: IAllContents = {};
+const makeDefaultCommander = (): IContentsSetting => {
+  const result: IContentsSetting = {};
   const commanderData: IData = commander;
 
   for (let commanderName in commanderData) {

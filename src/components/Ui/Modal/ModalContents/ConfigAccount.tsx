@@ -1,8 +1,8 @@
 import { useRecoilValue } from "recoil";
-import { CheckBoxConfig } from "../../../../atoms/atoms";
 import styled from "styled-components";
 import ContentCard from "./components/ContentCard";
 import { ModalState } from "../../../../atoms/modal";
+import { UserSetting } from "../../../../atoms/atoms";
 
 export const Container = styled.div`
   width: auto;
@@ -22,28 +22,24 @@ export const GridContainer = styled.div`
   grid-gap: 10px;
 `;
 
-const ConfigAccount = () => {
+const ConfigCharContent = () => {
   const {
-    modalProp: { CharacterName },
+    modalProp: { CharacterName, AccountName },
   } = useRecoilValue(ModalState);
-
-  const { [`${CharacterName}`]: contentsState } =
-    useRecoilValue(CheckBoxConfig);
-
+  const {
+    [`${AccountName}`]: { ContentsSetting },
+  } = useRecoilValue(UserSetting);
   return (
     <Container>
       <GridContainer>
-        {Object.keys(contentsState).map((ContentName) => {
-          const { Gates, isActivated } = contentsState[ContentName];
+        {Object.keys(ContentsSetting).map((ContentName) => {
           return (
-            isActivated && (
-              <ContentCard
-                key={ContentName}
-                Gates={Gates}
-                ContentsName={ContentName}
-                ChracterName={CharacterName}
-              />
-            )
+            <ContentCard
+              key={ContentName}
+              AccountName={AccountName}
+              CharacterName={CharacterName}
+              ContentsName={ContentName}
+            />
           );
         })}
       </GridContainer>
@@ -51,4 +47,4 @@ const ConfigAccount = () => {
   );
 };
 
-export default ConfigAccount;
+export default ConfigCharContent;

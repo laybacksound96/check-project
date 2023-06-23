@@ -1,17 +1,17 @@
-import { IConfigObject, IGates } from "../../../../../atoms/atoms";
+import { ICharsContentState, IGates } from "../../../../../atoms/atoms";
 import CountGates from "./CountGates";
 import IsValidLevel from "./IsValidLevel";
 import calculateGoldContents from "./calculateGoldContents";
 import makeActivatedAndDifficulty from "./makeActivatedAndDifficulty";
 
-const makeConfigObject = (
+const makeCharsContentState = (
   level: number,
   content: string,
   type: string
-): IConfigObject => {
+): ICharsContentState => {
   if (type === "Default") {
     const gateCount = CountGates(content);
-    const DefaultObject: IConfigObject = {
+    const DefaultObject: ICharsContentState = {
       isCleared: false,
       isVisible: calculateGoldContents(level).includes(content),
       isActivated: IsValidLevel(content, level),
@@ -35,7 +35,7 @@ const makeConfigObject = (
     }
     return DefaultObject;
   }
-  const CustomObject: IConfigObject = {
+  const CustomObject: ICharsContentState = {
     isGoldContents: false,
     isCleared: false,
     isVisible: true,
@@ -46,4 +46,4 @@ const makeConfigObject = (
   return CustomObject;
 };
 
-export default makeConfigObject;
+export default makeCharsContentState;

@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { CheckBoxConfig, IGates } from "../../../../../atoms/atoms";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 import { useState } from "react";
@@ -10,10 +9,7 @@ import {
   faSquare,
   faSquareCheck,
 } from "@fortawesome/free-solid-svg-icons";
-import {
-  useIsGoldContents,
-  useIsVisible,
-} from "../../../../../CustomHooks/UserSetting/useContentsSetting";
+import useCharsContentSetting from "../../../../../CustomHooks/UserSetting/useCharsContentSetting";
 
 interface IStyel {
   isVisibled: boolean;
@@ -110,32 +106,20 @@ const Icon = styled.div`
   }
 `;
 interface IProps {
+  AccountName: string;
   ContentsName: string;
-  ChracterName: string;
-  Gates: IGates[];
+  CharacterName: string;
 }
 
-const ContentCard = ({ Gates, ContentsName, ChracterName }: IProps) => {
+const ContentCard = ({ AccountName, ContentsName, CharacterName }: IProps) => {
   const [isHovered, setIsHovered] = useState(false);
-
-  const [isGoldContents, setIsGoldContents] = useIsGoldContents(
-    CheckBoxConfig,
-    ChracterName,
+  const [{ isVisible, isGoldContents, Gates }] = useCharsContentSetting(
+    AccountName,
+    CharacterName,
     ContentsName
   );
-  const [isVisible, setIsVisible] = useIsVisible(
-    CheckBoxConfig,
-    ChracterName,
-    ContentsName
-  );
-  const visibleHandler = () => {
-    if (!isHovered) return;
-    setIsVisible(!isVisible);
-  };
-  const goldContentsHandler = () => {
-    if (!isVisible) return;
-    setIsGoldContents(!isGoldContents);
-  };
+  const visibleHandler = () => {};
+  const goldContentsHandler = () => {};
 
   return (
     <ContentList
@@ -176,9 +160,8 @@ const ContentCard = ({ Gates, ContentsName, ChracterName }: IProps) => {
               key={index}
               Difficulty={Difficulty}
               Gate={gate}
-              ChracterName={ChracterName}
+              ChracterName={CharacterName}
               ContentsName={ContentsName}
-              index={index}
               isContentVisible={isVisible}
             />
           );

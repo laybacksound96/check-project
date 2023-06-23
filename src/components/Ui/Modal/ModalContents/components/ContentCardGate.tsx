@@ -1,14 +1,10 @@
 import styled from "styled-components";
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
-import { CheckBoxConfig, IGates } from "../../../../../atoms/atoms";
+import { IGates } from "../../../../../atoms/atoms";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ContentCardCheckBox from "./ContentCardCheckBox";
 
 import { useState } from "react";
-import {
-  useDifficultyState,
-  useIsVisibleGates,
-} from "../../../../../CustomHooks/UserSetting/useContentsSetting";
 
 const IconContainer = styled.div`
   display: flex;
@@ -64,69 +60,55 @@ interface IProps {
   Gate: IGates;
   ChracterName: string;
   ContentsName: string;
-  index: number;
 }
 const ContentCardGate = ({
-  Gate: { Gate_No, isFixedDifficulty },
-  ChracterName,
-  ContentsName,
-  index,
+  Gate: { Gate_No, isFixedDifficulty, isVisible },
+  Difficulty,
   isContentVisible,
 }: IProps) => {
   const [isHovered, setIsHovered] = useState(false);
-  const [isVisible, setIsVisible] = useIsVisibleGates(
-    CheckBoxConfig,
-    ChracterName,
-    ContentsName,
-    index
-  );
-  const [Difficulty, setDifficulty] = useDifficultyState(
-    CheckBoxConfig,
-    ChracterName,
-    ContentsName,
-    index
-  );
 
   const changeDifficultyHandler = () => {
-    if (isFixedDifficulty || !isContentVisible || !isVisible) return;
-    setDifficulty(Difficulty === "normal" ? "hard" : "normal");
+    // if (isFixedDifficulty || !isContentVisible || !isVisible) return;
+    // setDifficulty(Difficulty === "normal" ? "hard" : "normal");
   };
 
   return (
-    <GateContainer
-      isVisibled={isVisible}
-      isHovered={isHovered}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      <GateNumberContainer style={{ display: "flex", flexDirection: "column" }}>
-        <GateNumber>{Gate_No}</GateNumber>
-        <DifficultySpan>{Difficulty}</DifficultySpan>
-      </GateNumberContainer>
-      <DifficultyContainer>
-        <CheckBoxContainer>
-          <ContentCardCheckBox
-            DifficultyState={Difficulty}
-            Difficulty="normal"
-            isFixedDifficulty={isFixedDifficulty}
-            handler={changeDifficultyHandler}
-          />
-          <ContentCardCheckBox
-            DifficultyState={Difficulty}
-            Difficulty="hard"
-            isFixedDifficulty={isFixedDifficulty}
-            handler={changeDifficultyHandler}
-          />
-        </CheckBoxContainer>
-      </DifficultyContainer>
-      <IconContainer onClick={() => setIsVisible(!isVisible)}>
-        {isVisible ? (
-          <FontAwesomeIcon icon={faEye} />
-        ) : (
-          <FontAwesomeIcon icon={faEyeSlash} />
-        )}
-      </IconContainer>
-    </GateContainer>
+    <div></div>
+    // <GateContainer
+    //   isVisibled={isVisible}
+    //   isHovered={isHovered}
+    //   onMouseEnter={() => setIsHovered(true)}
+    //   onMouseLeave={() => setIsHovered(false)}
+    // >
+    //   <GateNumberContainer style={{ display: "flex", flexDirection: "column" }}>
+    //     <GateNumber>{Gate_No}</GateNumber>
+    //     <DifficultySpan>{Difficulty}</DifficultySpan>
+    //   </GateNumberContainer>
+    //   <DifficultyContainer>
+    //     <CheckBoxContainer>
+    //       <ContentCardCheckBox
+    //         DifficultyState={Difficulty}
+    //         Difficulty="normal"
+    //         isFixedDifficulty={isFixedDifficulty}
+    //         handler={changeDifficultyHandler}
+    //       />
+    //       <ContentCardCheckBox
+    //         DifficultyState={Difficulty}
+    //         Difficulty="hard"
+    //         isFixedDifficulty={isFixedDifficulty}
+    //         handler={changeDifficultyHandler}
+    //       />
+    //     </CheckBoxContainer>
+    //   </DifficultyContainer>
+    //   <IconContainer onClick={() => setIsVisible(!isVisible)}>
+    //     {isVisible ? (
+    //       <FontAwesomeIcon icon={faEye} />
+    //     ) : (
+    //       <FontAwesomeIcon icon={faEyeSlash} />
+    //     )}
+    //   </IconContainer>
+    // </GateContainer>
   );
 };
 

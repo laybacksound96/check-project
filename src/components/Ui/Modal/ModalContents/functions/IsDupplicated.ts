@@ -5,7 +5,7 @@ const IsDupplicated = (
   UserSetting: IUserSetting
 ): boolean => {
   for (let accountName in UserSetting) {
-    const characters = UserSetting[accountName].CharacterState;
+    const characters = UserSetting[accountName].CharacterSetting;
     if (inputName in characters) return true;
   }
   return false;
