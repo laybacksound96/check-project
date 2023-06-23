@@ -156,11 +156,22 @@ function DragCharacters({
   };
 
   useEffect(() => {
+    const isAllTrue = (ContentName: string, CharacterOrder: string[]) => {
+      for (let index in CharacterOrder) {
+        const CharacterName = CharacterOrder[index];
+        const { isVisible } =
+          CharacterSetting[CharacterName].Contents[ContentName];
+        if (!isVisible) return true;
+      }
+      return false;
+    };
     const filteredCharacterOrder = Object.keys(CharacterSetting).filter(
       (name) => CharacterSetting[name].isVisible
     );
     const filteredContentsOrder = Object.keys(ContentsSetting).filter(
-      (name) => ContentsSetting[name].isVisible
+      (name) =>
+        ContentsSetting[name].isVisible &&
+        isAllTrue(name, Object.keys(CharacterSetting))
     );
 
     setAccountOrder((prev) => {
