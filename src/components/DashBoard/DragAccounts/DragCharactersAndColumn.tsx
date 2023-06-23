@@ -127,54 +127,13 @@ function DragCharacters({
   const [accountOrder, setAccountOrder] = useRecoilState(AccountOrder);
   const contentsFrequency = useRecoilValue(ContentsFrequency);
   const userSetting = useRecoilValue(UserSetting);
-  useEffect(() => {
-    setAccountOrder((prev) => {
-      const CharacterState = userSetting[AccountName].CharacterSetting;
-      const CharacterOrder: ICharacterOrder = Object.keys(
-        CharacterState
-      ).filter((name) => CharacterState[name].isVisible);
-      const order: IAccountOrder = {
-        ...prev[AccountIndex],
-        CharacterOrder,
-      };
-      const copiedPrev = [...prev];
-      copiedPrev.splice(AccountIndex, 1);
-      copiedPrev.splice(AccountIndex, 0, order);
-      return copiedPrev;
-    });
-  }, [AccountIndex, AccountName, setAccountOrder, userSetting]);
-  // useEffect(() => {
-  //   setContentsOrder((prev) => {
-  //     const { AccountName, CharacterOrder } = accountOrder[AccountIndex];
-  //     const characterObject = contentsState[AccountName];
 
-  //     const array = Object.keys(characterObject).filter(
-  //       (contentName) =>
-  //         isAllTrue(contentName, CharacterOrder, accountState[AccountName]) &&
-  //         characterObject[contentName].isVisible
-  //     );
-  //     const copiedPrev = { ...prev, [`${AccountName}`]: array };
-  //     return copiedPrev;
-  //   });
-  // }, []);
   const dragCharacterHandler = (dragInfo: DropResult) => {
-    // const { destination, source } = dragInfo;
-    // if (!destination) return;
-    // if (destination?.droppableId !== source.droppableId) return;
-    // setAccountOrder((prev) => {
-    //   const copiedCharacterOrder = [...CharacterOrder];
-    //   const copiedObject = copiedCharacterOrder[source.index];
-    //   copiedCharacterOrder.splice(source.index, 1);
-    //   copiedCharacterOrder.splice(destination?.index, 0, copiedObject);
-    //   const copiedPrev = [...prev];
-    //   const target = {
-    //     ...copiedPrev[AccountIndex],
-    //     CharacterOrder: copiedCharacterOrder,
-    //   };
-    //   copiedPrev.splice(AccountIndex, 1, target);
-    //   return copiedPrev;
-    // });
-    // return;
+    const { destination, source } = dragInfo;
+    if (!destination) return;
+    if (destination?.droppableId !== source.droppableId) return;
+
+    return;
   };
   const dragContentHandler = (dragInfo: DropResult) => {
     // const { destination, source } = dragInfo;
@@ -217,19 +176,17 @@ function DragCharacters({
               >
                 <FontAwesomeIcon icon={faGear} size="lg" />
               </Character>
-              {accountOrder[AccountIndex].CharacterOrder.map(
-                (CharacterName, index) => {
-                  return (
-                    <DragCharactersDraggable
-                      AccountName={AccountName}
-                      CharacterName={CharacterName}
-                      index={index}
-                      boardId={CharacterName + "_" + index}
-                      key={CharacterName + "_" + index}
-                    />
-                  );
-                }
-              )}
+              {CharacterOrder.map((CharacterName, index) => {
+                return (
+                  <DragCharactersDraggable
+                    AccountName={AccountName}
+                    CharacterName={CharacterName}
+                    index={index}
+                    boardId={CharacterName + "_" + index}
+                    key={CharacterName + "_" + index}
+                  />
+                );
+              })}
               {provided.placeholder}
             </div>
 
@@ -299,7 +256,6 @@ function DragCharacters({
                 )}
               </Droppable>
             </DragDropContext>
-
             <DragAccountBtn isHovered={isHovered}>
               <DragAccount {...DragHandleProps} />
             </DragAccountBtn>
