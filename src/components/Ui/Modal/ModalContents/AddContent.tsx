@@ -1,9 +1,6 @@
 import { useState, useRef, useEffect } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilValue } from "recoil";
 import styled, { keyframes, css } from "styled-components";
-
-import { ModalState } from "../../../../atoms/modal";
-import useContentsSetting from "../../../../CustomHooks/UserSetting/useContentsSetting";
 import { UserSetting } from "../../../../atoms/atoms";
 import useModal from "../../../../CustomHooks/Modal/useModal";
 
@@ -82,43 +79,13 @@ const AddContent = () => {
     if (!inputRef.current) return;
     inputRef.current.focus();
   }, []);
-  const addContentHandler = () => {
+  const AddContentHandler = () => {
     if (Object.keys(ContentsSetting).find((elem) => elem === inputValue)) {
       setIsDupplicated(true);
       setIsdisabled(true);
       return;
     }
-    // setContentsState((prev) => {
-    //   const copiedPrev: IContentsState = {
-    //     ...prev,
-    //     [`${AccountName}`]: {
-    //       ...prev[`${AccountName}`],
-    //       [`${inputValue}`]: {
-    //         type: "Custom",
-    //         isVisible: true,
-    //       },
-    //     },
-    //   };
 
-    //   return { ...copiedPrev };
-    // });
-    // setCheckBoxConfig((prev) => {
-    //   const copiedCheckBoxConfig = { ...prev };
-
-    //   for (let CharacterName in copiedCheckBoxConfig) {
-    //     const copiedContents = { ...copiedCheckBoxConfig[CharacterName] };
-    //     copiedContents[`${inputValue}`] = {
-    //       isGoldContents: false,
-    //       isCleared: false,
-    //       isVisible: true,
-    //       isActivated: true,
-    //       Gates: [],
-    //     };
-    //     copiedCheckBoxConfig[CharacterName] = copiedContents;
-    //   }
-
-    //   return copiedCheckBoxConfig;
-    // });
     closeModal();
   };
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -140,7 +107,7 @@ const AddContent = () => {
         <ButtonStyle
           id="contentId"
           disabled={isdisabled}
-          onClick={addContentHandler}
+          onClick={AddContentHandler}
         >
           추가
         </ButtonStyle>

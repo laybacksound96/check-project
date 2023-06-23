@@ -7,8 +7,7 @@ function useCharsContentSetting(
   ContentName: string
 ): [
   ICharsContentState,
-  (Key: "isGoldContents" | "isCleared" | "isVisible" | "isActivated") => void,
-  (object: ICharsContentState) => void
+  (Key: "isGoldContents" | "isCleared" | "isVisible" | "isActivated") => void
 ] {
   const [userSetting, setUserSetting] = useRecoilState(UserSetting);
   const value =
@@ -41,27 +40,8 @@ function useCharsContentSetting(
         },
       };
     });
-  const insertNewValue = (object: ICharsContentState): void => {
-    setUserSetting((prev) => {
-      return {
-        ...prev,
-        AccountName: {
-          ...prev[AccountName],
-          CharacterSetting: {
-            ...prev[AccountName].CharacterSetting,
-            CharacterName: {
-              ...prev[AccountName].CharacterSetting[CharacterName],
-              Contents: {
-                ...prev[AccountName].CharacterSetting[CharacterName].Contents,
-                ContentName: object,
-              },
-            },
-          },
-        },
-      };
-    });
-  };
-  return [value, setter, insertNewValue];
+
+  return [value, setter];
 }
 
 export default useCharsContentSetting;
