@@ -1,48 +1,22 @@
-import { ICharsContentState, IGates } from "../../../../../atoms/userSetting";
-import CountGates from "./CountGates";
+import { ICharsContentState } from "../../../../../atoms/userSetting";
 import IsValidLevel from "./IsValidLevel";
-import makeActivatedAndDifficulty from "./makeActivatedAndDifficulty";
+import makeGates from "./makeGates";
 
 const makeCharsContentState = (
   level: number,
   content: string,
   type: string
 ): ICharsContentState => {
-  if (type === "Default") {
-    const gateCount = CountGates(content);
-    const DefaultObject: ICharsContentState = {
-      isCleared: false,
-      isVisible: true,
-      isActivated: IsValidLevel(content, level),
-      isGoldContents: false,
-      Gates: [],
-    };
-    for (let gateNumber = 1; gateNumber < gateCount + 1; gateNumber++) {
-      const { isActivated, Difficulty } = makeActivatedAndDifficulty(
-        level,
-        content,
-        gateNumber
-      );
-      const Gate: IGates = {
-        Gate_No: gateNumber,
-        isActivated,
-        Difficulty,
-        isFixedDifficulty: Difficulty === "normal" ? true : false,
-        isVisible: isActivated,
-      };
-      DefaultObject.Gates?.push(Gate);
-    }
-    return DefaultObject;
-  }
-  const CustomObject: ICharsContentState = {
-    isGoldContents: false,
+  const isDefault = type === "Default";
+  const DefaultObject: ICharsContentState = {
     isCleared: false,
     isVisible: true,
-    isActivated: true,
-    Gates: [],
+    isActivated: isDefault ? IsValidLevel(content, level) : true,
+    isGoldContents: false,
+    Gates: isDefault ? makeGates(content, level) : [],
   };
 
-  return CustomObject;
+  return DefaultObject;
 };
 
 export default makeCharsContentState;
