@@ -24,6 +24,7 @@ import CheckBoxButton from "./CheckBoxButton";
 import useModal from "../../../CustomHooks/Modal/useModal";
 import { ContentsFrequency } from "../../../atoms/frequency";
 import { UserSetting } from "../../../atoms/userSetting";
+import isAllVisibleTrue from "../Functions/isAllVisibleTrue";
 
 interface Istyle {
   isHovered: boolean;
@@ -156,22 +157,14 @@ function DragCharacters({
   };
 
   useEffect(() => {
-    const isAllTrue = (ContentName: string, CharacterOrder: string[]) => {
-      for (let index in CharacterOrder) {
-        const CharacterName = CharacterOrder[index];
-        const { isVisible } =
-          CharacterSetting[CharacterName].Contents[ContentName];
-        if (!isVisible) return true;
-      }
-      return false;
-    };
     const filteredCharacterOrder = Object.keys(CharacterSetting).filter(
       (name) => CharacterSetting[name].isVisible
     );
+
     const filteredContentsOrder = Object.keys(ContentsSetting).filter(
       (name) =>
         ContentsSetting[name].isVisible &&
-        isAllTrue(name, Object.keys(CharacterSetting))
+        isAllVisibleTrue(name, filteredCharacterOrder, CharacterSetting)
     );
 
     setAccountOrder((prev) => {
