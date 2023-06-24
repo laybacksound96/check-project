@@ -235,14 +235,13 @@ function DragCharacters({
                         {(provided) => (
                           <ColumnContainer
                             ref={provided.innerRef}
-                            {...provided.dragHandleProps}
                             {...provided.draggableProps}
                             style={AxisLocker(
                               provided.draggableProps.style!,
                               true
                             )}
                           >
-                            <Name>
+                            <Name {...provided.dragHandleProps}>
                               {ContentName.length >= 7
                                 ? `${ContentName.slice(0, 7)}...`
                                 : ContentName}
