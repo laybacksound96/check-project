@@ -7,11 +7,10 @@ const makeNewAccount = (
   fetchedCharacters: IFetchedCharacter[]
 ): IUserSetting => {
   const AccountOwner = fetchedCharacters[0].CharacterName;
-  const AccountState = makeAccountState(fetchedCharacters);
   const result: IUserSetting = {
     [`${AccountOwner}`]: {
+      CharacterSetting: makeAccountState(fetchedCharacters),
       ContentsSetting: makeDefaultCommander(),
-      CharacterSetting: AccountState,
     },
   };
   return result;

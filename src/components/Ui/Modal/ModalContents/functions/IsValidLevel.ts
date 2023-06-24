@@ -1,9 +1,10 @@
 import commander from "./commander.json";
 import { IData } from "./calculateDifficultyAndActivate";
 
-const IsValidLevel = (ContentName: string, level: number) => {
+const IsValidLevel = (ContentName: string, userLevel: number) => {
   const commanderData: IData = commander;
-  if (level >= commanderData[`${ContentName}`][0]["normal"].level) {
+  const { level: commaderLevel } = commanderData[`${ContentName}`][0]["normal"];
+  if (userLevel >= commaderLevel) {
     return true;
   }
   return false;

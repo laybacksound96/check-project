@@ -5,16 +5,23 @@ import makeGates from "./makeGates";
 const makeCharsContentState = (
   level: number,
   content: string,
-  type: string
+  type: string,
+  isGoldContents: boolean
 ): ICharsContentState => {
   const isDefault = type === "Default";
   const DefaultObject: ICharsContentState = {
     isCleared: false,
     isVisible: true,
-    isActivated: isDefault ? IsValidLevel(content, level) : true,
+    isActivated: true,
     isGoldContents: false,
-    Gates: isDefault ? makeGates(content, level) : [],
+    Gates: [],
   };
+  if (isDefault) {
+    DefaultObject.isActivated = IsValidLevel(content, level);
+    DefaultObject.Gates = makeGates(content, level);
+    DefaultObject.isVisible = isGoldContents;
+    DefaultObject.isGoldContents = isGoldContents;
+  }
   return DefaultObject;
 };
 

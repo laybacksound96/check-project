@@ -1,7 +1,7 @@
 import { ICharacterSetting } from "../../../../../atoms/userSetting";
 import { IFetchedCharacter } from "../AddAccount";
 import SortByLevel from "./SortByLevel";
-import makeCheckboxState from "./makeCharsContentSetting";
+import makeCharsContentSetting from "./makeCharsContentSetting";
 import makeGoldArray from "./makeGoldArray";
 import commander from "./commander.json";
 import { IData } from "./calculateDifficultyAndActivate";
@@ -11,22 +11,22 @@ const makeCharacterSetting = (
 ): ICharacterSetting => {
   const result: ICharacterSetting = {};
   const SortedAccount = SortByLevel(Account);
-  const Contents = makeCheckboxState(Account);
   const commanderData: IData = commander;
   if (!Account || !Account.length) return result;
   for (let index in SortedAccount) {
     const { CharacterClassName, ServerName, CharacterName, ItemMaxLevel } =
-      Account[index];
+      SortedAccount[index];
     const level = parseInt(ItemMaxLevel.replace(",", ""));
     const GoldArray = makeGoldArray(level, commanderData);
+    const GoldContents = makeGoldContents(GoldArray);
     result[CharacterName] = {
       ServerName,
       CharacterClassName,
       ItemMaxLevel: level,
       IsGoldCharacter: +index < 6 ? true : false,
       isVisible: +index < 6 ? true : false,
-      Contents,
-      GoldContents: makeGoldContents(GoldArray),
+      Contents: makeCharsContentSetting(level, commanderData, GoldContents),
+      GoldContents,
     };
   }
   return result;
