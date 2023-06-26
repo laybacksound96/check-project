@@ -11,16 +11,16 @@ function useCharacterSettings(
 ): [
   ICharacterState,
   (
-    Key: "IsGoldCharacter" | "isVisible" | "GoldContents",
-    Value: boolean | IGoldContents[]
+    Key: "IsGoldCharacter" | "isVisible" | "GoldContents" | "TotalGold",
+    Value: boolean | number | IGoldContents[]
   ) => void,
   (object: ICharacterState) => void
 ] {
   const [userSetting, setUserSetting] = useRecoilState(UserSetting);
   const value = userSetting[AccountName].CharacterSetting[CharacterName];
   const setter = (
-    Key: "IsGoldCharacter" | "isVisible" | "GoldContents",
-    Value: boolean | IGoldContents[]
+    Key: "IsGoldCharacter" | "isVisible" | "GoldContents" | "TotalGold",
+    Value: boolean | number | IGoldContents[]
   ) => {
     setUserSetting((prev) => {
       return {

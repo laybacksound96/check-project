@@ -4,7 +4,7 @@ import ContentCard from "./components/ContentCard";
 import { ModalState } from "../../../../atoms/modal";
 import { UserSetting } from "../../../../atoms/userSetting";
 import { useEffect, useState } from "react";
-
+import CountUp from "react-countup";
 import calculateGold from "./functions/calculateGold";
 import { faCoins } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -59,6 +59,7 @@ const ConfigContent = () => {
   const [contents, setContenst] = useState<Array<string>>([]);
   const [goldContents, setGoldContents] = useState<Array<string>>([]);
   const [characterGold, setcharacterGold] = useState(0);
+  const [startGold, setstartGold] = useState(0);
   useEffect(() => {
     const VisibleContents = Object.keys(ContentsSetting).filter(
       (ContentName) => CharacterState.Contents[ContentName].isVisible
@@ -73,7 +74,6 @@ const ConfigContent = () => {
     const goldContents = Object.keys(ContentsSetting).filter(
       (ContentName) => CharacterState.Contents[ContentName].isGoldContents
     );
-
     setGoldContents(() => goldContents);
     let gold = 0;
     for (let index in goldContents) {
@@ -81,8 +81,12 @@ const ConfigContent = () => {
       const { Gates } = CharacterState.Contents[contentName];
       gold += calculateGold(goldContents[index], Gates);
     }
-    setcharacterGold(() => gold);
+    setcharacterGold((prev) => {
+      setstartGold(prev);
+      return gold;
+    });
   }, [CharacterState.Contents, ContentsSetting]);
+
   return (
     <Container>
       <p>골드획득 컨텐츠:</p>
@@ -93,7 +97,9 @@ const ConfigContent = () => {
       </div>
       <GoldBox>
         <FontAwesomeIcon icon={faCoins} style={{ color: "yellow" }} />
-        <span>{characterGold}</span>
+        <span>
+          <CountUp start={startGold} end={characterGold} />
+        </span>
       </GoldBox>
       <GridContainer>
         {contents.map((ContentName) => {

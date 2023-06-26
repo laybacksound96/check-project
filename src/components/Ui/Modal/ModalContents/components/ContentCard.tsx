@@ -12,6 +12,7 @@ import {
 import useCharsContentSetting from "../../../../../CustomHooks/UserSetting/useCharsContentSetting";
 import useGates from "../../../../../CustomHooks/UserSetting/useGates";
 import calculateGold from "../functions/calculateGold";
+import CountUp from "react-countup";
 
 interface IStyel {
   isVisibled: boolean;
@@ -126,6 +127,7 @@ const GoldContainer = styled.div`
 const ContentCard = ({ AccountName, ContentsName, CharacterName }: IProps) => {
   const [isHovered, setIsHovered] = useState(false);
   const [gateGold, setGateGold] = useState(0);
+  const [startGold, setstartGold] = useState(0);
   const [getGate, setGateVisible] = useGates(
     AccountName,
     CharacterName,
@@ -159,7 +161,10 @@ const ContentCard = ({ AccountName, ContentsName, CharacterName }: IProps) => {
   };
   useEffect(() => {
     const gold = calculateGold(ContentsName, Gates);
-    setGateGold(gold);
+    setGateGold((prev) => {
+      setstartGold(prev);
+      return gold;
+    });
   }, [ContentsName, Gates]);
   return (
     <ContentList
@@ -181,11 +186,12 @@ const ContentCard = ({ AccountName, ContentsName, CharacterName }: IProps) => {
               icon={faCoins}
               style={{ color: isGoldContents ? "yellow" : "gray" }}
             />
-            <span>{gateGold}</span>
+            <span>
+              <CountUp start={startGold} end={gateGold} />
+            </span>
           </GoldIcon>
           <GoldCheck isHovered={isHovered}>
             <span>골드획득 컨텐츠</span>
-
             <FontAwesomeIcon icon={isGoldContents ? faSquareCheck : faSquare} />
           </GoldCheck>
         </GoldContainer>

@@ -27,6 +27,7 @@ const makeCharacterSetting = (
       isVisible: +index < 6 ? true : false,
       Contents: makeCharsContentSetting(level, commanderData, GoldContents),
       GoldContents,
+      TotalGold: 0,
     };
   }
   return result;

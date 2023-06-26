@@ -29,6 +29,7 @@ export interface ICharacterState {
   ["GoldContents"]: IGoldContents[];
   ["isVisible"]: boolean;
   ["Contents"]: ICharsContentSetting;
+  ["TotalGold"]: number;
 }
 export interface ICharacterSetting {
   [CharacterName: string]: ICharacterState;
