@@ -1,5 +1,6 @@
 import commander from "./commander.json";
-import { IData } from "./calculateDifficultyAndActivate";
+import { IData } from "./commanderTypes";
+
 const CountGates = (contentName: string) => {
   const commanderData: IData = commander;
   return commanderData[contentName].length;

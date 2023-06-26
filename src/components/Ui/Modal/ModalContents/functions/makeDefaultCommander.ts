@@ -1,6 +1,6 @@
 import { IContentsSetting } from "../../../../../atoms/userSetting";
-import { IData } from "./calculateDifficultyAndActivate";
 import commander from "./commander.json";
+import { IData } from "./commanderTypes";
 
 const makeDefaultCommander = (): IContentsSetting => {
   const result: IContentsSetting = {};

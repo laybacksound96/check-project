@@ -1,6 +1,6 @@
-import { IData } from "../../Ui/Modal/ModalContents/functions/calculateDifficultyAndActivate";
 import commander from "../../Ui/Modal/ModalContents/functions/commander.json";
 import { IContentsFrequency } from "../../../atoms/frequency";
+import { IData } from "../../Ui/Modal/ModalContents/functions/commanderTypes";
 
 const sortContentsFrequency = (
   contentsFrequency: IContentsFrequency

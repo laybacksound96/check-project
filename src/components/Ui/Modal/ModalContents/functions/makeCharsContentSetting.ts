@@ -3,7 +3,8 @@ import {
   ICharsContentSetting,
   IGoldContents,
 } from "../../../../../atoms/userSetting";
-import { IData } from "./calculateDifficultyAndActivate";
+import { IData } from "./commanderTypes";
+
 function isGoldContents(
   GoldContents: IGoldContents[],
   CommanderName: string

@@ -1,15 +1,14 @@
 import CountGates from "./CountGates";
 import IsValidLevel from "./IsValidLevel";
-import calculateDifficultyAndActivate, {
-  IData,
-} from "./calculateDifficultyAndActivate";
+import calculateDifficulty from "./calculateDifficulty";
+import { IData } from "./commanderTypes";
 
 function makeGoldArray(level: number, commanderData: IData) {
   const result = [];
   for (let CommanderName in commanderData) {
     if (!IsValidLevel(CommanderName, level)) continue;
     const gates = commanderData[CommanderName];
-    const { Difficulty } = calculateDifficultyAndActivate(
+    const Difficulty = calculateDifficulty(
       level,
       CommanderName,
       CountGates(CommanderName)
