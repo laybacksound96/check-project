@@ -1,50 +1,96 @@
-import { useRecoilValue } from "recoil";
-import styled from "styled-components";
-import ContentCard from "./components/ContentCard";
-import { ModalState } from "../../../../atoms/modal";
 import { UserSetting } from "../../../../atoms/userSetting";
+import { GridContainer } from "./ConfigContent";
+import styled from "styled-components";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGear } from "@fortawesome/free-solid-svg-icons";
+import DangerZone from "./components/DangerZone";
+import useModal from "../../../../CustomHooks/Modal/useModal";
+import SettingCharacters from "./components/SettingVisibleContent";
+import { useRecoilValue } from "recoil";
+import SettingContents from "./components/SettingContents";
 
-export const Container = styled.div`
+const Container = styled.div`
   width: auto;
-  height: 80vh;
+  height: 60vh;
   display: flex;
-  position: block;
   flex-direction: column;
   justify-content: start;
-  align-items: center;
   overflow-y: auto;
 `;
-export const GridContainer = styled.div`
-  padding: 10px;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-auto-rows: minmax(100px, auto);
-  grid-gap: 10px;
-`;
 
-const ConfigCharContent = () => {
+const ContentList = styled.div`
+  display: flex;
+  flex-direction: column;
+  background-color: ${(props) => props.theme.Color_4};
+  padding: 15px;
+  width: auto;
+  height: auto;
+  border-radius: 10px;
+  margin: 10px;
+  h1 {
+    font-size: 30px;
+    margin-bottom: 10px;
+  }
+  transition: opacity 0.3s ease-in-out;
+  header {
+    font-size: 20px;
+    margin: 5px 0 10px 0;
+    svg {
+      margin-right: 5px;
+    }
+  }
+`;
+export const ConfigAccount = () => {
+  const [
+    ,
+    ,
+    {
+      modalProp: { AccountName },
+    },
+  ] = useModal();
   const {
-    modalProp: { CharacterName, AccountName },
-  } = useRecoilValue(ModalState);
-  const {
-    [`${AccountName}`]: { ContentsSetting },
+    [`${AccountName}`]: { ContentsSetting, CharacterSetting },
   } = useRecoilValue(UserSetting);
+  function handleDelete() {}
   return (
-    <Container>
-      <GridContainer>
-        {Object.keys(ContentsSetting).map((ContentName) => {
-          return (
-            <ContentCard
-              key={ContentName}
-              AccountName={AccountName}
-              CharacterName={CharacterName}
-              ContentsName={ContentName}
-            />
-          );
-        })}
-      </GridContainer>
-    </Container>
+    <>
+      <Container>
+        <GridContainer>
+          <ContentList>
+            <header>
+              <FontAwesomeIcon icon={faGear} />
+              <span>캐릭터 표시 설정</span>
+            </header>
+            {Object.keys(CharacterSetting).map((characterName) => {
+              return (
+                <SettingCharacters
+                  key={characterName}
+                  AccountName={AccountName}
+                  CharacterName={characterName}
+                />
+              );
+            })}
+          </ContentList>
+          <ContentList>
+            <header>
+              <FontAwesomeIcon icon={faGear} />
+              <span>컨텐츠 표시 설정</span>
+            </header>
+            {Object.keys(ContentsSetting).map((ContentName) => {
+              return (
+                <SettingContents
+                  key={ContentName}
+                  AccountName={AccountName}
+                  ContentName={ContentName}
+                />
+              );
+            })}
+          </ContentList>
+        </GridContainer>
+      </Container>
+      <DangerZone handleDelete={handleDelete} />
+    </>
   );
 };
 
-export default ConfigCharContent;
+export default ConfigAccount;

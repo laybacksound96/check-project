@@ -1,11 +1,16 @@
 import { useRecoilState } from "recoil";
-import { ModalEnum, ModalState, modalProp } from "../../atoms/modal";
+import {
+  IModalObject,
+  ModalEnum,
+  ModalState,
+  modalProp,
+} from "../../atoms/modal";
 type ModalKey = keyof typeof ModalEnum;
 
 function useModal(): [
   (Mode: ModalKey, modalProp?: modalProp) => void,
   () => void,
-  modalProp
+  IModalObject
 ] {
   const [modalState, setIsModalOpen] = useRecoilState(ModalState);
   const openModal = (Mode: ModalKey, modalProp?: modalProp) => {
@@ -29,7 +34,7 @@ function useModal(): [
       return copiedPrev;
     });
   };
-  return [openModal, closeModal, modalState.modalProp];
+  return [openModal, closeModal, modalState];
 }
 
 export default useModal;

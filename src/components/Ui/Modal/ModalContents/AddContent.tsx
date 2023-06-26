@@ -69,7 +69,13 @@ const AddContent = () => {
   const [inputValue, setInputValue] = useState("");
   const [isdisabled, setIsdisabled] = useState(true);
   const [isDupplicated, setIsDupplicated] = useState(false);
-  const [, closeModal, { AccountName }] = useModal();
+  const [
+    ,
+    closeModal,
+    {
+      modalProp: { AccountName },
+    },
+  ] = useModal();
   const {
     [AccountName]: { ContentsSetting },
   } = useRecoilValue(UserSetting);

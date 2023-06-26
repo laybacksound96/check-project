@@ -93,7 +93,7 @@ const ModalContainer = ({ children, onClose }: ModalProps) => {
       <Background onClick={onClose}></Background>
       <MainDiv>
         <Header>
-          {type === ModalEnum.CONFIG_ACCOUNT ? (
+          {type === ModalEnum.CONFIG_CONTENT ? (
             <h1>{`${name}의 ${type}`}</h1>
           ) : (
             <h1>{type}</h1>

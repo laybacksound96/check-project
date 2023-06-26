@@ -113,13 +113,13 @@ interface IProps {
 
 const ContentCard = ({ AccountName, ContentsName, CharacterName }: IProps) => {
   const [isHovered, setIsHovered] = useState(false);
-  const [{ isVisible, isGoldContents, Gates }] = useCharsContentSetting(
+  const [{ isVisible, isGoldContents, Gates }, setter] = useCharsContentSetting(
     AccountName,
     CharacterName,
     ContentsName
   );
-  const visibleHandler = () => {};
-  const goldContentsHandler = () => {};
+  const visibleHandler = () => setter("isVisible");
+  const goldContentsHandler = () => setter("isGoldContents");
 
   return (
     <ContentList
@@ -155,6 +155,7 @@ const ContentCard = ({ AccountName, ContentsName, CharacterName }: IProps) => {
       <GateContainer>
         {Gates.map((gate, index) => {
           const Difficulty = gate.Difficulty;
+
           return (
             <ContentCardGate
               key={index}

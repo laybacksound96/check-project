@@ -121,8 +121,7 @@ function DragCharacters({
   ContentsOrder,
   AccountIndex,
 }: IProps) {
-  const [ConfigContent] = useModal();
-  const [AddContent] = useModal();
+  const [openModal] = useModal();
   const [isHovered, setIsHovered] = useState(false);
   const contentsFrequency = useRecoilValue(ContentsFrequency);
   const {
@@ -197,7 +196,7 @@ function DragCharacters({
               <Character
                 isHovered={isHovered}
                 onClick={() =>
-                  ConfigContent("CONFIG_CONTENT", {
+                  openModal("CONFIG_ACCOUNT", {
                     AccountName,
                     CharacterName: "",
                   })
@@ -268,7 +267,7 @@ function DragCharacters({
                     {provided.placeholder}
                     <Name
                       onClick={() =>
-                        AddContent("ADD_ACCOUNT", {
+                        openModal("ADD_CONTENT", {
                           AccountName,
                           CharacterName: "",
                         })

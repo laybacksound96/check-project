@@ -6,7 +6,7 @@ import ContentCardCheckBox from "./ContentCardCheckBox";
 
 import { useState } from "react";
 
-const IconContainer = styled.div`
+const GateVisibleContainer = styled.div`
   display: flex;
   align-items: center;
 `;
@@ -24,7 +24,7 @@ const GateContainer = styled.div<IconContainerStyle>`
   margin-bottom: 10px;
   opacity: ${(props) => (props.isVisibled ? "100%" : "30%")};
   transition: opacity 0.1s ease-in-out;
-  ${IconContainer} {
+  ${GateVisibleContainer} {
     svg {
       font-size: 30px;
       opacity: ${(props) => (props.isHovered ? "100%" : "0%")};
@@ -69,46 +69,44 @@ const ContentCardGate = ({
   const [isHovered, setIsHovered] = useState(false);
 
   const changeDifficultyHandler = () => {
-    // if (isFixedDifficulty || !isContentVisible || !isVisible) return;
-    // setDifficulty(Difficulty === "normal" ? "hard" : "normal");
+    if (isFixedDifficulty || !isContentVisible || !isVisible) return;
   };
 
   return (
-    <div></div>
-    // <GateContainer
-    //   isVisibled={isVisible}
-    //   isHovered={isHovered}
-    //   onMouseEnter={() => setIsHovered(true)}
-    //   onMouseLeave={() => setIsHovered(false)}
-    // >
-    //   <GateNumberContainer style={{ display: "flex", flexDirection: "column" }}>
-    //     <GateNumber>{Gate_No}</GateNumber>
-    //     <DifficultySpan>{Difficulty}</DifficultySpan>
-    //   </GateNumberContainer>
-    //   <DifficultyContainer>
-    //     <CheckBoxContainer>
-    //       <ContentCardCheckBox
-    //         DifficultyState={Difficulty}
-    //         Difficulty="normal"
-    //         isFixedDifficulty={isFixedDifficulty}
-    //         handler={changeDifficultyHandler}
-    //       />
-    //       <ContentCardCheckBox
-    //         DifficultyState={Difficulty}
-    //         Difficulty="hard"
-    //         isFixedDifficulty={isFixedDifficulty}
-    //         handler={changeDifficultyHandler}
-    //       />
-    //     </CheckBoxContainer>
-    //   </DifficultyContainer>
-    //   <IconContainer onClick={() => setIsVisible(!isVisible)}>
-    //     {isVisible ? (
-    //       <FontAwesomeIcon icon={faEye} />
-    //     ) : (
-    //       <FontAwesomeIcon icon={faEyeSlash} />
-    //     )}
-    //   </IconContainer>
-    // </GateContainer>
+    <GateContainer
+      isVisibled={isVisible}
+      isHovered={isHovered}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <GateNumberContainer style={{ display: "flex", flexDirection: "column" }}>
+        <GateNumber>{Gate_No}</GateNumber>
+        <DifficultySpan>{Difficulty}</DifficultySpan>
+      </GateNumberContainer>
+      <DifficultyContainer>
+        <CheckBoxContainer>
+          <ContentCardCheckBox
+            DifficultyState={Difficulty}
+            Difficulty="normal"
+            isFixedDifficulty={isFixedDifficulty}
+            handler={changeDifficultyHandler}
+          />
+          <ContentCardCheckBox
+            DifficultyState={Difficulty}
+            Difficulty="hard"
+            isFixedDifficulty={isFixedDifficulty}
+            handler={changeDifficultyHandler}
+          />
+        </CheckBoxContainer>
+      </DifficultyContainer>
+      <GateVisibleContainer onClick={() => console.log("Asd")}>
+        {isVisible ? (
+          <FontAwesomeIcon icon={faEye} />
+        ) : (
+          <FontAwesomeIcon icon={faEyeSlash} />
+        )}
+      </GateVisibleContainer>
+    </GateContainer>
   );
 };
 

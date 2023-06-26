@@ -98,7 +98,7 @@ function DragCharactersDraggable({
               />
               <FontAwesomeIcon
                 onClick={() =>
-                  ConfigAccount("CONFIG_ACCOUNT", {
+                  ConfigAccount("CONFIG_CONTENT", {
                     AccountName,
                     CharacterName,
                   })

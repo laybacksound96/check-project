@@ -1,8 +1,8 @@
 import { atom } from "recoil";
 
 export enum ModalEnum {
-  CONFIG_CONTENT = "계정 설정",
-  CONFIG_ACCOUNT = "컨텐츠 설정",
+  CONFIG_CONTENT = "컨텐츠 설정",
+  CONFIG_ACCOUNT = "계정 설정",
   ADD_CONTENT = "컨텐츠 추가",
   ADD_ACCOUNT = "계정 추가",
 }
@@ -20,7 +20,7 @@ export interface IModalObject {
 export const ModalState = atom<IModal>({
   key: "ModalState",
   default: {
-    modalType: ModalEnum.CONFIG_CONTENT,
+    modalType: ModalEnum.CONFIG_ACCOUNT,
     isModalOpen: false,
     modalProp: { AccountName: "", CharacterName: "" },
   },
