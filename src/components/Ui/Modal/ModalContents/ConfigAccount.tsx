@@ -6,8 +6,9 @@ import { faGear } from "@fortawesome/free-solid-svg-icons";
 import DangerZone from "./components/DangerZone";
 import useModal from "../../../../CustomHooks/Modal/useModal";
 import SettingCharacters from "./components/SettingVisibleContent";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import SettingContents from "./components/SettingContents";
+import { AccountOrder } from "../../../../atoms/order";
 
 const Container = styled.div`
   width: auto;
@@ -43,15 +44,30 @@ const ContentList = styled.div`
 export const ConfigAccount = () => {
   const [
     ,
-    ,
+    closeModal,
     {
       modalProp: { AccountName },
     },
   ] = useModal();
-  const {
-    [`${AccountName}`]: { ContentsSetting, CharacterSetting },
-  } = useRecoilValue(UserSetting);
-  function handleDelete() {}
+  const [
+    {
+      [`${AccountName}`]: { ContentsSetting, CharacterSetting },
+    },
+    setUserSetting,
+  ] = useRecoilState(UserSetting);
+  const setAccountOrder = useSetRecoilState(AccountOrder);
+  function handleDelete() {
+    setAccountOrder((prev) => {
+      const newArray = prev.filter((elem) => elem.AccountName !== AccountName);
+      return newArray;
+    });
+    setUserSetting((prev) => {
+      const copiedPrev = { ...prev };
+      delete copiedPrev[`${AccountName}`];
+      return copiedPrev;
+    });
+    closeModal();
+  }
   return (
     <>
       <Container>
