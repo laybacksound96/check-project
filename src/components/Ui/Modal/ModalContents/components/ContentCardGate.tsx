@@ -55,21 +55,24 @@ const CheckBoxContainer = styled.div`
   width: 100%;
 `;
 interface IProps {
+  Gate: IGates;
   Difficulty: string | undefined;
   isContentVisible: boolean;
-  Gate: IGates;
-  ChracterName: string;
-  ContentsName: string;
+  GateIndex: number;
+  SetGateVisibleHandler: (GateIndex: number) => void;
 }
 const ContentCardGate = ({
   Gate: { Gate_No, isFixedDifficulty, isVisible },
   Difficulty,
   isContentVisible,
+  GateIndex,
+  SetGateVisibleHandler,
 }: IProps) => {
   const [isHovered, setIsHovered] = useState(false);
 
   const changeDifficultyHandler = () => {
     if (isFixedDifficulty || !isContentVisible || !isVisible) return;
+    SetGateVisibleHandler(GateIndex);
   };
 
   return (
@@ -99,7 +102,7 @@ const ContentCardGate = ({
           />
         </CheckBoxContainer>
       </DifficultyContainer>
-      <GateVisibleContainer onClick={() => console.log("Asd")}>
+      <GateVisibleContainer onClick={() => SetGateVisibleHandler(GateIndex)}>
         {isVisible ? (
           <FontAwesomeIcon icon={faEye} />
         ) : (

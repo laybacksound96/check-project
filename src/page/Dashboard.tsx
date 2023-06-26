@@ -7,7 +7,6 @@ import { UserSetting } from "../atoms/userSetting";
 import { AccountOrder } from "../atoms/order";
 import DragAccounts from "../components/DashBoard/DragAccounts/DragAccounts";
 import { ContentsFrequency } from "../atoms/frequency";
-import { ModalState } from "../atoms/modal";
 
 const DashboardStyle = styled.div`
   min-width: 800px;
@@ -17,7 +16,7 @@ function Dashboard() {
   const userSetting = useRecoilValue(UserSetting);
   const contentsFrequency = useRecoilValue(ContentsFrequency);
   const accountOrder = useRecoilValue(AccountOrder);
-  const modalState = useRecoilValue(ModalState);
+
   useEffect(() => {
     console.log("userSetting");
     console.log(userSetting);
@@ -28,12 +27,9 @@ function Dashboard() {
     console.log("accountOrder.");
     console.log(accountOrder);
 
-    console.log("modalState.");
-    console.log(modalState);
-
     console.log("-------------------------");
     console.log("-------------------------");
-  }, [userSetting, contentsFrequency, accountOrder, modalState]);
+  }, [userSetting, contentsFrequency, accountOrder]);
   return (
     <>
       <Modal />

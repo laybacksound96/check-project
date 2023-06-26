@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ContentCardGate from "./ContentCardGate";
 
 import {
@@ -10,6 +10,8 @@ import {
   faSquareCheck,
 } from "@fortawesome/free-solid-svg-icons";
 import useCharsContentSetting from "../../../../../CustomHooks/UserSetting/useCharsContentSetting";
+import useGates from "../../../../../CustomHooks/UserSetting/useGates";
+import calculateGold from "../functions/calculateGold";
 
 interface IStyel {
   isVisibled: boolean;
@@ -34,12 +36,11 @@ const ContentList = styled.div<IStyel>`
 
 export const CardHeader = styled.div`
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: start;
   justify-content: space-between;
   margin-bottom: 10px;
-  span {
-    margin: 0px 20px;
-  }
+
   svg {
     margin-top: 5px;
     font-size: 30px;
@@ -53,6 +54,14 @@ export const CardHeader = styled.div`
     border-radius: 5px;
     opacity: 20%;
     transition: 0.1s ease-in-out;
+  }
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding-right: 5px;
+    margin-bottom: 5px;
   }
 `;
 
@@ -73,31 +82,36 @@ const GoldCheck = styled.div<IStyle>`
   display: flex;
   opacity: ${(props) => (props.isHovered ? "100%" : "0%")};
   transition: opacity 0.1s ease-in-out;
-  div {
-    display: flex;
-    flex-direction: column;
-    justify-content: start;
-    align-items: start;
-    span {
-      font-size: 0.9rem;
-      margin: 0;
-      margin-top: 5px;
-    }
+  padding-left: 5px;
+  align-items: center;
+  span {
+    font-size: 1rem;
   }
 `;
-interface IGoldIcon {
-  isGoldContents: boolean;
-}
-const GoldIcon = styled.div<IGoldIcon>`
-  svg {
-    color: ${(props) => (props.isGoldContents ? "yellow" : "gray")};
-  }
-`;
+
 const IconContainer = styled.div<IStyle>`
   opacity: ${(props) => (props.isHovered ? "100%" : "0%")};
   transition: opacity 0.1s ease-in-out;
 `;
-const Icon = styled.div`
+
+interface IProps {
+  AccountName: string;
+  ContentsName: string;
+  CharacterName: string;
+}
+interface GoldIconStyle {
+  isHovered: boolean;
+  isGoldContents: boolean;
+}
+
+const GoldIcon = styled.div<GoldIconStyle>`
+  display: flex;
+  align-items: center;
+  span {
+    margin-left: 5px;
+    opacity: ${(props) => (props.isGoldContents ? "100%" : "40%")};
+    font-size: 1.4rem;
+  }
   svg {
     color: ${(props) => props.theme.TextColor_A};
     margin: 0px;
@@ -105,22 +119,48 @@ const Icon = styled.div`
     font-size: 20px;
   }
 `;
-interface IProps {
-  AccountName: string;
-  ContentsName: string;
-  CharacterName: string;
-}
-
+const GoldContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
 const ContentCard = ({ AccountName, ContentsName, CharacterName }: IProps) => {
   const [isHovered, setIsHovered] = useState(false);
-  const [{ isVisible, isGoldContents, Gates }, setter] = useCharsContentSetting(
+  const [gateGold, setGateGold] = useState(0);
+  const [getGate, setGateVisible] = useGates(
     AccountName,
     CharacterName,
     ContentsName
   );
-  const visibleHandler = () => setter("isVisible");
-  const goldContentsHandler = () => setter("isGoldContents");
 
+  const [{ Gates, isVisible, isGoldContents }, setter] = useCharsContentSetting(
+    AccountName,
+    CharacterName,
+    ContentsName
+  );
+  const visibleHandler = () => {
+    if (isVisible) {
+      setter("isVisible", false);
+      setter("isGoldContents", false);
+    } else {
+      setter("isVisible", true);
+    }
+  };
+  const goldContentsHandler = () => {
+    if (!isGoldContents) {
+      setter("isVisible", true);
+      setter("isGoldContents", true);
+    } else {
+      setter("isGoldContents", false);
+    }
+  };
+  const gateVisibleHandler = (gateIndex: number) => {
+    const { isVisible } = getGate(gateIndex);
+    setGateVisible(gateIndex, isVisible);
+  };
+  useEffect(() => {
+    const gold = calculateGold(ContentsName, Gates);
+    setGateGold(gold);
+  }, [ContentsName, Gates]);
   return (
     <ContentList
       isVisibled={isVisible}
@@ -128,41 +168,38 @@ const ContentCard = ({ AccountName, ContentsName, CharacterName }: IProps) => {
       onMouseLeave={() => setIsHovered(false)}
     >
       <CardHeader>
-        <h1>{ContentsName}</h1>
-        <GoldCheck isHovered={isHovered}>
-          <GoldIcon isGoldContents={isGoldContents}>
-            <FontAwesomeIcon icon={faCoins} />
+        <header>
+          <h1>{ContentsName}</h1>
+          <IconContainer isHovered={isHovered} onClick={visibleHandler}>
+            <FontAwesomeIcon icon={isVisible ? faEye : faEyeSlash} />
+          </IconContainer>
+        </header>
+
+        <GoldContainer onClick={goldContentsHandler}>
+          <GoldIcon isHovered={isHovered} isGoldContents={isGoldContents}>
+            <FontAwesomeIcon
+              icon={faCoins}
+              style={{ color: isGoldContents ? "yellow" : "gray" }}
+            />
+            <span>{gateGold}</span>
           </GoldIcon>
-          <div onClick={goldContentsHandler}>
+          <GoldCheck isHovered={isHovered}>
             <span>골드획득 컨텐츠</span>
-            <Icon>
-              {isGoldContents ? (
-                <FontAwesomeIcon icon={faSquareCheck} />
-              ) : (
-                <FontAwesomeIcon icon={faSquare} />
-              )}
-            </Icon>
-          </div>
-        </GoldCheck>
-        <IconContainer isHovered={isHovered} onClick={visibleHandler}>
-          {isVisible ? (
-            <FontAwesomeIcon icon={faEye} />
-          ) : (
-            <FontAwesomeIcon icon={faEyeSlash} />
-          )}
-        </IconContainer>
+
+            <FontAwesomeIcon icon={isGoldContents ? faSquareCheck : faSquare} />
+          </GoldCheck>
+        </GoldContainer>
       </CardHeader>
       <GateContainer>
         {Gates.map((gate, index) => {
           const Difficulty = gate.Difficulty;
-
           return (
             <ContentCardGate
               key={index}
               Difficulty={Difficulty}
               Gate={gate}
-              ChracterName={CharacterName}
-              ContentsName={ContentsName}
+              GateIndex={index}
+              SetGateVisibleHandler={gateVisibleHandler}
               isContentVisible={isVisible}
             />
           );

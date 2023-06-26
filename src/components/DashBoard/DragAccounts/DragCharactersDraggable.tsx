@@ -73,10 +73,8 @@ function DragCharactersDraggable({
   AccountName,
 }: IProps) {
   const [ConfigAccount] = useModal();
-  const [{ CharacterClassName, ItemMaxLevel }, setter] = useCharacterSettings(
-    AccountName,
-    CharacterName
-  );
+  const [{ CharacterClassName, ItemMaxLevel, isVisible }, setter] =
+    useCharacterSettings(AccountName, CharacterName);
   return (
     <Draggable draggableId={boardId} index={index}>
       {(provided) => (
@@ -93,7 +91,7 @@ function DragCharactersDraggable({
             </NameContainer>
             <ButtonContainer>
               <FontAwesomeIcon
-                onClick={() => setter("isVisible")}
+                onClick={() => setter("isVisible", !isVisible)}
                 icon={faEye}
               />
               <FontAwesomeIcon

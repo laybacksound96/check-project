@@ -71,7 +71,7 @@ const SettingCharacters = ({ AccountName, CharacterName }: IProps) => {
       </NameContainer>
       <ButtonContainer>
         <FontAwesomeIcon
-          onClick={() => setter("isVisible")}
+          onClick={() => setter("isVisible", !isVisible)}
           icon={isVisible ? faEye : faEyeSlash}
         />
       </ButtonContainer>

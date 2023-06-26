@@ -1,28 +1,24 @@
 import { useRecoilState } from "recoil";
-import { ICharsContentState, UserSetting } from "../../atoms/userSetting";
+import { IGates, UserSetting } from "../../atoms/userSetting";
 
-function useCharsContentSetting(
+function useGates(
   AccountName: string,
   CharacterName: string,
   ContentName: string
 ): [
-  ICharsContentState,
-  (
-    Key: "isGoldContents" | "isCleared" | "isVisible" | "isActivated",
-    Value: boolean
-  ) => void
+  (GateIndex: number) => IGates,
+  (GateIndex: number, Value: boolean) => void
 ] {
   const [userSetting, setUserSetting] = useRecoilState(UserSetting);
-  const value =
+
+  const getter = (GateIndex: number) =>
     userSetting[AccountName].CharacterSetting[CharacterName].Contents[
       ContentName
-    ];
-  const setter = (
-    Key: "isGoldContents" | "isCleared" | "isVisible" | "isActivated",
-    Value: boolean
-  ) =>
+    ].Gates[GateIndex];
+
+  const setter = (GateIndex: number, Value: boolean) =>
     setUserSetting((prev) => {
-      return {
+      const copiedPrev = {
         ...prev,
         [`${AccountName}`]: {
           ...prev[AccountName],
@@ -36,16 +32,24 @@ function useCharsContentSetting(
                   ...prev[AccountName].CharacterSetting[CharacterName].Contents[
                     ContentName
                   ],
-                  [`${Key}`]: Value,
+                  Gates: [
+                    ...prev[AccountName].CharacterSetting[CharacterName]
+                      .Contents[ContentName].Gates,
+                  ],
                 },
               },
             },
           },
         },
       };
+      const newGateData: IGates = { ...getter(GateIndex), isVisible: !Value };
+      copiedPrev[AccountName].CharacterSetting[CharacterName].Contents[
+        ContentName
+      ].Gates[GateIndex] = newGateData;
+      return copiedPrev;
     });
 
-  return [value, setter];
+  return [getter, setter];
 }
 
-export default useCharsContentSetting;
+export default useGates;

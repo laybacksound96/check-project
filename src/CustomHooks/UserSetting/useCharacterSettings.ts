@@ -1,17 +1,27 @@
 import { useRecoilState } from "recoil";
-import { ICharacterState, UserSetting } from "../../atoms/userSetting";
+import {
+  ICharacterState,
+  IGoldContents,
+  UserSetting,
+} from "../../atoms/userSetting";
 
 function useCharacterSettings(
   AccountName: string,
   CharacterName: string
 ): [
   ICharacterState,
-  (Key: "IsGoldCharacter" | "isVisible") => void,
+  (
+    Key: "IsGoldCharacter" | "isVisible" | "GoldContents",
+    Value: boolean | IGoldContents[]
+  ) => void,
   (object: ICharacterState) => void
 ] {
   const [userSetting, setUserSetting] = useRecoilState(UserSetting);
   const value = userSetting[AccountName].CharacterSetting[CharacterName];
-  const setter = (Key: "IsGoldCharacter" | "isVisible") => {
+  const setter = (
+    Key: "IsGoldCharacter" | "isVisible" | "GoldContents",
+    Value: boolean | IGoldContents[]
+  ) => {
     setUserSetting((prev) => {
       return {
         ...prev,
@@ -21,7 +31,7 @@ function useCharacterSettings(
             ...prev[AccountName].CharacterSetting,
             [`${CharacterName}`]: {
               ...prev[AccountName].CharacterSetting[CharacterName],
-              [`${Key}`]: !value[Key],
+              [`${Key}`]: Value,
             },
           },
         },
