@@ -144,11 +144,11 @@ const Content = ({
       </HeaderContainer>
       <OwnerContainer Color={Color}>
         {RemainOwner.map((name, index) => {
-          return (
+          return index < 4 ? (
             <OwnerBox key={index} Color={Color}>
-              {RemainOwner.length > 4 && index > 2 ? `${name} ...` : name}
+              {index === 3 && RemainOwner.length > 4 ? `${name}...` : name}
             </OwnerBox>
-          );
+          ) : null;
         })}
       </OwnerContainer>
     </ContentStyle>

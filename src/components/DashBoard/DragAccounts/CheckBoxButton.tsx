@@ -46,7 +46,7 @@ function CheckBoxButton({
     useCharsContentSetting(AccountName, CharacterName, ContentName);
   function onClickHandler() {
     if (!isVisible || !isActivated) return;
-    setter("isCleared", !isVisible);
+    setter("isCleared", !isCleared);
   }
   return (
     <CheckBox
