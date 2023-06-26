@@ -3,9 +3,9 @@ import CountGates from "./CountGates";
 import calculateDifficulty from "./calculateDifficulty";
 import commander from "./commander.json";
 import { IData } from "./commanderTypes";
-function isActivated(level: number, content: string) {
+function isActivated(level: number, content: string, gateNumber: number) {
   const commanderData: IData = commander;
-  const commaderLevel = commanderData[content][0]["normal"].level;
+  const commaderLevel = commanderData[content][gateNumber]["normal"].level;
   if (level < commaderLevel) return false;
   return true;
 }
@@ -17,10 +17,10 @@ function makeGates(content: string, level: number): IGates[] {
     const Difficulty = calculateDifficulty(level, content, gateNumber);
     const Gate: IGates = {
       Gate_No: gateNumber + 1,
-      isActivated: isActivated(level, content),
+      isActivated: isActivated(level, content, gateNumber),
       Difficulty,
       isFixedDifficulty: Difficulty === "normal" ? true : false,
-      isVisible: isActivated(level, content),
+      isVisible: isActivated(level, content, gateNumber),
     };
     Gates.push(Gate);
   }
