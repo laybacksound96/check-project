@@ -8,8 +8,8 @@ import IsInValidName from "./functions/IsValidName";
 import IsDisabled from "./functions/IsDisabled";
 import IsDupplicated from "./functions/IsDupplicated";
 import SortByLevel from "./functions/SortByLevel";
-import { AccountOrder } from "../../../../atoms/order";
-import { UserSetting } from "../../../../atoms/userSetting";
+import { AccountOrder, IAccountOrder } from "../../../../atoms/order";
+import { IUserSetting, UserSetting } from "../../../../atoms/userSetting";
 import useModal from "../../../../CustomHooks/Modal/useModal";
 import makeNewAccount from "./functions/makeNewAccount";
 
@@ -88,15 +88,34 @@ const AddAccount = () => {
   };
   const AddAccountHandler = () => {
     const AccountName = fetchedCharacters[0].CharacterName;
+    const item: {
+      UserSetting: IUserSetting;
+      AccountOrder: IAccountOrder[];
+    } = {
+      UserSetting: {},
+      AccountOrder: [],
+    };
     setUserSetting((prev) => {
+      item.UserSetting = {
+        ...prev,
+        ...makeNewAccount(fetchedCharacters),
+      };
       return { ...prev, ...makeNewAccount(fetchedCharacters) };
     });
-    setAccountOrder((prev) => [
-      ...prev,
-      { AccountName, CharacterOrder: [], ContentsOrder: [] },
-    ]);
+    setAccountOrder((prev) => {
+      item.AccountOrder = [
+        ...prev,
+        { AccountName, CharacterOrder: [], ContentsOrder: [] },
+      ];
+      return [...prev, { AccountName, CharacterOrder: [], ContentsOrder: [] }];
+    });
+
+    const KeyArray = [AccountName];
+    localStorage.setItem(AccountName, JSON.stringify(item));
+    localStorage.setItem("Key", JSON.stringify(KeyArray));
     closeModal();
   };
+
   useEffect(() => {
     setIsDisabled(() => IsDisabled(isDupplicated, isNull, isInValid));
   }, [isDupplicated, isNull, isInValid]);
