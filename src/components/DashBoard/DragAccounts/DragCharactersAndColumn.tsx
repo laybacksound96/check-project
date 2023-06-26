@@ -132,26 +132,39 @@ function DragCharacters({
     const { destination, source } = dragInfo;
     if (!destination) return;
     if (destination?.droppableId !== source.droppableId) return;
-
+    setAccountOrder((prev) => {
+      const copiedPrev = [...prev];
+      const copiedOrder = [...prev[AccountIndex].CharacterOrder];
+      const target = prev[AccountIndex].CharacterOrder[source.index];
+      copiedOrder.splice(source.index, 1);
+      copiedOrder.splice(destination.index, 0, target);
+      const copiedAccount = {
+        ...copiedPrev[AccountIndex],
+        CharacterOrder: copiedOrder,
+      };
+      copiedPrev.splice(AccountIndex, 1, copiedAccount);
+      return copiedPrev;
+    });
     return;
   };
   const dragContentHandler = (dragInfo: DropResult) => {
-    // const { destination, source } = dragInfo;
-    // if (!destination) return;
-    // if (destination?.droppableId === source.droppableId) {
-    //   setContentsOrder((prev) => {
-    //     const copiedArray = [...prev[AccountName]];
-
-    //     copiedArray.splice(source.index, 1);
-    //     copiedArray.splice(
-    //       destination?.index,
-    //       0,
-    //       prev[AccountName][source.index]
-    //     );
-    //     const copiedPrev = { ...prev, [AccountName]: [...copiedArray] };
-    //     return copiedPrev;
-    //   });
-    // }
+    const { destination, source } = dragInfo;
+    if (!destination) return;
+    if (destination?.droppableId === source.droppableId) {
+      setAccountOrder((prev) => {
+        const copiedPrev = [...prev];
+        const copiedOrder = [...prev[AccountIndex].ContentsOrder];
+        const target = prev[AccountIndex].ContentsOrder[source.index];
+        copiedOrder.splice(source.index, 1);
+        copiedOrder.splice(destination.index, 0, target);
+        const copiedAccount = {
+          ...copiedPrev[AccountIndex],
+          ContentsOrder: copiedOrder,
+        };
+        copiedPrev.splice(AccountIndex, 1, copiedAccount);
+        return copiedPrev;
+      });
+    }
     return;
   };
 
