@@ -1,5 +1,8 @@
 import { useRecoilState } from "recoil";
-import { ICharacterState, UserSetting } from "../../atoms/userSetting";
+import {
+  ICharacterState,
+  UserSetting,
+} from "../../atoms/Settings/ContentSetting";
 
 function useCharacterSettings(
   AccountName: string

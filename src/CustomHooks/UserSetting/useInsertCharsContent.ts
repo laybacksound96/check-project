@@ -1,5 +1,8 @@
 import { useRecoilState } from "recoil";
-import { ICharsContentState, UserSetting } from "../../atoms/userSetting";
+import {
+  ICharsContentState,
+  UserSetting,
+} from "../../atoms/Settings/ContentSetting";
 
 function useInsertCharsContent(
   AccountName: string,

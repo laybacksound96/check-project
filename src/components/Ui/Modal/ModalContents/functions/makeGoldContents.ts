@@ -1,4 +1,4 @@
-import { IGoldContents } from "../../../../../atoms/userSetting";
+import { IGoldContents } from "../../../../../atoms/Settings/ContentSetting";
 
 function makeGoldContents(GoldArray: IGoldContents[]) {
   const GoldContents = [];

@@ -1,4 +1,4 @@
-import { ICharacterSetting } from "../../../atoms/userSetting";
+import { ICharacterSetting } from "../../../atoms/Settings/ContentSetting";
 
 const isAllVisibleTrue = (
   ContentName: string,

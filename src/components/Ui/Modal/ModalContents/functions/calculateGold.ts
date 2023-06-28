@@ -1,6 +1,6 @@
 import { IData } from "./commanderTypes";
 import commander from "./commander.json";
-import { IGates } from "../../../../../atoms/userSetting";
+import { IGates } from "../../../../../atoms/Settings/ContentSetting";
 
 function calculateGold(ContentsName: string, Gates: IGates[]): number {
   const commanderData: IData = commander;

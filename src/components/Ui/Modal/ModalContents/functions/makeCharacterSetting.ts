@@ -1,4 +1,4 @@
-import { ICharacterSetting } from "../../../../../atoms/userSetting";
+import { ICharacterSetting } from "../../../../../atoms/Settings/ContentSetting";
 import { IFetchedCharacter } from "../AddAccount";
 import SortByLevel from "./SortByLevel";
 import makeCharsContentSetting from "./makeCharsContentSetting";

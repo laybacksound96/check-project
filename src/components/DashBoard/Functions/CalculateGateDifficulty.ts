@@ -1,4 +1,4 @@
-import { IGates } from "../../../atoms/userSetting";
+import { IGates } from "../../../atoms/Settings/ContentSetting";
 
 function CalculateGateDifficulty(gate: IGates[]): string[] {
   let result = [];

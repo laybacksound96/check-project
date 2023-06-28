@@ -1,4 +1,4 @@
-import { IUserSetting } from "../../../../../atoms/userSetting";
+import { IUserSetting } from "../../../../../atoms/Settings/ContentSetting";
 
 const makeNewOrder = (AccountName: string, newAccount: IUserSetting) => {
   const { CharacterSetting, ContentsSetting } = newAccount[AccountName];

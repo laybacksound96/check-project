@@ -1,4 +1,4 @@
-import { UserSetting } from "../../../../atoms/userSetting";
+import { UserSetting } from "../../../../atoms/Settings/ContentSetting";
 import { GridContainer } from "./ConfigContent";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -8,7 +8,7 @@ import useModal from "../../../../CustomHooks/Modal/useModal";
 import SettingCharacters from "./components/SettingVisibleContent";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import SettingContents from "./components/SettingContents";
-import { AccountOrder } from "../../../../atoms/order";
+import { AccountOrder } from "../../../../atoms/OrdersSettings";
 
 const Container = styled.div`
   width: auto;

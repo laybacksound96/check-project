@@ -3,7 +3,7 @@ import {
   IContentState,
   IUserSetting,
   UserSetting,
-} from "../../atoms/userSetting";
+} from "../../atoms/Settings/ContentSetting";
 
 function useContentsSetting(
   AccountName: string,

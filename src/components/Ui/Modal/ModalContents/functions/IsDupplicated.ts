@@ -1,4 +1,4 @@
-import { IUserSetting } from "../../../../../atoms/userSetting";
+import { IUserSetting } from "../../../../../atoms/Settings/ContentSetting";
 
 const IsDupplicated = (
   inputName: string,

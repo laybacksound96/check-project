@@ -1,5 +1,5 @@
 import { useRecoilState } from "recoil";
-import { IGates, UserSetting } from "../../atoms/userSetting";
+import { IGates, UserSetting } from "../../atoms/Settings/ContentSetting";
 
 function useGates(
   AccountName: string,

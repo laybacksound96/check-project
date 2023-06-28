@@ -1,5 +1,5 @@
 import { useRecoilState } from "recoil";
-import { CharacterOrder } from "../../../atoms/order";
+import { CharacterOrder } from "../../../atoms/OrdersSettings";
 import { Draggable, DroppableProvided } from "react-beautiful-dnd";
 import styled from "styled-components";
 import { dragIcon } from "../../../Settings";

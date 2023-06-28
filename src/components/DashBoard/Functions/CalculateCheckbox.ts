@@ -1,4 +1,4 @@
-import { IUserSetting } from "../../../atoms/userSetting";
+import { IUserSetting } from "../../../atoms/Settings/ContentSetting";
 
 import CalculateGateDifficulty from "./CalculateGateDifficulty";
 import getRandomPastelColor from "./getRandomPastelColor";

@@ -1,4 +1,4 @@
-import { ICharsContentState } from "../../../../../atoms/userSetting";
+import { ICharsContentState } from "../../../../../atoms/Settings/ContentSetting";
 import IsValidLevel from "./IsValidLevel";
 import makeGates from "./makeGates";
 

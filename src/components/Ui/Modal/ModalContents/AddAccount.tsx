@@ -12,8 +12,8 @@ import {
   AccountOrder,
   CharacterOrder,
   ContentsOrder,
-} from "../../../../atoms/order";
-import { UserSetting } from "../../../../atoms/userSetting";
+} from "../../../../atoms/OrdersSettings";
+import { UserSetting } from "../../../../atoms/Settings/ContentSetting";
 import useModal from "../../../../CustomHooks/Modal/useModal";
 import makeNewAccount from "./functions/makeNewAccount";
 import makeNewOrder from "./functions/makeNewOrder";

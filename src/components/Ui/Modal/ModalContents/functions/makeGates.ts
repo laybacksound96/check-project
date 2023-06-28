@@ -1,4 +1,4 @@
-import { IGates } from "../../../../../atoms/userSetting";
+import { IGates } from "../../../../../atoms/Settings/ContentSetting";
 import CountGates from "./CountGates";
 import calculateDifficulty from "./calculateDifficulty";
 import commander from "./commander.json";

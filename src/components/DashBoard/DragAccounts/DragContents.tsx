@@ -4,7 +4,7 @@ import {
   Droppable,
   Draggable,
 } from "react-beautiful-dnd";
-import { ContentsOrder, CharacterOrder } from "../../../atoms/order";
+import { ContentsOrder, CharacterOrder } from "../../../atoms/OrdersSettings";
 import { AxisLocker } from "../Functions/AxisLocker";
 import getColorInFrequencyCounter from "../Functions/getColorFrequencyCounter";
 import CheckBoxButton from "../Components/CheckBoxButton";

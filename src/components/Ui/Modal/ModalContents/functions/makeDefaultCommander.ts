@@ -1,4 +1,4 @@
-import { IContentsSetting } from "../../../../../atoms/userSetting";
+import { IContentsSetting } from "../../../../../atoms/Settings/ContentSetting";
 import commander from "./commander.json";
 import { IData } from "./commanderTypes";
 

@@ -2,7 +2,7 @@ import makeCharsContentState from "./makeCharsContentState";
 import {
   ICharsContentSetting,
   IGoldContents,
-} from "../../../../../atoms/userSetting";
+} from "../../../../../atoms/Settings/ContentSetting";
 import { IData } from "./commanderTypes";
 
 function isGoldContents(

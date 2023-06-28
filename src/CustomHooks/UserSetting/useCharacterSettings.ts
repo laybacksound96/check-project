@@ -3,7 +3,7 @@ import {
   ICharacterState,
   IGoldContents,
   UserSetting,
-} from "../../atoms/userSetting";
+} from "../../atoms/Settings/ContentSetting";
 
 function useCharacterSettings(
   AccountName: string,
