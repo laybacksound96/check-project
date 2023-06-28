@@ -22,10 +22,10 @@ const Contents = () => {
   const accountOrder = useRecoilValue(AccountOrder);
   const userSetting = useRecoilValue(UserSetting);
   useEffect(() => {
-    setContentsFrequency((prev) =>
-      CalculateCheckbox(accountOrder, userSetting, prev)
-    );
-  }, [accountOrder, setContentsFrequency, userSetting]);
+    // setContentsFrequency((prev) =>
+    //   CalculateCheckbox(accountOrder, userSetting)
+    // );
+  }, []);
 
   return (
     <ContainerStyle>

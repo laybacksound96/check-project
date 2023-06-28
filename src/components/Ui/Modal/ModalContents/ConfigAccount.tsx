@@ -57,10 +57,10 @@ export const ConfigAccount = () => {
   ] = useRecoilState(UserSetting);
   const setAccountOrder = useSetRecoilState(AccountOrder);
   function handleDelete() {
-    setAccountOrder((prev) => {
-      const newArray = prev.filter((elem) => elem.AccountName !== AccountName);
-      return newArray;
-    });
+    // setAccountOrder((prev) => {
+    //   const newArray = prev.filter((elem) => elem.AccountName !== AccountName);
+    //   return newArray;
+    // });
     setUserSetting((prev) => {
       const copiedPrev = { ...prev };
       delete copiedPrev[`${AccountName}`];

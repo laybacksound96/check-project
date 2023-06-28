@@ -8,10 +8,15 @@ import IsInValidName from "./functions/IsValidName";
 import IsDisabled from "./functions/IsDisabled";
 import IsDupplicated from "./functions/IsDupplicated";
 import SortByLevel from "./functions/SortByLevel";
-import { AccountOrder, IAccountOrder } from "../../../../atoms/order";
-import { IUserSetting, UserSetting } from "../../../../atoms/userSetting";
+import {
+  AccountOrder,
+  CharacterOrder,
+  ContentsOrder,
+} from "../../../../atoms/order";
+import { UserSetting } from "../../../../atoms/userSetting";
 import useModal from "../../../../CustomHooks/Modal/useModal";
 import makeNewAccount from "./functions/makeNewAccount";
+import makeNewOrder from "./functions/makeNewOrder";
 
 const Container = styled.div`
   display: flex;
@@ -53,6 +58,8 @@ interface IOptions {
 const AddAccount = () => {
   const [, closeModal] = useModal();
   const setAccountOrder = useSetRecoilState(AccountOrder);
+  const setCharacterOrder = useSetRecoilState(CharacterOrder);
+  const setContentsOrder = useSetRecoilState(ContentsOrder);
   const [userSetting, setUserSetting] = useRecoilState(UserSetting);
   const [inputValue, setInputValue] = useState("");
   const [isDisabled, setIsDisabled] = useState(false);
@@ -88,31 +95,24 @@ const AddAccount = () => {
   };
   const AddAccountHandler = () => {
     const AccountName = fetchedCharacters[0].CharacterName;
-    const item: {
-      UserSetting: IUserSetting;
-      AccountOrder: IAccountOrder[];
-    } = {
-      UserSetting: {},
-      AccountOrder: [],
-    };
+    const newAccount = makeNewAccount(fetchedCharacters);
+    const { CharacterOrder, ContentsOrder } = makeNewOrder(
+      AccountName,
+      newAccount
+    );
     setUserSetting((prev) => {
-      item.UserSetting = {
-        ...prev,
-        ...makeNewAccount(fetchedCharacters),
-      };
-      return { ...prev, ...makeNewAccount(fetchedCharacters) };
+      return { ...prev, ...newAccount };
     });
     setAccountOrder((prev) => {
-      item.AccountOrder = [
-        ...prev,
-        { AccountName, CharacterOrder: [], ContentsOrder: [] },
-      ];
-      return [...prev, { AccountName, CharacterOrder: [], ContentsOrder: [] }];
+      return [...prev, AccountName];
+    });
+    setCharacterOrder((prev) => {
+      return { ...prev, [`${AccountName}`]: CharacterOrder };
+    });
+    setContentsOrder((prev) => {
+      return { ...prev, [`${AccountName}`]: ContentsOrder };
     });
 
-    const KeyArray = [AccountName];
-    localStorage.setItem(AccountName, JSON.stringify(item));
-    localStorage.setItem("Key", JSON.stringify(KeyArray));
     closeModal();
   };
 

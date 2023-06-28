@@ -10,7 +10,7 @@ import styled from "styled-components";
 import { useRecoilState } from "recoil";
 import { AccountOrder } from "../../../atoms/order";
 import { AxisLocker } from "../Functions/AxisLocker";
-import DragCharacters from "./DragCharactersAndColumn";
+import DragCharacters from "./DragCharacters";
 import useModal from "../../../CustomHooks/Modal/useModal";
 
 const DragBoxStyle = styled.div`
@@ -71,8 +71,8 @@ const DragAccounts = () => {
         <Droppable droppableId="accounts" direction="vertical">
           {(provided) => (
             <AccountStyle ref={provided.innerRef} {...provided.droppableProps}>
-              {accountOrder.map(
-                ({ AccountName, CharacterOrder, ContentsOrder }, index) => (
+              {accountOrder.map((AccountName, index) => {
+                return (
                   <Draggable
                     draggableId={`draggableID_${AccountName}`}
                     key={`draggableID_${AccountName}`}
@@ -90,15 +90,12 @@ const DragAccounts = () => {
                         <DragCharacters
                           DragHandleProps={provided.dragHandleProps}
                           AccountName={AccountName}
-                          AccountIndex={index}
-                          CharacterOrder={CharacterOrder}
-                          ContentsOrder={ContentsOrder}
                         />
                       </div>
                     )}
                   </Draggable>
-                )
-              )}
+                );
+              })}
               {provided.placeholder}
             </AccountStyle>
           )}
