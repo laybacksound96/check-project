@@ -4,46 +4,92 @@ import {
   Setting,
 } from "../../../../../atoms/Settings/CharacterSetting";
 import {
-  ContentStateSetting,
   IContentSetting,
   IContentState,
 } from "../../../../../atoms/Settings/ContentSetting";
 import { IFetchedCharacter } from "../AddAccount";
 import commander from "../../../../../json/commander.json";
-import { IData } from "../../../../../json/commanderTypes";
-import IsValidLevel from "../functions/IsValidLevel";
-export interface NewAccount {
-  accountInfo: AccountInfo;
-  accountSetting: AccountSetting;
-  contentSetting: IContentSetting;
-}
-DefaultObject.isActivated = IsValidLevel(content, level);
-DefaultObject.Gates = makeGates(content, level);
-DefaultObject.isVisible = isGoldContents;
-DefaultObject.isGoldContents = isGoldContents;
+import { IData, IGates } from "../../../../../json/commanderTypes";
+import makeGoldArray from "../functions/makeGoldArray";
+import IsValidLevel from "../functions/Validation/IsValidLevel";
+import {
+  IGoldIncomeCharacter,
+  IGoldIncomeContent,
+} from "../../../../../atoms/Settings/GoldIncome";
+import {
+  IGatesCharacter,
+  IGatesContent,
+  IGatesSetting,
+} from "../../../../../atoms/Settings/Gates";
 
-function makeCotentState(level: number): IContentState {
-  const result: IContentState = {};
-  const commanderData: IData = commander;
+interface INewCotentsResult {
+  contentSetting: IContentState;
+  goldIncome: IGoldIncomeContent;
+  gates: IGatesContent;
+}
+
+const commanderData: IData = commander;
+function makeNewGates(level: number, gates: IGates[]): IGatesSetting[] {
+  function isHard(
+    hardLevel: number | undefined,
+    level: number
+  ): "normal" | "hard" {
+    if (!hardLevel) return "normal";
+    if (level < hardLevel) return "normal";
+    return "hard";
+  }
+  const result: IGatesSetting[] = [];
+  for (let index in gates) {
+    const hardLevel = gates[index].hard?.level;
+    const normalLevel = gates[index].normal.level;
+    const gate: IGatesSetting = {
+      Gate_No: +index + 1,
+      Difficulty: isHard(hardLevel, level),
+      isActivated: level > normalLevel,
+      isVisible: level > normalLevel,
+    };
+    result.push(gate);
+  }
+  return result;
+}
+function makeCotentState(level: number): INewCotentsResult {
+  const NewCotentsResult: INewCotentsResult = {
+    contentSetting: {},
+    goldIncome: {},
+    gates: {},
+  };
+
   for (let contentName in commanderData) {
-    const setting: ContentStateSetting = {
+    NewCotentsResult.contentSetting[`${contentName}`] = {
       isActivated: IsValidLevel(contentName, level),
       isCleared: false,
       isGoldContents: false,
       isVisible: false,
     };
-    result[`${contentName}`] = setting;
+    NewCotentsResult.goldIncome[`${contentName}`] = 0;
+    NewCotentsResult.gates[`${contentName}`] = makeNewGates(
+      level,
+      commanderData[contentName]
+    );
   }
-  return result;
+  return NewCotentsResult;
 }
-
+interface INewAccount {
+  accountInfo: AccountInfo;
+  accountSetting: AccountSetting;
+  contentSetting: IContentSetting;
+  GoldIncome: IGoldIncomeCharacter;
+  gates: IGatesCharacter;
+}
 export function makeNewAccount(
   fetchedCharacters: IFetchedCharacter[]
-): NewAccount {
-  const result: NewAccount = {
+): INewAccount {
+  const NewAccount: INewAccount = {
     accountInfo: {},
     accountSetting: {},
     contentSetting: {},
+    GoldIncome: {},
+    gates: {},
   };
   for (let index in fetchedCharacters) {
     const {
@@ -59,11 +105,14 @@ export function makeNewAccount(
       isVisible: +index < 6 ? true : false,
       TotalGoldIncome: 0,
     };
-    result.accountInfo[`${Name}`] = info;
-    result.accountSetting[`${Name}`] = setting;
-    result.contentSetting[`${Name}`] = makeCotentState(Level);
+    const { contentSetting, gates, goldIncome } = makeCotentState(Level);
+    NewAccount.accountInfo[`${Name}`] = info;
+    NewAccount.accountSetting[`${Name}`] = setting;
+    NewAccount.contentSetting[`${Name}`] = contentSetting;
+    NewAccount.gates[`${Name}`] = gates;
+    NewAccount.GoldIncome[`${Name}`] = goldIncome;
   }
-  return result;
+  return NewAccount;
 }
 
 export function makeContentSetting() {}

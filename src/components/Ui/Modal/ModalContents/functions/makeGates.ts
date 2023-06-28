@@ -1,21 +1,21 @@
-import { IGates } from "../../../../../atoms/Settings/ContentSetting";
 import CountGates from "./CountGates";
 import calculateDifficulty from "./calculateDifficulty";
-import commander from "./commander.json";
+import commander from "../../../../../json/commander.json";
 import { IData } from "../../../../../json/commanderTypes";
+import { IGatesSetting } from "../../../../../atoms/Settings/Gates";
 function isActivated(level: number, content: string, gateNumber: number) {
   const commanderData: IData = commander;
   const commaderLevel = commanderData[content][gateNumber]["normal"].level;
   if (level < commaderLevel) return false;
   return true;
 }
-function makeGates(content: string, level: number): IGates[] {
-  const Gates: IGates[] = [];
+function makeGates(content: string, level: number): IGatesSetting[] {
+  const Gates: IGatesSetting[] = [];
   const gateCount = CountGates(content);
 
   for (let gateNumber = 0; gateNumber < gateCount; gateNumber++) {
     const Difficulty = calculateDifficulty(level, content, gateNumber);
-    const Gate: IGates = {
+    const Gate: IGatesSetting = {
       Gate_No: gateNumber + 1,
       isActivated: isActivated(level, content, gateNumber),
       Difficulty,

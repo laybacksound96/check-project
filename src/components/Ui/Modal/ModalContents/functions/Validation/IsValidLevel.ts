@@ -1,5 +1,5 @@
-import commander from "./commander.json";
-import { IData } from "../../../../../json/commanderTypes";
+import { IData } from "../../../../../../json/commanderTypes";
+import commander from "../../../../../../json/commander.json";
 
 const IsValidLevel = (ContentName: string, userLevel: number) => {
   const commanderData: IData = commander;

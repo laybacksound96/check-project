@@ -1,16 +1,19 @@
 import { atom } from "recoil";
 
 export interface IGatesSetting {
-  isActivated: boolean;
-  isVisible: boolean;
-  Difficulty: "normal" | "hard";
+  ["Gate_No"]: number;
+  ["isActivated"]: boolean;
+  ["isVisible"]: boolean;
+  ["Difficulty"]: "normal" | "hard";
+}
+export interface IGatesContent {
+  [ContentName: string]: IGatesSetting[];
+}
+export interface IGatesCharacter {
+  [CharacterName: string]: IGatesContent;
 }
 export interface IGates {
-  [AccountName: string]: {
-    [CharacterName: string]: {
-      [ContentName: string]: IGatesSetting[];
-    };
-  };
+  [AccountName: string]: IGatesCharacter;
 }
 export const Gates = atom<IGates>({
   key: "Gates",

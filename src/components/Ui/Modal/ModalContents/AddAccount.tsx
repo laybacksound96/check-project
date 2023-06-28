@@ -4,15 +4,15 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Input } from "./AddContent";
 import CharacterContainer from "./components/CharacterContainer";
-import IsInValidName from "./functions/IsValidName";
-import IsDisabled from "./functions/IsDisabled";
-import IsDupplicated from "./functions/IsDupplicated";
+import IsDisabled from "./functions/Validation/IsDisabled";
 import SortByLevel from "./functions/SortByLevel";
 import useModal from "../../../../CustomHooks/Modal/useModal";
 
 import { CharacterInfo } from "../../../../atoms/Info/CharacterInfo";
 import { CharacterSetting } from "../../../../atoms/Settings/CharacterSetting";
 import { makeNewAccount } from "./NewFuctions/AddAccountFuntions";
+import IsDupplicated from "./functions/Validation/IsDupplicated";
+import IsInValidName from "./functions/Validation/IsValidName";
 
 const Container = styled.div`
   display: flex;

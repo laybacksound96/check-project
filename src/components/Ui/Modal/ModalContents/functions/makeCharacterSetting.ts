@@ -3,7 +3,7 @@ import { IFetchedCharacter } from "../AddAccount";
 import SortByLevel from "./SortByLevel";
 import makeCharsContentSetting from "./makeCharsContentSetting";
 import makeGoldArray from "./makeGoldArray";
-import commander from "./commander.json";
+import commander from "../../../../../json/commander.json";
 import makeGoldContents from "./makeGoldContents";
 import { IData } from "../../../../../json/commanderTypes";
 const makeCharacterSetting = (

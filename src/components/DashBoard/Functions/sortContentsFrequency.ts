@@ -1,4 +1,4 @@
-import commander from "../../Ui/Modal/ModalContents/functions/commander.json";
+import commander from "../../../json/commander.json";
 import { IContentsFrequency } from "../../../atoms/frequency";
 import { IData } from "../../../json/commanderTypes";
 

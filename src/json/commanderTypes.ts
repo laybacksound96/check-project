@@ -4,7 +4,8 @@ interface commanderInfo {
   gold: number;
 }
 export interface IGates {
-  [difficulty: string]: commanderInfo;
+  hard?: commanderInfo;
+  normal: commanderInfo;
 }
 export interface IData {
   [name: string]: IGates[];

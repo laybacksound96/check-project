@@ -1,13 +1,14 @@
 import { atom } from "recoil";
-
-export interface IGoldIncome {
-  [AccountName: string]: {
-    [CharacterName: string]: {
-      [ContentName: string]: number;
-    };
-  };
+export interface IGoldIncomeContent {
+  [ContentName: string]: number;
 }
-export const GoldIncome = atom<IGoldIncome>({
+export interface IGoldIncomeCharacter {
+  [CharacterName: string]: IGoldIncomeContent;
+}
+export interface IGoldIncomeAccount {
+  [AccountName: string]: IGoldIncomeCharacter;
+}
+export const GoldIncome = atom<IGoldIncomeAccount>({
   key: "GoldIncome",
   default: {},
 });

@@ -1,12 +1,12 @@
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { UserSetting } from "../../../atoms/Settings/ContentSetting";
+
 import { useEffect } from "react";
 import Content from "./Content";
 import React from "react";
 import sortContentsFrequency from "../Functions/sortContentsFrequency";
 import CalculateCheckbox from "../Functions/CalculateCheckbox";
-import { AccountOrder } from "../../../atoms/OrdersSettings";
+
 import { ContentsFrequency } from "../../../atoms/frequency";
 
 const ContainerStyle = styled.ul`
@@ -19,8 +19,8 @@ const ContainerStyle = styled.ul`
 const Contents = () => {
   const [contentsFrequency, setContentsFrequency] =
     useRecoilState(ContentsFrequency);
-  const accountOrder = useRecoilValue(AccountOrder);
-  const userSetting = useRecoilValue(UserSetting);
+  // const accountOrder = useRecoilValue(AccountOrder);
+  // const userSetting = useRecoilValue(UserSetting);
   useEffect(() => {
     // setContentsFrequency((prev) =>
     //   CalculateCheckbox(accountOrder, userSetting)

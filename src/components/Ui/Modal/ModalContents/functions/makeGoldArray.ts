@@ -1,7 +1,7 @@
-import CountGates from "./CountGates";
-import IsValidLevel from "./IsValidLevel";
 import calculateDifficulty from "./calculateDifficulty";
 import { IData } from "../../../../../json/commanderTypes";
+import CountGates from "./CountGates";
+import IsValidLevel from "./Validation/IsValidLevel";
 
 function makeGoldArray(level: number, commanderData: IData) {
   const result = [];
