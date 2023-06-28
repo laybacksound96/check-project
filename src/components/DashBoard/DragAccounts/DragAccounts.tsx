@@ -10,8 +10,9 @@ import styled from "styled-components";
 import { useRecoilState } from "recoil";
 import { AccountOrder } from "../../../atoms/order";
 import { AxisLocker } from "../Functions/AxisLocker";
-import DragCharacters from "./DragCharacters";
+import AccountContainer from "./AccountContainer";
 import useModal from "../../../CustomHooks/Modal/useModal";
+import AddAccountButton from "../Components/AddAccountButton";
 
 const DragBoxStyle = styled.div`
   width: 100%;
@@ -36,21 +37,9 @@ const AccountStyle = styled.div`
   display: flex;
   flex-direction: column;
 `;
-const AddAccountBtn = styled.button`
-  height: 100px;
-  border: none;
-  background-color: ${(props) => props.theme.Color_4};
-  color: ${(props) => props.theme.TextColor_A};
-  border-radius: 10px;
-  &:hover {
-    background-color: rgba(255, 255, 255, 0.231);
-    transition: ease-in-out 0.1s;
-  }
-`;
 
 const DragAccounts = () => {
   const [accountOrder, setAccountOrder] = useRecoilState(AccountOrder);
-  const [openModal] = useModal();
 
   const dragAccountHandler = (dragInfo: DropResult) => {
     const { destination, source } = dragInfo;
@@ -87,7 +76,7 @@ const DragAccounts = () => {
                           false
                         )}
                       >
-                        <DragCharacters
+                        <AccountContainer
                           DragHandleProps={provided.dragHandleProps}
                           AccountName={AccountName}
                         />
@@ -101,9 +90,7 @@ const DragAccounts = () => {
           )}
         </Droppable>
       </DragDropContext>
-      <AddAccountBtn onClick={() => openModal("ADD_ACCOUNT")}>
-        + add new account?
-      </AddAccountBtn>
+      <AddAccountButton />
     </DragBoxStyle>
   );
 };

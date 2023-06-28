@@ -7,7 +7,7 @@ import {
 import { ContentsOrder, CharacterOrder } from "../../../atoms/order";
 import { AxisLocker } from "../Functions/AxisLocker";
 import getColorInFrequencyCounter from "../Functions/getColorFrequencyCounter";
-import CheckBoxButton from "./CheckBoxButton";
+import CheckBoxButton from "../Components/CheckBoxButton";
 import styled from "styled-components";
 import { dragIcon } from "../../../Settings";
 import useModal from "../../../CustomHooks/Modal/useModal";
@@ -115,3 +115,4 @@ const DragContents = ({ AccountName }: IProps) => {
     </>
   );
 };
+export default DragContents;
