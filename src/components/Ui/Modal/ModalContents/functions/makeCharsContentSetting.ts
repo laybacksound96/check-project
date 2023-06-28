@@ -3,7 +3,7 @@ import {
   ICharsContentSetting,
   IGoldContents,
 } from "../../../../../atoms/Settings/ContentSetting";
-import { IData } from "./commanderTypes";
+import { IData } from "../../../../../json/commanderTypes";
 
 function isGoldContents(
   GoldContents: IGoldContents[],

@@ -1,6 +1,6 @@
 import { IContentsSetting } from "../../../../../atoms/Settings/ContentSetting";
 import commander from "./commander.json";
-import { IData } from "./commanderTypes";
+import { IData } from "../../../../../json/commanderTypes";
 
 const makeDefaultCommander = (): IContentsSetting => {
   const result: IContentsSetting = {};

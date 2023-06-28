@@ -1,4 +1,4 @@
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { fetchSearchAccount } from "../../../../util/fetch";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
@@ -9,9 +9,10 @@ import IsDisabled from "./functions/IsDisabled";
 import IsDupplicated from "./functions/IsDupplicated";
 import SortByLevel from "./functions/SortByLevel";
 import useModal from "../../../../CustomHooks/Modal/useModal";
-import makeNewAccount from "./functions/makeNewAccount";
-import makeNewOrder from "./functions/makeNewOrder";
+
 import { CharacterInfo } from "../../../../atoms/Info/CharacterInfo";
+import { CharacterSetting } from "../../../../atoms/Settings/CharacterSetting";
+import { makeNewAccount } from "./NewFuctions/AddAccountFuntions";
 
 const Container = styled.div`
   display: flex;
@@ -51,7 +52,8 @@ interface IOptions {
 }
 
 const AddAccount = () => {
-  const characterInfo = useRecoilValue(CharacterInfo);
+  const [characterInfo, setCharacterInfo] = useRecoilState(CharacterInfo);
+  const setCharacterSetting = useSetRecoilState(CharacterSetting);
   const [, closeModal] = useModal();
   const [inputValue, setInputValue] = useState("");
   const [isDisabled, setIsDisabled] = useState(false);
@@ -87,8 +89,16 @@ const AddAccount = () => {
   };
   const AddAccountHandler = () => {
     const AccountName = fetchedCharacters[0].CharacterName;
-    const newAccount = makeNewAccount(fetchedCharacters);
+    const data = SortByLevel(fetchedCharacters);
+    const { accountInfo, accountSetting } = makeNewAccount(data);
 
+    setCharacterInfo((prev) => {
+      return { ...prev, [`${AccountName}`]: accountInfo };
+    });
+    setCharacterSetting((prev) => {
+      return { ...prev, [`${AccountName}`]: accountSetting };
+    });
+    console.log(makeNewAccount(data));
     closeModal();
   };
 

@@ -1,13 +1,14 @@
 import { atom } from "recoil";
-
+export interface Setting {
+  IsGoldCharacter: boolean;
+  isVisible: boolean;
+  TotalGoldIncome: number;
+}
+export interface AccountSetting {
+  [CharacterName: string]: Setting;
+}
 export interface ICharacterSetting {
-  [AccountName: string]: {
-    [CharacterName: string]: {
-      IsGoldCharacter: boolean;
-      isVisible: boolean;
-      TotalGold: number;
-    };
-  };
+  [AccountName: string]: AccountSetting;
 }
 export const CharacterSetting = atom<ICharacterSetting>({
   key: "CharacterSetting",

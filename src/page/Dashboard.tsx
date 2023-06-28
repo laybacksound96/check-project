@@ -8,7 +8,6 @@ import { useEffect } from "react";
 import { CharacterInfo } from "../atoms/Info/CharacterInfo";
 import { CharacterSetting } from "../atoms/Settings/CharacterSetting";
 import { ContentSetting } from "../atoms/Settings/ContentSetting";
-import { Contents } from "../atoms/Settings/Contents";
 import { Gates } from "../atoms/Settings/Gates";
 import { GoldIncome } from "../atoms/Settings/GoldIncome";
 import {
@@ -22,9 +21,8 @@ const DashboardStyle = styled.div`
 `;
 
 function Dashboard() {
-  const characterSetting = useRecoilValue(CharacterSetting);
   const characterInfo = useRecoilValue(CharacterInfo);
-  const contents = useRecoilValue(Contents);
+  const characterSetting = useRecoilValue(CharacterSetting);
   const contentSetting = useRecoilValue(ContentSetting);
   const gates = useRecoilValue(Gates);
   const goldIncome = useRecoilValue(GoldIncome);
@@ -42,11 +40,7 @@ function Dashboard() {
     console.log(accountOrder);
     console.log("==================");
   }, [accountOrder, characterOrder, contentsOrder]);
-  useEffect(() => {
-    console.log(" ");
-    console.log("characterSetting------");
-    console.log(characterSetting);
-  }, [characterSetting]);
+
   useEffect(() => {
     console.log(" ");
     console.log("characterInfo------");
@@ -54,9 +48,9 @@ function Dashboard() {
   }, [characterInfo]);
   useEffect(() => {
     console.log(" ");
-    console.log("contents------");
-    console.log(contents);
-  }, [contents]);
+    console.log("characterSetting------");
+    console.log(characterSetting);
+  }, [characterSetting]);
   useEffect(() => {
     console.log(" ");
     console.log("contentSetting------");

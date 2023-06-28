@@ -1,5 +1,5 @@
 import commander from "./commander.json";
-import { IData, IGates } from "./commanderTypes";
+import { IData, IGates } from "../../../../../json/commanderTypes";
 
 const calculateDifficulty = (
   level: number,

@@ -1,5 +1,5 @@
 import commander from "./commander.json";
-import { IData } from "./commanderTypes";
+import { IData } from "../../../../../json/commanderTypes";
 
 const CountGates = (contentName: string) => {
   const commanderData: IData = commander;

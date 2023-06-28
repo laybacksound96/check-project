@@ -1,4 +1,4 @@
-import { IData } from "./commanderTypes";
+import { IData } from "../../../../../json/commanderTypes";
 import commander from "./commander.json";
 import { IGates } from "../../../../../atoms/Settings/ContentSetting";
 

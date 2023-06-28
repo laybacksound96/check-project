@@ -2,7 +2,7 @@ import { IGates } from "../../../../../atoms/Settings/ContentSetting";
 import CountGates from "./CountGates";
 import calculateDifficulty from "./calculateDifficulty";
 import commander from "./commander.json";
-import { IData } from "./commanderTypes";
+import { IData } from "../../../../../json/commanderTypes";
 function isActivated(level: number, content: string, gateNumber: number) {
   const commanderData: IData = commander;
   const commaderLevel = commanderData[content][gateNumber]["normal"].level;

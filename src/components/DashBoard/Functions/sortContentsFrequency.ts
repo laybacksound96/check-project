@@ -1,6 +1,6 @@
 import commander from "../../Ui/Modal/ModalContents/functions/commander.json";
 import { IContentsFrequency } from "../../../atoms/frequency";
-import { IData } from "../../Ui/Modal/ModalContents/functions/commanderTypes";
+import { IData } from "../../../json/commanderTypes";
 
 const sortContentsFrequency = (
   contentsFrequency: IContentsFrequency
