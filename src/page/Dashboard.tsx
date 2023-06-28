@@ -3,21 +3,31 @@ import styled from "styled-components";
 import Modal from "../components/Ui/Modal/Modal";
 import DragAccounts from "../components/DashBoard/DragAccounts/DragAccounts";
 import { useEffect } from "react";
-import { AccountOrder } from "../atoms/order";
-import { IUserSetting, UserSetting } from "../atoms/userSetting";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { AccountOrder, CharacterOrder, ContentsOrder } from "../atoms/order";
+import { UserSetting } from "../atoms/userSetting";
+import { useRecoilValue } from "recoil";
 
 const DashboardStyle = styled.div`
   min-width: 800px;
 `;
 function Dashboard() {
-  const [accountOrder, setAccountOrder] = useRecoilState(AccountOrder);
-  const [userSetting, setUserSetting] = useRecoilState(UserSetting);
+  const characterOrder = useRecoilValue(CharacterOrder);
+  const contentsOrder = useRecoilValue(ContentsOrder);
+  const accountOrder = useRecoilValue(AccountOrder);
+  const userSetting = useRecoilValue(UserSetting);
 
   useEffect(() => {
+    console.log("characterOrder------");
+    console.log(characterOrder);
+    console.log("contentsOrder------");
+    console.log(contentsOrder);
+    console.log("userSetting------");
     console.log(userSetting);
+    console.log("accountOrder------");
     console.log(accountOrder);
-  }, [accountOrder, userSetting]);
+    console.log("==================");
+    console.log("==================");
+  }, [accountOrder, characterOrder, contentsOrder, userSetting]);
 
   return (
     <>
