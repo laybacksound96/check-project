@@ -62,7 +62,11 @@ const DragCharacters = ({ AccountName, provided }: IProps) => {
     <div ref={provided.innerRef} {...provided.droppableProps}>
       <ConfigAccountButton AccountName={AccountName} />
       {characterOrder.map((CharacterName, index) => (
-        <Draggable draggableId={CharacterName} index={index}>
+        <Draggable
+          key={CharacterName}
+          draggableId={CharacterName}
+          index={index}
+        >
           {(provided) => (
             <CharactersContainer
               ref={provided.innerRef}

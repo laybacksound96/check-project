@@ -11,7 +11,6 @@ import { useRecoilState } from "recoil";
 import { AccountOrder } from "../../../atoms/order";
 import { AxisLocker } from "../Functions/AxisLocker";
 import AccountContainer from "./AccountContainer";
-import useModal from "../../../CustomHooks/Modal/useModal";
 import AddAccountButton from "../Components/AddAccountButton";
 
 const DragBoxStyle = styled.div`
