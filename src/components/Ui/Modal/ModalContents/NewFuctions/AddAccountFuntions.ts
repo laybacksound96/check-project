@@ -11,23 +11,28 @@ import {
 import { IFetchedCharacter } from "../AddAccount";
 import commander from "../../../../../json/commander.json";
 import { IData } from "../../../../../json/commanderTypes";
+import IsValidLevel from "../functions/IsValidLevel";
 export interface NewAccount {
   accountInfo: AccountInfo;
   accountSetting: AccountSetting;
   contentSetting: IContentSetting;
 }
+DefaultObject.isActivated = IsValidLevel(content, level);
+DefaultObject.Gates = makeGates(content, level);
+DefaultObject.isVisible = isGoldContents;
+DefaultObject.isGoldContents = isGoldContents;
 
-function makeCotentState(Level: number): IContentState {
+function makeCotentState(level: number): IContentState {
   const result: IContentState = {};
   const commanderData: IData = commander;
-  for (let commanderName in commanderData) {
+  for (let contentName in commanderData) {
     const setting: ContentStateSetting = {
-      isActivated: false,
+      isActivated: IsValidLevel(contentName, level),
       isCleared: false,
       isGoldContents: false,
       isVisible: false,
     };
-    result[`${commanderName}`] = setting;
+    result[`${contentName}`] = setting;
   }
   return result;
 }
