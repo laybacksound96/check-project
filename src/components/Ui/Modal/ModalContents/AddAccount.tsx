@@ -1,4 +1,4 @@
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { fetchSearchAccount } from "../../../../util/fetch";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
@@ -8,15 +8,10 @@ import IsInValidName from "./functions/IsValidName";
 import IsDisabled from "./functions/IsDisabled";
 import IsDupplicated from "./functions/IsDupplicated";
 import SortByLevel from "./functions/SortByLevel";
-import {
-  AccountOrder,
-  CharacterOrder,
-  ContentsOrder,
-} from "../../../../atoms/OrdersSettings";
-import { UserSetting } from "../../../../atoms/Settings/ContentSetting";
 import useModal from "../../../../CustomHooks/Modal/useModal";
 import makeNewAccount from "./functions/makeNewAccount";
 import makeNewOrder from "./functions/makeNewOrder";
+import { CharacterInfo } from "../../../../atoms/Info/CharacterInfo";
 
 const Container = styled.div`
   display: flex;
@@ -56,24 +51,21 @@ interface IOptions {
 }
 
 const AddAccount = () => {
+  const characterInfo = useRecoilValue(CharacterInfo);
   const [, closeModal] = useModal();
-  const setAccountOrder = useSetRecoilState(AccountOrder);
-  const setCharacterOrder = useSetRecoilState(CharacterOrder);
-  const setContentsOrder = useSetRecoilState(ContentsOrder);
-  const [userSetting, setUserSetting] = useRecoilState(UserSetting);
   const [inputValue, setInputValue] = useState("");
   const [isDisabled, setIsDisabled] = useState(false);
-  const [option, setOption] = useState<IOptions>({
-    fetchedCharacters: [],
-    isDupplicated: false,
-    isNull: false,
-    isInValid: false,
-  });
-  const { fetchedCharacters, isDupplicated, isNull, isInValid } = option;
+  const [{ fetchedCharacters, isDupplicated, isNull, isInValid }, setOption] =
+    useState<IOptions>({
+      fetchedCharacters: [],
+      isDupplicated: false,
+      isNull: false,
+      isInValid: false,
+    });
 
   const SearchAccountHandler = async (event: React.MouseEvent) => {
     event.preventDefault();
-    if (IsDupplicated(inputValue, userSetting)) {
+    if (IsDupplicated(inputValue, characterInfo)) {
       return setOption((prev) => ({ ...prev, isDupplicated: true }));
     }
     const data = await fetchSearchAccount(inputValue);
@@ -96,22 +88,6 @@ const AddAccount = () => {
   const AddAccountHandler = () => {
     const AccountName = fetchedCharacters[0].CharacterName;
     const newAccount = makeNewAccount(fetchedCharacters);
-    const { CharacterOrder, ContentsOrder } = makeNewOrder(
-      AccountName,
-      newAccount
-    );
-    setUserSetting((prev) => {
-      return { ...prev, ...newAccount };
-    });
-    setAccountOrder((prev) => {
-      return [...prev, AccountName];
-    });
-    setCharacterOrder((prev) => {
-      return { ...prev, [`${AccountName}`]: CharacterOrder };
-    });
-    setContentsOrder((prev) => {
-      return { ...prev, [`${AccountName}`]: ContentsOrder };
-    });
 
     closeModal();
   };

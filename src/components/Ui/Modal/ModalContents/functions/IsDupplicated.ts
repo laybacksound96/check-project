@@ -1,11 +1,11 @@
-import { IUserSetting } from "../../../../../atoms/Settings/ContentSetting";
+import { ICharacterInfo } from "../../../../../atoms/Info/CharacterInfo";
 
 const IsDupplicated = (
   inputName: string,
-  UserSetting: IUserSetting
+  CharacterInfo: ICharacterInfo
 ): boolean => {
-  for (let accountName in UserSetting) {
-    const characters = UserSetting[accountName].CharacterSetting;
+  for (let accountName in CharacterInfo) {
+    const characters = CharacterInfo[accountName];
     if (inputName in characters) return true;
   }
   return false;
