@@ -1,6 +1,9 @@
 import styled from "styled-components";
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { CharacterSetting } from "../../../../../atoms/Settings/CharacterSetting";
+import { CharacterInfo } from "../../../../../atoms/Info/CharacterInfo";
 
 export const NameContainer = styled.div`
   display: flex;
@@ -60,19 +63,44 @@ interface IProps {
   CharacterName: string;
 }
 const SettingCharacters = ({ AccountName, CharacterName }: IProps) => {
-  const [{ CharacterClassName, ItemMaxLevel, isVisible }, setter] =
-    useCharacterSettings(AccountName, CharacterName);
+  const [
+    {
+      [AccountName]: {
+        [CharacterName]: { isVisible: isVisibleChar },
+      },
+    },
+    setCharacterSetting,
+  ] = useRecoilState(CharacterSetting);
+  const {
+    [AccountName]: {
+      [CharacterName]: { ClassName, Level },
+    },
+  } = useRecoilValue(CharacterInfo);
+  const handleVisible = () => {
+    setCharacterSetting((prev) => {
+      return {
+        ...prev,
+        [AccountName]: {
+          ...prev[AccountName],
+          [CharacterName]: {
+            ...prev[AccountName][CharacterName],
+            isVisible: !isVisibleChar,
+          },
+        },
+      };
+    });
+  };
   return (
-    <Character key={CharacterName} isVisible={isVisible}>
+    <Character key={CharacterName} isVisible={isVisibleChar}>
       <NameContainer>
         {CharacterName}
-        <span>{CharacterClassName}</span>
-        <span>Lv {ItemMaxLevel}</span>
+        <span>{ClassName}</span>
+        <span>Lv {Level}</span>
       </NameContainer>
       <ButtonContainer>
         <FontAwesomeIcon
-          onClick={() => setter("isVisible", !isVisible)}
-          icon={isVisible ? faEye : faEyeSlash}
+          onClick={() => handleVisible()}
+          icon={isVisibleChar ? faEye : faEyeSlash}
         />
       </ButtonContainer>
     </Character>

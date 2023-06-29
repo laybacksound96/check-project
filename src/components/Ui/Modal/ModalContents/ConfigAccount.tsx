@@ -5,8 +5,10 @@ import { faGear } from "@fortawesome/free-solid-svg-icons";
 import DangerZone from "./components/DangerZone";
 import useModal from "../../../../CustomHooks/Modal/useModal";
 import SettingCharacters from "./components/SettingVisibleContent";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import SettingContents from "./components/SettingContents";
+import { CharacterSetting } from "../../../../atoms/Settings/CharacterSetting";
+import { ContentSetting } from "../../../../atoms/Settings/ContentSetting";
 
 const Container = styled.div`
   width: auto;
@@ -47,23 +49,10 @@ export const ConfigAccount = () => {
       modalProp: { AccountName },
     },
   ] = useModal();
-  const [
-    {
-      [`${AccountName}`]: { ContentsSetting, CharacterSetting },
-    },
-    setUserSetting,
-  ] = useRecoilState(UserSetting);
-  const setAccountOrder = useSetRecoilState(AccountOrder);
+
+  const { [AccountName]: Characters } = useRecoilValue(CharacterSetting);
+  const { [AccountName]: Contents } = useRecoilValue(ContentSetting);
   function handleDelete() {
-    // setAccountOrder((prev) => {
-    //   const newArray = prev.filter((elem) => elem.AccountName !== AccountName);
-    //   return newArray;
-    // });
-    setUserSetting((prev) => {
-      const copiedPrev = { ...prev };
-      delete copiedPrev[`${AccountName}`];
-      return copiedPrev;
-    });
     closeModal();
   }
   return (
@@ -75,7 +64,7 @@ export const ConfigAccount = () => {
               <FontAwesomeIcon icon={faGear} />
               <span>캐릭터 표시 설정</span>
             </header>
-            {Object.keys(CharacterSetting).map((characterName) => {
+            {Object.keys(Characters).map((characterName) => {
               return (
                 <SettingCharacters
                   key={characterName}
@@ -90,7 +79,7 @@ export const ConfigAccount = () => {
               <FontAwesomeIcon icon={faGear} />
               <span>컨텐츠 표시 설정</span>
             </header>
-            {Object.keys(ContentsSetting).map((ContentName) => {
+            {Object.keys(Contents).map((ContentName) => {
               return (
                 <SettingContents
                   key={ContentName}
