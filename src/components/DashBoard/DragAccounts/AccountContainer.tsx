@@ -8,6 +8,8 @@ import React from "react";
 import styled from "styled-components";
 import DragContents from "./DragContents";
 import DragCharacters from "./DragCharacters";
+import { useSetRecoilState } from "recoil";
+import { CharacterOrder } from "../../../atoms/Settings/Orders";
 
 const DragAccountBtn = styled.div`
   display: flex;
@@ -47,10 +49,13 @@ interface IProps {
 }
 
 function AccountContainer({ DragHandleProps, AccountName }: IProps) {
+  const setCharacterOrder = useSetRecoilState(CharacterOrder);
   const dragCharacterHandler = (dragInfo: DropResult) => {
     const { destination, source } = dragInfo;
     if (!destination) return;
-    if (destination?.droppableId !== source.droppableId) return;
+    if (destination?.droppableId !== source.droppableId) {
+      setCharacterOrder((prev) => prev);
+    }
     return;
   };
   return (

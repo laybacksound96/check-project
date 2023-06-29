@@ -1,9 +1,9 @@
 import { atom } from "recoil";
 
-interface ICharacterOrders {
+export interface ICharacterOrders {
   [AccountName: string]: string[];
 }
-interface IContentsOrders {
+export interface IContentsOrders {
   [AccountName: string]: string[];
 }
 export const CharacterOrder = atom<ICharacterOrders>({

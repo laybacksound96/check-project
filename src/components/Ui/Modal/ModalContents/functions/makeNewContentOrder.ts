@@ -7,7 +7,6 @@ const makeNewContentOrder = (
 ): string[] => {
   const result: string[] = [];
   const contensArray = Object.keys(contentSetting[accountName]);
-
   for (let i in contensArray) {
     const ContentName = contensArray[i];
     for (let i in characterOrder) {

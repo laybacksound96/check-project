@@ -5,7 +5,6 @@ import {
   NameContainer,
   ButtonContainer,
 } from "./SettingVisibleContent";
-import useContentsSetting from "../../../../../CustomHooks/UserSetting/useContentsSetting";
 
 interface IProps {
   AccountName: string;

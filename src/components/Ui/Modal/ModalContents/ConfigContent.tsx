@@ -2,10 +2,9 @@ import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import ContentCard from "./components/ContentCard";
 import { ModalState } from "../../../../atoms/modal";
-import { UserSetting } from "../../../../atoms/Settings/ContentSetting";
+
 import { useEffect, useState } from "react";
 import CountUp from "react-countup";
-import calculateGold from "./functions/calculateGold";
 import { faCoins } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 

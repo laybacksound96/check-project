@@ -9,9 +9,7 @@ import {
   faSquare,
   faSquareCheck,
 } from "@fortawesome/free-solid-svg-icons";
-import useCharsContentSetting from "../../../../../CustomHooks/UserSetting/useCharsContentSetting";
-import useGates from "../../../../../CustomHooks/UserSetting/useGates";
-import calculateGold from "../functions/calculateGold";
+
 import CountUp from "react-countup";
 
 interface IStyel {

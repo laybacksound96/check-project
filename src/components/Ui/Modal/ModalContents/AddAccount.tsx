@@ -66,9 +66,9 @@ const AddAccount = () => {
   const setContentSetting = useSetRecoilState(ContentSetting);
   const setGates = useSetRecoilState(Gates);
   const setGoldIncome = useSetRecoilState(GoldIncome);
-  const characterOrder = useSetRecoilState(CharacterOrder);
-  const contentsOrder = useSetRecoilState(ContentsOrder);
-  const accountOrder = useSetRecoilState(AccountOrder);
+  const setCharacterOrder = useSetRecoilState(CharacterOrder);
+  const setContentsOrder = useSetRecoilState(ContentsOrder);
+  const setAccountOrder = useSetRecoilState(AccountOrder);
   const [, closeModal] = useModal();
   const [inputValue, setInputValue] = useState("");
   const [isDisabled, setIsDisabled] = useState(false);
@@ -125,15 +125,14 @@ const AddAccount = () => {
     setGoldIncome((prev) => {
       return { ...prev, [`${AccountName}`]: GoldIncome };
     });
-    accountOrder((prev) => [...prev, AccountName]);
-    characterOrder((prev) => {
+    setAccountOrder((prev) => [...prev, AccountName]);
+    setCharacterOrder((prev) => {
       return {
         ...prev,
         [`${AccountName}`]: CharacterOrder,
       };
     });
-
-    contentsOrder((prev) => {
+    setContentsOrder((prev) => {
       return {
         ...prev,
         [`${AccountName}`]: makeNewContentOrder(

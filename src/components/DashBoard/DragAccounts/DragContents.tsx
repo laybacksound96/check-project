@@ -4,7 +4,7 @@ import {
   Droppable,
   Draggable,
 } from "react-beautiful-dnd";
-import { ContentsOrder, CharacterOrder } from "../../../atoms/OrdersSettings";
+
 import { AxisLocker } from "../Functions/AxisLocker";
 import getColorInFrequencyCounter from "../Functions/getColorFrequencyCounter";
 import CheckBoxButton from "../Components/CheckBoxButton";
@@ -13,6 +13,7 @@ import { dragIcon } from "../../../Settings";
 import useModal from "../../../CustomHooks/Modal/useModal";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { ContentsFrequency } from "../../../atoms/frequency";
+import { CharacterOrder, ContentsOrder } from "../../../atoms/Settings/Orders";
 const Name = styled.div`
   display: flex;
   flex-direction: column;
@@ -41,12 +42,12 @@ const DragContents = ({ AccountName }: IProps) => {
   const contentsFrequency = useRecoilValue(ContentsFrequency);
   const [{ [AccountName]: contentsOrder }, setContentsOrder] =
     useRecoilState(ContentsOrder);
-  const [{ [AccountName]: characterOrder }, setCharacterOrder] =
-    useRecoilState(CharacterOrder);
+  const { [AccountName]: characterOrder } = useRecoilValue(CharacterOrder);
   const dragContentHandler = (dragInfo: DropResult) => {
     const { destination, source } = dragInfo;
     if (!destination) return;
     if (destination?.droppableId === source.droppableId) {
+      setContentsOrder((prev) => prev);
     }
     return;
   };

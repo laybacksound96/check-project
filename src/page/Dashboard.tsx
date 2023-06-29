@@ -69,12 +69,11 @@ function Dashboard() {
 
   return (
     <>
-      <AddAccount />
-      {/* <Modal />
+      <Modal />
       <DashboardStyle>
-        <HeaderBox />
+        {/* <HeaderBox /> */}
         <DragAccounts />
-      </DashboardStyle> */}
+      </DashboardStyle>
     </>
   );
 }

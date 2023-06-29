@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import useCharacterSettings from "../../../../../CustomHooks/UserSetting/useCharacterSettings";
+
 export const NameContainer = styled.div`
   display: flex;
   flex-direction: column;

@@ -1,11 +1,12 @@
-import { useRecoilState } from "recoil";
-import { CharacterOrder } from "../../../atoms/OrdersSettings";
+import { useRecoilValue } from "recoil";
 import { Draggable, DroppableProvided } from "react-beautiful-dnd";
 import styled from "styled-components";
 import { dragIcon } from "../../../Settings";
 import { AxisLocker } from "../Functions/AxisLocker";
 import ConfigContentButton from "../Components/ConfigContentButton";
 import ConfigAccountButton from "../Components/ConfigAccountButton";
+import { CharacterOrder } from "../../../atoms/Settings/Orders";
+import { CharacterInfo } from "../../../atoms/Info/CharacterInfo";
 export const Character = styled.div`
   display: flex;
   justify-content: space-between;
@@ -56,38 +57,41 @@ interface IProps {
   provided: DroppableProvided;
 }
 const DragCharacters = ({ AccountName, provided }: IProps) => {
-  const [{ [AccountName]: characterOrder }, setCharacterOrder] =
-    useRecoilState(CharacterOrder);
+  const { [AccountName]: characterOrder } = useRecoilValue(CharacterOrder);
+  const { [AccountName]: characterInfo } = useRecoilValue(CharacterInfo);
   return (
     <div ref={provided.innerRef} {...provided.droppableProps}>
       <ConfigAccountButton AccountName={AccountName} />
-      {characterOrder.map((CharacterName, index) => (
-        <Draggable
-          key={CharacterName}
-          draggableId={CharacterName}
-          index={index}
-        >
-          {(provided) => (
-            <CharactersContainer
-              ref={provided.innerRef}
-              {...provided.draggableProps}
-              style={AxisLocker(provided.draggableProps.style!, false)}
-            >
-              <Character {...provided.dragHandleProps}>
-                <NameContainer>
-                  {CharacterName}
-                  <span>{"CharacterClassName"}</span>
-                  <span>Lv {"ItemMaxLevel"}</span>
-                </NameContainer>
-                <ConfigContentButton
-                  AccountName={AccountName}
-                  CharacterName={CharacterName}
-                />
-              </Character>
-            </CharactersContainer>
-          )}
-        </Draggable>
-      ))}
+      {characterOrder.map((CharacterName, index) => {
+        const { ClassName, Level } = characterInfo[CharacterName];
+        return (
+          <Draggable
+            key={CharacterName}
+            draggableId={CharacterName}
+            index={index}
+          >
+            {(provided) => (
+              <CharactersContainer
+                ref={provided.innerRef}
+                {...provided.draggableProps}
+                style={AxisLocker(provided.draggableProps.style!, false)}
+              >
+                <Character {...provided.dragHandleProps}>
+                  <NameContainer>
+                    {CharacterName}
+                    <span>{ClassName}</span>
+                    <span>Lv {Level}</span>
+                  </NameContainer>
+                  <ConfigContentButton
+                    AccountName={AccountName}
+                    CharacterName={CharacterName}
+                  />
+                </Character>
+              </CharactersContainer>
+            )}
+          </Draggable>
+        );
+      })}
       {provided.placeholder}
     </div>
   );

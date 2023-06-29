@@ -2,7 +2,8 @@ import { faSquare, faSquareCheck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
 import { dragIcon } from "../../../Settings";
-import useCharsContentSetting from "../../../CustomHooks/UserSetting/useCharsContentSetting";
+import { useRecoilState } from "recoil";
+import { ContentSetting } from "../../../atoms/Settings/ContentSetting";
 
 interface IStyle {
   isVisible: boolean;
@@ -10,7 +11,8 @@ interface IStyle {
   Color: string;
 }
 const CheckBox = styled.div<IStyle>`
-  opacity: ${(props) => (props.isVisible && props.isActivated ? "100%" : "0%")};
+  opacity: ${({ isActivated, isVisible }) =>
+    !isVisible || !isActivated ? "100%" : "0%"};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -42,11 +44,33 @@ function CheckBoxButton({
   ContentName,
   Color,
 }: ICheckboxProps) {
-  const [{ isVisible, isActivated, isCleared }, setter] =
-    useCharsContentSetting(AccountName, CharacterName, ContentName);
+  const [
+    {
+      [AccountName]: {
+        [CharacterName]: {
+          [ContentName]: { isCleared, isActivated, isVisible },
+        },
+      },
+    },
+    setContentSetting,
+  ] = useRecoilState(ContentSetting);
   function onClickHandler() {
     if (!isVisible || !isActivated) return;
-    setter("isCleared", !isCleared);
+    setContentSetting((prev) => {
+      return {
+        ...prev,
+        [AccountName]: {
+          ...prev[AccountName],
+          [CharacterName]: {
+            ...prev[AccountName][CharacterName],
+            [ContentName]: {
+              ...prev[AccountName][CharacterName][ContentName],
+              isCleared: !isCleared,
+            },
+          },
+        },
+      };
+    });
   }
   return (
     <CheckBox

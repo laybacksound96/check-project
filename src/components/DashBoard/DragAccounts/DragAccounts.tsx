@@ -8,10 +8,11 @@ import {
 import styled from "styled-components";
 
 import { useRecoilState } from "recoil";
-import { AccountOrder } from "../../../atoms/OrdersSettings";
+
 import { AxisLocker } from "../Functions/AxisLocker";
 import AccountContainer from "./AccountContainer";
 import AddAccountButton from "../Components/AddAccountButton";
+import { AccountOrder } from "../../../atoms/Settings/Orders";
 
 const DragBoxStyle = styled.div`
   width: 100%;
