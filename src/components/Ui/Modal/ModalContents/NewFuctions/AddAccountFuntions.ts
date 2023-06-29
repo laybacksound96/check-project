@@ -52,27 +52,37 @@ function makeNewGates(level: number, gates: IGates[]): IGatesSetting[] {
   }
   return result;
 }
+function calculateIncome(Name: string, Gate: IGatesSetting[]): number {
+  let resultGold = 0;
+  for (let index in Gate) {
+    const { isActivated, isVisible, Difficulty } = Gate[index];
+    const gold = commanderData[Name][index][Difficulty]?.gold;
+    if (!(isActivated && isVisible && gold !== undefined)) continue;
+    resultGold += gold;
+  }
+  return resultGold;
+}
 function makeCotentState(level: number): INewCotentsResult {
-  const NewCotentsResult: INewCotentsResult = {
+  const result: INewCotentsResult = {
     contentSetting: {},
     goldIncome: {},
     gates: {},
   };
 
   for (let contentName in commanderData) {
-    NewCotentsResult.contentSetting[`${contentName}`] = {
+    const NewGate = makeNewGates(level, commanderData[contentName]);
+    const Income = calculateIncome(contentName, NewGate);
+    result.contentSetting[`${contentName}`] = {
       isActivated: IsValidLevel(contentName, level),
       isCleared: false,
       isGoldContents: false,
       isVisible: false,
     };
-    NewCotentsResult.goldIncome[`${contentName}`] = 0;
-    NewCotentsResult.gates[`${contentName}`] = makeNewGates(
-      level,
-      commanderData[contentName]
-    );
+
+    result.goldIncome[`${contentName}`] = Income;
+    result.gates[`${contentName}`] = NewGate;
   }
-  return NewCotentsResult;
+  return result;
 }
 interface INewAccount {
   accountInfo: AccountInfo;
@@ -105,9 +115,10 @@ export function makeNewAccount(
       isVisible: +index < 6 ? true : false,
       TotalGoldIncome: 0,
     };
-    const { contentSetting, gates, goldIncome } = makeCotentState(Level);
     NewAccount.accountInfo[`${Name}`] = info;
     NewAccount.accountSetting[`${Name}`] = setting;
+
+    const { contentSetting, gates, goldIncome } = makeCotentState(Level);
     NewAccount.contentSetting[`${Name}`] = contentSetting;
     NewAccount.gates[`${Name}`] = gates;
     NewAccount.GoldIncome[`${Name}`] = goldIncome;
