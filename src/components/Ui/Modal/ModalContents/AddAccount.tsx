@@ -21,6 +21,7 @@ import {
   ContentsOrder,
   AccountOrder,
 } from "../../../../atoms/Settings/Orders";
+import makeNewContentOrder from "./functions/makeNewContentOrder";
 
 const Container = styled.div`
   display: flex;
@@ -106,7 +107,9 @@ const AddAccount = () => {
     const data = SortByLevel(fetchedCharacters);
     const { accountInfo, accountSetting, GoldIncome, contentSetting, gates } =
       makeNewAccount(data);
-
+    const CharacterOrder = Object.keys(accountSetting).filter(
+      (prev) => accountSetting[prev].isVisible
+    );
     setCharacterInfo((prev) => {
       return { ...prev, [`${AccountName}`]: accountInfo };
     });
@@ -126,13 +129,19 @@ const AddAccount = () => {
     characterOrder((prev) => {
       return {
         ...prev,
-        [`${AccountName}`]: Object.keys(accountSetting).filter(
-          (prev) => accountSetting[prev].isVisible
-        ),
+        [`${AccountName}`]: CharacterOrder,
       };
     });
+
     contentsOrder((prev) => {
-      return { ...prev, [`${AccountName}`]: [] };
+      return {
+        ...prev,
+        [`${AccountName}`]: makeNewContentOrder(
+          CharacterOrder,
+          contentSetting,
+          AccountName
+        ),
+      };
     });
     closeModal();
   };
