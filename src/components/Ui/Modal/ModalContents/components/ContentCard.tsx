@@ -11,6 +11,11 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 import CountUp from "react-countup";
+import useSetContentSetting from "../../../../../CustomHooks/Settings/useSetContentSetting";
+import { useRecoilValue } from "recoil";
+import { ContentSetting } from "../../../../../atoms/Settings/ContentSetting";
+import { Gates } from "../../../../../atoms/Settings/Gates";
+import useSetGatesVisible from "../../../../../CustomHooks/Settings/useSetGatesVisible";
 
 interface IStyel {
   isVisibled: boolean;
@@ -126,7 +131,24 @@ const ContentCard = ({ AccountName, ContentsName, CharacterName }: IProps) => {
   const [isHovered, setIsHovered] = useState(false);
   const [gateGold, setGateGold] = useState(0);
   const [startGold, setstartGold] = useState(0);
-
+  const {
+    [AccountName]: {
+      [CharacterName]: {
+        [ContentsName]: { isVisible, isGoldContents },
+      },
+    },
+  } = useRecoilValue(ContentSetting);
+  const {
+    [AccountName]: {
+      [CharacterName]: { [ContentsName]: gates },
+    },
+  } = useRecoilValue(Gates);
+  const setter = useSetContentSetting(AccountName, CharacterName, ContentsName);
+  const setGatesVisible = useSetGatesVisible(
+    AccountName,
+    CharacterName,
+    ContentsName
+  );
   const visibleHandler = () => {
     if (isVisible) {
       setter("isVisible", false);
@@ -144,16 +166,10 @@ const ContentCard = ({ AccountName, ContentsName, CharacterName }: IProps) => {
     }
   };
   const gateVisibleHandler = (gateIndex: number) => {
-    const { isVisible } = getGate(gateIndex);
-    setGateVisible(gateIndex, isVisible);
+    const { isVisible } = gates[gateIndex];
+    setGatesVisible(gateIndex, isVisible);
   };
-  useEffect(() => {
-    const gold = calculateGold(ContentsName, Gates);
-    setGateGold((prev) => {
-      setstartGold(prev);
-      return gold;
-    });
-  }, [ContentsName, Gates]);
+
   return (
     <ContentList
       isVisibled={isVisible}
@@ -185,7 +201,7 @@ const ContentCard = ({ AccountName, ContentsName, CharacterName }: IProps) => {
         </GoldContainer>
       </CardHeader>
       <GateContainer>
-        {Gates.map((gate, index) => {
+        {gates.map((gate, index) => {
           const Difficulty = gate.Difficulty;
           return (
             <ContentCardGate

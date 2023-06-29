@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ContentCardCheckBox from "./ContentCardCheckBox";
 
 import { useState } from "react";
+import { IGatesSetting } from "../../../../../atoms/Settings/Gates";
 
 const GateVisibleContainer = styled.div`
   display: flex;
@@ -55,14 +56,14 @@ const CheckBoxContainer = styled.div`
   width: 100%;
 `;
 interface IProps {
-  Gate: IGates;
-  Difficulty: string | undefined;
+  Gate: IGatesSetting;
+  Difficulty: "normal" | "hard";
   isContentVisible: boolean;
   GateIndex: number;
   SetGateVisibleHandler: (GateIndex: number) => void;
 }
 const ContentCardGate = ({
-  Gate: { Gate_No, isFixedDifficulty, isVisible },
+  Gate: { Gate_No, isVisible },
   Difficulty,
   isContentVisible,
   GateIndex,
@@ -71,7 +72,7 @@ const ContentCardGate = ({
   const [isHovered, setIsHovered] = useState(false);
 
   const changeDifficultyHandler = () => {
-    if (isFixedDifficulty || !isContentVisible || !isVisible) return;
+    if (!isContentVisible || !isVisible) return;
     SetGateVisibleHandler(GateIndex);
   };
 
