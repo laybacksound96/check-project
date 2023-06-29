@@ -6,7 +6,6 @@ import {
 } from "react-beautiful-dnd";
 
 import { AxisLocker } from "../Functions/AxisLocker";
-import getColorInFrequencyCounter from "../Functions/getColorFrequencyCounter";
 import CheckBoxButton from "../Components/CheckBoxButton";
 import styled from "styled-components";
 import { dragIcon } from "../../../Settings";
@@ -15,6 +14,8 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { ContentsFrequency } from "../../../atoms/frequency";
 import { CharacterOrder, ContentsOrder } from "../../../atoms/Settings/Orders";
 import React from "react";
+import { getKey } from "../Functions/CalculateCheckbox";
+import { Gates } from "../../../atoms/Settings/Gates";
 const Name = styled.div`
   display: flex;
   flex-direction: column;
@@ -41,6 +42,7 @@ interface IProps {
 const DragContents = ({ AccountName }: IProps) => {
   const [openModal] = useModal();
   const contentsFrequency = useRecoilValue(ContentsFrequency);
+  const gates = useRecoilValue(Gates);
   const [{ [AccountName]: contentsOrder }, setContentsOrder] =
     useRecoilState(ContentsOrder);
   const { [AccountName]: characterOrder } = useRecoilValue(CharacterOrder);
@@ -86,17 +88,20 @@ const DragContents = ({ AccountName }: IProps) => {
                           : ContentName}
                       </Name>
                       {characterOrder.map((CharacterName) => {
+                        const gate =
+                          gates[AccountName][CharacterName][ContentName];
+                        const Key = getKey(ContentName, gate);
+
+                        const color = contentsFrequency.hasOwnProperty(Key)
+                          ? contentsFrequency[Key].Color
+                          : "";
                         return (
                           <CheckBoxButton
                             key={CharacterName + ContentName}
                             CharacterName={CharacterName}
                             AccountName={AccountName}
                             ContentName={ContentName}
-                            Color={getColorInFrequencyCounter(
-                              contentsFrequency,
-                              ContentName,
-                              CharacterName
-                            )}
+                            Color={color}
                           />
                         );
                       })}

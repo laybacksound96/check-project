@@ -1,10 +1,13 @@
 import CalculateGateDifficulty from "./CalculateGateDifficulty";
 import getRandomPastelColor from "./getRandomPastelColor";
 import { IContentsFrequency } from "../../../atoms/frequency";
-import { IGates } from "../../../atoms/Settings/Gates";
+import { IGates, IGatesSetting } from "../../../atoms/Settings/Gates";
 import { IAccountContent } from "../../../atoms/Settings/ContentSetting";
 import { ICharacterSetting } from "../../../atoms/Settings/CharacterSetting";
 
+export function getKey(ContentName: string, gates: IGatesSetting[]): string {
+  return ContentName + CalculateGateDifficulty(gates).join("_");
+}
 export const CalculateCheckbox = (
   GatesAtom: IGates,
   ContentSetting: IAccountContent,
@@ -21,7 +24,7 @@ export const CalculateCheckbox = (
           ContentSetting[AccountName][CharacterName][ContentName];
         const gates = GatesAtom[AccountName][CharacterName][ContentName];
         if (!isVisible || !isActivated || !CharacterVisible) continue;
-        const Key = ContentName + CalculateGateDifficulty(gates).join("_");
+        const Key = getKey(ContentName, gates);
         const isExistKey = resultObj.hasOwnProperty(Key);
         if (!isExistKey) {
           resultObj[Key] = {
