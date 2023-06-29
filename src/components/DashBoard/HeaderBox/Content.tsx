@@ -111,7 +111,7 @@ interface IProps {
   Color: string;
 }
 const Content = ({
-  contentState: { Frequency, ContentsName, GateState, RemainOwner },
+  contentState: { Frequency, ContentName, GateState, RemainOwner },
   Color,
 }: IProps) => {
   const [shouldAnimate, setShouldAnimate] = useState(false);
@@ -130,9 +130,9 @@ const Content = ({
       <HeaderContainer>
         <NameBox>
           <h1>
-            {ContentsName.length >= 12
-              ? `${ContentsName.slice(0, 12)}...`
-              : ContentsName}
+            {ContentName.length >= 12
+              ? `${ContentName.slice(0, 12)}...`
+              : ContentName}
           </h1>
           {GateState.map((elem) => {
             return <p key={elem}>{elem}</p>;

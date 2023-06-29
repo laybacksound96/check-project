@@ -14,8 +14,8 @@ const sortContentsFrequency = (
   }
 
   keys.sort((a, b) => {
-    const aIndex = reverseData.indexOf(contentsFrequency[a].ContentsName);
-    const bIndex = reverseData.indexOf(contentsFrequency[b].ContentsName);
+    const aIndex = reverseData.indexOf(contentsFrequency[a].ContentName);
+    const bIndex = reverseData.indexOf(contentsFrequency[b].ContentName);
     if (aIndex !== -1 && bIndex !== -1) {
       return aIndex - bIndex;
     }

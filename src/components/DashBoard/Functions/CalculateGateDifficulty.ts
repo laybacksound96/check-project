@@ -1,6 +1,6 @@
-import { IGates } from "../../../atoms/Settings/ContentSetting";
+import { IGatesSetting } from "../../../atoms/Settings/Gates";
 
-function CalculateGateDifficulty(gate: IGates[]): string[] {
+function CalculateGateDifficulty(gate: IGatesSetting[]): string[] {
   let result = [];
   let LeftNo = gate[0].Gate_No;
   let LeftDiff = gate[0].Difficulty;

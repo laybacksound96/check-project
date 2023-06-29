@@ -1,7 +1,7 @@
 import { atom } from "recoil";
 
 export interface IFrequencyContents {
-  [`ContentsName`]: string;
+  [`ContentName`]: string;
   [`GateState`]: string[];
   [`Frequency`]: number;
   [`Owner`]: string[];

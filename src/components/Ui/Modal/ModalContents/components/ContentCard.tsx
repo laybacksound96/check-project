@@ -126,17 +126,7 @@ const ContentCard = ({ AccountName, ContentsName, CharacterName }: IProps) => {
   const [isHovered, setIsHovered] = useState(false);
   const [gateGold, setGateGold] = useState(0);
   const [startGold, setstartGold] = useState(0);
-  const [getGate, setGateVisible] = useGates(
-    AccountName,
-    CharacterName,
-    ContentsName
-  );
 
-  const [{ Gates, isVisible, isGoldContents }, setter] = useCharsContentSetting(
-    AccountName,
-    CharacterName,
-    ContentsName
-  );
   const visibleHandler = () => {
     if (isVisible) {
       setter("isVisible", false);

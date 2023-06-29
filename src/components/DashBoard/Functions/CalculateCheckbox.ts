@@ -1,28 +1,50 @@
 import CalculateGateDifficulty from "./CalculateGateDifficulty";
 import getRandomPastelColor from "./getRandomPastelColor";
 import { IContentsFrequency } from "../../../atoms/frequency";
-import {
-  ICharacterOrders,
-  IContentsOrders,
-} from "../../../atoms/Settings/Orders";
-// CalculateGateDifficulty(Gates).join("_")
-// getRandomPastelColor(ContentName)
+import { IGates } from "../../../atoms/Settings/Gates";
+import { IAccountContent } from "../../../atoms/Settings/ContentSetting";
+import { ICharacterSetting } from "../../../atoms/Settings/CharacterSetting";
+
 export const CalculateCheckbox = (
-  CharacterOrder: ICharacterOrders,
-  ContentsOrder: IContentsOrders,
-  AccountOrder: string[],
-  Prev: IContentsFrequency
+  GatesAtom: IGates,
+  ContentSetting: IAccountContent,
+  CharacterSetting: ICharacterSetting,
+  prev: IContentsFrequency
 ): IContentsFrequency => {
   const resultObj: IContentsFrequency = {};
-  for (let index in AccountOrder) {
-    const AccountName = AccountOrder[index];
-    for (let index in ContentsOrder[AccountName]) {
-      const ContentName = ContentsOrder[index];
-      for (let index in CharacterOrder[AccountName]) {
-        const CharacterName = CharacterOrder[index];
+  for (let AccountName in ContentSetting) {
+    for (let CharacterName in ContentSetting[AccountName]) {
+      const { isVisible: CharacterVisible } =
+        CharacterSetting[AccountName][CharacterName];
+      for (let ContentName in ContentSetting[AccountName][CharacterName]) {
+        const { isCleared, isVisible, isActivated } =
+          ContentSetting[AccountName][CharacterName][ContentName];
+        const gates = GatesAtom[AccountName][CharacterName][ContentName];
+        if (!isVisible || !isActivated || !CharacterVisible) continue;
+        const Key = ContentName + CalculateGateDifficulty(gates).join("_");
+        const isExistKey = resultObj.hasOwnProperty(Key);
+        if (!isExistKey) {
+          resultObj[Key] = {
+            Color: prev.hasOwnProperty(Key)
+              ? prev[Key].Color
+              : getRandomPastelColor(ContentName),
+            ContentName,
+            Frequency: 0,
+            GateState: CalculateGateDifficulty(gates),
+            Owner: [],
+            RemainOwner: [],
+          };
+        } else {
+          resultObj[Key].Owner.push(CharacterName);
+        }
+        if (!isCleared) {
+          resultObj[Key].Frequency++;
+          resultObj[Key].RemainOwner.push(CharacterName);
+        }
       }
     }
   }
+
   return resultObj;
 };
 

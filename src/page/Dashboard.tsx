@@ -15,6 +15,7 @@ import {
   ContentsOrder,
   AccountOrder,
 } from "../atoms/Settings/Orders";
+import { ContentsFrequency } from "../atoms/frequency";
 
 const DashboardStyle = styled.div`
   min-width: 800px;
@@ -29,6 +30,7 @@ function Dashboard() {
   const characterOrder = useRecoilValue(CharacterOrder);
   const contentsOrder = useRecoilValue(ContentsOrder);
   const accountOrder = useRecoilValue(AccountOrder);
+  const contentsFrequency = useRecoilValue(ContentsFrequency);
   useEffect(() => {
     console.log(" ");
     console.log("order==============");
@@ -66,12 +68,16 @@ function Dashboard() {
     console.log("goldIncome------");
     console.log(goldIncome);
   }, [goldIncome]);
-
+  useEffect(() => {
+    console.log(" ");
+    console.log("ContentsFrequency------");
+    console.log(contentsFrequency);
+  }, [contentsFrequency]);
   return (
     <>
       <Modal />
       <DashboardStyle>
-        {/* <HeaderBox /> */}
+        <HeaderBox />
         <DragAccounts />
       </DashboardStyle>
     </>

@@ -2,13 +2,13 @@ import { IContentsFrequency } from "../../../atoms/frequency";
 
 const getColorInFrequencyCounter = (
   obj: IContentsFrequency,
-  contentsName: string,
+  contentName: string,
   ownerName: string
 ): string => {
   for (var key in obj) {
     if (!obj.hasOwnProperty(key)) continue;
     const Contents = obj[key];
-    if (Contents.ContentsName === contentsName) {
+    if (Contents.ContentName === contentName) {
       if (Contents.Owner.includes(ownerName)) {
         const result = Contents.Color;
         return result;
