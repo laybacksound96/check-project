@@ -50,6 +50,20 @@ function makeNewGates(level: number, gates: IGates[]): IGatesSetting[] {
   }
   return result;
 }
+function calculateTotalIncome(
+  contentSetting: IContentState,
+  goldIncome: IGoldIncomeContent
+): number {
+  let result = 0;
+  const goldArray = Object.keys(contentSetting).filter(
+    (contents) => contentSetting[contents].isGoldContents
+  );
+  goldArray.forEach((elem) => {
+    result += goldIncome[elem];
+  });
+  return result;
+}
+
 function calculateIncome(Name: string, Gate: IGatesSetting[]): number {
   let resultGold = 0;
   for (let index in Gate) {
@@ -116,19 +130,19 @@ export function makeNewAccount(
       ServerName,
     } = fetchedCharacters[index];
     const Level = parseInt(ItemMaxLevel.replace(",", ""));
-    const info: Info = { ClassName, Level, ServerName };
-    const setting: Setting = {
-      IsGoldCharacter: +index < 6 ? true : false,
-      isVisible: +index < 6 ? true : false,
-      TotalGoldIncome: 0,
-    };
-    NewAccount.accountInfo[`${Name}`] = info;
-    NewAccount.accountSetting[`${Name}`] = setting;
-
     const { contentSetting, gates, goldIncome } = makeCotentState(Level);
     NewAccount.contentSetting[`${Name}`] = contentSetting;
     NewAccount.gates[`${Name}`] = gates;
     NewAccount.GoldIncome[`${Name}`] = goldIncome;
+
+    const info: Info = { ClassName, Level, ServerName };
+    const setting: Setting = {
+      IsGoldCharacter: +index < 6 ? true : false,
+      isVisible: +index < 6 ? true : false,
+      TotalGoldIncome: calculateTotalIncome(contentSetting, goldIncome),
+    };
+    NewAccount.accountInfo[`${Name}`] = info;
+    NewAccount.accountSetting[`${Name}`] = setting;
   }
   return NewAccount;
 }
