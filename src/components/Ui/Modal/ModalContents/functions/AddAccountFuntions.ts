@@ -10,7 +10,7 @@ import {
 import { IFetchedCharacter } from "../AddAccount";
 import commander from "../../../../../json/commander.json";
 import { IData, IGates } from "../../../../../json/commanderTypes";
-import IsValidLevel from "../functions/Validation/IsValidLevel";
+import IsValidLevel from "./Validation/IsValidLevel";
 import {
   IGoldIncomeCharacter,
   IGoldIncomeContent,
@@ -26,7 +26,6 @@ interface INewCotentsResult {
   goldIncome: IGoldIncomeContent;
   gates: IGatesContent;
 }
-
 const commanderData: IData = commander;
 function makeNewGates(level: number, gates: IGates[]): IGatesSetting[] {
   function isHard(
@@ -133,5 +132,3 @@ export function makeNewAccount(
   }
   return NewAccount;
 }
-
-export function makeContentSetting() {}

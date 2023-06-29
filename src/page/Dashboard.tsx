@@ -3,8 +3,8 @@ import styled from "styled-components";
 import Modal from "../components/Ui/Modal/Modal";
 import DragAccounts from "../components/DashBoard/DragAccounts/DragAccounts";
 import AddAccount from "../components/Ui/Modal/ModalContents/AddAccount";
-import { useRecoilValue } from "recoil";
 import { useEffect } from "react";
+import { useRecoilValue } from "recoil";
 import { CharacterInfo } from "../atoms/Info/CharacterInfo";
 import { CharacterSetting } from "../atoms/Settings/CharacterSetting";
 import { ContentSetting } from "../atoms/Settings/ContentSetting";
@@ -69,11 +69,12 @@ function Dashboard() {
 
   return (
     <>
-      <Modal />
+      <AddAccount />
+      {/* <Modal />
       <DashboardStyle>
         <HeaderBox />
         <DragAccounts />
-      </DashboardStyle>
+      </DashboardStyle> */}
     </>
   );
 }

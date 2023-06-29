@@ -10,9 +10,17 @@ import useModal from "../../../../CustomHooks/Modal/useModal";
 
 import { CharacterInfo } from "../../../../atoms/Info/CharacterInfo";
 import { CharacterSetting } from "../../../../atoms/Settings/CharacterSetting";
-import { makeNewAccount } from "./NewFuctions/AddAccountFuntions";
+import { makeNewAccount } from "./functions/AddAccountFuntions";
 import IsDupplicated from "./functions/Validation/IsDupplicated";
 import IsInValidName from "./functions/Validation/IsValidName";
+import { ContentSetting } from "../../../../atoms/Settings/ContentSetting";
+import { Gates } from "../../../../atoms/Settings/Gates";
+import { GoldIncome } from "../../../../atoms/Settings/GoldIncome";
+import {
+  CharacterOrder,
+  ContentsOrder,
+  AccountOrder,
+} from "../../../../atoms/Settings/Orders";
 
 const Container = styled.div`
   display: flex;
@@ -54,6 +62,12 @@ interface IOptions {
 const AddAccount = () => {
   const [characterInfo, setCharacterInfo] = useRecoilState(CharacterInfo);
   const setCharacterSetting = useSetRecoilState(CharacterSetting);
+  const setContentSetting = useSetRecoilState(ContentSetting);
+  const setGates = useSetRecoilState(Gates);
+  const setGoldIncome = useSetRecoilState(GoldIncome);
+  const characterOrder = useSetRecoilState(CharacterOrder);
+  const contentsOrder = useSetRecoilState(ContentsOrder);
+  const accountOrder = useSetRecoilState(AccountOrder);
   const [, closeModal] = useModal();
   const [inputValue, setInputValue] = useState("");
   const [isDisabled, setIsDisabled] = useState(false);
@@ -90,7 +104,8 @@ const AddAccount = () => {
   const AddAccountHandler = () => {
     const AccountName = fetchedCharacters[0].CharacterName;
     const data = SortByLevel(fetchedCharacters);
-    const { accountInfo, accountSetting } = makeNewAccount(data);
+    const { accountInfo, accountSetting, GoldIncome, contentSetting, gates } =
+      makeNewAccount(data);
 
     setCharacterInfo((prev) => {
       return { ...prev, [`${AccountName}`]: accountInfo };
@@ -98,7 +113,27 @@ const AddAccount = () => {
     setCharacterSetting((prev) => {
       return { ...prev, [`${AccountName}`]: accountSetting };
     });
-    console.log(makeNewAccount(data));
+    setContentSetting((prev) => {
+      return { ...prev, [`${AccountName}`]: contentSetting };
+    });
+    setGates((prev) => {
+      return { ...prev, [`${AccountName}`]: gates };
+    });
+    setGoldIncome((prev) => {
+      return { ...prev, [`${AccountName}`]: GoldIncome };
+    });
+    accountOrder((prev) => [...prev, AccountName]);
+    characterOrder((prev) => {
+      return {
+        ...prev,
+        [`${AccountName}`]: Object.keys(accountSetting).filter(
+          (prev) => accountSetting[prev].isVisible
+        ),
+      };
+    });
+    contentsOrder((prev) => {
+      return { ...prev, [`${AccountName}`]: [] };
+    });
     closeModal();
   };
 
