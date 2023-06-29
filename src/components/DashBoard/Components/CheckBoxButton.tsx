@@ -12,7 +12,7 @@ interface IStyle {
 }
 const CheckBox = styled.div<IStyle>`
   opacity: ${({ isActivated, isVisible }) =>
-    !isVisible || !isActivated ? "100%" : "0%"};
+    !isVisible || !isActivated ? "0%" : "100%"};
   display: flex;
   justify-content: center;
   align-items: center;

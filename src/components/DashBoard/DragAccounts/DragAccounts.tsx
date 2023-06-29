@@ -10,7 +10,7 @@ import styled from "styled-components";
 import { useRecoilState } from "recoil";
 
 import { AxisLocker } from "../Functions/AxisLocker";
-import AccountContainer from "./AccountContainer";
+import AccountContainer from "./DragCharacters";
 import AddAccountButton from "../Components/AddAccountButton";
 import { AccountOrder } from "../../../atoms/Settings/Orders";
 

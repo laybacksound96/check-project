@@ -14,6 +14,7 @@ import useModal from "../../../CustomHooks/Modal/useModal";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { ContentsFrequency } from "../../../atoms/frequency";
 import { CharacterOrder, ContentsOrder } from "../../../atoms/Settings/Orders";
+import React from "react";
 const Name = styled.div`
   display: flex;
   flex-direction: column;
@@ -46,9 +47,14 @@ const DragContents = ({ AccountName }: IProps) => {
   const dragContentHandler = (dragInfo: DropResult) => {
     const { destination, source } = dragInfo;
     if (!destination) return;
-    if (destination?.droppableId === source.droppableId) {
-      setContentsOrder((prev) => prev);
-    }
+    if (destination?.droppableId !== source.droppableId) return;
+    setContentsOrder((prev) => {
+      const copiedOrder = [...prev[AccountName]];
+      const target = copiedOrder[source.index];
+      copiedOrder.splice(source.index, 1);
+      copiedOrder.splice(destination?.index, 0, target);
+      return { ...prev, [AccountName]: copiedOrder };
+    });
     return;
   };
 
@@ -116,4 +122,4 @@ const DragContents = ({ AccountName }: IProps) => {
     </>
   );
 };
-export default DragContents;
+export default React.memo(DragContents);
