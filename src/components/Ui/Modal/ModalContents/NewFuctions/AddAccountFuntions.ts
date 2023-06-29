@@ -10,7 +10,6 @@ import {
 import { IFetchedCharacter } from "../AddAccount";
 import commander from "../../../../../json/commander.json";
 import { IData, IGates } from "../../../../../json/commanderTypes";
-import makeGoldArray from "../functions/makeGoldArray";
 import IsValidLevel from "../functions/Validation/IsValidLevel";
 import {
   IGoldIncomeCharacter,
@@ -63,12 +62,17 @@ function calculateIncome(Name: string, Gate: IGatesSetting[]): number {
   return resultGold;
 }
 function makeCotentState(level: number): INewCotentsResult {
+  function makeGoldArray(income: IGoldIncomeContent) {
+    const keys = Object.keys(income);
+    const sortedKeys = keys.sort((a, b) => income[b] - income[a]);
+    const result = sortedKeys.slice(0, 3);
+    return result;
+  }
   const result: INewCotentsResult = {
     contentSetting: {},
     goldIncome: {},
     gates: {},
   };
-
   for (let contentName in commanderData) {
     const NewGate = makeNewGates(level, commanderData[contentName]);
     const Income = calculateIncome(contentName, NewGate);
@@ -78,9 +82,13 @@ function makeCotentState(level: number): INewCotentsResult {
       isGoldContents: false,
       isVisible: false,
     };
-
     result.goldIncome[`${contentName}`] = Income;
     result.gates[`${contentName}`] = NewGate;
+  }
+  const GoldArray = makeGoldArray(result.goldIncome);
+  for (let Name in GoldArray) {
+    result.contentSetting[`${GoldArray[Name]}`].isGoldContents = true;
+    result.contentSetting[`${GoldArray[Name]}`].isVisible = true;
   }
   return result;
 }
