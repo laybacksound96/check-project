@@ -1,36 +1,23 @@
-import { useRecoilState } from "recoil";
-import { ModalEnum, ModalState } from "../../../atoms/modal";
+import { ModalEnum } from "../../../atoms/modal";
 import ModalContainer from "./ModalContainer";
 import AddAccount from "./ModalContents/AddAccount";
 import AddContent from "./ModalContents/AddContent";
 import ConfigAccount from "./ModalContents/ConfigAccount";
 import ConfigContent from "./ModalContents/ConfigContent";
+import useModal from "../../../CustomHooks/Modal/useModal";
 
 const Modal = () => {
-  const [IsModalOpen, setIsModalOpen] = useRecoilState(ModalState);
-  const closeModal = () => {
-    setIsModalOpen((prev) => {
-      const copiedPrev = { ...prev };
-      copiedPrev.isModalOpen = false;
-      copiedPrev.modalProp = {
-        AccountName: "",
-        CharacterName: "",
-      };
-      return copiedPrev;
-    });
-  };
+  const { ADD_ACCOUNT, ADD_CONTENT, CONFIG_ACCOUNT, CONFIG_CONTENT } =
+    ModalEnum;
+  const [, close, { isModalOpen, modalType }] = useModal();
   return (
     <>
-      {IsModalOpen.isModalOpen && (
-        <ModalContainer onClose={closeModal}>
-          {IsModalOpen.modalType === ModalEnum.CONFIG_CONTENT && (
-            <ConfigContent />
-          )}
-          {IsModalOpen.modalType === ModalEnum.CONFIG_ACCOUNT && (
-            <ConfigAccount />
-          )}
-          {IsModalOpen.modalType === ModalEnum.ADD_CONTENT && <AddContent />}
-          {IsModalOpen.modalType === ModalEnum.ADD_ACCOUNT && <AddAccount />}
+      {isModalOpen && (
+        <ModalContainer onClose={() => close()}>
+          {modalType === CONFIG_CONTENT && <ConfigContent />}
+          {modalType === CONFIG_ACCOUNT && <ConfigAccount />}
+          {modalType === ADD_CONTENT && <AddContent />}
+          {modalType === ADD_ACCOUNT && <AddAccount />}
         </ModalContainer>
       )}
     </>

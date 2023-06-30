@@ -52,7 +52,17 @@ const GoldBox = styled.div`
     margin-left: 5px;
   }
 `;
-
+function calculateIncome(
+  GoldContents: string[],
+  goldIncome: IGoldIncomeContent
+): number {
+  let totalIncome = 0;
+  GoldContents.forEach((contentName) => {
+    const income = goldIncome[contentName];
+    totalIncome += income;
+  });
+  return totalIncome;
+}
 const ConfigContent = () => {
   const {
     modalProp: { CharacterName, AccountName },
@@ -74,22 +84,9 @@ const ConfigContent = () => {
   const GoldContents = Object.keys(ContentState).filter(
     (Name) => ContentState[Name].isGoldContents
   );
-  const [gold, setGold] = useState(TotalGoldIncome);
-  const [prevGold, setPrevGold] = useState(0);
-
-  useEffect(() => {
-    function calculateIncome(GoldContents: string[]): number {
-      let totalIncome = 0;
-      GoldContents.forEach((contentName) => {
-        const income = goldIncome[contentName];
-        totalIncome += income;
-      });
-      return totalIncome;
-    }
-    setGold(calculateIncome(GoldContents));
-    console.log("asd");
-  }, [GoldContents, goldIncome]);
-  useEffect(() => {}, []);
+  const [currentGold, setCurrentGold] = useState(TotalGoldIncome);
+  const [prevGold, setPrevGold] = useState(currentGold);
+  console.log("asd");
   return (
     <Container>
       <p>골드획득 컨텐츠:</p>
@@ -101,7 +98,7 @@ const ConfigContent = () => {
       <GoldBox>
         <FontAwesomeIcon icon={faCoins} style={{ color: "yellow" }} />
         <span>
-          <CountUp start={prevGold} end={gold} />
+          <CountUp start={prevGold} end={currentGold} />
         </span>
       </GoldBox>
       <GridContainer>
