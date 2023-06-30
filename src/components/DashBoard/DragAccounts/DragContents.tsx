@@ -78,7 +78,7 @@ const DragContents = ({ AccountName }: IProps) => {
       const filteredArray = visibleArray.filter(
         (name) => !CopiedOrder.includes(name)
       );
-      return { [AccountName]: [...CopiedOrder, ...filteredArray] };
+      return { ...prev, [AccountName]: [...CopiedOrder, ...filteredArray] };
     });
   }, [AccountName, characterOrder, contentSetting, setContentsOrder]);
   return (
