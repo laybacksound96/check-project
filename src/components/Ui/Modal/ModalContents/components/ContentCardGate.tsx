@@ -74,7 +74,6 @@ const ContentCardGate = ({
 
   const changeDifficultyHandler = () => {
     if (!isContentVisible || !isVisible) return;
-    SetGateVisibleHandler(GateIndex);
   };
 
   return (
