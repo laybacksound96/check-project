@@ -11,10 +11,7 @@ import { IFetchedCharacter } from "../AddAccount";
 import commander from "../../../../../json/commander.json";
 import { IData, IGates } from "../../../../../json/commanderTypes";
 import IsValidLevel from "./Validation/IsValidLevel";
-import {
-  IGoldIncomeCharacter,
-  IGoldIncomeContent,
-} from "../../../../../atoms/Settings/GoldIncome";
+
 import {
   IGatesCharacter,
   IGatesContent,
@@ -23,7 +20,6 @@ import {
 
 interface INewCotentsResult {
   contentSetting: IContentState;
-  goldIncome: IGoldIncomeContent;
   gates: IGatesContent;
 }
 const commanderData: IData = commander;
@@ -50,66 +46,29 @@ function makeNewGates(level: number, gates: IGates[]): IGatesSetting[] {
   }
   return result;
 }
-function calculateTotalIncome(
-  contentSetting: IContentState,
-  goldIncome: IGoldIncomeContent
-): number {
-  let result = 0;
-  const goldArray = Object.keys(contentSetting).filter(
-    (contents) => contentSetting[contents].isGoldContents
-  );
-  goldArray.forEach((elem) => {
-    result += goldIncome[elem];
-  });
-  return result;
-}
 
-function calculateIncome(Name: string, Gate: IGatesSetting[]): number {
-  let resultGold = 0;
-  for (let index in Gate) {
-    const { isActivated, isVisible, Difficulty } = Gate[index];
-    const gold = commanderData[Name][index][Difficulty]?.gold;
-    if (!(isActivated && isVisible && gold !== undefined)) continue;
-    resultGold += gold;
-  }
-  return resultGold;
-}
 function makeCotentState(level: number): INewCotentsResult {
-  function makeGoldArray(income: IGoldIncomeContent) {
-    const keys = Object.keys(income);
-    const sortedKeys = keys.sort((a, b) => income[b] - income[a]);
-    const result = sortedKeys.slice(0, 3);
-    return result;
-  }
   const result: INewCotentsResult = {
     contentSetting: {},
-    goldIncome: {},
     gates: {},
   };
   for (let contentName in commanderData) {
     const NewGate = makeNewGates(level, commanderData[contentName]);
-    const Income = calculateIncome(contentName, NewGate);
     result.contentSetting[`${contentName}`] = {
       isActivated: IsValidLevel(contentName, level),
       isCleared: false,
       isGoldContents: false,
       isVisible: false,
     };
-    result.goldIncome[`${contentName}`] = Income;
     result.gates[`${contentName}`] = NewGate;
   }
-  const GoldArray = makeGoldArray(result.goldIncome);
-  for (let Name in GoldArray) {
-    result.contentSetting[`${GoldArray[Name]}`].isGoldContents = true;
-    result.contentSetting[`${GoldArray[Name]}`].isVisible = true;
-  }
+
   return result;
 }
 interface INewAccount {
   accountInfo: AccountInfo;
   accountSetting: AccountSetting;
   contentSetting: IContentSetting;
-  GoldIncome: IGoldIncomeCharacter;
   gates: IGatesCharacter;
 }
 export function makeNewAccount(
@@ -119,7 +78,6 @@ export function makeNewAccount(
     accountInfo: {},
     accountSetting: {},
     contentSetting: {},
-    GoldIncome: {},
     gates: {},
   };
   for (let index in fetchedCharacters) {
@@ -130,16 +88,13 @@ export function makeNewAccount(
       ServerName,
     } = fetchedCharacters[index];
     const Level = parseInt(ItemMaxLevel.replace(",", ""));
-    const { contentSetting, gates, goldIncome } = makeCotentState(Level);
+    const { contentSetting, gates } = makeCotentState(Level);
     NewAccount.contentSetting[`${Name}`] = contentSetting;
     NewAccount.gates[`${Name}`] = gates;
-    NewAccount.GoldIncome[`${Name}`] = goldIncome;
-
     const info: Info = { ClassName, Level, ServerName };
     const setting: Setting = {
       IsGoldCharacter: +index < 6 ? true : false,
       isVisible: +index < 6 ? true : false,
-      TotalGoldIncome: calculateTotalIncome(contentSetting, goldIncome),
     };
     NewAccount.accountInfo[`${Name}`] = info;
     NewAccount.accountSetting[`${Name}`] = setting;

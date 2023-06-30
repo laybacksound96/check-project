@@ -16,7 +16,6 @@ import { useRecoilValue } from "recoil";
 import { ContentSetting } from "../../../../../atoms/Settings/ContentSetting";
 import { Gates } from "../../../../../atoms/Settings/Gates";
 import useSetGatesVisible from "../../../../../CustomHooks/Settings/useSetGatesVisible";
-import { GoldIncome } from "../../../../../atoms/Settings/GoldIncome";
 
 interface IStyel {
   isVisibled: boolean;
@@ -141,11 +140,6 @@ const ContentCard = ({ AccountName, ContentsName, CharacterName }: IProps) => {
       [CharacterName]: { [ContentsName]: gates },
     },
   } = useRecoilValue(Gates);
-  const {
-    [AccountName]: {
-      [CharacterName]: { [ContentsName]: goldIncome },
-    },
-  } = useRecoilValue(GoldIncome);
 
   const setter = useSetContentSetting(AccountName, CharacterName, ContentsName);
   const setGatesVisible = useSetGatesVisible(
@@ -175,7 +169,6 @@ const ContentCard = ({ AccountName, ContentsName, CharacterName }: IProps) => {
   };
   const [isHovered, setIsHovered] = useState(false);
 
-  const [prevGold, setPrevGold] = useState(0);
   return (
     <ContentList
       isVisibled={isVisible}
@@ -197,7 +190,7 @@ const ContentCard = ({ AccountName, ContentsName, CharacterName }: IProps) => {
               style={{ color: isGoldContents ? "yellow" : "gray" }}
             />
             <span>
-              <CountUp start={prevGold} end={goldIncome} />
+              <CountUp start={0} end={0} />
             </span>
           </GoldIcon>
           <GoldCheck isHovered={isHovered} onClick={goldContentsHandler}>

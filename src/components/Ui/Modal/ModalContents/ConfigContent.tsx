@@ -8,12 +8,6 @@ import CountUp from "react-countup";
 import { faCoins } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ContentSetting } from "../../../../atoms/Settings/ContentSetting";
-import { CharacterSetting } from "../../../../atoms/Settings/CharacterSetting";
-import {
-  GoldIncome,
-  IGoldIncomeAccount,
-  IGoldIncomeContent,
-} from "../../../../atoms/Settings/GoldIncome";
 
 export const Container = styled.div`
   width: auto;
@@ -52,17 +46,7 @@ const GoldBox = styled.div`
     margin-left: 5px;
   }
 `;
-function calculateIncome(
-  GoldContents: string[],
-  goldIncome: IGoldIncomeContent
-): number {
-  let totalIncome = 0;
-  GoldContents.forEach((contentName) => {
-    const income = goldIncome[contentName];
-    totalIncome += income;
-  });
-  return totalIncome;
-}
+
 interface IProps {
   prop: modalProp;
 }
@@ -70,22 +54,10 @@ const ConfigContent = ({ prop: { AccountName, CharacterName } }: IProps) => {
   const {
     [AccountName]: { [CharacterName]: ContentState },
   } = useRecoilValue(ContentSetting);
-  const {
-    [AccountName]: { [CharacterName]: goldIncome },
-  } = useRecoilValue(GoldIncome);
-  const [
-    {
-      [AccountName]: {
-        [CharacterName]: { TotalGoldIncome },
-      },
-    },
-    setCharacterSetting,
-  ] = useRecoilState(CharacterSetting);
+
   const GoldContents = Object.keys(ContentState).filter(
     (Name) => ContentState[Name].isGoldContents
   );
-  const [currentGold, setCurrentGold] = useState(TotalGoldIncome);
-  const [prevGold, setPrevGold] = useState(currentGold);
 
   return (
     <Container>
@@ -98,7 +70,7 @@ const ConfigContent = ({ prop: { AccountName, CharacterName } }: IProps) => {
       <GoldBox>
         <FontAwesomeIcon icon={faCoins} style={{ color: "yellow" }} />
         <span>
-          <CountUp start={prevGold} end={currentGold} />
+          <CountUp start={0} end={0} />
         </span>
       </GoldBox>
       <GridContainer>
