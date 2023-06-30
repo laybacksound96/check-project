@@ -21,7 +21,7 @@ function useSetContentSetting(
             ...prev[AccountName][CharacterName],
             [ContentsName]: {
               ...prev[AccountName][CharacterName][ContentsName],
-              [`${Key}`]: value,
+              [Key]: value,
             },
           },
         },

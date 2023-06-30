@@ -1,6 +1,12 @@
 import { useSetRecoilState } from "recoil";
 
-import { Gates } from "../../atoms/Settings/Gates";
+import {
+  Gates,
+  IGates,
+  IGatesCharacter,
+  IGatesContent,
+  IGatesSetting,
+} from "../../atoms/Settings/Gates";
 
 function useSetGatesVisible(
   AccountName: string,
@@ -11,18 +17,24 @@ function useSetGatesVisible(
 
   function setter(index: number, value: boolean) {
     setGates((prev) => {
-      const copiedPrev = {
-        ...prev,
-        [AccountName]: {
-          ...prev[AccountName],
-          [CharacterName]: {
-            ...prev[AccountName][CharacterName],
-            [ContentsName]: [...prev[AccountName][CharacterName][ContentsName]],
-          },
-        },
+      const copiedPrev: IGates = { ...prev };
+      const copiedAccount: IGatesCharacter = { ...copiedPrev[AccountName] };
+      const copiedCharacter: IGatesContent = {
+        ...copiedAccount[CharacterName],
       };
-      copiedPrev[AccountName][CharacterName][ContentsName][index].isVisible =
-        value;
+      const copiedContents: IGatesSetting[] = [
+        ...copiedCharacter[ContentsName],
+      ];
+      const copiedArray: IGatesSetting = {
+        ...copiedContents[index],
+        isVisible: value,
+      };
+
+      copiedContents[index] = copiedArray;
+      copiedCharacter[ContentsName] = copiedContents;
+      copiedAccount[CharacterName] = copiedCharacter;
+      copiedPrev[AccountName] = copiedAccount;
+
       return copiedPrev;
     });
   }

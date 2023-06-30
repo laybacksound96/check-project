@@ -25,6 +25,7 @@ const GateContainer = styled.div<IconContainerStyle>`
   margin-bottom: 10px;
   opacity: ${(props) => (props.isVisibled ? "100%" : "30%")};
   transition: opacity 0.1s ease-in-out;
+
   ${GateVisibleContainer} {
     svg {
       font-size: 30px;
@@ -101,12 +102,11 @@ const ContentCardGate = ({
           />
         </CheckBoxContainer>
       </DifficultyContainer>
-      <GateVisibleContainer onClick={() => SetGateVisibleHandler(GateIndex)}>
-        {isVisible ? (
-          <FontAwesomeIcon icon={faEye} />
-        ) : (
-          <FontAwesomeIcon icon={faEyeSlash} />
-        )}
+      <GateVisibleContainer>
+        <FontAwesomeIcon
+          icon={isVisible ? faEye : faEyeSlash}
+          onClick={() => SetGateVisibleHandler(GateIndex)}
+        />
       </GateVisibleContainer>
     </GateContainer>
   );

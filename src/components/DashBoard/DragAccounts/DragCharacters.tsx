@@ -15,6 +15,7 @@ import { CharacterInfo } from "../../../atoms/Info/CharacterInfo";
 import ConfigAccountButton from "../Components/ConfigAccountButton";
 import ConfigContentButton from "../Components/ConfigContentButton";
 import { AxisLocker } from "../Functions/AxisLocker";
+import { CharacterSetting } from "../../../atoms/Settings/CharacterSetting";
 
 const DragAccountBtn = styled.div`
   display: flex;
@@ -101,6 +102,7 @@ function DragCharacters({ DragHandleProps, AccountName }: IProps) {
   const setCharacterOrder = useSetRecoilState(CharacterOrder);
   const { [AccountName]: characterOrder } = useRecoilValue(CharacterOrder);
   const { [AccountName]: characterInfo } = useRecoilValue(CharacterInfo);
+  const { [AccountName]: characterSetting } = useRecoilValue(CharacterSetting);
   const dragCharacterHandler = (dragInfo: DropResult) => {
     const { destination, source } = dragInfo;
     if (!destination) return;
@@ -123,6 +125,7 @@ function DragCharacters({ DragHandleProps, AccountName }: IProps) {
               <ConfigAccountButton AccountName={AccountName} />
               {characterOrder.map((CharacterName, index) => {
                 const { ClassName, Level } = characterInfo[CharacterName];
+                const { TotalGoldIncome } = characterSetting[CharacterName];
                 return (
                   <Draggable
                     key={CharacterName}
@@ -141,6 +144,7 @@ function DragCharacters({ DragHandleProps, AccountName }: IProps) {
                         <Character {...provided.dragHandleProps}>
                           <NameContainer>
                             {CharacterName}
+                            {/* {TotalGoldIncome} */}
                             <span>{ClassName}</span>
                             <span>Lv {Level}</span>
                           </NameContainer>
