@@ -90,15 +90,13 @@ const ContentCardGate = ({
       <DifficultyContainer>
         <CheckBoxContainer>
           <ContentCardCheckBox
-            DifficultyState={Difficulty}
+            State={Difficulty}
             Difficulty="normal"
-            isFixedDifficulty={isFixedDifficulty}
             handler={changeDifficultyHandler}
           />
           <ContentCardCheckBox
-            DifficultyState={Difficulty}
+            State={Difficulty}
             Difficulty="hard"
-            isFixedDifficulty={isFixedDifficulty}
             handler={changeDifficultyHandler}
           />
         </CheckBoxContainer>

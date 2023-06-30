@@ -1,4 +1,3 @@
-import { GridContainer } from "./ConfigContent";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGear } from "@fortawesome/free-solid-svg-icons";
@@ -6,9 +5,7 @@ import DangerZone from "./components/DangerZone";
 import useModal from "../../../../CustomHooks/Modal/useModal";
 import SettingCharacters from "./components/SettingVisibleContent";
 import { useRecoilValue } from "recoil";
-import SettingContents from "./components/SettingContents";
 import { CharacterSetting } from "../../../../atoms/Settings/CharacterSetting";
-import { ContentSetting } from "../../../../atoms/Settings/ContentSetting";
 
 const Container = styled.div`
   width: auto;
@@ -51,45 +48,28 @@ export const ConfigAccount = () => {
   ] = useModal();
 
   const { [AccountName]: Characters } = useRecoilValue(CharacterSetting);
-  const { [AccountName]: Contents } = useRecoilValue(ContentSetting);
+
   function handleDelete() {
     closeModal();
   }
   return (
     <>
       <Container>
-        <GridContainer>
-          <ContentList>
-            <header>
-              <FontAwesomeIcon icon={faGear} />
-              <span>캐릭터 표시 설정</span>
-            </header>
-            {Object.keys(Characters).map((characterName) => {
-              return (
-                <SettingCharacters
-                  key={characterName}
-                  AccountName={AccountName}
-                  CharacterName={characterName}
-                />
-              );
-            })}
-          </ContentList>
-          <ContentList>
-            <header>
-              <FontAwesomeIcon icon={faGear} />
-              <span>컨텐츠 표시 설정</span>
-            </header>
-            {Object.keys(Contents).map((ContentName) => {
-              return (
-                <SettingContents
-                  key={ContentName}
-                  AccountName={AccountName}
-                  ContentName={ContentName}
-                />
-              );
-            })}
-          </ContentList>
-        </GridContainer>
+        <ContentList>
+          <header>
+            <FontAwesomeIcon icon={faGear} />
+            <span>캐릭터 표시 설정</span>
+          </header>
+          {Object.keys(Characters).map((characterName) => {
+            return (
+              <SettingCharacters
+                key={characterName}
+                AccountName={AccountName}
+                CharacterName={characterName}
+              />
+            );
+          })}
+        </ContentList>
       </Container>
       <DangerZone handleDelete={handleDelete} />
     </>

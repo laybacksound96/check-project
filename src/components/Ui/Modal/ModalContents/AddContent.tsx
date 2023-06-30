@@ -3,6 +3,7 @@ import { useRecoilValue } from "recoil";
 import styled, { keyframes, css } from "styled-components";
 
 import useModal from "../../../../CustomHooks/Modal/useModal";
+import { ContentSetting } from "../../../../atoms/Settings/ContentSetting";
 
 interface IStyle {
   isDisabled: boolean;
@@ -76,9 +77,7 @@ const AddContent = () => {
       modalProp: { AccountName },
     },
   ] = useModal();
-  const {
-    [AccountName]: { ContentsSetting },
-  } = useRecoilValue(UserSetting);
+  const { [AccountName]: AccountContent } = useRecoilValue(ContentSetting);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -86,7 +85,7 @@ const AddContent = () => {
     inputRef.current.focus();
   }, []);
   const AddContentHandler = () => {
-    if (Object.keys(ContentsSetting).find((elem) => elem === inputValue)) {
+    if (Object.keys(AccountContent).find((elem) => elem === inputValue)) {
       setIsDupplicated(true);
       setIsdisabled(true);
       return;

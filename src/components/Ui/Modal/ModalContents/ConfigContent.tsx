@@ -1,4 +1,4 @@
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import ContentCard from "./components/ContentCard";
 import { ModalState } from "../../../../atoms/modal";
@@ -7,6 +7,13 @@ import { useEffect, useState } from "react";
 import CountUp from "react-countup";
 import { faCoins } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { ContentSetting } from "../../../../atoms/Settings/ContentSetting";
+import { CharacterSetting } from "../../../../atoms/Settings/CharacterSetting";
+import {
+  GoldIncome,
+  IGoldIncomeAccount,
+  IGoldIncomeContent,
+} from "../../../../atoms/Settings/GoldIncome";
 
 export const Container = styled.div`
   width: auto;
@@ -45,63 +52,60 @@ const GoldBox = styled.div`
     margin-left: 5px;
   }
 `;
+
 const ConfigContent = () => {
   const {
     modalProp: { CharacterName, AccountName },
   } = useRecoilValue(ModalState);
   const {
-    [`${AccountName}`]: {
-      ContentsSetting,
-      CharacterSetting: { [`${CharacterName}`]: CharacterState },
+    [AccountName]: { [CharacterName]: ContentState },
+  } = useRecoilValue(ContentSetting);
+  const {
+    [AccountName]: { [CharacterName]: goldIncome },
+  } = useRecoilValue(GoldIncome);
+  const [
+    {
+      [AccountName]: {
+        [CharacterName]: { TotalGoldIncome },
+      },
     },
-  } = useRecoilValue(UserSetting);
-  const [contents, setContenst] = useState<Array<string>>([]);
-  const [goldContents, setGoldContents] = useState<Array<string>>([]);
-  const [characterGold, setcharacterGold] = useState(0);
-  const [startGold, setstartGold] = useState(0);
-  useEffect(() => {
-    const VisibleContents = Object.keys(ContentsSetting).filter(
-      (ContentName) => CharacterState.Contents[ContentName].isVisible
-    );
-    const InVisibleContents = Object.keys(ContentsSetting).filter(
-      (ContentName) => !CharacterState.Contents[ContentName].isVisible
-    );
-    setContenst(() => [...VisibleContents, ...InVisibleContents]);
-  }, [CharacterState.Contents, ContentsSetting]);
+    setCharacterSetting,
+  ] = useRecoilState(CharacterSetting);
+  const GoldContents = Object.keys(ContentState).filter(
+    (Name) => ContentState[Name].isGoldContents
+  );
+  const [gold, setGold] = useState(TotalGoldIncome);
+  const [prevGold, setPrevGold] = useState(0);
 
   useEffect(() => {
-    const goldContents = Object.keys(ContentsSetting).filter(
-      (ContentName) => CharacterState.Contents[ContentName].isGoldContents
-    );
-    setGoldContents(() => goldContents);
-    let gold = 0;
-    for (let index in goldContents) {
-      const contentName = goldContents[index];
-      const { Gates } = CharacterState.Contents[contentName];
-      gold += calculateGold(goldContents[index], Gates);
+    function calculateIncome(GoldContents: string[]): number {
+      let totalIncome = 0;
+      GoldContents.forEach((contentName) => {
+        const income = goldIncome[contentName];
+        totalIncome += income;
+      });
+      return totalIncome;
     }
-    setcharacterGold((prev) => {
-      setstartGold(prev);
-      return gold;
-    });
-  }, [CharacterState.Contents, ContentsSetting]);
-
+    setGold(calculateIncome(GoldContents));
+    console.log("asd");
+  }, [GoldContents, goldIncome]);
+  useEffect(() => {}, []);
   return (
     <Container>
       <p>골드획득 컨텐츠:</p>
       <div style={{ display: "flex" }}>
-        {goldContents.map((content) => {
+        {GoldContents.map((content) => {
           return <GoldContent key={content}>{content}</GoldContent>;
         })}
       </div>
       <GoldBox>
         <FontAwesomeIcon icon={faCoins} style={{ color: "yellow" }} />
         <span>
-          <CountUp start={startGold} end={characterGold} />
+          <CountUp start={prevGold} end={gold} />
         </span>
       </GoldBox>
       <GridContainer>
-        {contents.map((ContentName) => {
+        {Object.keys(ContentState).map((ContentName) => {
           return (
             <ContentCard
               key={ContentName}

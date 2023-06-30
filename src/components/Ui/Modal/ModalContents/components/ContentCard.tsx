@@ -16,6 +16,7 @@ import { useRecoilValue } from "recoil";
 import { ContentSetting } from "../../../../../atoms/Settings/ContentSetting";
 import { Gates } from "../../../../../atoms/Settings/Gates";
 import useSetGatesVisible from "../../../../../CustomHooks/Settings/useSetGatesVisible";
+import { GoldIncome } from "../../../../../atoms/Settings/GoldIncome";
 
 interface IStyel {
   isVisibled: boolean;
@@ -84,7 +85,7 @@ interface IStyle {
 }
 const GoldCheck = styled.div<IStyle>`
   display: flex;
-  opacity: ${(props) => (props.isHovered ? "100%" : "0%")};
+  opacity: ${(props) => (props.isHovered ? "100%" : "20%")};
   transition: opacity 0.1s ease-in-out;
   padding-left: 5px;
   align-items: center;
@@ -94,15 +95,10 @@ const GoldCheck = styled.div<IStyle>`
 `;
 
 const IconContainer = styled.div<IStyle>`
-  opacity: ${(props) => (props.isHovered ? "100%" : "0%")};
+  opacity: ${(props) => (props.isHovered ? "100%" : "20%")};
   transition: opacity 0.1s ease-in-out;
 `;
 
-interface IProps {
-  AccountName: string;
-  ContentsName: string;
-  CharacterName: string;
-}
 interface GoldIconStyle {
   isHovered: boolean;
   isGoldContents: boolean;
@@ -127,10 +123,12 @@ const GoldContainer = styled.div`
   display: flex;
   flex-direction: column;
 `;
+interface IProps {
+  AccountName: string;
+  ContentsName: string;
+  CharacterName: string;
+}
 const ContentCard = ({ AccountName, ContentsName, CharacterName }: IProps) => {
-  const [isHovered, setIsHovered] = useState(false);
-  const [gateGold, setGateGold] = useState(0);
-  const [startGold, setstartGold] = useState(0);
   const {
     [AccountName]: {
       [CharacterName]: {
@@ -143,6 +141,12 @@ const ContentCard = ({ AccountName, ContentsName, CharacterName }: IProps) => {
       [CharacterName]: { [ContentsName]: gates },
     },
   } = useRecoilValue(Gates);
+  const {
+    [AccountName]: {
+      [CharacterName]: { [ContentsName]: goldIncome },
+    },
+  } = useRecoilValue(GoldIncome);
+
   const setter = useSetContentSetting(AccountName, CharacterName, ContentsName);
   const setGatesVisible = useSetGatesVisible(
     AccountName,
@@ -169,7 +173,9 @@ const ContentCard = ({ AccountName, ContentsName, CharacterName }: IProps) => {
     const { isVisible } = gates[gateIndex];
     setGatesVisible(gateIndex, isVisible);
   };
+  const [isHovered, setIsHovered] = useState(false);
 
+  const [prevGold, setPrevGold] = useState(0);
   return (
     <ContentList
       isVisibled={isVisible}
@@ -184,24 +190,24 @@ const ContentCard = ({ AccountName, ContentsName, CharacterName }: IProps) => {
           </IconContainer>
         </header>
 
-        <GoldContainer onClick={goldContentsHandler}>
+        <GoldContainer>
           <GoldIcon isHovered={isHovered} isGoldContents={isGoldContents}>
             <FontAwesomeIcon
               icon={faCoins}
               style={{ color: isGoldContents ? "yellow" : "gray" }}
             />
             <span>
-              <CountUp start={startGold} end={gateGold} />
+              <CountUp start={prevGold} end={goldIncome} />
             </span>
           </GoldIcon>
-          <GoldCheck isHovered={isHovered}>
+          <GoldCheck isHovered={isHovered} onClick={goldContentsHandler}>
             <span>골드획득 컨텐츠</span>
             <FontAwesomeIcon icon={isGoldContents ? faSquareCheck : faSquare} />
           </GoldCheck>
         </GoldContainer>
       </CardHeader>
       <GateContainer>
-        {gates.map((gate, index) => {
+        {/* {gates.map((gate, index) => {
           const Difficulty = gate.Difficulty;
           return (
             <ContentCardGate
@@ -213,7 +219,7 @@ const ContentCard = ({ AccountName, ContentsName, CharacterName }: IProps) => {
               isContentVisible={isVisible}
             />
           );
-        })}
+        })} */}
       </GateContainer>
     </ContentList>
   );

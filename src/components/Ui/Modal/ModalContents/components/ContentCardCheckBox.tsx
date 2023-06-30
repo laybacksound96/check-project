@@ -5,39 +5,32 @@ import styled from "styled-components";
 const CheckBox = styled.div`
   padding-top: 5px;
 `;
-interface ICheckBoxContainerStyle {
-  isFixedDifficulty: boolean;
+interface IStyle {
+  isNormal: string;
 }
-const CheckBoxContainer = styled.div<ICheckBoxContainerStyle>`
+const CheckBoxContainer = styled.div<IStyle>`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   margin: 0px 10px;
-  opacity: ${(props) => (props.isFixedDifficulty ? "30%" : "100%")};
+  opacity: ${({ isNormal }) => (isNormal === "normal" ? "30%" : "100%")};
 `;
 interface IProps {
-  DifficultyState: string | undefined;
+  State: string;
   Difficulty: string;
-  isFixedDifficulty: boolean;
   handler: () => void;
 }
 
-const ContentCardCheckBox = ({
-  DifficultyState,
-  Difficulty,
-  isFixedDifficulty,
-  handler,
-}: IProps) => {
+const ContentCardCheckBox = ({ State, Difficulty, handler }: IProps) => {
   return (
-    <CheckBoxContainer isFixedDifficulty={isFixedDifficulty}>
+    <CheckBoxContainer isNormal={State}>
       <span>{Difficulty}</span>
       <CheckBox onClick={handler}>
-        {DifficultyState === Difficulty ? (
-          <FontAwesomeIcon icon={faSquareCheck} size="lg" />
-        ) : (
-          <FontAwesomeIcon icon={faSquare} size="lg" />
-        )}
+        <FontAwesomeIcon
+          icon={State === Difficulty ? faSquareCheck : faSquare}
+          size="lg"
+        />
       </CheckBox>
     </CheckBoxContainer>
   );

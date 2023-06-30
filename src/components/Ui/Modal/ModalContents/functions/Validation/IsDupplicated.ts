@@ -1,4 +1,4 @@
-import { ICharacterInfo } from "../../../../../atoms/Info/CharacterInfo";
+import { ICharacterInfo } from "../../../../../../atoms/Info/CharacterInfo";
 
 const IsDupplicated = (
   inputName: string,
