@@ -7,14 +7,23 @@ import { useEffect, useState } from "react";
 import CountUp from "react-countup";
 import { faCoins } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { ContentSetting } from "../../../../atoms/Settings/ContentSetting";
+import {
+  ContentSetting,
+  IContentState,
+} from "../../../../atoms/Settings/ContentSetting";
 import { CharacterSetting } from "../../../../atoms/Settings/CharacterSetting";
 import {
   GoldIncome,
   IGoldIncomeAccount,
   IGoldIncomeContent,
 } from "../../../../atoms/Settings/GoldIncome";
-
+import { IData } from "../../../../json/commanderTypes";
+import commander from "../../../../json/commander.json";
+import {
+  Gates,
+  IGatesContent,
+  IGatesSetting,
+} from "../../../../atoms/Settings/Gates";
 export const Container = styled.div`
   width: auto;
   height: 80vh;
@@ -52,17 +61,7 @@ const GoldBox = styled.div`
     margin-left: 5px;
   }
 `;
-function calculateIncome(
-  GoldContents: string[],
-  goldIncome: IGoldIncomeContent
-): number {
-  let totalIncome = 0;
-  GoldContents.forEach((contentName) => {
-    const income = goldIncome[contentName];
-    totalIncome += income;
-  });
-  return totalIncome;
-}
+
 interface IProps {
   prop: modalProp;
 }
@@ -70,22 +69,45 @@ const ConfigContent = ({ prop: { AccountName, CharacterName } }: IProps) => {
   const {
     [AccountName]: { [CharacterName]: ContentState },
   } = useRecoilValue(ContentSetting);
+
   const {
-    [AccountName]: { [CharacterName]: goldIncome },
-  } = useRecoilValue(GoldIncome);
-  const [
-    {
-      [AccountName]: {
-        [CharacterName]: { TotalGoldIncome },
-      },
-    },
-    setCharacterSetting,
-  ] = useRecoilState(CharacterSetting);
+    [AccountName]: { [CharacterName]: GatesContent },
+  } = useRecoilValue(Gates);
   const GoldContents = Object.keys(ContentState).filter(
     (Name) => ContentState[Name].isGoldContents
   );
-  const [currentGold, setCurrentGold] = useState(TotalGoldIncome);
-  const [prevGold, setPrevGold] = useState(currentGold);
+  const [currentGold, setCurrentGold] = useState(0);
+  const [prevGold, setPrevGold] = useState(0);
+
+  function calcCharacterGold(
+    GatesContent: IGatesContent,
+    ContentState: IContentState
+  ): number {
+    const commanderData: IData = commander;
+    let gold = 0;
+    for (let contentName in GatesContent) {
+      const { isGoldContents, isActivated, isVisible } =
+        ContentState[contentName];
+      if (!isGoldContents || !isActivated || !isVisible) continue;
+      for (let index in GatesContent[contentName]) {
+        const { Difficulty, isVisible, isActivated } =
+          GatesContent[contentName][index];
+        const CommanderGold =
+          commanderData[contentName][index][Difficulty]?.gold;
+        if (!CommanderGold || !isVisible || !isActivated) continue;
+        gold += CommanderGold;
+      }
+    }
+
+    return gold;
+  }
+
+  useEffect(() => {
+    setCurrentGold((prev) => {
+      setPrevGold(prev);
+      return calcCharacterGold(GatesContent, ContentState);
+    });
+  }, [ContentState, GatesContent]);
 
   return (
     <Container>

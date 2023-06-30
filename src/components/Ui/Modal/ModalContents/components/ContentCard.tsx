@@ -14,11 +14,12 @@ import CountUp from "react-countup";
 import useSetContentSetting from "../../../../../CustomHooks/Settings/useSetContentSetting";
 import { useRecoilValue } from "recoil";
 import { ContentSetting } from "../../../../../atoms/Settings/ContentSetting";
-import { Gates } from "../../../../../atoms/Settings/Gates";
+import { Gates, IGatesSetting } from "../../../../../atoms/Settings/Gates";
 import useSetGatesVisible from "../../../../../CustomHooks/Settings/useSetGatesVisible";
 import { GoldIncome } from "../../../../../atoms/Settings/GoldIncome";
 import useSetCharacterSetting from "../../../../../CustomHooks/Settings/useSetCharacterSetting";
-
+import { IData, IGates } from "../../../../../json/commanderTypes";
+import commander from "../../../../../json/commander.json";
 interface IStyel {
   isVisibled: boolean;
 }
@@ -142,13 +143,7 @@ const ContentCard = ({ AccountName, ContentsName, CharacterName }: IProps) => {
       [CharacterName]: { [ContentsName]: gates },
     },
   } = useRecoilValue(Gates);
-  const {
-    [AccountName]: {
-      [CharacterName]: { [ContentsName]: goldIncome },
-    },
-  } = useRecoilValue(GoldIncome);
   const setter = useSetContentSetting(AccountName, CharacterName, ContentsName);
-  const goldSetter = useSetCharacterSetting(AccountName, CharacterName);
   const setGatesVisible = useSetGatesVisible(
     AccountName,
     CharacterName,
@@ -171,14 +166,33 @@ const ContentCard = ({ AccountName, ContentsName, CharacterName }: IProps) => {
     }
   };
 
+  function calcGold(ContentName: string, gates: IGatesSetting[]): number {
+    const commanderData: IData = commander;
+    let gold = 0;
+    for (let index in gates) {
+      const { Difficulty, isVisible, isActivated } = gates[index];
+      const CommanderGold = commanderData[ContentName][index][Difficulty]?.gold;
+      if (!CommanderGold || !isVisible || !isActivated) continue;
+      gold += CommanderGold;
+    }
+    return gold;
+  }
   const gateVisibleHandler = (gateIndex: number) => {
     const { isVisible: isGateVisible } = gates[gateIndex];
     if (!isContentVisible) return;
     setGatesVisible(gateIndex, !isGateVisible);
   };
   const [isHovered, setIsHovered] = useState(false);
-
+  const [currentGold, setCurrentGold] = useState(0);
   const [prevGold, setPrevGold] = useState(0);
+
+  useEffect(() => {
+    setCurrentGold((prev) => {
+      setPrevGold(prev);
+      return calcGold(ContentsName, gates);
+    });
+  }, [ContentsName, gates]);
+
   return (
     <ContentList
       isVisibled={isContentVisible}
@@ -200,7 +214,7 @@ const ContentCard = ({ AccountName, ContentsName, CharacterName }: IProps) => {
               style={{ color: isGoldContents ? "yellow" : "gray" }}
             />
             <span>
-              <CountUp start={prevGold} end={goldIncome} />
+              <CountUp start={prevGold} end={currentGold} />
             </span>
           </GoldIcon>
           <GoldCheck isHovered={isHovered} onClick={goldContentsHandler}>

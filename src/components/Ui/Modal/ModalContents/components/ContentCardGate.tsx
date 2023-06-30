@@ -21,6 +21,7 @@ const GateContainer = styled.div<IconContainerStyle>`
   background-color: ${(props) => props.theme.Color_2};
   padding-bottom: 5px;
   padding-left: 5px;
+  padding-right: 5px;
   border-radius: 5px;
   margin-bottom: 10px;
   opacity: ${(props) => (props.isVisibled ? "100%" : "30%")};
