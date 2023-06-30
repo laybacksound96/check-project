@@ -9,12 +9,12 @@ import useModal from "../../../CustomHooks/Modal/useModal";
 const Modal = () => {
   const { ADD_ACCOUNT, ADD_CONTENT, CONFIG_ACCOUNT, CONFIG_CONTENT } =
     ModalEnum;
-  const [, close, { isModalOpen, modalType }] = useModal();
+  const [, close, { isModalOpen, modalType, modalProp }] = useModal();
   return (
     <>
       {isModalOpen && (
         <ModalContainer onClose={() => close()}>
-          {modalType === CONFIG_CONTENT && <ConfigContent />}
+          {modalType === CONFIG_CONTENT && <ConfigContent prop={modalProp} />}
           {modalType === CONFIG_ACCOUNT && <ConfigAccount />}
           {modalType === ADD_CONTENT && <AddContent />}
           {modalType === ADD_ACCOUNT && <AddAccount />}

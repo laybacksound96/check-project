@@ -1,7 +1,7 @@
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import ContentCard from "./components/ContentCard";
-import { ModalState } from "../../../../atoms/modal";
+import { ModalState, modalProp } from "../../../../atoms/modal";
 
 import { useEffect, useState } from "react";
 import CountUp from "react-countup";
@@ -63,10 +63,10 @@ function calculateIncome(
   });
   return totalIncome;
 }
-const ConfigContent = () => {
-  const {
-    modalProp: { CharacterName, AccountName },
-  } = useRecoilValue(ModalState);
+interface IProps {
+  prop: modalProp;
+}
+const ConfigContent = ({ prop: { AccountName, CharacterName } }: IProps) => {
   const {
     [AccountName]: { [CharacterName]: ContentState },
   } = useRecoilValue(ContentSetting);
@@ -86,7 +86,7 @@ const ConfigContent = () => {
   );
   const [currentGold, setCurrentGold] = useState(TotalGoldIncome);
   const [prevGold, setPrevGold] = useState(currentGold);
-  console.log("asd");
+
   return (
     <Container>
       <p>골드획득 컨텐츠:</p>
