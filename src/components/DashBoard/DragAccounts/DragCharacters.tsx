@@ -52,7 +52,7 @@ export const Character = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 200px;
+  min-width: 200px;
   padding-left: 5px;
   font-size: ${dragIcon.row.fontSize}px;
   height: ${dragIcon.icon.edgeLength}px;
@@ -154,7 +154,7 @@ function DragCharacters({ DragHandleProps, AccountName }: IProps) {
                       >
                         <Character {...provided.dragHandleProps}>
                           <NameContainer>
-                            {CharacterName}
+                            <h1>{CharacterName}</h1>
                             {/* {TotalGoldIncome} */}
                             <span>{ClassName}</span>
                             <span>Lv {Level}</span>
