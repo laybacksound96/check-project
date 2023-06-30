@@ -101,6 +101,8 @@ function makeCotentState(level: number): INewCotentsResult {
   }
   const GoldArray = makeGoldArray(result.goldIncome);
   for (let Name in GoldArray) {
+    const { isActivated } = result.contentSetting[`${GoldArray[Name]}`];
+    if (!isActivated) continue;
     result.contentSetting[`${GoldArray[Name]}`].isGoldContents = true;
     result.contentSetting[`${GoldArray[Name]}`].isVisible = true;
   }

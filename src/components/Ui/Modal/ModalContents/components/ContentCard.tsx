@@ -138,7 +138,11 @@ const ContentCard = ({ AccountName, ContentsName, CharacterName }: IProps) => {
   const {
     [AccountName]: {
       [CharacterName]: {
-        [ContentsName]: { isVisible: isContentVisible, isGoldContents },
+        [ContentsName]: {
+          isVisible: isContentVisible,
+          isGoldContents,
+          isActivated,
+        },
       },
     },
   } = useRecoilValue(ContentSetting);
@@ -156,6 +160,7 @@ const ContentCard = ({ AccountName, ContentsName, CharacterName }: IProps) => {
     ContentsName
   );
   const visibleHandler = () => {
+    if (!isActivated) return;
     if (isContentVisible) {
       setter("isVisible", false);
       setter("isGoldContents", false);
@@ -164,6 +169,7 @@ const ContentCard = ({ AccountName, ContentsName, CharacterName }: IProps) => {
     }
   };
   const goldContentsHandler = () => {
+    if (!isActivated) return;
     if (!isGoldContents) {
       setter("isVisible", true);
       setter("isGoldContents", true);

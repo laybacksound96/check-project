@@ -5,7 +5,7 @@ import {
   DropResult,
   Droppable,
 } from "react-beautiful-dnd";
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import DragContents from "./DragContents";
 import { useRecoilValue, useSetRecoilState } from "recoil";
@@ -116,6 +116,18 @@ function DragCharacters({ DragHandleProps, AccountName }: IProps) {
     });
     return;
   };
+  useEffect(() => {
+    setCharacterOrder((prev) => {
+      const visibleArray = Object.keys(characterSetting).filter(
+        (elem) => characterSetting[elem].isVisible
+      );
+      const CopiedOrder = [...prev[AccountName]];
+      const filteredArray = visibleArray.filter(
+        (visibleCharacter) => !CopiedOrder.includes(visibleCharacter)
+      );
+      return { ...prev, [AccountName]: [...CopiedOrder, ...filteredArray] };
+    });
+  }, [AccountName, characterSetting, setCharacterOrder]);
   return (
     <DragDropContext onDragEnd={dragCharacterHandler}>
       <Droppable droppableId={AccountName}>
@@ -125,7 +137,6 @@ function DragCharacters({ DragHandleProps, AccountName }: IProps) {
               <ConfigAccountButton AccountName={AccountName} />
               {characterOrder.map((CharacterName, index) => {
                 const { ClassName, Level } = characterInfo[CharacterName];
-                const { TotalGoldIncome } = characterSetting[CharacterName];
                 return (
                   <Draggable
                     key={CharacterName}

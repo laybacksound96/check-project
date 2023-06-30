@@ -13,9 +13,10 @@ import useModal from "../../../CustomHooks/Modal/useModal";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { ContentsFrequency } from "../../../atoms/frequency";
 import { CharacterOrder, ContentsOrder } from "../../../atoms/Settings/Orders";
-import React from "react";
+import React, { useEffect } from "react";
 import { getKey } from "../Functions/CalculateCheckbox";
 import { Gates } from "../../../atoms/Settings/Gates";
+import { ContentSetting } from "../../../atoms/Settings/ContentSetting";
 const Name = styled.div`
   display: flex;
   flex-direction: column;
@@ -46,6 +47,7 @@ const DragContents = ({ AccountName }: IProps) => {
   const [{ [AccountName]: contentsOrder }, setContentsOrder] =
     useRecoilState(ContentsOrder);
   const { [AccountName]: characterOrder } = useRecoilValue(CharacterOrder);
+  const { [AccountName]: contentSetting } = useRecoilValue(ContentSetting);
   const dragContentHandler = (dragInfo: DropResult) => {
     const { destination, source } = dragInfo;
     if (!destination) return;
@@ -59,7 +61,26 @@ const DragContents = ({ AccountName }: IProps) => {
     });
     return;
   };
-
+  useEffect(() => {
+    setContentsOrder((prev) => {
+      const visibleArray: string[] = [];
+      for (let index in characterOrder) {
+        const characterName = characterOrder[index];
+        for (let contentName in contentSetting[characterName]) {
+          const { isVisible } = contentSetting[characterName][contentName];
+          if (visibleArray.includes(contentName)) continue;
+          if (isVisible) visibleArray.push(contentName);
+        }
+      }
+      const CopiedOrder = [...prev[AccountName]].filter((name) =>
+        visibleArray.includes(name)
+      );
+      const filteredArray = visibleArray.filter(
+        (name) => !CopiedOrder.includes(name)
+      );
+      return { [AccountName]: [...CopiedOrder, ...filteredArray] };
+    });
+  }, [AccountName, characterOrder, contentSetting, setContentsOrder]);
   return (
     <>
       <DragDropContext onDragEnd={dragContentHandler}>
