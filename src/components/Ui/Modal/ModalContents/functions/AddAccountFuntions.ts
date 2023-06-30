@@ -43,6 +43,7 @@ function makeNewGates(level: number, gates: IGates[]): IGatesSetting[] {
     const gate: IGatesSetting = {
       Gate_No: +index + 1,
       Difficulty: isHard(hardLevel, level),
+      isNormal: isHard(hardLevel, level) === "normal" ? true : false,
       isActivated: level > normalLevel,
       isVisible: level > normalLevel,
     };

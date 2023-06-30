@@ -13,18 +13,27 @@ const GateVisibleContainer = styled.div`
 `;
 interface IconContainerStyle {
   isHovered: boolean;
-  isVisibled: boolean;
+  Color: string | undefined;
+  isContentVisible: boolean;
+  isGateVisible: boolean;
 }
 const GateContainer = styled.div<IconContainerStyle>`
   display: flex;
   justify-content: space-evenly;
-  background-color: ${(props) => props.theme.Color_2};
-  padding-bottom: 5px;
-  padding-left: 5px;
-  padding-right: 5px;
+  align-items: center;
+  background-color: ${({
+    Color,
+    isGateVisible,
+    isContentVisible,
+    theme: { TextColor_B },
+  }) =>
+    Color === undefined || isGateVisible === false || isContentVisible === false
+      ? TextColor_B
+      : Color};
+  padding: 5px 10px;
   border-radius: 5px;
-  margin-bottom: 10px;
-  opacity: ${(props) => (props.isVisibled ? "100%" : "30%")};
+  margin-bottom: 7px;
+  opacity: ${(props) => (props.isGateVisible ? "100%" : "30%")};
   transition: opacity 0.1s ease-in-out;
 
   ${GateVisibleContainer} {
@@ -37,24 +46,15 @@ const GateContainer = styled.div<IconContainerStyle>`
 `;
 
 const GateNumber = styled.span`
-  font-size: 50px;
+  font-size: 40px;
   text-align: center;
 `;
 const DifficultyContainer = styled.div`
   padding: 5px;
 `;
-const GateNumberContainer = styled.div`
-  display: flex;
-`;
-const DifficultySpan = styled.span`
-  background-color: ${(props) => props.theme.Color_4};
-  border-radius: 5px;
-  padding: 5px;
-`;
+
 const CheckBoxContainer = styled.div`
   display: flex;
-  margin: 10px 0;
-  margin-top: 20px;
   width: 100%;
 `;
 interface IProps {
@@ -63,39 +63,44 @@ interface IProps {
   isContentVisible: boolean;
   GateIndex: number;
   SetGateVisibleHandler: (GateIndex: number) => void;
+  Color: string | undefined;
+  isNormal: boolean;
 }
 const ContentCardGate = ({
   Gate: { Gate_No, isVisible },
   Difficulty,
   isContentVisible,
   GateIndex,
+  isNormal,
   SetGateVisibleHandler,
+  Color,
 }: IProps) => {
   const [isHovered, setIsHovered] = useState(false);
 
   const changeDifficultyHandler = () => {
-    if (!isContentVisible || !isVisible) return;
+    if (!isContentVisible || !isVisible || isNormal) return;
   };
 
   return (
     <GateContainer
-      isVisibled={isVisible}
+      Color={Color}
+      isContentVisible={isContentVisible}
+      isGateVisible={isVisible}
       isHovered={isHovered}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <GateNumberContainer style={{ display: "flex", flexDirection: "column" }}>
-        <GateNumber>{Gate_No}</GateNumber>
-        <DifficultySpan>{Difficulty}</DifficultySpan>
-      </GateNumberContainer>
+      <GateNumber>{Gate_No}</GateNumber>
       <DifficultyContainer>
         <CheckBoxContainer>
           <ContentCardCheckBox
+            isNormal={isNormal}
             State={Difficulty}
             Difficulty="normal"
             handler={changeDifficultyHandler}
           />
           <ContentCardCheckBox
+            isNormal={isNormal}
             State={Difficulty}
             Difficulty="hard"
             handler={changeDifficultyHandler}

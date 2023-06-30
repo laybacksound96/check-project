@@ -16,18 +16,24 @@ import { useRecoilValue } from "recoil";
 import { ContentSetting } from "../../../../../atoms/Settings/ContentSetting";
 import { Gates, IGatesSetting } from "../../../../../atoms/Settings/Gates";
 import useSetGatesVisible from "../../../../../CustomHooks/Settings/useSetGatesVisible";
-import { GoldIncome } from "../../../../../atoms/Settings/GoldIncome";
-import useSetCharacterSetting from "../../../../../CustomHooks/Settings/useSetCharacterSetting";
-import { IData, IGates } from "../../../../../json/commanderTypes";
+import { IData } from "../../../../../json/commanderTypes";
 import commander from "../../../../../json/commander.json";
+import { getKey } from "../../../../DashBoard/Functions/CalculateCheckbox";
+import { ContentsFrequency } from "../../../../../atoms/frequency";
+import getLowerLightnessColor from "../../../../DashBoard/Functions/getLowerLightnessColor";
 interface IStyel {
   isVisibled: boolean;
+  Color: string | undefined;
 }
 
 const ContentList = styled.div<IStyel>`
   display: flex;
   flex-direction: column;
-  background-color: ${(props) => props.theme.Color_4};
+  background-color: ${({ Color, theme: { Color_4 }, isVisibled }) =>
+    Color === undefined || isVisibled === false
+      ? Color_4
+      : getLowerLightnessColor(Color, 15)};
+
   padding: 15px;
   width: auto;
   height: auto;
@@ -35,7 +41,6 @@ const ContentList = styled.div<IStyel>`
   margin: 10px;
   h1 {
     font-size: 30px;
-    margin-bottom: 10px;
   }
   opacity: ${(props) => (props.isVisibled ? "100%" : "30%")};
   transition: opacity 0.3s ease-in-out;
@@ -49,7 +54,6 @@ export const CardHeader = styled.div`
   margin-bottom: 10px;
 
   svg {
-    margin-top: 5px;
     font-size: 30px;
     color: ${(props) => props.theme.TextColor_A};
     vertical-align: text-top;
@@ -87,7 +91,7 @@ interface IStyle {
 }
 const GoldCheck = styled.div<IStyle>`
   display: flex;
-  opacity: ${(props) => (props.isHovered ? "100%" : "20%")};
+  opacity: ${(props) => (props.isHovered ? "100%" : "40%")};
   transition: opacity 0.1s ease-in-out;
   padding-left: 5px;
   align-items: center;
@@ -97,7 +101,7 @@ const GoldCheck = styled.div<IStyle>`
 `;
 
 const IconContainer = styled.div<IStyle>`
-  opacity: ${(props) => (props.isHovered ? "100%" : "20%")};
+  opacity: ${(props) => (props.isHovered ? "100%" : "80%")};
   transition: opacity 0.1s ease-in-out;
 `;
 
@@ -111,7 +115,7 @@ const GoldIcon = styled.div<GoldIconStyle>`
   align-items: center;
   span {
     margin-left: 5px;
-    opacity: ${(props) => (props.isGoldContents ? "100%" : "40%")};
+    opacity: ${(props) => (props.isGoldContents ? "100%" : "60%")};
     font-size: 1.4rem;
   }
   svg {
@@ -143,6 +147,8 @@ const ContentCard = ({ AccountName, ContentsName, CharacterName }: IProps) => {
       [CharacterName]: { [ContentsName]: gates },
     },
   } = useRecoilValue(Gates);
+  const { [getKey(ContentsName, gates)]: frequency } =
+    useRecoilValue(ContentsFrequency);
   const setter = useSetContentSetting(AccountName, CharacterName, ContentsName);
   const setGatesVisible = useSetGatesVisible(
     AccountName,
@@ -179,7 +185,7 @@ const ContentCard = ({ AccountName, ContentsName, CharacterName }: IProps) => {
   }
   const gateVisibleHandler = (gateIndex: number) => {
     const { isVisible: isGateVisible } = gates[gateIndex];
-    if (!isContentVisible) return;
+    if (!isContentVisible || gates.length <= 1) return;
     setGatesVisible(gateIndex, !isGateVisible);
   };
   const [isHovered, setIsHovered] = useState(false);
@@ -198,14 +204,19 @@ const ContentCard = ({ AccountName, ContentsName, CharacterName }: IProps) => {
       isVisibled={isContentVisible}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      Color={frequency?.Color}
     >
       <CardHeader>
         <header>
-          <h1>{ContentsName}</h1>
+          <div>
+            <h1>{ContentsName}</h1>
+          </div>
+
           <IconContainer isHovered={isHovered} onClick={visibleHandler}>
             <FontAwesomeIcon icon={isContentVisible ? faEye : faEyeSlash} />
           </IconContainer>
         </header>
+        <span>{frequency?.GateState}</span>
 
         <GoldContainer>
           <GoldIcon isHovered={isHovered} isGoldContents={isGoldContents}>
@@ -225,7 +236,7 @@ const ContentCard = ({ AccountName, ContentsName, CharacterName }: IProps) => {
       </CardHeader>
       <GateContainer>
         {gates.map((gate, index) => {
-          const Difficulty = gate.Difficulty;
+          const { Difficulty, isNormal } = gate;
           return (
             <ContentCardGate
               key={index}
@@ -234,6 +245,8 @@ const ContentCard = ({ AccountName, ContentsName, CharacterName }: IProps) => {
               GateIndex={index}
               SetGateVisibleHandler={gateVisibleHandler}
               isContentVisible={isContentVisible}
+              isNormal={isNormal}
+              Color={frequency?.Color}
             />
           );
         })}

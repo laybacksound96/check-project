@@ -5,6 +5,7 @@ export interface IGatesSetting {
   ["isActivated"]: boolean;
   ["isVisible"]: boolean;
   ["Difficulty"]: "normal" | "hard";
+  ["isNormal"]: boolean;
 }
 export interface IGatesContent {
   [ContentName: string]: IGatesSetting[];

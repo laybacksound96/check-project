@@ -6,7 +6,7 @@ const CheckBox = styled.div`
   padding-top: 5px;
 `;
 interface IStyle {
-  isNormal: string;
+  isNormal: boolean;
 }
 const CheckBoxContainer = styled.div<IStyle>`
   display: flex;
@@ -14,17 +14,23 @@ const CheckBoxContainer = styled.div<IStyle>`
   justify-content: center;
   align-items: center;
   margin: 0px 10px;
-  opacity: ${({ isNormal }) => (isNormal === "normal" ? "30%" : "100%")};
+  opacity: ${({ isNormal }) => (isNormal === true ? "30%" : "100%")};
 `;
 interface IProps {
-  State: string;
+  isNormal: boolean;
   Difficulty: string;
   handler: () => void;
+  State: string;
 }
 
-const ContentCardCheckBox = ({ State, Difficulty, handler }: IProps) => {
+const ContentCardCheckBox = ({
+  isNormal,
+  State,
+  Difficulty,
+  handler,
+}: IProps) => {
   return (
-    <CheckBoxContainer isNormal={State}>
+    <CheckBoxContainer isNormal={isNormal}>
       <span>{Difficulty}</span>
       <CheckBox onClick={handler}>
         <FontAwesomeIcon

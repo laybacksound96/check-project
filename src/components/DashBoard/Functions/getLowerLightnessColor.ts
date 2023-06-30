@@ -1,4 +1,4 @@
-const getLowerLightnessColor = (hsl: string, number: number) => {
+const getLowerLightnessColor = (hsl: string, number: number): string => {
   const colorString = hsl;
 
   const startIndex = colorString.lastIndexOf(",") + 1; // 변경할 숫자의 시작 인덱스
