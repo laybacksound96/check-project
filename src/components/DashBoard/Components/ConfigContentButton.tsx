@@ -9,6 +9,15 @@ export const ButtonContainer = styled.div`
   height: 100%;
   padding-right: 5px;
   padding-top: 5px;
+  svg {
+    border-radius: 10px;
+    opacity: 0%;
+    padding: 10px 10px;
+  }
+  svg:hover {
+    opacity: 100%;
+    background-color: rgba(100, 100, 100, 0.7);
+  }
 `;
 const ConfigContentButton = ({
   AccountName,

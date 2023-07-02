@@ -5,7 +5,9 @@ import {
   DropResult,
   Droppable,
 } from "react-beautiful-dnd";
-import React, { useEffect } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCoins } from "@fortawesome/free-solid-svg-icons";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import DragContents from "./DragContents";
 import { useRecoilValue, useSetRecoilState } from "recoil";
@@ -48,6 +50,15 @@ const Container = styled.div`
     }
   }
 `;
+const GoldContainer = styled.div`
+  * {
+    font-size: 0.9rem;
+    opacity: 40%;
+    color: ${(props) => props.theme.TextColor_A};
+  }
+  padding-left: 10px;
+  margin-bottom: 8px;
+`;
 export const Character = styled.div`
   display: flex;
   justify-content: space-between;
@@ -66,15 +77,6 @@ export const Character = styled.div`
   }
   button {
     margin-top: 0px;
-  }
-  svg {
-    border-radius: 10px;
-    opacity: 0%;
-    padding: 10px 10px;
-  }
-  svg:hover {
-    opacity: 100%;
-    background-color: rgba(100, 100, 100, 0.7);
   }
 `;
 const CharactersContainer = styled.div`
@@ -103,6 +105,7 @@ function DragCharacters({ DragHandleProps, AccountName }: IProps) {
   const { [AccountName]: characterOrder } = useRecoilValue(CharacterOrder);
   const { [AccountName]: characterInfo } = useRecoilValue(CharacterInfo);
   const { [AccountName]: characterSetting } = useRecoilValue(CharacterSetting);
+  const [goldIncome, setGoldIncome] = useState(0);
   const dragCharacterHandler = (dragInfo: DropResult) => {
     const { destination, source } = dragInfo;
     if (!destination) return;
@@ -151,14 +154,19 @@ function DragCharacters({ DragHandleProps, AccountName }: IProps) {
                         <Character {...provided.dragHandleProps}>
                           <NameContainer>
                             <h1>{CharacterName}</h1>
-                            {/* {TotalGoldIncome} */}
                             <span>{ClassName}</span>
                             <span>Lv {Level}</span>
                           </NameContainer>
-                          <ConfigContentButton
-                            AccountName={AccountName}
-                            CharacterName={CharacterName}
-                          />
+                          <div>
+                            <ConfigContentButton
+                              AccountName={AccountName}
+                              CharacterName={CharacterName}
+                            />
+                            <GoldContainer>
+                              <FontAwesomeIcon icon={faCoins} />
+                              <span> {goldIncome}</span>
+                            </GoldContainer>
+                          </div>
                         </Character>
                       </CharactersContainer>
                     )}
