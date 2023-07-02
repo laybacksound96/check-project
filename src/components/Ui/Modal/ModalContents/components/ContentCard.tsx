@@ -192,8 +192,22 @@ const ContentCard = ({ AccountName, ContentsName, CharacterName }: IProps) => {
   const gateVisibleHandler = (gateIndex: number) => {
     const { isVisible: isGateVisible } = gates[gateIndex];
     if (!isContentVisible || gates.length <= 1) return;
-    setGatesVisible(gateIndex, !isGateVisible);
+    setGatesVisible(gateIndex, !isGateVisible, "isVisble");
   };
+  const gateDifficultyHandler = (
+    gateIndex: number,
+    difficulty: string,
+    isNormal: boolean
+  ) => {
+    const { isVisible } = gates[gateIndex];
+    if (!isContentVisible || !isVisible || isNormal) return;
+    if (difficulty === "normal") {
+      setGatesVisible(gateIndex, "hard", "Difficulty");
+    } else {
+      setGatesVisible(gateIndex, "normal", "Difficulty");
+    }
+  };
+
   const [isHovered, setIsHovered] = useState(false);
   const [currentGold, setCurrentGold] = useState(0);
   const [prevGold, setPrevGold] = useState(0);
@@ -250,6 +264,7 @@ const ContentCard = ({ AccountName, ContentsName, CharacterName }: IProps) => {
               Gate={gate}
               GateIndex={index}
               SetGateVisibleHandler={gateVisibleHandler}
+              SetDifficultyHandler={gateDifficultyHandler}
               isContentVisible={isContentVisible}
               isNormal={isNormal}
               Color={frequency?.Color}

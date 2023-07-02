@@ -63,6 +63,11 @@ interface IProps {
   isContentVisible: boolean;
   GateIndex: number;
   SetGateVisibleHandler: (GateIndex: number) => void;
+  SetDifficultyHandler: (
+    GateIndex: number,
+    difficulty: string,
+    isNormal: boolean
+  ) => void;
   Color: string | undefined;
   isNormal: boolean;
 }
@@ -73,13 +78,10 @@ const ContentCardGate = ({
   GateIndex,
   isNormal,
   SetGateVisibleHandler,
+  SetDifficultyHandler,
   Color,
 }: IProps) => {
   const [isHovered, setIsHovered] = useState(false);
-
-  const changeDifficultyHandler = () => {
-    if (!isContentVisible || !isVisible || isNormal) return;
-  };
 
   return (
     <GateContainer
@@ -97,13 +99,17 @@ const ContentCardGate = ({
             isNormal={isNormal}
             State={Difficulty}
             Difficulty="normal"
-            handler={changeDifficultyHandler}
+            handler={() =>
+              SetDifficultyHandler(GateIndex, Difficulty, isNormal)
+            }
           />
           <ContentCardCheckBox
             isNormal={isNormal}
             State={Difficulty}
             Difficulty="hard"
-            handler={changeDifficultyHandler}
+            handler={() =>
+              SetDifficultyHandler(GateIndex, Difficulty, isNormal)
+            }
           />
         </CheckBoxContainer>
       </DifficultyContainer>

@@ -121,11 +121,7 @@ function DragCharacters({ DragHandleProps, AccountName }: IProps) {
       const visibleArray = Object.keys(characterSetting).filter(
         (elem) => characterSetting[elem].isVisible
       );
-      const CopiedOrder = [...prev[AccountName]];
-      const filteredArray = visibleArray.filter(
-        (visibleCharacter) => !CopiedOrder.includes(visibleCharacter)
-      );
-      return { ...prev, [AccountName]: [...CopiedOrder, ...filteredArray] };
+      return { ...prev, [AccountName]: visibleArray };
     });
   }, [AccountName, characterSetting, setCharacterOrder]);
   return (

@@ -12,10 +12,18 @@ function useSetGatesVisible(
   AccountName: string,
   CharacterName: string,
   ContentsName: string
-): (index: number, value: boolean) => void {
+): (
+  index: number,
+  value: boolean | string,
+  key: "Difficulty" | "isVisble"
+) => void {
   const setGates = useSetRecoilState(Gates);
 
-  function setter(index: number, value: boolean) {
+  function setter(
+    index: number,
+    value: boolean | string,
+    key: "Difficulty" | "isVisble"
+  ) {
     setGates((prev) => {
       const copiedPrev: IGates = { ...prev };
       const copiedAccount: IGatesCharacter = { ...copiedPrev[AccountName] };
@@ -27,7 +35,7 @@ function useSetGatesVisible(
       ];
       const copiedArray: IGatesSetting = {
         ...copiedContents[index],
-        isVisible: value,
+        [key]: value,
       };
 
       copiedContents[index] = copiedArray;
