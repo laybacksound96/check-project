@@ -38,7 +38,7 @@ const HeaderBox = () => {
   return (
     <HeaderBoxStyle>
       <header>
-        <h1>{userId}님의 Sheet</h1>
+        <h1>{userId}님의 체크시트</h1>
         <AccountGold />
       </header>
       <Contents />

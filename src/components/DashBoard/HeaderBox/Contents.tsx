@@ -12,7 +12,7 @@ import { CharacterSetting } from "../../../atoms/Settings/CharacterSetting";
 
 const ContainerStyle = styled.ul`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(4, minmax(250px, 1fr));
   grid-auto-rows: auto;
   margin-top: 30px;
 `;

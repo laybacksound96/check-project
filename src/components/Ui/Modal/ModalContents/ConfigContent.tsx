@@ -62,11 +62,12 @@ const ConfigContent = ({ prop: { AccountName, CharacterName } }: IProps) => {
     (Name) => ContentState[Name].isGoldContents
   );
 
+  const filteredByActive = Object.keys(ContentState).filter(
+    (Name) => ContentState[Name].isActivated
+  );
   const GateArray = [
-    ...Object.keys(ContentState).filter((Name) => ContentState[Name].isVisible),
-    ...Object.keys(ContentState).filter(
-      (Name) => !ContentState[Name].isVisible
-    ),
+    ...filteredByActive.filter((Name) => ContentState[Name].isVisible),
+    ...filteredByActive.filter((Name) => !ContentState[Name].isVisible),
   ];
 
   const [currentGold, setCurrentGold] = useState(

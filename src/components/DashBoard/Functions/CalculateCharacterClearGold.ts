@@ -9,8 +9,9 @@ const CalculateCharacterClearGold = (
   const commanderData: IData = commander;
   let result = 0;
   for (let contentName in contentState) {
-    const { isVisible, isCleared, isActivated } = contentState[contentName];
-    if (!isActivated || !isVisible || !isCleared) continue;
+    const { isVisible, isCleared, isActivated, isGoldContents } =
+      contentState[contentName];
+    if (!isActivated || !isVisible || !isCleared || !isGoldContents) continue;
     const gate = gatesContent[contentName];
     for (let index in gate) {
       const { Difficulty, isActivated, isVisible } = gate[index];

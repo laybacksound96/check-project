@@ -15,7 +15,7 @@ const Button = styled.button`
 const AddAccountButton = () => {
   const [openModal] = useModal();
   return (
-    <Button onClick={() => openModal("ADD_ACCOUNT")}>+ add new account?</Button>
+    <Button onClick={() => openModal("ADD_ACCOUNT")}>계정 추가하기</Button>
   );
 };
 export default AddAccountButton;

@@ -190,10 +190,8 @@ const ContentCard = ({ AccountName, ContentsName, CharacterName }: IProps) => {
     return gold;
   }
   const gateVisibleHandler = (gateIndex: number) => {
-    const { isVisible: isGateVisible } = gates[gateIndex];
-    if (!isContentVisible || gates.length <= 1) return;
-    console.log(isGateVisible);
-    console.log(gateIndex);
+    const { isVisible: isGateVisible, isActivated } = gates[gateIndex];
+    if (!isActivated || !isContentVisible || gates.length <= 1) return;
     setGatesVisible(gateIndex, !isGateVisible, "isVisible");
   };
   const gateDifficultyHandler = (
