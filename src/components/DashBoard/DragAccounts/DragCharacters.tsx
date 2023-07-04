@@ -6,7 +6,7 @@ import {
   Droppable,
 } from "react-beautiful-dnd";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import DragContents from "./DragContents";
 import { useRecoilValue, useSetRecoilState } from "recoil";
@@ -17,12 +17,8 @@ import ConfigAccountButton from "../Components/ConfigAccountButton";
 import ConfigContentButton from "../Components/ConfigContentButton";
 import { AxisLocker } from "../Functions/AxisLocker";
 import { CharacterSetting } from "../../../atoms/Settings/CharacterSetting";
-import {
-  ContentSetting,
-  IContentState,
-} from "../../../atoms/Settings/ContentSetting";
-import { Gates, IGatesContent } from "../../../atoms/Settings/Gates";
-import CalculateCharacterClearGold from "../Functions/CalculateCharacterClearGold";
+import { ContentSetting } from "../../../atoms/Settings/ContentSetting";
+import { Gates } from "../../../atoms/Settings/Gates";
 import CharacterGold from "../Components/CharacterGold";
 
 const DragAccountBtn = styled.div`

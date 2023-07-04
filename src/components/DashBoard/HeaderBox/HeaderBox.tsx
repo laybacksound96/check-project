@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import Contents from "./Contents";
+import AccountGold from "./AccountGold";
 
 const HeaderBoxStyle = styled.header`
   position: relative;
@@ -18,26 +19,13 @@ const HeaderBoxStyle = styled.header`
     color: ${(props) => props.theme.TextColor_A};
   }
   header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     h1 {
       display: inline;
       font-size: 30px;
       color: ${(props) => props.theme.TextColor_A};
-    }
-  }
-
-  svg {
-    height: 40px;
-    width: 40px;
-    padding: 5px;
-    border-radius: 10px;
-
-    position: absolute;
-    top: 20px;
-    right: 30px;
-    margin-top: 5px;
-    font-size: 25px;
-    &:hover {
-      background-color: #ffffff71;
     }
   }
 `;
@@ -51,6 +39,7 @@ const HeaderBox = () => {
     <HeaderBoxStyle>
       <header>
         <h1>{userId}님의 Sheet</h1>
+        <AccountGold />
       </header>
       <Contents />
     </HeaderBoxStyle>
