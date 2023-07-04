@@ -20,7 +20,14 @@ import {
   IGatesContent,
   IGatesSetting,
 } from "../../../../../atoms/Settings/Gates";
-
+function isHard(
+  hardLevel: number | undefined,
+  level: number
+): "normal" | "hard" {
+  if (!hardLevel) return "normal";
+  if (level < hardLevel) return "normal";
+  return "hard";
+}
 interface INewCotentsResult {
   contentSetting: IContentState;
   goldIncome: IGoldIncomeContent;
@@ -28,14 +35,6 @@ interface INewCotentsResult {
 }
 const commanderData: IData = commander;
 function makeNewGates(level: number, gates: IGates[]): IGatesSetting[] {
-  function isHard(
-    hardLevel: number | undefined,
-    level: number
-  ): "normal" | "hard" {
-    if (!hardLevel) return "normal";
-    if (level < hardLevel) return "normal";
-    return "hard";
-  }
   const result: IGatesSetting[] = [];
   for (let index in gates) {
     const hardLevel = gates[index].hard?.level;
@@ -44,8 +43,8 @@ function makeNewGates(level: number, gates: IGates[]): IGatesSetting[] {
       Gate_No: +index + 1,
       Difficulty: isHard(hardLevel, level),
       isNormal: isHard(hardLevel, level) === "normal" ? true : false,
-      isActivated: level > normalLevel,
-      isVisible: level > normalLevel,
+      isActivated: level >= normalLevel,
+      isVisible: level >= normalLevel,
     };
     result.push(gate);
   }

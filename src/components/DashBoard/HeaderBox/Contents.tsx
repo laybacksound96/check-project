@@ -23,6 +23,7 @@ const Contents = () => {
   const gates = useRecoilValue(Gates);
   const contentSetting = useRecoilValue(ContentSetting);
   const characterSetting = useRecoilValue(CharacterSetting);
+
   useEffect(() => {
     setContentsFrequency((prev) =>
       CalculateCheckbox(gates, contentSetting, characterSetting, prev)

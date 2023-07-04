@@ -118,13 +118,12 @@ const Content = ({
 
   useEffect(() => {
     setShouldAnimate(true);
-
     const timeoutId = setTimeout(() => {
       setShouldAnimate(false);
     }, 300);
-
     return () => clearTimeout(timeoutId);
   }, [Frequency]);
+
   return (
     <ContentStyle shouldAnimate={shouldAnimate} Color={Color}>
       <HeaderContainer>
