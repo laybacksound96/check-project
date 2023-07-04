@@ -19,6 +19,7 @@ const DeleteAccount = styled.div`
   section {
     display: flex;
     flex-direction: column;
+    margin-right: 30px;
     span {
       font-weight: 500;
       margin-bottom: 2px;

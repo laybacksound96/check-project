@@ -33,6 +33,7 @@ const AccountGold = () => {
     CalculateAccountGold(characterSetting, contentSetting, gates, false)
   );
   const [PrevGold, setPrevGold] = useState(gold);
+  const isEmpty = 0 >= Object.keys(characterSetting).length;
 
   useEffect(() => {
     setGold((prev) => {
@@ -45,7 +46,7 @@ const AccountGold = () => {
       );
     });
   }, [characterSetting, contentSetting, gates]);
-  return (
+  return !isEmpty ? (
     <Container>
       <FontAwesomeIcon icon={faCoins} />
       <CountUp start={PrevGold} end={gold} />
@@ -60,7 +61,7 @@ const AccountGold = () => {
         className="total-gold"
       />
     </Container>
-  );
+  ) : null;
 };
 
 export default AccountGold;

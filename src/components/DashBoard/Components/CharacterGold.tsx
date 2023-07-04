@@ -7,6 +7,9 @@ import { IGatesContent } from "../../../atoms/Settings/Gates";
 import CalculateCharacterClearGold from "../Functions/CalculateCharacterClearGold";
 import CountUp from "react-countup";
 const GoldContainer = styled.div`
+  svg {
+    margin-right: 5px;
+  }
   * {
     font-size: 0.9rem;
     opacity: 40%;
