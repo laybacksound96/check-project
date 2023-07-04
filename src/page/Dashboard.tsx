@@ -8,7 +8,7 @@ import { CharacterInfo } from "../atoms/Info/CharacterInfo";
 import { CharacterSetting } from "../atoms/Settings/CharacterSetting";
 import { ContentSetting } from "../atoms/Settings/ContentSetting";
 import { Gates } from "../atoms/Settings/Gates";
-import { GoldIncome } from "../atoms/Settings/GoldIncome";
+
 import {
   CharacterOrder,
   ContentsOrder,
@@ -25,7 +25,7 @@ function Dashboard() {
   const characterSetting = useRecoilValue(CharacterSetting);
   const contentSetting = useRecoilValue(ContentSetting);
   const gates = useRecoilValue(Gates);
-  const goldIncome = useRecoilValue(GoldIncome);
+
   const characterOrder = useRecoilValue(CharacterOrder);
   const contentsOrder = useRecoilValue(ContentsOrder);
   const accountOrder = useRecoilValue(AccountOrder);
@@ -62,11 +62,6 @@ function Dashboard() {
     console.log("gates------");
     console.log(gates);
   }, [gates]);
-  useEffect(() => {
-    console.log(" ");
-    console.log("goldIncome------");
-    console.log(goldIncome);
-  }, [goldIncome]);
   useEffect(() => {
     console.log(" ");
     console.log("ContentsFrequency------");

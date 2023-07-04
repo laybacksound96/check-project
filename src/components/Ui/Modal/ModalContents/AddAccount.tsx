@@ -15,7 +15,6 @@ import IsDupplicated from "./functions/Validation/IsDupplicated";
 import IsInValidName from "./functions/Validation/IsValidName";
 import { ContentSetting } from "../../../../atoms/Settings/ContentSetting";
 import { Gates } from "../../../../atoms/Settings/Gates";
-import { GoldIncome } from "../../../../atoms/Settings/GoldIncome";
 import {
   CharacterOrder,
   ContentsOrder,
@@ -65,7 +64,7 @@ const AddAccount = () => {
   const setCharacterSetting = useSetRecoilState(CharacterSetting);
   const setContentSetting = useSetRecoilState(ContentSetting);
   const setGates = useSetRecoilState(Gates);
-  const setGoldIncome = useSetRecoilState(GoldIncome);
+
   const setCharacterOrder = useSetRecoilState(CharacterOrder);
   const setContentsOrder = useSetRecoilState(ContentsOrder);
   const setAccountOrder = useSetRecoilState(AccountOrder);
@@ -105,7 +104,7 @@ const AddAccount = () => {
   const AddAccountHandler = () => {
     const AccountName = fetchedCharacters[0].CharacterName;
     const data = SortByLevel(fetchedCharacters);
-    const { accountInfo, accountSetting, GoldIncome, contentSetting, gates } =
+    const { accountInfo, accountSetting, contentSetting, gates } =
       makeNewAccount(data);
     const CharacterOrder = Object.keys(accountSetting).filter(
       (prev) => accountSetting[prev].isVisible
@@ -122,9 +121,7 @@ const AddAccount = () => {
     setGates((prev) => {
       return { ...prev, [`${AccountName}`]: gates };
     });
-    setGoldIncome((prev) => {
-      return { ...prev, [`${AccountName}`]: GoldIncome };
-    });
+
     setAccountOrder((prev) => [...prev, AccountName]);
     setCharacterOrder((prev) => {
       return {

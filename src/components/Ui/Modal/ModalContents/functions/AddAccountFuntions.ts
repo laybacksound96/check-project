@@ -11,10 +11,7 @@ import { IFetchedCharacter } from "../AddAccount";
 import commander from "../../../../../json/commander.json";
 import { IData, IGates } from "../../../../../json/commanderTypes";
 import IsValidLevel from "./Validation/IsValidLevel";
-import {
-  IGoldIncomeCharacter,
-  IGoldIncomeContent,
-} from "../../../../../atoms/Settings/GoldIncome";
+
 import {
   IGatesCharacter,
   IGatesContent,
@@ -48,19 +45,6 @@ function makeNewGates(level: number, gates: IGates[]): IGatesSetting[] {
     };
     result.push(gate);
   }
-  return result;
-}
-function calculateTotalIncome(
-  contentSetting: IContentState,
-  goldIncome: IGoldIncomeContent
-): number {
-  let result = 0;
-  const goldArray = Object.keys(contentSetting).filter(
-    (contents) => contentSetting[contents].isGoldContents
-  );
-  goldArray.forEach((elem) => {
-    result += goldIncome[elem];
-  });
   return result;
 }
 
@@ -107,6 +91,13 @@ function makeCotentState(level: number): INewCotentsResult {
   }
   return result;
 }
+interface IGoldIncomeContent {
+  [ContentName: string]: number;
+}
+interface IGoldIncomeCharacter {
+  [CharacterName: string]: IGoldIncomeContent;
+}
+
 interface INewAccount {
   accountInfo: AccountInfo;
   accountSetting: AccountSetting;
@@ -141,7 +132,6 @@ export function makeNewAccount(
     const setting: Setting = {
       IsGoldCharacter: +index < 6 ? true : false,
       isVisible: +index < 6 ? true : false,
-      TotalGoldIncome: calculateTotalIncome(contentSetting, goldIncome),
     };
     NewAccount.accountInfo[`${Name}`] = info;
     NewAccount.accountSetting[`${Name}`] = setting;
