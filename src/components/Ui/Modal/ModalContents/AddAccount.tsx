@@ -64,7 +64,6 @@ const AddAccount = () => {
   const setCharacterSetting = useSetRecoilState(CharacterSetting);
   const setContentSetting = useSetRecoilState(ContentSetting);
   const setGates = useSetRecoilState(Gates);
-
   const setCharacterOrder = useSetRecoilState(CharacterOrder);
   const setContentsOrder = useSetRecoilState(ContentsOrder);
   const setAccountOrder = useSetRecoilState(AccountOrder);
@@ -121,7 +120,6 @@ const AddAccount = () => {
     setGates((prev) => {
       return { ...prev, [`${AccountName}`]: gates };
     });
-
     setAccountOrder((prev) => [...prev, AccountName]);
     setCharacterOrder((prev) => {
       return {
