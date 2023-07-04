@@ -7,7 +7,7 @@ import SettingCharacters from "./components/SettingVisibleContent";
 import { useRecoilValue } from "recoil";
 import { CharacterSetting } from "../../../../atoms/Settings/CharacterSetting";
 
-const Container = styled.div`
+const ModalContainer = styled.div`
   width: auto;
   height: 60vh;
   display: flex;
@@ -38,6 +38,11 @@ const ContentList = styled.div`
     }
   }
 `;
+const CharacterContainer = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, minmax(250px, 1fr));
+  gap: 10px;
+`;
 export const ConfigAccount = () => {
   const [
     ,
@@ -54,23 +59,25 @@ export const ConfigAccount = () => {
   }
   return (
     <>
-      <Container>
+      <ModalContainer>
         <ContentList>
           <header>
             <FontAwesomeIcon icon={faGear} />
             <span>캐릭터 표시 설정</span>
           </header>
-          {Object.keys(Characters).map((characterName) => {
-            return (
-              <SettingCharacters
-                key={characterName}
-                AccountName={AccountName}
-                CharacterName={characterName}
-              />
-            );
-          })}
+          <CharacterContainer>
+            {Object.keys(Characters).map((characterName) => {
+              return (
+                <SettingCharacters
+                  key={characterName}
+                  AccountName={AccountName}
+                  CharacterName={characterName}
+                />
+              );
+            })}
+          </CharacterContainer>
         </ContentList>
-      </Container>
+      </ModalContainer>
       <DangerZone handleDelete={handleDelete} />
     </>
   );

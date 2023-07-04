@@ -10,10 +10,12 @@ export const NameContainer = styled.div`
   flex-direction: column;
   span {
     font-size: 0.9rem;
-    opacity: 40%;
-    color: ${(props) => props.theme.TextColor_A};
-    &:nth-child(2) {
+    color: white;
+    &:nth-child(2),
+    &:nth-child(3) {
       font-size: 0.85rem;
+      color: ${(props) => props.theme.TextColor_A};
+      opacity: 40%;
     }
   }
 `;
@@ -25,7 +27,7 @@ export const Character = styled.div<IStyel>`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 200px;
+  width: auto;
   padding-left: 5px;
   font-size: 17px;
   height: 70px;
@@ -93,7 +95,7 @@ const SettingCharacters = ({ AccountName, CharacterName }: IProps) => {
   return (
     <Character key={CharacterName} isVisible={isVisibleChar}>
       <NameContainer>
-        {CharacterName}
+        <span>{CharacterName}</span>
         <span>{ClassName}</span>
         <span>Lv {Level}</span>
       </NameContainer>
