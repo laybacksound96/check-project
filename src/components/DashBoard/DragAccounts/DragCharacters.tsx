@@ -5,8 +5,7 @@ import {
   DropResult,
   Droppable,
 } from "react-beautiful-dnd";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCoins } from "@fortawesome/free-solid-svg-icons";
+
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import DragContents from "./DragContents";
@@ -18,6 +17,13 @@ import ConfigAccountButton from "../Components/ConfigAccountButton";
 import ConfigContentButton from "../Components/ConfigContentButton";
 import { AxisLocker } from "../Functions/AxisLocker";
 import { CharacterSetting } from "../../../atoms/Settings/CharacterSetting";
+import {
+  ContentSetting,
+  IContentState,
+} from "../../../atoms/Settings/ContentSetting";
+import { Gates, IGatesContent } from "../../../atoms/Settings/Gates";
+import CalculateCharacterClearGold from "../Functions/CalculateCharacterClearGold";
+import CharacterGold from "../Components/CharacterGold";
 
 const DragAccountBtn = styled.div`
   display: flex;
@@ -50,15 +56,7 @@ const Container = styled.div`
     }
   }
 `;
-const GoldContainer = styled.div`
-  * {
-    font-size: 0.9rem;
-    opacity: 40%;
-    color: ${(props) => props.theme.TextColor_A};
-  }
-  padding-left: 10px;
-  margin-bottom: 8px;
-`;
+
 export const Character = styled.div`
   display: flex;
   justify-content: space-between;
@@ -105,7 +103,8 @@ function DragCharacters({ DragHandleProps, AccountName }: IProps) {
   const { [AccountName]: characterOrder } = useRecoilValue(CharacterOrder);
   const { [AccountName]: characterInfo } = useRecoilValue(CharacterInfo);
   const { [AccountName]: characterSetting } = useRecoilValue(CharacterSetting);
-  const [goldIncome, setGoldIncome] = useState(0);
+  const { [AccountName]: contentSetting } = useRecoilValue(ContentSetting);
+  const { [AccountName]: gates } = useRecoilValue(Gates);
   const dragCharacterHandler = (dragInfo: DropResult) => {
     const { destination, source } = dragInfo;
     if (!destination) return;
@@ -136,6 +135,9 @@ function DragCharacters({ DragHandleProps, AccountName }: IProps) {
               <ConfigAccountButton AccountName={AccountName} />
               {characterOrder.map((CharacterName, index) => {
                 const { ClassName, Level } = characterInfo[CharacterName];
+                const { [CharacterName]: contentState } = contentSetting;
+                const { [CharacterName]: gatesContent } = gates;
+
                 return (
                   <Draggable
                     key={CharacterName}
@@ -162,10 +164,10 @@ function DragCharacters({ DragHandleProps, AccountName }: IProps) {
                               AccountName={AccountName}
                               CharacterName={CharacterName}
                             />
-                            <GoldContainer>
-                              <FontAwesomeIcon icon={faCoins} />
-                              <span> {goldIncome}</span>
-                            </GoldContainer>
+                            <CharacterGold
+                              contentState={contentState}
+                              gatesContent={gatesContent}
+                            />
                           </div>
                         </Character>
                       </CharactersContainer>

@@ -15,14 +15,14 @@ function useSetGatesVisible(
 ): (
   index: number,
   value: boolean | string,
-  key: "Difficulty" | "isVisble"
+  key: "Difficulty" | "isVisible"
 ) => void {
   const setGates = useSetRecoilState(Gates);
 
   function setter(
     index: number,
     value: boolean | string,
-    key: "Difficulty" | "isVisble"
+    key: "Difficulty" | "isVisible"
   ) {
     setGates((prev) => {
       const copiedPrev: IGates = { ...prev };
