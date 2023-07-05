@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Modal from "../components/Ui/Modal/Modal";
 import DragAccounts from "../components/DashBoard/DragAccounts/DragAccounts";
 import { useEffect } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { CharacterInfo, ICharacterInfo } from "../atoms/Info/CharacterInfo";
 import {
   CharacterSetting,
@@ -22,7 +22,8 @@ import {
   ICharacterOrders,
   IContentsOrders,
 } from "../atoms/Settings/Orders";
-import { ContentsFrequency } from "../atoms/frequency";
+import Nav from "../components/Ui/Nav/Nav";
+
 interface IParsedData {
   accountOrder: string[];
   characterOrder: ICharacterOrders;
@@ -33,6 +34,7 @@ interface IParsedData {
   gates: IGates;
 }
 const DashboardStyle = styled.div`
+  margin-top: 5px;
   min-width: 800px;
 `;
 
@@ -59,13 +61,13 @@ function Dashboard() {
       contentsOrder,
       gates,
     } = parsedData;
-    setAccountOrder((prev) => accountOrder);
-    setCharacterOrder((prev) => characterOrder);
-    setContentsOrder((prev) => contentsOrder);
-    setCharacterInfo((prev) => characterInfo);
-    setCharacterSetting((prev) => characterSetting);
-    setContentSetting((prev) => contentSetting);
-    setGates((prev) => gates);
+    setAccountOrder(accountOrder);
+    setCharacterOrder(characterOrder);
+    setContentsOrder(contentsOrder);
+    setCharacterInfo(characterInfo);
+    setCharacterSetting(characterSetting);
+    setContentSetting(contentSetting);
+    setGates(gates);
   }, []);
 
   useEffect(() => {
@@ -91,6 +93,7 @@ function Dashboard() {
   return (
     <>
       <Modal />
+      <Nav />
       <DashboardStyle>
         <HeaderBox />
         <DragAccounts />

@@ -77,21 +77,21 @@
       "normal": {
         "gateNumber": 1,
         "level": 1475,
-        "gold": 1000
+        "gold": 600
       }
     },
     {
       "normal": {
         "gateNumber": 2,
         "level": 1475,
-        "gold": 1000
+        "gold": 900
       }
     },
     {
       "normal": {
         "gateNumber": 3,
         "level": 1475,
-        "gold": 2500
+        "gold": 1500
       }
     }
   ],
@@ -100,7 +100,7 @@
       "normal": {
         "gateNumber": 1,
         "level": 1490,
-        "gold": 2000
+        "gold": 1200
       },
       "hard": {
         "gateNumber": 1,
@@ -112,7 +112,7 @@
       "normal": {
         "gateNumber": 2,
         "level": 1490,
-        "gold": 2500
+        "gold": 1800
       },
       "hard": {
         "gateNumber": 2,
@@ -236,24 +236,24 @@
       "normal": {
         "gateNumber": 2,
         "level": 1580,
-        "gold": 1750
+        "gold": 2000
       },
       "hard": {
         "gateNumber": 2,
         "level": 1600,
-        "gold": 2000
+        "gold": 2500
       }
     },
     {
       "normal": {
         "gateNumber": 3,
         "level": 1580,
-        "gold": 2250
+        "gold": 3000
       },
       "hard": {
         "gateNumber": 3,
         "level": 1600,
-        "gold": 3750
+        "gold": 5750
       }
     }
   ],
@@ -263,48 +263,48 @@
       "normal": {
         "gateNumber": 1,
         "level": 1600,
-        "gold": 1200
+        "gold": 1500
       },
       "hard": {
         "gateNumber": 1,
         "level": 1620,
-        "gold": 1500
+        "gold": 2000
       }
     },
     {
       "normal": {
         "gateNumber": 2,
         "level": 1600,
-        "gold": 1500
+        "gold": 1750
       },
       "hard": {
         "gateNumber": 2,
         "level": 1620,
-        "gold": 2000
+        "gold": 2500
       }
     },
     {
       "normal": {
         "gateNumber": 3,
         "level": 1600,
-        "gold": 2000
+        "gold": 2500
       },
       "hard": {
         "gateNumber": 3,
         "level": 1620,
-        "gold": 3000
+        "gold": 4000
       }
     },
     {
       "normal": {
         "gateNumber": 4,
         "level": 1600,
-        "gold": 2750
+        "gold": 3250
       },
       "hard": {
         "gateNumber": 4,
         "level": 1620,
-        "gold": 4500
+        "gold": 6000
       }
     }
   ]

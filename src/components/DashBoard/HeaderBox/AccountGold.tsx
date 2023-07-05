@@ -17,9 +17,9 @@ const Container = styled.div`
     }
   }
   span {
-    font-size: 1.5rem;
+    font-size: 1.9rem;
     &.total-gold {
-      font-size: 1.3rem;
+      font-size: 1.7rem;
       opacity: 70%;
     }
   }

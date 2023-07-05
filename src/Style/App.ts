@@ -58,7 +58,6 @@ a {
 
 
 main{
-  padding-top: 5%;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
