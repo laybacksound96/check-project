@@ -19,7 +19,3 @@ export async function fetchSearchAccount(inputValue: string): Promise<[]> {
 
   return response.data;
 }
-
-export function fetchCheck() {
-  return console.log("called by fetchCheck()");
-}
