@@ -41,6 +41,11 @@ const DashboardStyle = styled.div`
 interface RouteParams {
   userId: string;
 }
+
+function deleteCookie(name: string) {
+  document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
+}
+
 function Dashboard() {
   const [characterInfo, setCharacterInfo] = useRecoilState(CharacterInfo);
   const [characterSetting, setCharacterSetting] =
@@ -53,10 +58,11 @@ function Dashboard() {
   const { userId } = useParams<RouteParams>();
 
   useEffect(() => {
-    const tokenParts = document.cookie.split("=");
+    if (document.cookie) {
+      const tokenParts = document.cookie.split("=");
+      localStorage.setItem(tokenParts[0], tokenParts[1]);
+    }
 
-    localStorage.setItem(tokenParts[0], tokenParts[1]);
-    fetchTest();
     const localData = localStorage.getItem("data");
 
     if (!localData || userId !== "GUEST") return;
