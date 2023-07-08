@@ -5,7 +5,17 @@ export async function fetchLogin(): Promise<string> {
 
   return response.data.loginUrl;
 }
+export async function fetchTest(): Promise<string> {
+  const token = localStorage.getItem("accessToken");
+  const response = await axios.get("http://localhost:4000/test", {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+  });
 
+  return response.data.loginUrl;
+}
 export async function fetchSearchAccount(inputValue: string): Promise<[]> {
   const response = await axios.post(
     "http://localhost:4000/user/character",

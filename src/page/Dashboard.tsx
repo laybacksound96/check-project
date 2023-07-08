@@ -23,7 +23,8 @@ import {
   IContentsOrders,
 } from "../atoms/Settings/Orders";
 import Nav from "../components/Ui/Nav/Nav";
-
+import { fetchTest } from "../util/fetch";
+import { useParams } from "react-router-dom";
 interface IParsedData {
   accountOrder: string[];
   characterOrder: ICharacterOrders;
@@ -37,7 +38,9 @@ const DashboardStyle = styled.div`
   margin-top: 5px;
   min-width: 800px;
 `;
-
+interface RouteParams {
+  userId: string;
+}
 function Dashboard() {
   const [characterInfo, setCharacterInfo] = useRecoilState(CharacterInfo);
   const [characterSetting, setCharacterSetting] =
@@ -47,10 +50,16 @@ function Dashboard() {
   const [characterOrder, setCharacterOrder] = useRecoilState(CharacterOrder);
   const [contentsOrder, setContentsOrder] = useRecoilState(ContentsOrder);
   const [accountOrder, setAccountOrder] = useRecoilState(AccountOrder);
+  const { userId } = useParams<RouteParams>();
 
   useEffect(() => {
+    const tokenParts = document.cookie.split("=");
+
+    localStorage.setItem(tokenParts[0], tokenParts[1]);
+    fetchTest();
     const localData = localStorage.getItem("data");
-    if (!localData) return;
+
+    if (!localData || userId !== "GUEST") return;
     const parsedData: IParsedData = JSON.parse(localData);
     const {
       accountOrder,
