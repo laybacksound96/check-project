@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Modal from "../components/Ui/Modal/Modal";
 import DragAccounts from "../components/DashBoard/DragAccounts/DragAccounts";
 import { useEffect } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { CharacterInfo, ICharacterInfo } from "../atoms/Info/CharacterInfo";
 import {
   CharacterSetting,
@@ -25,15 +25,9 @@ import {
 import Nav from "../components/Ui/Nav/Nav";
 import { fetchTest } from "../util/fetch";
 import { useParams } from "react-router-dom";
-interface IParsedData {
-  accountOrder: string[];
-  characterOrder: ICharacterOrders;
-  contentsOrder: IContentsOrders;
-  characterInfo: ICharacterInfo;
-  characterSetting: ICharacterSetting;
-  contentSetting: IAccountContent;
-  gates: IGates;
-}
+import useSetAllAtoms, { IData } from "../CustomHooks/Login/useSetAllAtoms";
+import useGetAllAtoms from "../CustomHooks/Login/useGetAllAtoms";
+
 const DashboardStyle = styled.div`
   margin-top: 5px;
   min-width: 800px;
@@ -42,63 +36,25 @@ interface RouteParams {
   userId: string;
 }
 function Dashboard() {
-  const [characterInfo, setCharacterInfo] = useRecoilState(CharacterInfo);
-  const [characterSetting, setCharacterSetting] =
-    useRecoilState(CharacterSetting);
-  const [contentSetting, setContentSetting] = useRecoilState(ContentSetting);
-  const [gates, setGates] = useRecoilState(Gates);
-  const [characterOrder, setCharacterOrder] = useRecoilState(CharacterOrder);
-  const [contentsOrder, setContentsOrder] = useRecoilState(ContentsOrder);
-  const [accountOrder, setAccountOrder] = useRecoilState(AccountOrder);
+  const setAllAtoms = useSetAllAtoms();
+  const getAllAtoms = useGetAllAtoms();
   const { userId } = useParams<RouteParams>();
 
   useEffect(() => {
     const tokenParts = document.cookie.split("=");
-
     localStorage.setItem(tokenParts[0], tokenParts[1]);
     fetchTest();
     const localData = localStorage.getItem("data");
-
     if (!localData || userId !== "GUEST") return;
-    const parsedData: IParsedData = JSON.parse(localData);
-    const {
-      accountOrder,
-      characterInfo,
-      characterOrder,
-      characterSetting,
-      contentSetting,
-      contentsOrder,
-      gates,
-    } = parsedData;
-    setAccountOrder(accountOrder);
-    setCharacterOrder(characterOrder);
-    setContentsOrder(contentsOrder);
-    setCharacterInfo(characterInfo);
-    setCharacterSetting(characterSetting);
-    setContentSetting(contentSetting);
-    setGates(gates);
+    const parsedData: IData = JSON.parse(localData);
+    setAllAtoms(parsedData);
   }, []);
 
   useEffect(() => {
-    const newData = {
-      accountOrder,
-      characterOrder,
-      contentsOrder,
-      characterInfo,
-      characterSetting,
-      contentSetting,
-      gates,
-    };
+    const newData = getAllAtoms();
     localStorage.setItem("data", JSON.stringify(newData));
-  }, [
-    accountOrder,
-    characterOrder,
-    contentsOrder,
-    characterInfo,
-    characterSetting,
-    contentSetting,
-    gates,
-  ]);
+  }, [getAllAtoms]);
+
   return (
     <>
       <Modal />
