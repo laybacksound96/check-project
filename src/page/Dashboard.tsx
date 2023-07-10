@@ -27,7 +27,6 @@ function Dashboard() {
       if (!document.cookie) return;
       const tokenParts = document.cookie.split("=");
       localStorage.setItem(tokenParts[0], tokenParts[1]);
-      const aa = fetchTest(userId);
     } else {
       // const localData = localStorage.getItem("data");
       // const parsedData: IData = JSON.parse(localData);

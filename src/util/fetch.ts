@@ -7,12 +7,16 @@ export async function fetchLogin(): Promise<string> {
 }
 export async function fetchTest(id: string): Promise<string> {
   const token = localStorage.getItem("accessToken");
-  const response = await axios.get(`http://localhost:4000/user/${id}`, {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + token,
-    },
-  });
+  const response = await axios.post(
+    `http://localhost:4000/user/${id}`,
+    {},
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    }
+  );
 
   return response.data.loginUrl;
 }
