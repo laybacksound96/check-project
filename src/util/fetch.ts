@@ -11,8 +11,8 @@ export async function fetchLogin(): Promise<string> {
 
   return response.data.loginUrl;
 }
-export async function fetchTest(id: string): Promise<IFetchedData> {
-  // const token = localStorage.getItem("accessToken");
+export async function patchUser(id: string): Promise<IFetchedData> {
+  const token = localStorage.getItem("accessToken");
   try {
     const response = await axios.get(`http://localhost:4000/user/${id}`, {
       headers: {
