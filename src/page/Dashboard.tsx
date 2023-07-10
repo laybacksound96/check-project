@@ -3,25 +3,7 @@ import styled from "styled-components";
 import Modal from "../components/Ui/Modal/Modal";
 import DragAccounts from "../components/DashBoard/DragAccounts/DragAccounts";
 import { useEffect } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { CharacterInfo, ICharacterInfo } from "../atoms/Info/CharacterInfo";
-import {
-  CharacterSetting,
-  ICharacterSetting,
-} from "../atoms/Settings/CharacterSetting";
-import {
-  ContentSetting,
-  IAccountContent,
-} from "../atoms/Settings/ContentSetting";
-import { Gates, IGates } from "../atoms/Settings/Gates";
 
-import {
-  CharacterOrder,
-  ContentsOrder,
-  AccountOrder,
-  ICharacterOrders,
-  IContentsOrders,
-} from "../atoms/Settings/Orders";
 import Nav from "../components/Ui/Nav/Nav";
 import { fetchTest } from "../util/fetch";
 import { useParams } from "react-router-dom";
@@ -41,13 +23,15 @@ function Dashboard() {
   const { userId } = useParams<RouteParams>();
 
   useEffect(() => {
-    const tokenParts = document.cookie.split("=");
-    localStorage.setItem(tokenParts[0], tokenParts[1]);
-    fetchTest();
-    const localData = localStorage.getItem("data");
-    if (!localData || userId !== "GUEST") return;
-    const parsedData: IData = JSON.parse(localData);
-    setAllAtoms(parsedData);
+    if (userId !== "GUEST") {
+      if (!document.cookie) return;
+      const tokenParts = document.cookie.split("=");
+      localStorage.setItem(tokenParts[0], tokenParts[1]);
+    } else {
+      // const localData = localStorage.getItem("data");
+      // const parsedData: IData = JSON.parse(localData);
+      // setAllAtoms(parsedData);
+    }
   }, []);
 
   useEffect(() => {
