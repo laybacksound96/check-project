@@ -7,7 +7,7 @@ import { useEffect } from "react";
 import Nav from "../components/Ui/Nav/Nav";
 import { fetchTest } from "../util/fetch";
 import { useParams } from "react-router-dom";
-import useSetAllAtoms, { IData } from "../CustomHooks/Login/useSetAllAtoms";
+import useSetAllAtoms from "../CustomHooks/Login/useSetAllAtoms";
 import useGetAllAtoms from "../CustomHooks/Login/useGetAllAtoms";
 
 const DashboardStyle = styled.div`
@@ -27,6 +27,7 @@ function Dashboard() {
       if (!document.cookie) return;
       const tokenParts = document.cookie.split("=");
       localStorage.setItem(tokenParts[0], tokenParts[1]);
+      const aa = fetchTest(userId);
     } else {
       // const localData = localStorage.getItem("data");
       // const parsedData: IData = JSON.parse(localData);

@@ -5,9 +5,9 @@ export async function fetchLogin(): Promise<string> {
 
   return response.data.loginUrl;
 }
-export async function fetchTest(): Promise<string> {
+export async function fetchTest(id: string): Promise<string> {
   const token = localStorage.getItem("accessToken");
-  const response = await axios.get("http://localhost:4000/test", {
+  const response = await axios.get(`http://localhost:4000/user/${id}`, {
     headers: {
       "Content-Type": "application/json",
       Authorization: "Bearer " + token,
