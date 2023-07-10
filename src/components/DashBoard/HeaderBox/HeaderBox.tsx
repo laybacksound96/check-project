@@ -2,6 +2,8 @@ import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import Contents from "./Contents";
 import AccountGold from "./AccountGold";
+import { useRecoilValue } from "recoil";
+import { UserInfo } from "../../../atoms/Info/UserInfo";
 
 const HeaderBoxStyle = styled.header`
   position: relative;
@@ -34,11 +36,11 @@ interface RouteParams {
 }
 const HeaderBox = () => {
   const { userId } = useParams<RouteParams>();
-
+  const { global_name } = useRecoilValue(UserInfo);
   return (
     <HeaderBoxStyle>
       <header>
-        <h1>{userId}님의 체크시트</h1>
+        <h1>{userId === "guest" ? userId : global_name}님의 체크시트</h1>
         <AccountGold />
       </header>
       <Contents />
