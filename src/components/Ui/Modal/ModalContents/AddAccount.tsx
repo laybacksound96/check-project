@@ -103,6 +103,7 @@ const AddAccount = () => {
   const AddAccountHandler = () => {
     const AccountName = fetchedCharacters[0].CharacterName;
     const data = SortByLevel(fetchedCharacters);
+
     const { accountInfo, accountSetting, contentSetting, gates } =
       makeNewAccount(data);
     const CharacterOrder = Object.keys(accountSetting).filter(

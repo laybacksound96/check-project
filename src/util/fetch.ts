@@ -37,7 +37,7 @@ export async function patchUser(
 }
 export async function fetchSearchAccount(inputValue: string): Promise<[]> {
   const response = await axios.post(
-    "http://localhost:4000/user/character",
+    "http://localhost:4000/api/character",
     { name: inputValue },
     {
       headers: {
