@@ -1,4 +1,5 @@
 import axios from "axios";
+import { IData } from "../CustomHooks/Login/useSetAllAtoms";
 export interface IFetchedData {
   user_id: string;
   user_name: string;
@@ -11,14 +12,23 @@ export async function fetchLogin(): Promise<string> {
 
   return response.data.loginUrl;
 }
-export async function patchUser(id: string): Promise<IFetchedData> {
+export async function patchUser(
+  id: string,
+  data: IData
+): Promise<IFetchedData> {
   const token = localStorage.getItem("accessToken");
   try {
-    const response = await axios.get(`http://localhost:4000/user/${id}`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    if (!data || !token) throw new Error("Invalid Data or Token");
+    const response = await axios.post(
+      `http://localhost:4000/user/${id}`,
+      data,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
+      }
+    );
     return response.data;
   } catch (error) {
     console.error("Error fetching data:", error);

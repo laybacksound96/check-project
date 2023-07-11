@@ -1,8 +1,9 @@
 import { IData } from "../CustomHooks/Login/useSetAllAtoms";
+import { patchUser } from "./fetch";
 
 let lastCallTimeout: any = null;
 
-function patchData(data: IData) {
+function patchData(id: string, data: IData) {
   const { accountOrder } = data;
   if (lastCallTimeout) {
     clearTimeout(lastCallTimeout);
@@ -10,7 +11,7 @@ function patchData(data: IData) {
 
   lastCallTimeout = setTimeout(() => {
     if (accountOrder.length <= 0) return;
-    console.log("Final A function call");
+    patchUser(id, data);
     lastCallTimeout = null;
   }, 5000);
 }

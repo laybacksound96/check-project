@@ -48,10 +48,18 @@ function Dashboard() {
   } = getAllAtoms();
   const { userId } = useParams<RouteParams>();
   useEffect(() => {
-    for (let i = 0; i < 10; i++) {
-      patchData(getAllAtoms());
-    }
-  }, []);
+    patchData(userId, getAllAtoms());
+  }, [
+    userId,
+    getAllAtoms,
+    accountOrder,
+    characterInfo,
+    characterOrder,
+    characterSetting,
+    contentSetting,
+    contentsOrder,
+    gates,
+  ]);
   useEffect(() => {
     if (!document.cookie || userId !== "GUEST") return;
     const tokenParts = document.cookie.split("=");
