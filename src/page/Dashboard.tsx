@@ -65,34 +65,6 @@ function Dashboard() {
     const tokenParts = document.cookie.split("=");
     localStorage.setItem(tokenParts[0], tokenParts[1]);
   }, []);
-  useEffect(() => {
-    if (userId !== "GUEST") {
-      axios
-        .get(`http://localhost:4000/user/${userId}`, {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        })
-        .then((response) => {
-          setUser(response.data.user, setUserInfo);
-          if (response.data.setting.AccountOrder.length > 0) {
-            console.log("db데이터 atom에 저장하기");
-          }
-        })
-        .catch((error) => {
-          console.error("Error fetching data:", error);
-        });
-    } else {
-      // const localData = localStorage.getItem("data");
-      // const parsedData: IData = JSON.parse(localData);
-      // setAllAtoms(parsedData);
-    }
-  }, []);
-
-  useEffect(() => {
-    const newData = getAllAtoms();
-    localStorage.setItem("data", JSON.stringify(newData));
-  }, [getAllAtoms]);
 
   useEffect(() => {
     console.log(" ");

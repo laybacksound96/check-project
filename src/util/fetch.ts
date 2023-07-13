@@ -25,7 +25,7 @@ export async function patchUser(
       {
         headers: {
           "Content-Type": "application/json",
-          Authorization: token,
+          Authorization: "bearer " + token,
         },
       }
     );
