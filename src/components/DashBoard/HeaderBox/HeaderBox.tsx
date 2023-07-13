@@ -1,9 +1,6 @@
-import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import Contents from "./Contents";
 import AccountGold from "./AccountGold";
-import { useRecoilValue } from "recoil";
-import { UserInfo } from "../../../atoms/Info/UserInfo";
 
 const HeaderBoxStyle = styled.header`
   position: relative;
@@ -38,7 +35,7 @@ const HeaderBox = ({ userId }: IProps) => {
   return (
     <HeaderBoxStyle>
       <header>
-        <h1>{userId}님의 체크시트</h1>
+        <h1>님의 체크시트</h1>
         <AccountGold />
       </header>
       <Contents />

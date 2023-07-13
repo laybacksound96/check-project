@@ -63,7 +63,6 @@ main{
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-
   font-family: "Source Sans Pro", sans-serif;
   background-color: ${(props) => props.theme.Color_1};
   color: ${(props) => props.theme.TextColor_A};

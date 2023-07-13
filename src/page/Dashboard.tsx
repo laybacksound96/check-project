@@ -88,7 +88,6 @@ function Dashboard() {
   return (
     <>
       <Modal />
-      <Nav />
       <DashboardStyle>
         <HeaderBox userId="" />
         <DragAccounts />
