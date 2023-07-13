@@ -35,7 +35,7 @@ const HeaderBox = ({ userId }: IProps) => {
   return (
     <HeaderBoxStyle>
       <header>
-        <h1>님의 체크시트</h1>
+        <h1>{userId}님의 체크시트</h1>
         <AccountGold />
       </header>
       <Contents />

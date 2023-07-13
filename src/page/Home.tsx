@@ -5,7 +5,6 @@ import { fetchLogin } from "../util/fetch";
 async function discordLoginHandler(event: React.MouseEvent) {
   event.preventDefault();
   const response = await fetchLogin();
-
   window.location.href = response;
 }
 

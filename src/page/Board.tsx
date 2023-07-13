@@ -2,20 +2,12 @@ import {
   Await,
   LoaderFunction,
   defer,
-  useParams,
   useRouteLoaderData,
 } from "react-router-dom";
-import { loadUserData } from "../util/fetch";
+import { IFetchedData, loadUserData } from "../util/fetch";
 import { Suspense } from "react";
-import styled from "styled-components";
-import DragAccounts from "../components/DashBoard/DragAccounts/DragAccounts";
-import HeaderBox from "../components/DashBoard/HeaderBox/HeaderBox";
-import Modal from "../components/Ui/Modal/Modal";
 import Dashboard from "./Dashboard";
-const DashboardStyle = styled.div`
-  margin-top: 5px;
-  min-width: 800px;
-`;
+
 export const loadBoardData: LoaderFunction = async ({ request, params }) => {
   const id = params.userId;
   if (typeof id === "undefined") {
@@ -23,14 +15,19 @@ export const loadBoardData: LoaderFunction = async ({ request, params }) => {
   }
   return defer({ userData: await loadUserData(id) });
 };
-
+interface IData {
+  userData: IFetchedData;
+}
 const Board = () => {
-  const { paramId } = useParams();
   const data = useRouteLoaderData("board-userData");
   return (
     <>
       <Suspense fallback={<p style={{ textAlign: "center" }}>Loading...</p>}>
-        <Await resolve={data}>{(loadedEvent) => <Dashboard />}</Await>
+        <Await resolve={data}>
+          {({ userData }: IData) => {
+            return <Dashboard userData={userData} />;
+          }}
+        </Await>
       </Suspense>
     </>
   );

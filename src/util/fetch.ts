@@ -7,10 +7,13 @@ export interface IFetchedData {
   global_name: string;
   discriminator: string;
   banner_color: string;
+  data: string;
 }
 
 export const loadUserData = async (id: string) => {
-  const response = await axios.get(`http://localhost:4000/user/${id}`);
+  const response = await axios.get<IFetchedData>(
+    `http://localhost:4000/user/${id}`
+  );
   if (response.statusText !== "OK") {
     throw json(
       { message: "id에 맞는 정보를 fetch해오지 못했습니다." },
