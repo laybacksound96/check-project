@@ -24,8 +24,6 @@ interface RouteParams {
 }
 
 function Dashboard() {
-  const { userId } = useParams<RouteParams>();
-
   const getAllAtoms = useGetAllAtoms();
   const {
     accountOrder,
@@ -37,19 +35,19 @@ function Dashboard() {
     gates,
   } = getAllAtoms();
 
-  useEffect(() => {
-    patchData(userId, getAllAtoms());
-  }, [
-    userId,
-    getAllAtoms,
-    accountOrder,
-    characterInfo,
-    characterOrder,
-    characterSetting,
-    contentSetting,
-    contentsOrder,
-    gates,
-  ]);
+  // useEffect(() => {
+  //   patchData(userId, getAllAtoms());
+  // }, [
+  //   userId,
+  //   getAllAtoms,
+  //   accountOrder,
+  //   characterInfo,
+  //   characterOrder,
+  //   characterSetting,
+  //   contentSetting,
+  //   contentsOrder,
+  //   gates,
+  // ]);
 
   useEffect(() => {
     console.log(" ");

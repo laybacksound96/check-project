@@ -1,4 +1,6 @@
+import { useRouteLoaderData } from "react-router-dom";
 import styled from "styled-components";
+import { loadToken } from "../../../util/auth";
 
 const NavConainer = styled.div`
   display: flex;
@@ -11,11 +13,13 @@ const NavConainer = styled.div`
 `;
 
 const Nav = () => {
+  const token = useRouteLoaderData("root") as ReturnType<typeof loadToken>;
   return (
     <NavConainer>
       <span>CheckSheet.Link</span>
       <span>각종 버튼들</span>
-      <span>Login</span>
+      {!token && <span>Login</span>}
+      {token && <span>Logout</span>}
     </NavConainer>
   );
 };

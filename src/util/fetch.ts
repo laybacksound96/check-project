@@ -1,5 +1,6 @@
 import axios from "axios";
 import { IData } from "../CustomHooks/Login/useSetAllAtoms";
+import { json } from "react-router-dom";
 export interface IFetchedData {
   user_id: string;
   user_name: string;
@@ -7,6 +8,20 @@ export interface IFetchedData {
   discriminator: string;
   banner_color: string;
 }
+
+export const loadUserData = async (id: string) => {
+  const response = await axios.get(`http://localhost:4000/user/${id}`);
+  if (response.statusText !== "OK") {
+    throw json(
+      { message: "id에 맞는 정보를 fetch해오지 못했습니다." },
+      {
+        status: 500,
+      }
+    );
+  } else {
+    return response.data;
+  }
+};
 export async function fetchLogin(): Promise<string> {
   const response = await axios.get("http://localhost:4000/user/login");
 
