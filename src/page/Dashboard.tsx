@@ -2,7 +2,7 @@ import HeaderBox from "../components/DashBoard/HeaderBox/HeaderBox";
 import styled from "styled-components";
 import Modal from "../components/Ui/Modal/Modal";
 import DragAccounts from "../components/DashBoard/DragAccounts/DragAccounts";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import Nav from "../components/Ui/Nav/Nav";
 
@@ -22,20 +22,10 @@ const DashboardStyle = styled.div`
 interface RouteParams {
   userId: string;
 }
-function setUser(data: any, setter: SetterOrUpdater<IFetchedData>) {
-  const { banner_color, discriminator, global_name, user_id, user_name } = data;
-  const fetchedData: IFetchedData = {
-    banner_color,
-    discriminator,
-    global_name,
-    user_id,
-    user_name,
-  };
-  setter(fetchedData);
-}
+
 function Dashboard() {
-  const [userInfo, setUserInfo] = useRecoilState(UserInfo);
-  const setAllAtoms = useSetAllAtoms();
+  const { userId } = useParams<RouteParams>();
+
   const getAllAtoms = useGetAllAtoms();
   const {
     accountOrder,
@@ -46,7 +36,7 @@ function Dashboard() {
     contentsOrder,
     gates,
   } = getAllAtoms();
-  const { userId } = useParams<RouteParams>();
+
   useEffect(() => {
     patchData(userId, getAllAtoms());
   }, [
@@ -60,17 +50,7 @@ function Dashboard() {
     contentsOrder,
     gates,
   ]);
-  useEffect(() => {
-    if (!document.cookie || userId !== "GUEST") return;
-    const tokenParts = document.cookie.split("=");
-    localStorage.setItem(tokenParts[0], tokenParts[1]);
-  }, []);
 
-  useEffect(() => {
-    console.log(" ");
-    console.log("userInfo");
-    console.log(userInfo);
-  }, [userInfo]);
   useEffect(() => {
     console.log(" ");
     console.log("accountOrder");
@@ -112,7 +92,7 @@ function Dashboard() {
       <Modal />
       <Nav />
       <DashboardStyle>
-        <HeaderBox />
+        <HeaderBox userId="" />
         <DragAccounts />
       </DashboardStyle>
     </>

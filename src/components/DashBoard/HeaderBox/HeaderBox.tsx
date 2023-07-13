@@ -31,16 +31,14 @@ const HeaderBoxStyle = styled.header`
     }
   }
 `;
-interface RouteParams {
+interface IProps {
   userId: string;
 }
-const HeaderBox = () => {
-  const { userId } = useParams<RouteParams>();
-  const { global_name } = useRecoilValue(UserInfo);
+const HeaderBox = ({ userId }: IProps) => {
   return (
     <HeaderBoxStyle>
       <header>
-        <h1>{userId === "guest" ? userId : global_name}님의 체크시트</h1>
+        <h1>{userId}님의 체크시트</h1>
         <AccountGold />
       </header>
       <Contents />
