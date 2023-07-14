@@ -1,6 +1,7 @@
 import axios from "axios";
-import { IData } from "../CustomHooks/Login/useSetAllAtoms";
+
 import { json } from "react-router-dom";
+import { IAllAtoms } from "../page/Dashboard";
 export interface IFetchedData {
   user_id: string;
   user_name: string;
@@ -30,10 +31,7 @@ export async function fetchLogin(): Promise<string> {
 
   return response.data.loginUrl;
 }
-export async function patchUser(
-  id: string,
-  data: IData
-): Promise<IFetchedData> {
+export async function patchUser(id: string, data: IAllAtoms): Promise<string> {
   const token = localStorage.getItem("accessToken");
   try {
     if (!data || !token) throw new Error("Invalid Data or Token");
@@ -47,7 +45,7 @@ export async function patchUser(
         },
       }
     );
-    return response.data;
+    return response.statusText;
   } catch (error) {
     console.error("Error fetching data:", error);
     throw error;
