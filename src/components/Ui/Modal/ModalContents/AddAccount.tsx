@@ -57,6 +57,7 @@ interface IOptions {
   isDupplicated: boolean;
   isNull: boolean;
   isInValid: boolean;
+  isServerMaintain: boolean;
 }
 
 const AddAccount = () => {
@@ -70,25 +71,32 @@ const AddAccount = () => {
   const [, closeModal] = useModal();
   const [inputValue, setInputValue] = useState("");
   const [isDisabled, setIsDisabled] = useState(false);
-  const [{ fetchedCharacters, isDupplicated, isNull, isInValid }, setOption] =
-    useState<IOptions>({
-      fetchedCharacters: [],
-      isDupplicated: false,
-      isNull: false,
-      isInValid: false,
-    });
+  const [
+    { fetchedCharacters, isDupplicated, isNull, isInValid, isServerMaintain },
+    setOption,
+  ] = useState<IOptions>({
+    fetchedCharacters: [],
+    isDupplicated: false,
+    isNull: false,
+    isInValid: false,
+    isServerMaintain: false,
+  });
 
   const SearchAccountHandler = async (event: React.MouseEvent) => {
     event.preventDefault();
     if (IsDupplicated(inputValue, characterInfo)) {
       return setOption((prev) => ({ ...prev, isDupplicated: true }));
     }
-    const data = await fetchSearchAccount(inputValue);
-    setOption((prev) => ({
-      ...prev,
-      fetchedCharacters: SortByLevel(data) ?? [],
-      isNull: data === null,
-    }));
+    try {
+      const data = await fetchSearchAccount(inputValue);
+      setOption((prev) => ({
+        ...prev,
+        fetchedCharacters: SortByLevel(data) ?? [],
+        isNull: data === null,
+      }));
+    } catch (error) {
+      setOption((prev) => ({ ...prev, isServerMaintain: true }));
+    }
   };
   const HandleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const name = event.target.value;
@@ -98,6 +106,7 @@ const AddAccount = () => {
       isInValid: IsInValidName(name),
       isDupplicated: false,
       isNull: false,
+      isServerMaintain: false,
     }));
   };
   const AddAccountHandler = () => {
@@ -142,8 +151,10 @@ const AddAccount = () => {
   };
 
   useEffect(() => {
-    setIsDisabled(() => IsDisabled(isDupplicated, isNull, isInValid));
-  }, [isDupplicated, isNull, isInValid]);
+    setIsDisabled(() =>
+      IsDisabled(isDupplicated, isNull, isInValid, isServerMaintain)
+    );
+  }, [isDupplicated, isNull, isInValid, isServerMaintain]);
   return (
     <Container>
       <form>
@@ -163,6 +174,7 @@ const AddAccount = () => {
           검색
         </button>
       </form>
+      {isServerMaintain && <Error>로스트아크 서버가 점검중이에요</Error>}
       {isInValid && <Error>검색하려는 이름이 유효하지 않아요</Error>}
       {isDupplicated && <Error>같은 이름이 이미 일정에 있어요</Error>}
       {isNull && <Error>서버에 존재하지 않는 이름이에요</Error>}

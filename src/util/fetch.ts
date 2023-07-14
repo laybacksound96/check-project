@@ -52,15 +52,25 @@ export async function patchUser(id: string, data: IAllAtoms): Promise<string> {
   }
 }
 export async function fetchSearchAccount(inputValue: string): Promise<[]> {
-  const response = await axios.post(
-    "http://localhost:4000/api/character",
-    { name: inputValue },
-    {
-      headers: {
-        "Content-Type": "application/json",
-      },
+  try {
+    const response = await axios.post(
+      "http://localhost:4000/api/character",
+      { name: inputValue },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    if (response.status === 503) {
+      throw new Error("서버가 점검중이에요");
     }
-  );
+    if (response.statusText !== "OK") {
+      throw new Error("알 수 없는 오류가 있어요");
+    }
 
-  return response.data;
+    return response.data;
+  } catch (error) {
+    throw new Error("알 수 없는 오류가 있어요");
+  }
 }

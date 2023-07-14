@@ -4,7 +4,7 @@ import Modal from "../components/Ui/Modal/Modal";
 import DragAccounts from "../components/DashBoard/DragAccounts/DragAccounts";
 import { useEffect } from "react";
 import { IFetchedData } from "../util/fetch";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { LoginState } from "../atoms/login";
 import { CharacterInfo, ICharacterInfo } from "../atoms/Info/CharacterInfo";
 import {
