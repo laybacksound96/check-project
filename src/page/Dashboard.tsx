@@ -5,6 +5,8 @@ import DragAccounts from "../components/DashBoard/DragAccounts/DragAccounts";
 import { useEffect } from "react";
 import { IFetchedData } from "../util/fetch";
 import useSetAllAtoms from "../CustomHooks/Login/useSetAllAtoms";
+import { useSetRecoilState } from "recoil";
+import { LoginState } from "../atoms/login";
 
 const DashboardStyle = styled.div`
   margin-top: 5px;
@@ -12,10 +14,13 @@ const DashboardStyle = styled.div`
 `;
 interface IProps {
   userData: IFetchedData;
+  login: boolean;
 }
-function Dashboard({ userData: { global_name, data } }: IProps) {
+function Dashboard({ userData: { global_name, data }, login }: IProps) {
   const setter = useSetAllAtoms();
+  const setLoginState = useSetRecoilState(LoginState);
   useEffect(() => {
+    setLoginState(login);
     setter(JSON.parse(data));
   });
 
