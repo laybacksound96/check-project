@@ -3,6 +3,8 @@ import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
 import { faEye } from "@fortawesome/free-regular-svg-icons";
+import { useRecoilValue } from "recoil";
+import { LoginState } from "../../../atoms/login";
 export const ButtonContainer = styled.div`
   display: flex;
   justify-content: start;
@@ -27,20 +29,26 @@ const ConfigContentButton = ({
   CharacterName: string;
 }) => {
   const [ConfigAccount] = useModal();
+  const loggined = useRecoilValue(LoginState);
   return (
-    <ButtonContainer>
-      <FontAwesomeIcon onClick={() => {}} icon={faEye} />
-      <FontAwesomeIcon
-        onClick={() =>
-          ConfigAccount("CONFIG_CONTENT", {
-            AccountName,
-            CharacterName,
-          })
-        }
-        icon={faGear}
-        size="lg"
-      />
-    </ButtonContainer>
+    <>
+      {loggined && (
+        <ButtonContainer>
+          <FontAwesomeIcon onClick={() => {}} icon={faEye} />
+          <FontAwesomeIcon
+            onClick={() => {
+              if (!loggined) return;
+              ConfigAccount("CONFIG_CONTENT", {
+                AccountName,
+                CharacterName,
+              });
+            }}
+            icon={faGear}
+            size="lg"
+          />
+        </ButtonContainer>
+      )}
+    </>
   );
 };
 export default ConfigContentButton;

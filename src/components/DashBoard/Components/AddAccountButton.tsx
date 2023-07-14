@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import useModal from "../../../CustomHooks/Modal/useModal";
+import { useRecoilValue } from "recoil";
+import { LoginState } from "../../../atoms/login";
 
 const Button = styled.button`
   height: 100px;
@@ -13,9 +15,17 @@ const Button = styled.button`
   }
 `;
 const AddAccountButton = () => {
+  const loggined = useRecoilValue(LoginState);
   const [openModal] = useModal();
   return (
-    <Button onClick={() => openModal("ADD_ACCOUNT")}>계정 추가하기</Button>
+    <Button
+      onClick={() => {
+        if (!loggined) return;
+        openModal("ADD_ACCOUNT");
+      }}
+    >
+      계정 추가하기
+    </Button>
   );
 };
 export default AddAccountButton;

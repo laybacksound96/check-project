@@ -7,12 +7,13 @@ import {
 } from "react-beautiful-dnd";
 import styled from "styled-components";
 
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 
 import { AxisLocker } from "../Functions/AxisLocker";
 import AccountContainer from "./DragCharacters";
 import AddAccountButton from "../Components/AddAccountButton";
 import { AccountOrder } from "../../../atoms/Settings/Orders";
+import { LoginState } from "../../../atoms/login";
 
 const DragBoxStyle = styled.div`
   width: 100%;
@@ -40,7 +41,7 @@ const AccountStyle = styled.div`
 
 const DragAccounts = () => {
   const [accountOrder, setAccountOrder] = useRecoilState(AccountOrder);
-
+  const loggined = useRecoilValue(LoginState);
   const dragAccountHandler = (dragInfo: DropResult) => {
     const { destination, source } = dragInfo;
     if (!destination) return;
@@ -66,6 +67,7 @@ const DragAccounts = () => {
                     draggableId={`draggableID_${AccountName}`}
                     key={`draggableID_${AccountName}`}
                     index={index}
+                    isDragDisabled={!loggined}
                   >
                     {(provided) => (
                       <div
@@ -90,7 +92,7 @@ const DragAccounts = () => {
           )}
         </Droppable>
       </DragDropContext>
-      <AddAccountButton />
+      {loggined && <AddAccountButton />}
     </DragBoxStyle>
   );
 };

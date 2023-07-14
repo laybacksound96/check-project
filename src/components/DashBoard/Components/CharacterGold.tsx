@@ -16,6 +16,7 @@ const GoldContainer = styled.div`
     color: ${(props) => props.theme.TextColor_A};
   }
   padding-left: 10px;
+  margin-right: 5px;
   margin-bottom: 8px;
 `;
 interface IProps {

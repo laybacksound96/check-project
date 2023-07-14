@@ -7,7 +7,7 @@ import {
 } from "react-beautiful-dnd";
 
 import React, { useEffect } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import DragContents from "./DragContents";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { CharacterOrder } from "../../../atoms/Settings/Orders";
@@ -20,7 +20,10 @@ import { CharacterSetting } from "../../../atoms/Settings/CharacterSetting";
 import { ContentSetting } from "../../../atoms/Settings/ContentSetting";
 import { Gates } from "../../../atoms/Settings/Gates";
 import CharacterGold from "../Components/CharacterGold";
-
+import { LoginState } from "../../../atoms/login";
+interface IStyle {
+  loggined: boolean;
+}
 const DragAccountBtn = styled.div`
   display: flex;
   flex-direction: column;
@@ -32,7 +35,7 @@ const DragAccountBtn = styled.div`
   background-color: rgba(100, 100, 100, 0.5);
   border-radius: 10px;
 `;
-const Container = styled.div`
+const Container = styled.div<IStyle>`
   display: flex;
   justify-content: space-between;
   * {
@@ -44,13 +47,17 @@ const Container = styled.div`
   transition: background-color 0.2s ease-in-out;
   padding: 10px;
   margin-bottom: 10px;
-  &:hover {
-    background-color: rgba(0, 0, 0, 0.3);
-    transition: ease-in-out 0.1s;
-    & > ${DragAccountBtn} {
-      opacity: 1;
-    }
-  }
+  ${(prop) =>
+    prop.loggined &&
+    css`
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.3);
+        transition: ease-in-out 0.1s;
+        & > ${DragAccountBtn} {
+          opacity: 1;
+        }
+      }
+    `}
 `;
 
 export const Character = styled.div`
@@ -62,6 +69,7 @@ export const Character = styled.div`
   font-size: ${dragIcon.row.fontSize}px;
   height: ${dragIcon.icon.edgeLength}px;
   border-radius: 5px;
+
   &:hover {
     background-color: rgba(100, 100, 100, 0.5);
     transition: ease-in-out 0.1s;
@@ -69,6 +77,7 @@ export const Character = styled.div`
       opacity: 50%;
     }
   }
+
   button {
     margin-top: 0px;
   }
@@ -95,6 +104,7 @@ interface IProps {
 }
 
 function DragCharacters({ DragHandleProps, AccountName }: IProps) {
+  const loggined = useRecoilValue(LoginState);
   const setCharacterOrder = useSetRecoilState(CharacterOrder);
   const { [AccountName]: characterOrder } = useRecoilValue(CharacterOrder);
   const { [AccountName]: characterInfo } = useRecoilValue(CharacterInfo);
@@ -126,7 +136,7 @@ function DragCharacters({ DragHandleProps, AccountName }: IProps) {
     <DragDropContext onDragEnd={dragCharacterHandler}>
       <Droppable droppableId={AccountName}>
         {(provided) => (
-          <Container>
+          <Container loggined={loggined}>
             <div ref={provided.innerRef} {...provided.droppableProps}>
               <ConfigAccountButton AccountName={AccountName} />
               {characterOrder.map((CharacterName, index) => {
@@ -139,6 +149,7 @@ function DragCharacters({ DragHandleProps, AccountName }: IProps) {
                     key={CharacterName}
                     draggableId={CharacterName}
                     index={index}
+                    isDragDisabled={!loggined}
                   >
                     {(provided) => (
                       <CharactersContainer

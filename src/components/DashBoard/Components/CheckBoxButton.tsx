@@ -2,8 +2,9 @@ import { faSquare, faSquareCheck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
 import { dragIcon } from "../../../Settings";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { ContentSetting } from "../../../atoms/Settings/ContentSetting";
+import { LoginState } from "../../../atoms/login";
 
 interface IStyle {
   isVisible: boolean;
@@ -44,6 +45,7 @@ function CheckBoxButton({
   ContentName,
   Color,
 }: ICheckboxProps) {
+  const loggined = useRecoilValue(LoginState);
   const [
     {
       [AccountName]: {
@@ -55,7 +57,7 @@ function CheckBoxButton({
     setContentSetting,
   ] = useRecoilState(ContentSetting);
   function onClickHandler() {
-    if (!isVisible || !isActivated) return;
+    if (!isVisible || !isActivated || !loggined) return;
     setContentSetting((prev) => {
       return {
         ...prev,

@@ -17,6 +17,7 @@ import React, { useEffect } from "react";
 import { getKey } from "../Functions/CalculateCheckbox";
 import { Gates } from "../../../atoms/Settings/Gates";
 import { ContentSetting } from "../../../atoms/Settings/ContentSetting";
+import { LoginState } from "../../../atoms/login";
 const Name = styled.div`
   display: flex;
   flex-direction: column;
@@ -42,6 +43,7 @@ interface IProps {
 }
 const DragContents = ({ AccountName }: IProps) => {
   const [openModal] = useModal();
+  const loggined = useRecoilValue(LoginState);
   const contentsFrequency = useRecoilValue(ContentsFrequency);
   const gates = useRecoilValue(Gates);
   const [{ [AccountName]: contentsOrder }, setContentsOrder] =
@@ -96,6 +98,7 @@ const DragContents = ({ AccountName }: IProps) => {
                   draggableId={ContentName}
                   index={index}
                   key={ContentName}
+                  isDragDisabled={!loggined}
                 >
                   {(provided) => (
                     <ColumnContainer
@@ -131,16 +134,19 @@ const DragContents = ({ AccountName }: IProps) => {
                 </Draggable>
               ))}
               {provided.placeholder}
-              <Name
-                onClick={() =>
-                  openModal("ADD_CONTENT", {
-                    AccountName,
-                    CharacterName: "",
-                  })
-                }
-              >
-                +
-              </Name>
+              {loggined && (
+                <Name
+                  onClick={() => {
+                    if (!loggined) return;
+                    openModal("ADD_CONTENT", {
+                      AccountName,
+                      CharacterName: "",
+                    });
+                  }}
+                >
+                  +
+                </Name>
+              )}
             </div>
           )}
         </Droppable>
