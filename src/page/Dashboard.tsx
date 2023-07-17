@@ -31,7 +31,7 @@ const DashboardStyle = styled.div`
   min-width: 800px;
 `;
 interface IProps {
-  userData: IFetchedData;
+  userData?: IFetchedData;
   login: boolean;
 }
 export interface IAllAtoms {
@@ -44,7 +44,7 @@ export interface IAllAtoms {
   gates: IGates;
 }
 export type ISync = boolean | null;
-function Dashboard({ userData: { global_name, data }, login }: IProps) {
+function Dashboard({ userData, login }: IProps) {
   const [loginState, setLoginState] = useRecoilState(LoginState);
   const [accountOrder, setAccountOrder] = useRecoilState(AccountOrder);
   const [characterOrder, setCharacterOrder] = useRecoilState(CharacterOrder);
@@ -58,6 +58,7 @@ function Dashboard({ userData: { global_name, data }, login }: IProps) {
   const { userId } = useParams();
   useEffect(() => {
     setLoginState(login);
+    if (!userData) return;
     const {
       accountOrder,
       characterInfo,
@@ -66,7 +67,7 @@ function Dashboard({ userData: { global_name, data }, login }: IProps) {
       contentSetting,
       contentsOrder,
       gates,
-    }: IAllAtoms = JSON.parse(data);
+    }: IAllAtoms = JSON.parse(userData.data);
     setAccountOrder(accountOrder);
     setCharacterOrder(characterOrder);
     setContentsOrder(contentsOrder);
@@ -103,7 +104,10 @@ function Dashboard({ userData: { global_name, data }, login }: IProps) {
     <>
       <Modal />
       <DashboardStyle>
-        <HeaderBox userId={global_name} isSync={isSync} />
+        <HeaderBox
+          userId={userData ? userData.global_name : "GUEST"}
+          isSync={isSync}
+        />
         <DragAccounts />
       </DashboardStyle>
     </>

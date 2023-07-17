@@ -22,7 +22,7 @@ function Home() {
           <DiscordIcon />
           <p>Discord로 로그인</p>
         </LoginDiscordBtn>
-        <a href="/dashboard/GUEST">로그인 없이 시작</a>
+        <a href="/board/GUEST">로그인 없이 시작</a>
       </section>
       <div style={{ height: "300px" }}></div>
       <Article>
