@@ -14,6 +14,7 @@ import AccountContainer from "./DragCharacters";
 import AddAccountButton from "../Components/AddAccountButton";
 import { AccountOrder } from "../../../atoms/Settings/Orders";
 import { LoginState } from "../../../atoms/login";
+import UncheckAllButton from "../Components/UncheckAllContents";
 
 const DragBoxStyle = styled.div`
   width: 100%;
@@ -38,7 +39,14 @@ const AccountStyle = styled.div`
   display: flex;
   flex-direction: column;
 `;
-
+const MenuBar = styled.div`
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  width: auto;
+  height: auto;
+  margin-bottom: 10px;
+`;
 const DragAccounts = () => {
   const [accountOrder, setAccountOrder] = useRecoilState(AccountOrder);
   const loggined = useRecoilValue(LoginState);
@@ -61,6 +69,9 @@ const DragAccounts = () => {
         <Droppable droppableId="accounts" direction="vertical">
           {(provided) => (
             <AccountStyle ref={provided.innerRef} {...provided.droppableProps}>
+              <MenuBar>
+                <UncheckAllButton />
+              </MenuBar>
               {accountOrder.map((AccountName, index) => {
                 return (
                   <Draggable
