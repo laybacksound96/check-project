@@ -96,7 +96,9 @@ const Nav = () => {
   const token = useRouteLoaderData("root") as ReturnType<typeof loadToken>;
   return (
     <NavConainer>
-      <span style={{ flex: 1 }}>CheckSheet.Link</span>
+      <a style={{ flex: 1 }} href="/">
+        CheckSheet.Link
+      </a>
       <SearchContainer>
         <input />
       </SearchContainer>
