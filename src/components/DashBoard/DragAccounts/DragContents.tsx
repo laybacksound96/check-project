@@ -134,7 +134,7 @@ const DragContents = ({ AccountName }: IProps) => {
                 </Draggable>
               ))}
               {provided.placeholder}
-              {loggined && (
+              {/* {loggined && (
                 <Name
                   onClick={() => {
                     if (!loggined) return;
@@ -146,7 +146,7 @@ const DragContents = ({ AccountName }: IProps) => {
                 >
                   +
                 </Name>
-              )}
+              )} */}
             </div>
           )}
         </Droppable>
