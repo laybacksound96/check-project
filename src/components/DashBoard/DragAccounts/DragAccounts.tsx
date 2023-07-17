@@ -7,7 +7,7 @@ import {
 } from "react-beautiful-dnd";
 import styled from "styled-components";
 
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
 import { AxisLocker } from "../Functions/AxisLocker";
 import AccountContainer from "./DragCharacters";
@@ -15,6 +15,8 @@ import AddAccountButton from "../Components/AddAccountButton";
 import { AccountOrder } from "../../../atoms/Settings/Orders";
 import { LoginState } from "../../../atoms/login";
 import UncheckAllButton from "../Components/UncheckAllContents";
+import { ContentSetting } from "../../../atoms/Settings/ContentSetting";
+import makeUnchecked from "../Functions/makeUnchecked";
 
 const DragBoxStyle = styled.div`
   width: 100%;
@@ -49,6 +51,7 @@ const MenuBar = styled.div`
 `;
 const DragAccounts = () => {
   const [accountOrder, setAccountOrder] = useRecoilState(AccountOrder);
+  const setContentSetting = useSetRecoilState(ContentSetting);
   const loggined = useRecoilValue(LoginState);
   const dragAccountHandler = (dragInfo: DropResult) => {
     const { destination, source } = dragInfo;
@@ -63,6 +66,13 @@ const DragAccounts = () => {
     });
   };
 
+  const uncheckHandler = () => {
+    setContentSetting((prev) => {
+      const newSetting = makeUnchecked(prev);
+      if (!newSetting) return prev;
+      return newSetting;
+    });
+  };
   return (
     <DragBoxStyle>
       <DragDropContext onDragEnd={dragAccountHandler}>
@@ -70,7 +80,7 @@ const DragAccounts = () => {
           {(provided) => (
             <AccountStyle ref={provided.innerRef} {...provided.droppableProps}>
               <MenuBar>
-                <UncheckAllButton />
+                <UncheckAllButton handleUncheck={uncheckHandler} />
               </MenuBar>
               {accountOrder.map((AccountName, index) => {
                 return (
