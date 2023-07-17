@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { Navigate, createBrowserRouter } from "react-router-dom";
 import Home from "./page/Home";
 import ErrorPage from "./page/ErrorPage";
 import RootLayout from "./page/Layout";
@@ -22,7 +22,7 @@ export const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: <div>main</div>,
+            element: <Navigate to="/" />,
           },
           {
             path: "GUEST",

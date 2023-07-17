@@ -58,26 +58,29 @@ function Dashboard({ userData, login }: IProps) {
   const { userId } = useParams();
   useEffect(() => {
     setLoginState(login);
-    if (!userData) return;
-    const {
-      accountOrder,
-      characterInfo,
-      characterOrder,
-      characterSetting,
-      contentSetting,
-      contentsOrder,
-      gates,
-    }: IAllAtoms = JSON.parse(userData.data);
-    setAccountOrder(accountOrder);
-    setCharacterOrder(characterOrder);
-    setContentsOrder(contentsOrder);
-    setCharacterInfo(characterInfo);
-    setCharacterSetting(characterSetting);
-    setContentSetting(contentSetting);
-    setGates(gates);
+    const getAllAtom = (
+      userData: IFetchedData | undefined
+    ): IAllAtoms | undefined => {
+      if (!userData) {
+        const localData = localStorage.getItem("data");
+        if (!localData) return;
+        return JSON.parse(localData);
+      } else {
+        return JSON.parse(userData.data);
+      }
+    };
+    const AllAtom = getAllAtom(userData);
+    if (!AllAtom) return;
+    setAccountOrder(AllAtom.accountOrder);
+    setCharacterOrder(AllAtom.characterOrder);
+    setContentsOrder(AllAtom.contentsOrder);
+    setCharacterInfo(AllAtom.characterInfo);
+    setCharacterSetting(AllAtom.characterSetting);
+    setContentSetting(AllAtom.contentSetting);
+    setGates(AllAtom.gates);
   }, []);
   useEffect(() => {
-    if (!userId || !loginState) return;
+    if (!loginState) return;
     const data: IAllAtoms = {
       accountOrder,
       characterInfo,
@@ -87,7 +90,13 @@ function Dashboard({ userData, login }: IProps) {
       contentsOrder,
       gates,
     };
-    patchData(userId, data, setIsSync);
+    if (!userData) {
+      if (accountOrder.length <= 0) return;
+      localStorage.setItem("data", JSON.stringify(data));
+    } else {
+      if (!userId) return;
+      patchData(userId, data, setIsSync);
+    }
   }, [
     accountOrder,
     characterInfo,
@@ -97,6 +106,7 @@ function Dashboard({ userData, login }: IProps) {
     contentsOrder,
     gates,
     loginState,
+    userData,
     userId,
   ]);
 
