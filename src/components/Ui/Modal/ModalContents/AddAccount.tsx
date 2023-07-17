@@ -1,10 +1,9 @@
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { fetchSearchAccount } from "../../../../util/fetch";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Input } from "./AddContent";
 import CharacterContainer from "./components/CharacterContainer";
-import IsDisabled from "./functions/Validation/IsDisabled";
 import SortByLevel from "./functions/SortByLevel";
 import useModal from "../../../../CustomHooks/Modal/useModal";
 
@@ -52,12 +51,9 @@ export interface IFetchedCharacter {
   ItemAvgLevel: string;
   ItemMaxLevel: string;
 }
-interface IOptions {
-  fetchedCharacters: IFetchedCharacter[];
-  isDupplicated: boolean;
-  isNull: boolean;
-  isInValid: boolean;
-  isServerMaintain: boolean;
+
+interface IError {
+  message: string;
 }
 
 const AddAccount = () => {
@@ -70,49 +66,39 @@ const AddAccount = () => {
   const setAccountOrder = useSetRecoilState(AccountOrder);
   const [, closeModal] = useModal();
   const [inputValue, setInputValue] = useState("");
-  const [isDisabled, setIsDisabled] = useState(false);
-  const [
-    { fetchedCharacters, isDupplicated, isNull, isInValid, isServerMaintain },
-    setOption,
-  ] = useState<IOptions>({
-    fetchedCharacters: [],
-    isDupplicated: false,
-    isNull: false,
-    isInValid: false,
-    isServerMaintain: false,
-  });
+  const [fetchedData, setFetchedData] = useState<IFetchedCharacter[]>([]);
+  const [error, setError] = useState<IError | undefined>();
 
   const SearchAccountHandler = async (event: React.MouseEvent) => {
     event.preventDefault();
     if (IsDupplicated(inputValue, characterInfo)) {
-      return setOption((prev) => ({ ...prev, isDupplicated: true }));
+      setError({ message: "같은 이름이 이미 시트에 있어요" });
+      return;
     }
     try {
       const data = await fetchSearchAccount(inputValue);
-      setOption((prev) => ({
-        ...prev,
-        fetchedCharacters: SortByLevel(data) ?? [],
-        isNull: data === null,
-      }));
+      if (!data) {
+        setError({ message: "서버에 존재하지 않는 이름이에요" });
+        return;
+      }
+      setFetchedData(SortByLevel(data));
     } catch (error) {
-      setOption((prev) => ({ ...prev, isServerMaintain: true }));
+      setError({ message: "로스트아크 서버가 점검중이에요" });
+      return;
     }
   };
   const HandleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setError(undefined);
+    setFetchedData([]);
     const name = event.target.value;
+    if (IsInValidName(name)) {
+      setError({ message: "검색하려는 이름이 유효하지 않아요" });
+    }
     setInputValue(() => name);
-    setOption(() => ({
-      fetchedCharacters: [],
-      isInValid: IsInValidName(name),
-      isDupplicated: false,
-      isNull: false,
-      isServerMaintain: false,
-    }));
   };
-  const AddAccountHandler = () => {
-    const AccountName = fetchedCharacters[0].CharacterName;
-    const data = SortByLevel(fetchedCharacters);
-    console.log(data);
+  const AddAccountHandler = (data: IFetchedCharacter[]) => {
+    if (data.length === 0) return;
+    const AccountName = data[0].CharacterName;
     const { accountInfo, accountSetting, contentSetting, gates } =
       makeNewAccount(data);
     const CharacterOrder = Object.keys(accountSetting).filter(
@@ -150,18 +136,13 @@ const AddAccount = () => {
     closeModal();
   };
 
-  useEffect(() => {
-    setIsDisabled(() =>
-      IsDisabled(isDupplicated, isNull, isInValid, isServerMaintain)
-    );
-  }, [isDupplicated, isNull, isInValid, isServerMaintain]);
   return (
     <Container>
       <form>
         <Input
           type="text"
           name="search"
-          isDisabled={isDisabled}
+          isDisabled={error !== undefined}
           onChange={HandleChange}
           value={inputValue}
           placeholder="캐릭터 명을 입력한 뒤 검색"
@@ -169,23 +150,17 @@ const AddAccount = () => {
         <button
           type="submit"
           onClick={SearchAccountHandler}
-          disabled={inputValue.length === 0 || isDisabled}
+          disabled={inputValue.length === 0 || error !== undefined}
         >
           검색
         </button>
       </form>
-      {isServerMaintain && <Error>로스트아크 서버가 점검중이에요</Error>}
-      {isInValid && <Error>검색하려는 이름이 유효하지 않아요</Error>}
-      {isDupplicated && <Error>같은 이름이 이미 일정에 있어요</Error>}
-      {isNull && <Error>서버에 존재하지 않는 이름이에요</Error>}
-      <CharacterContainer
-        isDisabled={isDisabled}
-        Characters={fetchedCharacters}
-      />
+      {error && <Error>{error.message}</Error>}
+      {!error && <CharacterContainer Characters={fetchedData} />}
       <Button
         type="button"
-        onClick={AddAccountHandler}
-        disabled={fetchedCharacters.length === 0 || isDisabled}
+        onClick={() => AddAccountHandler(fetchedData)}
+        disabled={fetchedData.length === 0 || error !== undefined}
       >
         추가
       </Button>
