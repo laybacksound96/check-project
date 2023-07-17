@@ -2,7 +2,7 @@ import HeaderBox from "../components/DashBoard/HeaderBox/HeaderBox";
 import styled from "styled-components";
 import Modal from "../components/Ui/Modal/Modal";
 import DragAccounts from "../components/DashBoard/DragAccounts/DragAccounts";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { IFetchedData } from "../util/fetch";
 import { useRecoilState } from "recoil";
 import { LoginState } from "../atoms/login";
@@ -43,6 +43,7 @@ export interface IAllAtoms {
   contentSetting: IAccountContent;
   gates: IGates;
 }
+export type ISync = boolean | null;
 function Dashboard({ userData: { global_name, data }, login }: IProps) {
   const [loginState, setLoginState] = useRecoilState(LoginState);
   const [accountOrder, setAccountOrder] = useRecoilState(AccountOrder);
@@ -53,6 +54,7 @@ function Dashboard({ userData: { global_name, data }, login }: IProps) {
     useRecoilState(CharacterSetting);
   const [contentSetting, setContentSetting] = useRecoilState(ContentSetting);
   const [gates, setGates] = useRecoilState(Gates);
+  const [isSync, setIsSync] = useState<ISync>(null);
   const { userId } = useParams();
   useEffect(() => {
     setLoginState(login);
@@ -84,7 +86,7 @@ function Dashboard({ userData: { global_name, data }, login }: IProps) {
       contentsOrder,
       gates,
     };
-    patchData(userId, data);
+    patchData(userId, data, setIsSync);
   }, [
     accountOrder,
     characterInfo,
@@ -101,7 +103,7 @@ function Dashboard({ userData: { global_name, data }, login }: IProps) {
     <>
       <Modal />
       <DashboardStyle>
-        <HeaderBox userId={global_name} />
+        <HeaderBox userId={global_name} isSync={isSync} />
         <DragAccounts />
       </DashboardStyle>
     </>
