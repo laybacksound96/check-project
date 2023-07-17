@@ -4,7 +4,7 @@ import { ReactComponent as DiscordIcon } from "../icons/discord-icon.svg";
 import { fetchLogin } from "../util/fetch";
 import { loadToken } from "../util/auth";
 
-async function discordLoginHandler(event: React.MouseEvent) {
+export async function discordLoginHandler(event: React.MouseEvent) {
   event.preventDefault();
   const response = await fetchLogin();
   window.location.href = response;

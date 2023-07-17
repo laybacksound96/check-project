@@ -79,9 +79,11 @@ const DragAccounts = () => {
         <Droppable droppableId="accounts" direction="vertical">
           {(provided) => (
             <AccountStyle ref={provided.innerRef} {...provided.droppableProps}>
-              <MenuBar>
-                <UncheckAllButton handleUncheck={uncheckHandler} />
-              </MenuBar>
+              {loggined && (
+                <MenuBar>
+                  <UncheckAllButton handleUncheck={uncheckHandler} />
+                </MenuBar>
+              )}
               {accountOrder.map((AccountName, index) => {
                 return (
                   <Draggable
