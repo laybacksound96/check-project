@@ -110,6 +110,7 @@ const SettingCharacters = ({ AccountName, CharacterName }: IProps) => {
           [CharacterName]: {
             ...prev[AccountName][CharacterName],
             isVisible: !isVisibleChar,
+            IsGoldCharacter: isVisibleChar ? false : false,
           },
         },
       };
