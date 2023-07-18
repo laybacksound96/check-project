@@ -9,7 +9,7 @@ import {
   faPersonWalkingDashedLineArrowRight,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { ISearchedData, search } from "../../../util/fetch";
 import { useRecoilState } from "recoil";
 import { IsFocused } from "../../../atoms/ui";
