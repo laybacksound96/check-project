@@ -4,18 +4,28 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { CharacterSetting } from "../../../../../atoms/Settings/CharacterSetting";
 import { CharacterInfo } from "../../../../../atoms/Info/CharacterInfo";
+import { faCoins } from "@fortawesome/free-solid-svg-icons";
 
 export const NameContainer = styled.div`
   display: flex;
   flex-direction: column;
+
+  h1 {
+    font-size: 1.1rem;
+    margin-bottom: 0px;
+    svg {
+      font-size: 0.9rem;
+      margin: 0px 5px;
+      margin-bottom: 2px;
+    }
+  }
   span {
-    font-size: 0.9rem;
     color: white;
-    &:nth-child(2),
-    &:nth-child(3) {
-      font-size: 0.85rem;
-      color: ${(props) => props.theme.TextColor_A};
-      opacity: 40%;
+    font-size: 0.8rem;
+    color: ${(props) => props.theme.TextColor_A};
+    opacity: 40%;
+    svg {
+      margin-right: 3px;
     }
   }
 `;
@@ -28,9 +38,9 @@ export const Character = styled.div<IStyel>`
   justify-content: space-between;
   align-items: center;
   width: auto;
-  padding-left: 5px;
+  padding: 7px;
   font-size: 17px;
-  height: 70px;
+  height: auto;
   border-radius: 5px;
   background-color: rgba(100, 100, 100, 0.1);
   margin-bottom: 10px;
@@ -41,7 +51,13 @@ export const Character = styled.div<IStyel>`
       opacity: 70%;
     }
   }
-
+`;
+export const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  height: 100%;
+  margin-right: 10px;
   svg {
     opacity: 20%;
     border-radius: 10px;
@@ -53,13 +69,6 @@ export const Character = styled.div<IStyel>`
     background-color: rgba(100, 100, 100, 0.7);
   }
 `;
-export const ButtonContainer = styled.div`
-  display: flex;
-  justify-content: start;
-  align-items: center;
-  height: 100%;
-  margin-right: 10px;
-`;
 interface IProps {
   AccountName: string;
   CharacterName: string;
@@ -68,7 +77,7 @@ const SettingCharacters = ({ AccountName, CharacterName }: IProps) => {
   const [
     {
       [AccountName]: {
-        [CharacterName]: { isVisible: isVisibleChar },
+        [CharacterName]: { isVisible: isVisibleChar, IsGoldCharacter },
       },
     },
     setCharacterSetting,
@@ -78,6 +87,20 @@ const SettingCharacters = ({ AccountName, CharacterName }: IProps) => {
       [CharacterName]: { ClassName, Level },
     },
   } = useRecoilValue(CharacterInfo);
+  const handleGoldChar = () => {
+    setCharacterSetting((prev) => {
+      return {
+        ...prev,
+        [AccountName]: {
+          ...prev[AccountName],
+          [CharacterName]: {
+            ...prev[AccountName][CharacterName],
+            IsGoldCharacter: !IsGoldCharacter,
+          },
+        },
+      };
+    });
+  };
   const handleVisible = () => {
     setCharacterSetting((prev) => {
       return {
@@ -95,11 +118,26 @@ const SettingCharacters = ({ AccountName, CharacterName }: IProps) => {
   return (
     <Character key={CharacterName} isVisible={isVisibleChar}>
       <NameContainer>
-        <span>{CharacterName}</span>
+        <h1>{CharacterName}</h1>
+
+        {IsGoldCharacter && (
+          <span>
+            <FontAwesomeIcon icon={faCoins} color="yellow" />
+            골드획득캐릭터
+          </span>
+        )}
+
         <span>{ClassName}</span>
         <span>Lv {Level}</span>
       </NameContainer>
+
       <ButtonContainer>
+        <FontAwesomeIcon
+          icon={faCoins}
+          color={IsGoldCharacter ? "yellow" : "white"}
+          onClick={() => handleGoldChar()}
+        />
+
         <FontAwesomeIcon
           onClick={() => handleVisible()}
           icon={isVisibleChar ? faEye : faEyeSlash}

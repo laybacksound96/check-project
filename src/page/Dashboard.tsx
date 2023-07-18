@@ -25,7 +25,17 @@ import {
 } from "../atoms/Settings/Orders";
 import patchData from "../util/patchData";
 import { useParams } from "react-router";
-
+const getAllAtom = (
+  userData: IFetchedData | undefined
+): IAllAtoms | undefined => {
+  if (!userData) {
+    const localData = localStorage.getItem("data");
+    if (!localData) return;
+    return JSON.parse(localData);
+  } else {
+    return JSON.parse(userData.data);
+  }
+};
 const DashboardStyle = styled.div`
   margin-top: 5px;
   min-width: 800px;
@@ -58,17 +68,7 @@ function Dashboard({ userData, login }: IProps) {
   const { userId } = useParams();
   useEffect(() => {
     setLoginState(login);
-    const getAllAtom = (
-      userData: IFetchedData | undefined
-    ): IAllAtoms | undefined => {
-      if (!userData) {
-        const localData = localStorage.getItem("data");
-        if (!localData) return;
-        return JSON.parse(localData);
-      } else {
-        return JSON.parse(userData.data);
-      }
-    };
+
     const AllAtom = getAllAtom(userData);
     if (!AllAtom) return;
     setAccountOrder(AllAtom.accountOrder);
@@ -109,6 +109,9 @@ function Dashboard({ userData, login }: IProps) {
     userId,
   ]);
 
+  useEffect(() => {
+    console.log(characterSetting);
+  }, [characterSetting]);
   return (
     <>
       <Modal />
