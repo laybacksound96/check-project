@@ -33,10 +33,7 @@ const ContentList = styled.div`
   height: auto;
   border-radius: 10px;
   margin: 10px;
-  h1 {
-    font-size: 30px;
-    margin-bottom: 10px;
-  }
+
   transition: opacity 0.3s ease-in-out;
   header {
     font-size: 20px;
