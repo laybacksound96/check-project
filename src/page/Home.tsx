@@ -16,7 +16,7 @@ function Home() {
   return (
     <Main>
       <section>
-        <h1>Check.loa</h1>
+        <h1>Checksheet</h1>
         <span>간편하고 똑똑한 일정관리 앱</span>
         <LoginDiscordBtn onClick={discordLoginHandler}>
           <DiscordIcon />
