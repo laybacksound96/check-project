@@ -15,8 +15,9 @@ const CalculateAccountGold = (
   let result = 0;
   for (let AccountName in characterSetting) {
     for (let CharacterName in characterSetting[AccountName]) {
-      const { isVisible } = characterSetting[AccountName][CharacterName];
-      if (!isVisible) continue;
+      const { isVisible, IsGoldCharacter } =
+        characterSetting[AccountName][CharacterName];
+      if (!isVisible || !IsGoldCharacter) continue;
       for (let ContentName in contentSetting[AccountName][CharacterName]) {
         const { isActivated, isCleared, isVisible, isGoldContents } =
           contentSetting[AccountName][CharacterName][ContentName];

@@ -141,6 +141,7 @@ function DragCharacters({ DragHandleProps, AccountName }: IProps) {
               <ConfigAccountButton AccountName={AccountName} />
               {characterOrder.map((CharacterName, index) => {
                 const { ClassName, Level } = characterInfo[CharacterName];
+                const { IsGoldCharacter } = characterSetting[CharacterName];
                 const { [CharacterName]: contentState } = contentSetting;
                 const { [CharacterName]: gatesContent } = gates;
 
@@ -171,10 +172,12 @@ function DragCharacters({ DragHandleProps, AccountName }: IProps) {
                               AccountName={AccountName}
                               CharacterName={CharacterName}
                             />
-                            <CharacterGold
-                              contentState={contentState}
-                              gatesContent={gatesContent}
-                            />
+                            {IsGoldCharacter && (
+                              <CharacterGold
+                                contentState={contentState}
+                                gatesContent={gatesContent}
+                              />
+                            )}
                           </div>
                         </Character>
                       </CharactersContainer>
