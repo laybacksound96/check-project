@@ -1,4 +1,4 @@
-import { redirect, useParams, useRouteLoaderData } from "react-router-dom";
+import { useParams, useRouteLoaderData } from "react-router-dom";
 import styled from "styled-components";
 import { loadToken } from "../../../util/auth";
 import { discordLoginHandler } from "../../../page/Home";

@@ -59,13 +59,13 @@ export const ConfigAccount = () => {
       modalProp: { AccountName },
     },
   ] = useModal();
+  const setAccountOrder = useSetRecoilState(AccountOrder);
+  const setCharacterOrder = useSetRecoilState(CharacterOrder);
+  const setContentsOrder = useSetRecoilState(ContentsOrder);
   const setCharacterInfo = useSetRecoilState(CharacterInfo);
   const setCharacterSetting = useSetRecoilState(CharacterSetting);
   const setContentSetting = useSetRecoilState(ContentSetting);
   const setGates = useSetRecoilState(Gates);
-  const setCharacterOrder = useSetRecoilState(CharacterOrder);
-  const setContentsOrder = useSetRecoilState(ContentsOrder);
-  const setAccountOrder = useSetRecoilState(AccountOrder);
   const { [AccountName]: Characters } = useRecoilValue(CharacterSetting);
 
   function handleDelete() {

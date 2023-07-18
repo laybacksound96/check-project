@@ -91,7 +91,6 @@ function Dashboard({ userData, login }: IProps) {
       gates,
     };
     if (!userData) {
-      if (accountOrder.length <= 0) return;
       localStorage.setItem("data", JSON.stringify(data));
     } else {
       if (!userId) return;
