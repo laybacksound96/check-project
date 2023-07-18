@@ -9,7 +9,10 @@ import {
   faPersonWalkingDashedLineArrowRight,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { ISearchedData, search } from "../../../util/fetch";
+import { useRecoilState } from "recoil";
+import { IsFocused } from "../../../atoms/ui";
 
 const NavConainer = styled.div`
   padding: 0px 20px;
@@ -134,6 +137,21 @@ const EmptyList = styled.div`
     font-size: 1.2rem;
   }
 `;
+const UserCard = styled.a`
+  span:nth-child(2) {
+    opacity: 60%;
+    margin-left: 5px;
+    font-size: 0.6rem;
+    color: ${({ theme }) => theme.TextColor_B};
+  }
+  margin-bottom: 5px;
+  padding: 3px;
+  padding-left: 5px;
+  border-radius: 5px;
+  &:hover {
+    background-color: #cdcdcd;
+  }
+`;
 const LoginDiscord = styled.div`
   width: 50px;
   height: 50px;
@@ -161,44 +179,32 @@ const LoginDiscord = styled.div`
   }
   transition: width 0.3s ease;
 `;
-const fakeList = ["감자", "치킨", "사과"];
-const fakeLis2 = [
-  "asdasd",
-  "asdasd",
-  "asdasd",
-  "asdasd",
-  "asdasd",
-  "asdasd",
-  "asdasd",
-  "asdasd",
-  "asdasd",
-];
 
 const Nav = () => {
-  const [searchList, setSearchList] = useState<string[]>([]);
+  const [searchList, setSearchList] = useState<ISearchedData[]>([]);
   const { userId } = useParams();
-  const [isFocused, setIsFocused] = useState(false);
+  const [isFocused, setIsFocused] = useRecoilState(IsFocused);
   const location = userId ? `board/${userId}` : "";
   function logoutHandler() {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("user_id");
     window.location.href = "/" + location;
   }
-  const HandleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const HandleChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const inputedValue = event.target.value;
-    console.log(inputedValue);
     if (inputedValue === "") {
       setSearchList([]);
     } else {
-      setSearchList(fakeList);
+      search(inputedValue, setSearchList);
     }
   };
+
   const token = useRouteLoaderData("root") as ReturnType<typeof loadToken>;
   return (
     <NavConainer>
-      <a style={{ flex: 1 }} href="/">
-        CheckSheet.Link
-      </a>
+      <div style={{ flex: 1 }}>
+        <a href="/">CheckSheet.Link</a>
+      </div>
       <SearchContainer>
         <InputContainer>
           <div>
@@ -206,22 +212,30 @@ const Nav = () => {
             <input
               placeholder="디스코드 닉네임 혹은 캐릭터이름..."
               onFocus={() => setIsFocused(true)}
-              onBlur={() => setIsFocused(false)}
+              // onBlur={() => setIsFocused(false)}
               onChange={HandleChange}
             />
           </div>
-          <button>
-            <FontAwesomeIcon icon={faMagnifyingGlass} color="black" />
-          </button>
+          <FontAwesomeIcon icon={faMagnifyingGlass} color="black" />
         </InputContainer>
         {isFocused && (
           <SearchList>
             {searchList.length > 0 ? (
-              searchList.map((elem) => <p>{elem}</p>)
+              searchList.map((elem, index) => (
+                <div
+                  key={index}
+                  style={{ display: "flex", flexDirection: "column" }}
+                >
+                  <UserCard href={`/board/${elem.user_id}`}>
+                    <span>{elem.global_name}</span>
+                    <span>{elem.user_name}</span>
+                  </UserCard>
+                </div>
+              ))
             ) : (
               <EmptyList>
                 <FontAwesomeIcon icon={faCircleInfo} />
-                <span>최근에 검색한 유저가 없습니다.</span>
+                <span>검색한 유저가 없습니다.</span>
               </EmptyList>
             )}
           </SearchList>

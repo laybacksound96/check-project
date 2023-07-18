@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 
 import { json } from "react-router-dom";
 import { IAllAtoms } from "../page/Dashboard";
@@ -11,11 +11,15 @@ export interface IFetchedData {
   data: string;
   ownCharacters: string[];
 }
+export interface ISearchedData {
+  user_id: string;
+  global_name: string;
+  user_name: string;
+}
+const url = "http://localhost:4000";
 
 export const loadUserData = async (id: string) => {
-  const response = await axios.get<IFetchedData>(
-    `http://localhost:4000/user/${id}`
-  );
+  const response = await axios.get<IFetchedData>(`${url}/user/${id}`);
   if (response.statusText !== "OK") {
     throw json(
       { message: "id에 맞는 정보를 fetch해오지 못했습니다." },
@@ -28,24 +32,45 @@ export const loadUserData = async (id: string) => {
   }
 };
 export async function fetchLogin(): Promise<string> {
-  const response = await axios.get("http://localhost:4000/user/login");
+  const response = await axios.get(`${url}/user/login`);
 
   return response.data.loginUrl;
+}
+let lastCallTimeout: any = null;
+export async function search(
+  name: string,
+  setter: React.Dispatch<React.SetStateAction<ISearchedData[]>>
+) {
+  if (lastCallTimeout) {
+    clearTimeout(lastCallTimeout);
+  }
+
+  lastCallTimeout = setTimeout(async () => {
+    try {
+      await axios
+        .get<ISearchedData[]>(`${url}/user/search?username=${name}`)
+        .then((response: AxiosResponse<ISearchedData[]>) => {
+          const data: ISearchedData[] = response.data;
+          console.log(data);
+          setter(data);
+        });
+      lastCallTimeout = null;
+      return;
+    } catch (error) {
+      throw error;
+    }
+  }, 1000);
 }
 export async function patchUser(id: string, data: IAllAtoms): Promise<string> {
   const token = localStorage.getItem("accessToken");
   try {
     if (!data || !token) throw new Error("Invalid Data or Token");
-    const response = await axios.post(
-      `http://localhost:4000/user/${id}`,
-      data,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "bearer " + token,
-        },
-      }
-    );
+    const response = await axios.post(`${url}/user/${id}`, data, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "bearer " + token,
+      },
+    });
     return response.statusText;
   } catch (error) {
     console.error("Error fetching data:", error);
@@ -55,7 +80,7 @@ export async function patchUser(id: string, data: IAllAtoms): Promise<string> {
 export async function fetchSearchAccount(inputValue: string): Promise<[]> {
   try {
     const response = await axios.post(
-      "http://localhost:4000/api/character",
+      `${url}/api/character`,
       { name: inputValue },
       {
         headers: {
