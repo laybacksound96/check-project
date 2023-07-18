@@ -15,7 +15,13 @@ export const loadBoardData: LoaderFunction = async ({ request, params }) => {
   if (typeof id === "undefined") {
     throw new Error("Invalid id");
   }
-  return defer({ userData: await loadUserData(id) });
+  try {
+    const userData = await loadUserData(id);
+    return defer({ userData });
+  } catch (error) {
+    console.error("Error while loading user data:", error);
+    throw new Error("Failed to load user data");
+  }
 };
 interface IData {
   userData: IFetchedData;
@@ -28,8 +34,8 @@ const Board = () => {
 
   return (
     <>
-      <Suspense fallback={<p style={{ textAlign: "center" }}>Loading...</p>}>
-        <Await resolve={data}>
+      <Suspense fallback={<p>Loading...</p>}>
+        <Await resolve={data} errorElement={<div>error</div>}>
           {({ userData }: IData) => {
             return <Dashboard userData={userData} login={isEditable} />;
           }}

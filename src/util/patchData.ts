@@ -8,7 +8,6 @@ function patchData(
   data: IAllAtoms,
   setIsSync: React.Dispatch<React.SetStateAction<ISync>>
 ) {
-  const { accountOrder } = data;
   setIsSync(null);
   if (lastCallTimeout) {
     clearTimeout(lastCallTimeout);

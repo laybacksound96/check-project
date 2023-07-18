@@ -4,7 +4,7 @@ import Modal from "../components/Ui/Modal/Modal";
 import DragAccounts from "../components/DashBoard/DragAccounts/DragAccounts";
 import { useEffect, useState } from "react";
 import { IFetchedData } from "../util/fetch";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { LoginState } from "../atoms/login";
 import { CharacterInfo, ICharacterInfo } from "../atoms/Info/CharacterInfo";
 import {
@@ -25,7 +25,29 @@ import {
 } from "../atoms/Settings/Orders";
 import patchData from "../util/patchData";
 import { useParams } from "react-router";
-import { ContentsFrequency } from "../atoms/frequency";
+
+function isValidData(data: object) {
+  const keys = [
+    "accountOrder",
+    "characterOrder",
+    "contentsOrder",
+    "characterInfo",
+    "characterSetting",
+    "contentSetting",
+    "gates",
+  ];
+  if (typeof data !== "object") {
+    return false;
+  } else {
+    for (let i in keys) {
+      const key = keys[i];
+      const isHasKey = data.hasOwnProperty(key);
+      if (!isHasKey) return false;
+    }
+  }
+  return true;
+}
+
 const getAllAtom = (
   userData: IFetchedData | undefined
 ): IAllAtoms | undefined => {
@@ -34,7 +56,21 @@ const getAllAtom = (
     if (!localData) return;
     return JSON.parse(localData);
   } else {
-    return JSON.parse(userData.data);
+    if (!userData.data) return;
+    const result = JSON.parse(userData.data);
+    if (!isValidData(result)) {
+      const defaultResult: IAllAtoms = {
+        accountOrder: [],
+        characterInfo: {},
+        characterOrder: {},
+        characterSetting: {},
+        contentSetting: {},
+        contentsOrder: {},
+        gates: {},
+      };
+      return defaultResult;
+    }
+    return result;
   }
 };
 const DashboardStyle = styled.div`
@@ -56,7 +92,6 @@ export interface IAllAtoms {
 }
 export type ISync = boolean | null;
 function Dashboard({ userData, login }: IProps) {
-  const contentsFrequency = useRecoilValue(ContentsFrequency);
   const [loginState, setLoginState] = useRecoilState(LoginState);
   const [accountOrder, setAccountOrder] = useRecoilState(AccountOrder);
   const [characterOrder, setCharacterOrder] = useRecoilState(CharacterOrder);
@@ -70,7 +105,6 @@ function Dashboard({ userData, login }: IProps) {
   const { userId } = useParams();
   useEffect(() => {
     setLoginState(login);
-
     const AllAtom = getAllAtom(userData);
     if (!AllAtom) return;
     setAccountOrder(AllAtom.accountOrder);
@@ -111,9 +145,6 @@ function Dashboard({ userData, login }: IProps) {
     userId,
   ]);
 
-  useEffect(() => {
-    console.log(contentsFrequency);
-  }, [contentsFrequency]);
   return (
     <>
       <Modal />

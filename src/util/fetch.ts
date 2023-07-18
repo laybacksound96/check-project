@@ -9,6 +9,7 @@ export interface IFetchedData {
   discriminator: string;
   banner_color: string;
   data: string;
+  ownCharacters: string[];
 }
 
 export const loadUserData = async (id: string) => {
