@@ -3,8 +3,13 @@ import styled from "styled-components";
 import { loadToken } from "../../../util/auth";
 import { discordLoginHandler } from "../../../page/Home";
 import { ReactComponent as DiscordIcon } from "../../../icons/discord-icon.svg";
-import { faPersonWalkingDashedLineArrowRight } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCircleInfo,
+  faMagnifyingGlass,
+  faPersonWalkingDashedLineArrowRight,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useState } from "react";
 
 const NavConainer = styled.div`
   padding: 0px 20px;
@@ -24,6 +29,7 @@ const LoginContainer = styled.div`
 const SearchContainer = styled.div`
   display: flex;
   justify-content: center;
+  position: relative;
   flex: 1;
 `;
 const LogoutButton = styled.div`
@@ -58,6 +64,76 @@ const LogoutButton = styled.div`
     }
   }
 `;
+const SearchList = styled.div`
+  position: absolute;
+  width: 330px;
+  max-height: 250px;
+  top: 50px;
+  z-index: 1;
+  overflow-y: auto;
+  padding: 10px;
+  border-radius: 0px 0px 10px 10px;
+  margin-top: 1px;
+  color: ${({ theme }) => theme.Color_4};
+  background-color: ${({ theme }) => theme.TextColor_A};
+`;
+const InputContainer = styled.form`
+  display: flex;
+
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 10px;
+  color: ${({ theme }) => theme.Color_4};
+  width: 350px;
+  height: 50px;
+  border-radius: 10px;
+  background-color: ${({ theme }) => theme.TextColor_A};
+  span {
+    font-weight: bold;
+    font-size: 0.9rem;
+  }
+  div {
+    width: 100%;
+    display: flex;
+    justify-content: start;
+    flex-direction: column;
+    span {
+      margin-bottom: 5px;
+    }
+    input {
+      padding: 0px;
+      outline: none;
+      width: 100%;
+      border: none;
+    }
+  }
+
+  button {
+    width: 50px;
+    height: 100%;
+    border: none;
+    background-color: ${({ theme }) => theme.TextColor_A};
+    padding: 10px;
+    svg {
+      color: ${({ theme }) => theme.Color_4};
+      width: 100%;
+      height: 100%;
+    }
+  }
+`;
+const EmptyList = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  width: 100%;
+  color: ${({ theme }) => theme.TextColor_B};
+  svg {
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+  }
+`;
 const LoginDiscord = styled.div`
   width: 50px;
   height: 50px;
@@ -85,14 +161,38 @@ const LoginDiscord = styled.div`
   }
   transition: width 0.3s ease;
 `;
+const fakeList = ["감자", "치킨", "사과"];
+const fakeLis2 = [
+  "asdasd",
+  "asdasd",
+  "asdasd",
+  "asdasd",
+  "asdasd",
+  "asdasd",
+  "asdasd",
+  "asdasd",
+  "asdasd",
+];
+
 const Nav = () => {
+  const [searchList, setSearchList] = useState<string[]>([]);
   const { userId } = useParams();
+  const [isFocused, setIsFocused] = useState(false);
   const location = userId ? `board/${userId}` : "";
   function logoutHandler() {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("user_id");
     window.location.href = "/" + location;
   }
+  const HandleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const inputedValue = event.target.value;
+    console.log(inputedValue);
+    if (inputedValue === "") {
+      setSearchList([]);
+    } else {
+      setSearchList(fakeList);
+    }
+  };
   const token = useRouteLoaderData("root") as ReturnType<typeof loadToken>;
   return (
     <NavConainer>
@@ -100,7 +200,32 @@ const Nav = () => {
         CheckSheet.Link
       </a>
       <SearchContainer>
-        <input />
+        <InputContainer>
+          <div>
+            <span>Search</span>
+            <input
+              placeholder="디스코드 닉네임 혹은 캐릭터이름..."
+              onFocus={() => setIsFocused(true)}
+              onBlur={() => setIsFocused(false)}
+              onChange={HandleChange}
+            />
+          </div>
+          <button>
+            <FontAwesomeIcon icon={faMagnifyingGlass} color="black" />
+          </button>
+        </InputContainer>
+        {isFocused && (
+          <SearchList>
+            {searchList.length > 0 ? (
+              searchList.map((elem) => <p>{elem}</p>)
+            ) : (
+              <EmptyList>
+                <FontAwesomeIcon icon={faCircleInfo} />
+                <span>최근에 검색한 유저가 없습니다.</span>
+              </EmptyList>
+            )}
+          </SearchList>
+        )}
       </SearchContainer>
       <LoginContainer>
         {!token && (
