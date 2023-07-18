@@ -9,6 +9,7 @@ import { ContentsFrequency } from "../../../atoms/frequency";
 import { Gates } from "../../../atoms/Settings/Gates";
 import { ContentSetting } from "../../../atoms/Settings/ContentSetting";
 import { CharacterSetting } from "../../../atoms/Settings/CharacterSetting";
+import AllChecked from "./AllChecked";
 
 const ContainerStyle = styled.ul`
   display: grid;
@@ -43,6 +44,11 @@ const Contents = () => {
           />
         );
       })}
+      {Object.keys(contentsFrequency).filter(
+        (key) => contentsFrequency[key].Frequency > 0
+      ).length === 0 ? (
+        <AllChecked />
+      ) : null}
     </ContainerStyle>
   );
 };
