@@ -51,7 +51,6 @@ export async function search(
         .get<ISearchedData[]>(`${url}/user/search?username=${name}`)
         .then((response: AxiosResponse<ISearchedData[]>) => {
           const data: ISearchedData[] = response.data;
-          console.log(data);
           setter(data);
         });
       lastCallTimeout = null;
