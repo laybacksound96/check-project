@@ -15,13 +15,8 @@ export const loadBoardData: LoaderFunction = async ({ request, params }) => {
   if (typeof id === "undefined") {
     throw new Error("Invalid id");
   }
-  try {
-    const userData = await loadUserData(id);
-    return defer({ userData });
-  } catch (error) {
-    console.error("Error while loading user data:", error);
-    throw new Error("Failed to load user data");
-  }
+  const userData = await loadUserData(id);
+  return defer({ userData });
 };
 interface IData {
   userData: IFetchedData;

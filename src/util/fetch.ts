@@ -1,6 +1,5 @@
 import axios, { AxiosResponse } from "axios";
 
-import { json } from "react-router-dom";
 import { IAllAtoms } from "../page/Dashboard";
 export interface IFetchedData {
   user_id: string;
@@ -16,23 +15,13 @@ export interface ISearchedData {
   global_name: string;
   user_name: string;
 }
-
+const url = "https://www.checksheet.link/";
 export const loadUserData = async (id: string) => {
-  const response = await axios.get<IFetchedData>(`/user/${id}`);
-  if (response.statusText !== "OK") {
-    throw json(
-      { message: "id에 맞는 정보를 fetch해오지 못했습니다." },
-      {
-        status: 500,
-      }
-    );
-  } else {
-    return response.data;
-  }
+  const response = await axios.get<IFetchedData>(`${url}user/${id}`);
+  return response.data;
 };
 export async function fetchLogin(): Promise<string> {
-  const response = await axios.get(`/user/login`);
-
+  const response = await axios.get(`${url}user/login`);
   return response.data.loginUrl;
 }
 let lastCallTimeout: any = null;
@@ -47,7 +36,7 @@ export async function search(
   lastCallTimeout = setTimeout(async () => {
     try {
       await axios
-        .get<ISearchedData[]>(`/user/search?username=${name}`)
+        .get<ISearchedData[]>(`${url}user/search?username=${name}`)
         .then((response: AxiosResponse<ISearchedData[]>) => {
           const data: ISearchedData[] = response.data;
           setter(data);
@@ -59,17 +48,17 @@ export async function search(
     }
   }, 1000);
 }
-export async function patchUser(id: string, data: IAllAtoms): Promise<string> {
+export async function patchUser(id: string, data: IAllAtoms): Promise<number> {
   const token = localStorage.getItem("accessToken");
   try {
     if (!data || !token) throw new Error("Invalid Data or Token");
-    const response = await axios.post(`/user/${id}`, data, {
+    const response = await axios.post(`${url}user/${id}`, data, {
       headers: {
         "Content-Type": "application/json",
         Authorization: "bearer " + token,
       },
     });
-    return response.statusText;
+    return response.status;
   } catch (error) {
     console.error("Error fetching data:", error);
     throw error;
@@ -78,7 +67,7 @@ export async function patchUser(id: string, data: IAllAtoms): Promise<string> {
 export async function fetchSearchAccount(inputValue: string): Promise<[]> {
   try {
     const response = await axios.post(
-      `/api/character`,
+      `${url}api/character`,
       { name: inputValue },
       {
         headers: {
@@ -88,9 +77,6 @@ export async function fetchSearchAccount(inputValue: string): Promise<[]> {
     );
     if (response.status === 503) {
       throw new Error("서버가 점검중이에요");
-    }
-    if (response.statusText !== "OK") {
-      throw new Error("알 수 없는 오류가 있어요");
     }
 
     return response.data;
