@@ -7,7 +7,9 @@ export interface IFetchedData {
   global_name: string;
   discriminator: string;
   banner_color: string;
-  data: string;
+  data: {
+    text: string;
+  };
   ownCharacters: string[];
 }
 export interface ISearchedData {
@@ -15,7 +17,9 @@ export interface ISearchedData {
   global_name: string;
   user_name: string;
 }
-const url = "https://www.checksheet.link/";
+//https://www.checksheet.link/
+const url = "http://localhost:8080/";
+
 export const loadUserData = async (id: string) => {
   const response = await axios.get<IFetchedData>(`${url}user/${id}`);
   return response.data;

@@ -58,7 +58,8 @@ const getAllAtom = (
     return JSON.parse(localData);
   } else {
     if (!userData.data) return;
-    const result = JSON.parse(userData.data);
+    console.log(userData);
+    const result = JSON.parse(userData.data.text);
     if (!isValidData(result)) {
       const defaultResult: IAllAtoms = {
         accountOrder: [],
@@ -107,15 +108,21 @@ function Dashboard({ userData, login }: IProps) {
   const { userId } = useParams();
   useEffect(() => {
     setLoginState(login);
-    const AllAtom = getAllAtom(userData);
-    if (!AllAtom) return;
-    setAccountOrder(AllAtom.accountOrder);
-    setCharacterOrder(AllAtom.characterOrder);
-    setContentsOrder(AllAtom.contentsOrder);
-    setCharacterInfo(AllAtom.characterInfo);
-    setCharacterSetting(AllAtom.characterSetting);
-    setContentSetting(AllAtom.contentSetting);
-    setGates(AllAtom.gates);
+    try {
+      const AllAtom = getAllAtom(userData);
+      if (!AllAtom) return;
+      console.log(AllAtom);
+    } catch (error) {
+      console.log(error);
+    }
+
+    // setAccountOrder(AllAtom.accountOrder);
+    // setCharacterOrder(AllAtom.characterOrder);
+    // setContentsOrder(AllAtom.contentsOrder);
+    // setCharacterInfo(AllAtom.characterInfo);
+    // setCharacterSetting(AllAtom.characterSetting);
+    // setContentSetting(AllAtom.contentSetting);
+    // setGates(AllAtom.gates);
   }, []);
   useEffect(() => {
     if (!loginState) return;
