@@ -13,6 +13,7 @@ import { useState } from "react";
 import { ISearchedData, search } from "../../../util/fetch";
 import { useRecoilState } from "recoil";
 import { IsFocused } from "../../../atoms/ui";
+import UserCard from "./UserCard";
 
 const NavConainer = styled.div`
   padding: 0px 20px;
@@ -137,21 +138,7 @@ const EmptyList = styled.div`
     font-size: 1.2rem;
   }
 `;
-const UserCard = styled.a`
-  span:nth-child(2) {
-    opacity: 60%;
-    margin-left: 5px;
-    font-size: 0.6rem;
-    color: ${({ theme }) => theme.TextColor_B};
-  }
-  margin-bottom: 5px;
-  padding: 3px;
-  padding-left: 5px;
-  border-radius: 5px;
-  &:hover {
-    background-color: #cdcdcd;
-  }
-`;
+
 const LoginDiscord = styled.div`
   width: 50px;
   height: 50px;
@@ -212,7 +199,6 @@ const Nav = () => {
             <input
               placeholder="디스코드 닉네임 혹은 캐릭터이름..."
               onFocus={() => setIsFocused(true)}
-              // onBlur={() => setIsFocused(false)}
               onChange={HandleChange}
             />
           </div>
@@ -226,10 +212,7 @@ const Nav = () => {
                   key={index}
                   style={{ display: "flex", flexDirection: "column" }}
                 >
-                  <UserCard href={`/board/${elem.user_id}`}>
-                    <span>{elem.global_name}</span>
-                    <span>{elem.user_name}</span>
-                  </UserCard>
+                  <UserCard data={elem} />
                 </div>
               ))
             ) : (

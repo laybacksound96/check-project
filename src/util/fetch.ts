@@ -14,8 +14,9 @@ export interface IFetchedData {
 }
 export interface ISearchedData {
   user_id: string;
-  global_name: string;
+  global_name: string | null;
   user_name: string;
+  discriminator: string;
 }
 //https://www.checksheet.link/
 const url = "http://localhost:8080/";
