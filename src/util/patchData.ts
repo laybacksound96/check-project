@@ -14,9 +14,10 @@ function patchData(
   }
 
   lastCallTimeout = setTimeout(async () => {
-    setIsSync(false);
+    setIsSync("inprogress");
     const res = await patchUser(id, data);
-    if (res === 200) setIsSync(true);
+    if (res === 200) setIsSync("success");
+    if (res === 404 || res === 401) setIsSync("error");
     lastCallTimeout = null;
   }, 5000);
 }

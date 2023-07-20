@@ -55,7 +55,7 @@ export async function search(
 export async function patchUser(id: string, data: IAllAtoms): Promise<number> {
   const token = localStorage.getItem("accessToken");
   try {
-    if (!data || !token) throw new Error("Invalid Data or Token");
+    if (!data || !token) return 401;
     const response = await axios.post(`${url}user/${id}`, data, {
       headers: {
         "Content-Type": "application/json",

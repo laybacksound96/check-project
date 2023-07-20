@@ -3,9 +3,11 @@ import Contents from "./Contents";
 import AccountGold from "./AccountGold";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRotate, faCheck } from "@fortawesome/free-solid-svg-icons";
+import { IFetchedData } from "../../../util/fetch";
+import { ISync } from "../../../page/Dashboard";
 
 interface IStyle {
-  isSync: boolean | null;
+  isSync: ISync;
 }
 const HeaderBoxStyle = styled.header<IStyle>`
   position: relative;
@@ -33,7 +35,7 @@ const HeaderBoxStyle = styled.header<IStyle>`
       svg {
         margin-left: 10px;
         path {
-          color: ${({ isSync }) => isSync && "#70ff90"};
+          color: ${({ isSync }) => isSync === "success" && "#70ff90"};
         }
       }
       &:hover {
@@ -68,20 +70,46 @@ const RotatingIcon = styled(FontAwesomeIcon)`
     }
   }}
 `;
+const Error = styled.p`
+  margin-left: 5px;
+  display: inline-block;
+  font-size: 0.9rem;
+  color: red;
+`;
+
 interface IProps {
-  userId: string;
-  isSync: boolean | null;
+  userData: string | IFetchedData;
+  isSync: ISync;
 }
-const HeaderBox = ({ userId, isSync }: IProps) => {
+const makeName = (data: IFetchedData) => {
+  if (data.global_name) {
+    return data.global_name;
+  } else {
+    if (data.discriminator === "0") {
+      return data.global_name;
+    } else {
+      return data.user_name;
+    }
+  }
+};
+const HeaderBox = ({ userData, isSync }: IProps) => {
   return (
     <HeaderBoxStyle isSync={isSync}>
       <header>
         <h1>
-          {userId}님의 체크시트
-          {isSync !== null ? (
-            <RotatingIcon icon={!isSync ? faRotate : faCheck} />
-          ) : null}
-          <span>{isSync && "서버와 동기화되었어요."}</span>
+          {typeof userData === "string" ? (
+            <>{userData}님의 체크시트</>
+          ) : (
+            <>{makeName(userData)}님의 체크시트</>
+          )}
+          {isSync === "error" && <Error>서버와의 동기화에 실패했어요.</Error>}
+          {isSync === "inprogress" && <RotatingIcon icon={faRotate} />}
+          {isSync === "success" && (
+            <>
+              <RotatingIcon icon={faCheck} />
+              <span>서버와 동기화되었어요.</span>
+            </>
+          )}
         </h1>
         <AccountGold />
       </header>

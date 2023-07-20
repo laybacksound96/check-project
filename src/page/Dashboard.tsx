@@ -58,7 +58,6 @@ const getAllAtom = (
     return JSON.parse(localData);
   } else {
     if (!userData.data) return;
-    console.log(userData);
     const result = JSON.parse(userData.data.text);
     if (!isValidData(result)) {
       const defaultResult: IAllAtoms = {
@@ -92,7 +91,7 @@ export interface IAllAtoms {
   contentSetting: IAccountContent;
   gates: IGates;
 }
-export type ISync = boolean | null;
+export type ISync = "success" | "error" | "inprogress" | null;
 function Dashboard({ userData, login }: IProps) {
   const setIsFocused = useSetRecoilState(IsFocused);
   const [loginState, setLoginState] = useRecoilState(LoginState);
@@ -109,20 +108,18 @@ function Dashboard({ userData, login }: IProps) {
   useEffect(() => {
     setLoginState(login);
     try {
-      const AllAtom = getAllAtom(userData);
-      if (!AllAtom) return;
-      console.log(AllAtom);
+      const dataToAtoms = getAllAtom(userData);
+      if (!dataToAtoms) return;
+      setAccountOrder(dataToAtoms.accountOrder);
+      setCharacterOrder(dataToAtoms.characterOrder);
+      setContentsOrder(dataToAtoms.contentsOrder);
+      setCharacterInfo(dataToAtoms.characterInfo);
+      setCharacterSetting(dataToAtoms.characterSetting);
+      setContentSetting(dataToAtoms.contentSetting);
+      setGates(dataToAtoms.gates);
     } catch (error) {
       console.log(error);
     }
-
-    // setAccountOrder(AllAtom.accountOrder);
-    // setCharacterOrder(AllAtom.characterOrder);
-    // setContentsOrder(AllAtom.contentsOrder);
-    // setCharacterInfo(AllAtom.characterInfo);
-    // setCharacterSetting(AllAtom.characterSetting);
-    // setContentSetting(AllAtom.contentSetting);
-    // setGates(AllAtom.gates);
   }, []);
   useEffect(() => {
     if (!loginState) return;
@@ -158,10 +155,7 @@ function Dashboard({ userData, login }: IProps) {
     <>
       <Modal />
       <DashboardStyle onClick={() => setIsFocused(false)}>
-        <HeaderBox
-          userId={userData ? userData.global_name : "GUEST"}
-          isSync={isSync}
-        />
+        <HeaderBox userData={userData ? userData : "GUEST"} isSync={isSync} />
         <DragAccounts />
       </DashboardStyle>
     </>
