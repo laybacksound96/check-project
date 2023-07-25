@@ -1,46 +1,35 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+![image](https://github.com/laybacksound96/check-project/assets/85489519/6c3514bd-a6e1-4ec2-8688-9cade7da415d)
+<h1 align="center"><a href="https://www.checksheet.link/">Checksheet.link</a></h1>
 
-## Available Scripts
+<div align="center">
 
-In the project directory, you can run:
+온라인 게임 **로스트아크**의 **To-do** [`React`](https://facebook.github.io/react/) **SPA**
 
-### `npm start`
+로스트아크엔 주에 한 회씩 할 수 있는 다양한 컨텐츠들이 있습니다.<br/>
+이러한 컨텐츠들의 현황을 일목요연하게 보여주는 앱입니다.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+</div>
+ 
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## 서비스 소개
 
-### `npm test`
+### 제작 배경
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+![image](https://github.com/laybacksound96/check-project/assets/85489519/92fd3923-2e51-45d7-9e81-e1f024b9172a)
 
-### `npm run build`
+로스트아크는 하나의 계정에 다양한 캐릭터를 육성할 수 있는 게임입니다.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+각 캐릭터는 다양한 컨텐츠를 진행할 수 있으며, 진행할 수 있는 컨텐츠의 종류와 개수는 캐릭터마다 다릅니다.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+![image](https://github.com/laybacksound96/check-project/assets/85489519/521322e8-e21b-4bf6-a3e7-155981b6b59d)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+문제는 **캐릭터별 컨텐츠들이 너무 많아, 어떤 컨텐츠를 얼마나 진행했는지 알기 어렵다는 점**이었습니다.
 
-### `npm run eject`
+저와 제 친구들은 **"너 해야할 거 뭐 남았어?"** 를 입에 달고 살아야 했습니다.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+CheckSheet는 이러한 문제를 해결하고자 제작하게 되었습니다.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Checksheet는 다음과 같은 기능을 제공합니다
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+![click](https://github.com/laybacksound96/check-project/assets/85489519/96a67aca-b18b-425e-bb0b-a32c1465811e)
