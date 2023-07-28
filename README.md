@@ -54,10 +54,26 @@ CheckSheet는 이러한 문제를 해결하고자 제작하게 되었습니다.
 
 ## 프로젝트에 사용된 기술스택 및 의존성
 
-<img src="https://img.shields.io/badge/typescript-3178C6?style=for-the-badge&logo=typescript&logoColor=white"></br>
-<img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=white">
-  - react-router-dom
+### Frontend
+![Typescript](https://img.shields.io/badge/typescript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
+
+![React](https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=white)
+  - react-router-dom v6
   - recoil
   - styled-components
+### Backend
+![nodedotjs](https://img.shields.io/badge/node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
+
+![express](https://img.shields.io/badge/express-000000?style=for-the-badge&logo=express&logoColor=white)
+
+![mongodb](https://img.shields.io/badge/mongodb-47A248?style=for-the-badge&logo=mongodb&logoColor=white)
+
+### Infra
+
+![amazonaws](https://img.shields.io/badge/amazon_aws-232F3E?style=for-the-badge&logo=amazonaws&logoColor=white)
+  - AWS EC2
+  - Route 53 & ALB
+
+![docker](https://img.shields.io/badge/docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
 
 ## 프로젝트 구성도
