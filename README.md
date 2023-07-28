@@ -32,4 +32,24 @@ CheckSheet는 이러한 문제를 해결하고자 제작하게 되었습니다.
 
 ### Checksheet는 다음과 같은 기능을 제공합니다
 
+#### 로그인
+![login_gif](https://github.com/laybacksound96/check-project/assets/85489519/7804fa56-1235-436d-9768-f405b568aff7)
+- OAuth2.0와 [`Discord API`](https://discord.com/developers/applications/1107519062570975293/oauth2/general)를 활용하여 Discord 소셜로그인을 지원합니다.
+
+#### UI
+![dragNdrop_gif](https://github.com/laybacksound96/check-project/assets/85489519/b19ecc42-9078-4e04-8ceb-78548904e9b9)
+- 다양한 요소에 Drag-and-Drop 기능([`react-beautiful-dnd`](https://github.com/atlassian/react-beautiful-dnd))을 제공합니다 
+
 ![click](https://github.com/laybacksound96/check-project/assets/85489519/96a67aca-b18b-425e-bb0b-a32c1465811e)
+
+- 남아있는 할 일의 개수를 확인합니다. 
+
+![config_gif](https://github.com/laybacksound96/check-project/assets/85489519/d809d35e-51b0-4cb2-8131-c2e0ced02ff8)
+- 할 일에 대한 세부적인 기능을 설정할 수 있는 모달들을 구현하였습니다.
+- 설정값에 따라 할 일들의 색상을 바꿔 높은 시인성을 추구하였습니다.
+
+#### 검색
+![search_gif](https://github.com/laybacksound96/check-project/assets/85489519/28aea34a-0c72-4523-b5f3-f08580e5d040)
+
+- 다른 유저를 검색할 수 있으며, 실시간 자동완성기능이 있습니다.
+- 이 기능은 [op.gg](https://www.op.gg/)의 검색 방식을 클로닝하였습니다.
