@@ -80,7 +80,7 @@ const DashboardStyle = styled.div`
 `;
 interface IProps {
   userData?: IFetchedData;
-  login: boolean;
+  isEditable: boolean;
 }
 export interface IAllAtoms {
   accountOrder: string[];
@@ -92,7 +92,7 @@ export interface IAllAtoms {
   gates: IGates;
 }
 export type ISync = "success" | "error" | "inprogress" | null;
-function Dashboard({ userData, login }: IProps) {
+function Dashboard({ userData, isEditable }: IProps) {
   const setIsFocused = useSetRecoilState(IsFocused);
   const [loginState, setLoginState] = useRecoilState(LoginState);
   const [accountOrder, setAccountOrder] = useRecoilState(AccountOrder);
@@ -106,7 +106,7 @@ function Dashboard({ userData, login }: IProps) {
   const [isSync, setIsSync] = useState<ISync>(null);
   const { userId } = useParams();
   useEffect(() => {
-    setLoginState(login);
+    setLoginState(isEditable);
     try {
       const dataToAtoms = getAllAtom(userData);
       if (!dataToAtoms) return;

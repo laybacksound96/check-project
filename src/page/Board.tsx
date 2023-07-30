@@ -6,7 +6,7 @@ import {
   useRouteLoaderData,
 } from "react-router-dom";
 import { IFetchedData, loadUserData } from "../util/fetch";
-import { Suspense } from "react";
+import React, { Suspense } from "react";
 import Dashboard from "./Dashboard";
 import { loadToken } from "../util/auth";
 
@@ -30,9 +30,9 @@ const Board = () => {
   return (
     <>
       <Suspense fallback={<p>Loading...</p>}>
-        <Await resolve={data} errorElement={<div>error</div>}>
+        <Await resolve={data}>
           {({ userData }: IData) => {
-            return <Dashboard userData={userData} login={isEditable} />;
+            return <Dashboard userData={userData} isEditable={isEditable} />;
           }}
         </Await>
       </Suspense>

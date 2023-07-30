@@ -27,7 +27,7 @@ export const router = createBrowserRouter([
           },
           {
             path: "GUEST",
-            element: <Dashboard login={true} />,
+            element: <Dashboard isEditable={true} />,
           },
           {
             path: ":userId",
