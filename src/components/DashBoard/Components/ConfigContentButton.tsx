@@ -3,8 +3,9 @@ import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
 import { faEye } from "@fortawesome/free-regular-svg-icons";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { LoginState } from "../../../atoms/login";
+import { CharacterSetting } from "../../../atoms/Settings/CharacterSetting";
 export const ButtonContainer = styled.div`
   display: flex;
   justify-content: start;
@@ -30,11 +31,34 @@ const ConfigContentButton = ({
 }) => {
   const [ConfigAccount] = useModal();
   const loggined = useRecoilValue(LoginState);
+  const [
+    {
+      [AccountName]: {
+        [CharacterName]: { isVisible: isVisibleChar, IsGoldCharacter },
+      },
+    },
+    setCharacterSetting,
+  ] = useRecoilState(CharacterSetting);
+  const handleVisible = () => {
+    setCharacterSetting((prev) => {
+      return {
+        ...prev,
+        [AccountName]: {
+          ...prev[AccountName],
+          [CharacterName]: {
+            ...prev[AccountName][CharacterName],
+            isVisible: !isVisibleChar,
+            IsGoldCharacter: isVisibleChar ? false : false,
+          },
+        },
+      };
+    });
+  };
   return (
     <>
       {loggined && (
         <ButtonContainer>
-          <FontAwesomeIcon onClick={() => {}} icon={faEye} />
+          <FontAwesomeIcon onClick={() => handleVisible()} icon={faEye} />
           <FontAwesomeIcon
             onClick={() => {
               if (!loggined) return;
