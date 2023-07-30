@@ -85,7 +85,13 @@ export const Character = styled.div`
 const CharactersContainer = styled.div`
   display: flex;
 `;
-
+const RightContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  height: 100%;
+  padding: 5px;
+`;
 export const NameContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -167,7 +173,7 @@ function DragCharacters({ DragHandleProps, AccountName }: IProps) {
                             <span>{ClassName}</span>
                             <span>Lv {Level}</span>
                           </NameContainer>
-                          <div>
+                          <RightContainer>
                             <ConfigContentButton
                               AccountName={AccountName}
                               CharacterName={CharacterName}
@@ -178,7 +184,7 @@ function DragCharacters({ DragHandleProps, AccountName }: IProps) {
                                 gatesContent={gatesContent}
                               />
                             )}
-                          </div>
+                          </RightContainer>
                         </Character>
                       </CharactersContainer>
                     )}

@@ -8,14 +8,13 @@ import { LoginState } from "../../../atoms/login";
 import { CharacterSetting } from "../../../atoms/Settings/CharacterSetting";
 export const ButtonContainer = styled.div`
   display: flex;
-  justify-content: start;
+  justify-content: space-evenly;
   height: 100%;
-  padding-right: 5px;
-  padding-top: 5px;
+
   svg {
     border-radius: 10px;
     opacity: 0%;
-    padding: 10px 10px;
+    padding: 7px 7px;
   }
   svg:hover {
     opacity: 100%;
@@ -34,7 +33,7 @@ const ConfigContentButton = ({
   const [
     {
       [AccountName]: {
-        [CharacterName]: { isVisible: isVisibleChar, IsGoldCharacter },
+        [CharacterName]: { isVisible: isVisibleChar },
       },
     },
     setCharacterSetting,
