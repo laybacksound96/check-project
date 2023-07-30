@@ -7,6 +7,7 @@ import LayoutBoard from "./page/LayoutBoard";
 import Board, { loadBoardData } from "./page/Board";
 import Dashboard from "./page/Dashboard";
 import NotFoundData from "./components/Errors/NotFoundData";
+import DragAccounts from "./components/DashBoard/DragAccounts/DragAccounts";
 
 export const router = createBrowserRouter([
   {

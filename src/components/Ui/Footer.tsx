@@ -8,12 +8,18 @@ const FooterStyle = styled.footer`
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
+  svg {
+    width: 30%;
+    height: 30%;
+  }
 `;
 
 const Footer = () => {
   return (
     <FooterStyle>
-      <p>Contact us : 412#4615</p>
+      <p>Contact me</p>
+      <p>Discord: 412(_412)</p>
     </FooterStyle>
   );
 };

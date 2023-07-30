@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   DragDropContext,
   Draggable,
@@ -10,13 +10,14 @@ import styled from "styled-components";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
 import { AxisLocker } from "../Functions/AxisLocker";
-import AccountContainer from "./DragCharacters";
+import DragCharacters from "./DragCharacters";
 import AddAccountButton from "../Components/AddAccountButton";
 import { AccountOrder } from "../../../atoms/Settings/Orders";
 import { LoginState } from "../../../atoms/login";
 import UncheckAllButton from "../Components/UncheckAllContents";
 import { ContentSetting } from "../../../atoms/Settings/ContentSetting";
 import makeUnchecked from "../Functions/makeUnchecked";
+import { UserData } from "../../../atoms/data";
 
 const DragBoxStyle = styled.div`
   width: 100%;
@@ -51,6 +52,7 @@ const MenuBar = styled.div`
 `;
 const DragAccounts = () => {
   const [accountOrder, setAccountOrder] = useRecoilState(AccountOrder);
+  const [userData, setUserData] = useRecoilState(UserData);
   const setContentSetting = useSetRecoilState(ContentSetting);
   const loggined = useRecoilValue(LoginState);
   const dragAccountHandler = (dragInfo: DropResult) => {
@@ -73,17 +75,18 @@ const DragAccounts = () => {
       return newSetting;
     });
   };
+
   return (
     <DragBoxStyle>
       <DragDropContext onDragEnd={dragAccountHandler}>
         <Droppable droppableId="accounts" direction="vertical">
           {(provided) => (
             <AccountStyle ref={provided.innerRef} {...provided.droppableProps}>
-              {loggined && accountOrder.length > 0 ? (
+              {loggined && accountOrder.length > 0 && (
                 <MenuBar>
                   <UncheckAllButton handleUncheck={uncheckHandler} />
                 </MenuBar>
-              ) : null}
+              )}
               {accountOrder.map((AccountName, index) => {
                 return (
                   <Draggable
@@ -101,10 +104,11 @@ const DragAccounts = () => {
                           false
                         )}
                       >
-                        <AccountContainer
+                        <p>{AccountName}</p>
+                        {/* <DragCharacters
                           DragHandleProps={provided.dragHandleProps}
                           AccountName={AccountName}
-                        />
+                        /> */}
                       </div>
                     )}
                   </Draggable>
