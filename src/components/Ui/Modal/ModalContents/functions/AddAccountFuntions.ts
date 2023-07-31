@@ -9,7 +9,10 @@ import {
 } from "../../../../../atoms/Settings/ContentSetting";
 import { IFetchedCharacter } from "../AddAccount";
 import commander from "../../../../../json/commander.json";
-import { IData, IGates } from "../../../../../json/commanderTypes";
+import {
+  ICommanderData,
+  ICommanderGates,
+} from "../../../../../json/commanderTypes";
 import IsValidLevel from "./Validation/IsValidLevel";
 
 import {
@@ -30,8 +33,11 @@ interface INewCotentsResult {
   goldIncome: IGoldIncomeContent;
   gates: IGatesContent;
 }
-const commanderData: IData = commander;
-function makeNewGates(level: number, gates: IGates[]): IGatesSetting[] {
+const commanderData: ICommanderData = commander;
+function makeNewGates(
+  level: number,
+  gates: ICommanderGates[]
+): IGatesSetting[] {
   const result: IGatesSetting[] = [];
   for (let index in gates) {
     const hardLevel = gates[index].hard?.level;

@@ -1,6 +1,6 @@
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { fetchSearchAccount } from "../../../../util/fetch";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Input } from "./AddContent";
 import CharacterContainer from "./components/CharacterContainer";
@@ -9,7 +9,6 @@ import useModal from "../../../../CustomHooks/Modal/useModal";
 
 import { CharacterInfo } from "../../../../atoms/Info/CharacterInfo";
 import { CharacterSetting } from "../../../../atoms/Settings/CharacterSetting";
-import { makeNewAccount } from "./functions/AddAccountFuntions";
 import IsDupplicated from "./functions/Validation/IsDupplicated";
 import IsInValidName from "./functions/Validation/IsValidName";
 import { ContentSetting } from "../../../../atoms/Settings/ContentSetting";
@@ -20,6 +19,8 @@ import {
   AccountOrder,
 } from "../../../../atoms/Settings/Orders";
 import makeNewContentOrder from "./functions/makeNewContentOrder";
+import { Order, Accounts, Characters, Contents } from "../../../../atoms/data";
+import makeDataResult from "./functions/AddAccount/makeAccount";
 
 const Container = styled.div`
   display: flex;
@@ -68,6 +69,10 @@ const AddAccount = () => {
   const [inputValue, setInputValue] = useState("");
   const [fetchedData, setFetchedData] = useState<IFetchedCharacter[]>([]);
   const [error, setError] = useState<IError | undefined>();
+  const [order, setOrder] = useRecoilState(Order);
+  const [accounts, setAccounts] = useRecoilState(Accounts);
+  const [characters, setCharacters] = useRecoilState(Characters);
+  const [contents, setContents] = useRecoilState(Contents);
 
   const SearchAccountHandler = async (event: React.MouseEvent) => {
     event.preventDefault();
@@ -98,44 +103,18 @@ const AddAccount = () => {
   };
   const AddAccountHandler = (data: IFetchedCharacter[]) => {
     if (data.length === 0) return;
-    const AccountName = data[0].CharacterName;
-    const { accountInfo, accountSetting, contentSetting, gates } =
-      makeNewAccount(data);
-    const CharacterOrder = Object.keys(accountSetting).filter(
-      (prev) => accountSetting[prev].isVisible
-    );
-    setCharacterInfo((prev) => {
-      return { ...prev, [`${AccountName}`]: accountInfo };
-    });
-    setCharacterSetting((prev) => {
-      return { ...prev, [`${AccountName}`]: accountSetting };
-    });
-    setContentSetting((prev) => {
-      return { ...prev, [`${AccountName}`]: contentSetting };
-    });
-    setGates((prev) => {
-      return { ...prev, [`${AccountName}`]: gates };
-    });
-    setAccountOrder((prev) => [...prev, AccountName]);
-    setCharacterOrder((prev) => {
-      return {
-        ...prev,
-        [`${AccountName}`]: CharacterOrder,
-      };
-    });
-    setContentsOrder((prev) => {
-      return {
-        ...prev,
-        [`${AccountName}`]: makeNewContentOrder(
-          CharacterOrder,
-          contentSetting,
-          AccountName
-        ),
-      };
-    });
+    const { Accounts, Character, Content } = makeDataResult(data);
+    setAccounts((prev) => [...prev, Accounts]);
+    setCharacters((prev) => [...prev, ...Character]);
+    setContents((prev) => [...prev, ...Content]);
     closeModal();
   };
-
+  useEffect(() => {
+    console.log(order);
+    console.log(accounts);
+    console.log(characters);
+    console.log(contents);
+  }, [order, accounts, characters, contents]);
   return (
     <Container>
       <form>

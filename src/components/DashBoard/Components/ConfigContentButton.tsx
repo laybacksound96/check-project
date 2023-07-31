@@ -5,7 +5,8 @@ import styled from "styled-components";
 import { faEye } from "@fortawesome/free-regular-svg-icons";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { LoginState } from "../../../atoms/login";
-import { CharacterSetting } from "../../../atoms/Settings/CharacterSetting";
+import { Accounts, Characters } from "../../../atoms/data";
+
 export const ButtonContainer = styled.div`
   display: flex;
   justify-content: space-evenly;
@@ -30,34 +31,43 @@ const ConfigContentButton = ({
 }) => {
   const [ConfigAccount] = useModal();
   const loggined = useRecoilValue(LoginState);
-  const [
-    {
-      [AccountName]: {
-        [CharacterName]: { isVisible: isVisibleChar },
-      },
-    },
-    setCharacterSetting,
-  ] = useRecoilState(CharacterSetting);
-  const handleVisible = () => {
-    setCharacterSetting((prev) => {
-      return {
-        ...prev,
-        [AccountName]: {
-          ...prev[AccountName],
-          [CharacterName]: {
-            ...prev[AccountName][CharacterName],
-            isVisible: !isVisibleChar,
-            IsGoldCharacter: isVisibleChar ? false : false,
-          },
-        },
+  const [characters, setCharacters] = useRecoilState(Characters);
+  const [accounts, setAccounts] = useRecoilState(Accounts);
+  const turnOffVisible = () => {
+    setCharacters((prev) => {
+      const copiedPrev = [...prev];
+      const Index = copiedPrev.findIndex(
+        (chara) => chara.characterName === CharacterName
+      );
+      copiedPrev[Index] = {
+        ...copiedPrev[Index],
+        isVisible: false,
+        isGoldCharacter: false,
       };
+      if (Index === -1) return prev;
+      return copiedPrev;
+    });
+    setAccounts((prev) => {
+      const copiedPrev = [...prev];
+      const Index = copiedPrev.findIndex(
+        (chara) => chara.accountName === AccountName
+      );
+      if (Index === -1) return prev;
+      const copiedAccount = { ...copiedPrev[Index] };
+      const copiedCharacterOrder = [...copiedAccount.characterOrder];
+      const charaIndex = copiedCharacterOrder.indexOf(CharacterName);
+      if (charaIndex === -1) return prev;
+      copiedCharacterOrder.splice(charaIndex, 1);
+      copiedAccount.characterOrder = copiedCharacterOrder;
+      copiedPrev[Index] = copiedAccount;
+      return copiedPrev;
     });
   };
   return (
     <>
       {loggined && (
         <ButtonContainer>
-          <FontAwesomeIcon onClick={() => handleVisible()} icon={faEye} />
+          <FontAwesomeIcon onClick={() => turnOffVisible()} icon={faEye} />
           <FontAwesomeIcon
             onClick={() => {
               if (!loggined) return;
