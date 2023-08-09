@@ -1,6 +1,5 @@
 import axios, { AxiosResponse } from "axios";
 
-import { IAllAtoms } from "../page/Dashboard";
 export interface IFetchedData {
   user_id: string;
   user_name: string;
@@ -8,7 +7,7 @@ export interface IFetchedData {
   discriminator: string;
   banner_color: string;
   data: {
-    text: string;
+    accountOrder: [];
   };
   ownCharacters: string[];
 }
@@ -54,7 +53,7 @@ export async function search(
     }
   }, 1000);
 }
-export async function patchUser(id: string, data: IAllAtoms): Promise<number> {
+export async function patchUser(id: string, data: any): Promise<number> {
   const token = localStorage.getItem("accessToken");
   try {
     if (!data || !token) return 401;

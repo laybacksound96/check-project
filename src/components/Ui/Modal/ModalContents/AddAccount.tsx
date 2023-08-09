@@ -1,4 +1,4 @@
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { fetchSearchAccount } from "../../../../util/fetch";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
@@ -7,19 +7,8 @@ import CharacterContainer from "./components/CharacterContainer";
 import SortByLevel from "./functions/SortByLevel";
 import useModal from "../../../../CustomHooks/Modal/useModal";
 
-import { CharacterInfo } from "../../../../atoms/Info/CharacterInfo";
-import { CharacterSetting } from "../../../../atoms/Settings/CharacterSetting";
-import IsDupplicated from "./functions/Validation/IsDupplicated";
 import IsInValidName from "./functions/Validation/IsValidName";
-import { ContentSetting } from "../../../../atoms/Settings/ContentSetting";
-import { Gates } from "../../../../atoms/Settings/Gates";
-import {
-  CharacterOrder,
-  ContentsOrder,
-  AccountOrder,
-} from "../../../../atoms/Settings/Orders";
-import makeNewContentOrder from "./functions/makeNewContentOrder";
-import { Order, Accounts, Characters, Contents } from "../../../../atoms/data";
+import { Accounts } from "../../../../atoms/data";
 import makeDataResult from "./functions/AddAccount/makeAccount";
 
 const Container = styled.div`
@@ -58,28 +47,18 @@ interface IError {
 }
 
 const AddAccount = () => {
-  const [characterInfo, setCharacterInfo] = useRecoilState(CharacterInfo);
-  const setCharacterSetting = useSetRecoilState(CharacterSetting);
-  const setContentSetting = useSetRecoilState(ContentSetting);
-  const setGates = useSetRecoilState(Gates);
-  const setCharacterOrder = useSetRecoilState(CharacterOrder);
-  const setContentsOrder = useSetRecoilState(ContentsOrder);
-  const setAccountOrder = useSetRecoilState(AccountOrder);
   const [, closeModal] = useModal();
   const [inputValue, setInputValue] = useState("");
   const [fetchedData, setFetchedData] = useState<IFetchedCharacter[]>([]);
   const [error, setError] = useState<IError | undefined>();
-  const [order, setOrder] = useRecoilState(Order);
   const [accounts, setAccounts] = useRecoilState(Accounts);
-  const [characters, setCharacters] = useRecoilState(Characters);
-  const [contents, setContents] = useRecoilState(Contents);
 
   const SearchAccountHandler = async (event: React.MouseEvent) => {
     event.preventDefault();
-    if (IsDupplicated(inputValue, characterInfo)) {
-      setError({ message: "같은 이름이 이미 시트에 있어요" });
-      return;
-    }
+    // if (IsDupplicated(inputValue, characterInfo)) {
+    //   setError({ message: "같은 이름이 이미 시트에 있어요" });
+    //   return;
+    // }
     try {
       const data = await fetchSearchAccount(inputValue);
       if (!data) {
@@ -103,18 +82,17 @@ const AddAccount = () => {
   };
   const AddAccountHandler = (data: IFetchedCharacter[]) => {
     if (data.length === 0) return;
-    const { Accounts, Character, Content } = makeDataResult(data);
-    setAccounts((prev) => [...prev, Accounts]);
-    setCharacters((prev) => [...prev, ...Character]);
-    setContents((prev) => [...prev, ...Content]);
+    try {
+      setAccounts((prev) => {
+        return [...prev, makeDataResult(data)];
+      });
+    } catch (error) {
+      console.log(error);
+    }
+
     closeModal();
   };
-  useEffect(() => {
-    console.log(order);
-    console.log(accounts);
-    console.log(characters);
-    console.log(contents);
-  }, [order, accounts, characters, contents]);
+
   return (
     <Container>
       <form>

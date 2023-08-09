@@ -27,10 +27,10 @@ const CharacterGold = ({ contentState, gatesContent }: IProps) => {
   const [gold, setGold] = useState(0);
   const [PrevGold, setPrevGold] = useState(gold);
   useEffect(() => {
-    setGold((prev) => {
-      setPrevGold(prev);
-      return CalculateCharacterClearGold(contentState, gatesContent);
-    });
+    // setGold((prev) => {
+    //   setPrevGold(prev);
+    //   return CalculateCharacterClearGold(contentState, gatesContent);
+    // });
   }, [contentState, gatesContent]);
   return (
     <GoldContainer>

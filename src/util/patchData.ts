@@ -1,11 +1,11 @@
-import { IAllAtoms, ISync } from "../page/Dashboard";
+import { ISync } from "../page/Dashboard";
 import { patchUser } from "./fetch";
 
 let lastCallTimeout: any = null;
 
 function patchData(
   id: string,
-  data: IAllAtoms,
+  data: any,
   setIsSync: React.Dispatch<React.SetStateAction<ISync>>
 ) {
   setIsSync(null);

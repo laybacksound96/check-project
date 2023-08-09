@@ -8,13 +8,14 @@ import {
 
 import React from "react";
 import styled, { css } from "styled-components";
-import { SetterOrUpdater, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { dragIcon } from "../../../Settings";
 import ConfigAccountButton from "../Components/ConfigAccountButton";
 import ConfigContentButton from "../Components/ConfigContentButton";
 import { AxisLocker } from "../Functions/AxisLocker";
 import { LoginState } from "../../../atoms/login";
-import { Characters, IAccounts } from "../../../atoms/data";
+import { Accounts } from "../../../atoms/data";
+import DragContents from "./DragContents";
 interface IStyle {
   loggined: boolean;
 }
@@ -101,20 +102,12 @@ export const NameContainer = styled.div`
 interface IProps {
   DragHandleProps: DraggableProvidedDragHandleProps | null | undefined;
   AccountName: string;
-  CharacterOrder: string[];
-  setAccount: SetterOrUpdater<IAccounts[]>;
   index: number;
 }
 
-function DragCharacters({
-  DragHandleProps,
-  AccountName,
-  CharacterOrder,
-  setAccount,
-  index,
-}: IProps) {
+function DragCharacters({ DragHandleProps, AccountName, index }: IProps) {
   const loggined = useRecoilValue(LoginState);
-  const characters = useRecoilValue(Characters);
+  const [accountOrder, setAccount] = useRecoilState(Accounts);
   const dragCharacterHandler = (dragInfo: DropResult) => {
     const { destination, source } = dragInfo;
     if (!destination) return;
@@ -132,7 +125,7 @@ function DragCharacters({
     });
     return;
   };
-
+  const { characterOrder, characters } = accountOrder[index];
   return (
     <DragDropContext onDragEnd={dragCharacterHandler}>
       <Droppable droppableId={AccountName}>
@@ -140,7 +133,7 @@ function DragCharacters({
           <Container loggined={loggined}>
             <div ref={provided.innerRef} {...provided.droppableProps}>
               <ConfigAccountButton AccountName={AccountName} />
-              {CharacterOrder.map((CharacterName, index) => {
+              {characterOrder.map((CharacterName, index) => {
                 const chracter = characters.find(
                   (chara) => chara.characterName === CharacterName
                 );
@@ -186,7 +179,7 @@ function DragCharacters({
               })}
               {provided.placeholder}
             </div>
-            {/* <DragContents AccountName={AccountName} /> */}
+            <DragContents index={index} />
             <DragAccountBtn {...DragHandleProps} />
           </Container>
         )}

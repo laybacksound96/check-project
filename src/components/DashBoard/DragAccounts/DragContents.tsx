@@ -18,6 +18,7 @@ import { getKey } from "../Functions/CalculateCheckbox";
 import { Gates } from "../../../atoms/Settings/Gates";
 import { ContentSetting } from "../../../atoms/Settings/ContentSetting";
 import { LoginState } from "../../../atoms/login";
+import { Accounts } from "../../../atoms/data";
 const Name = styled.div`
   display: flex;
   flex-direction: column;
@@ -39,50 +40,28 @@ const ColumnContainer = styled.div`
 `;
 
 interface IProps {
-  AccountName: string;
+  index: number;
 }
-const DragContents = ({ AccountName }: IProps) => {
+const DragContents = ({ index }: IProps) => {
   const [openModal] = useModal();
   const loggined = useRecoilValue(LoginState);
   const contentsFrequency = useRecoilValue(ContentsFrequency);
-  const gates = useRecoilValue(Gates);
-  const [{ [AccountName]: contentsOrder }, setContentsOrder] =
-    useRecoilState(ContentsOrder);
-  const { [AccountName]: characterOrder } = useRecoilValue(CharacterOrder);
-  const { [AccountName]: contentSetting } = useRecoilValue(ContentSetting);
+  const [accountOrder, setAccount] = useRecoilState(Accounts);
+  const { characterOrder, contentsOrder } = accountOrder[index];
   const dragContentHandler = (dragInfo: DropResult) => {
-    const { destination, source } = dragInfo;
-    if (!destination) return;
-    if (destination?.droppableId !== source.droppableId) return;
-    setContentsOrder((prev) => {
-      const copiedOrder = [...prev[AccountName]];
-      const target = copiedOrder[source.index];
-      copiedOrder.splice(source.index, 1);
-      copiedOrder.splice(destination?.index, 0, target);
-      return { ...prev, [AccountName]: copiedOrder };
-    });
-    return;
+    // const { destination, source } = dragInfo;
+    // if (!destination) return;
+    // if (destination?.droppableId !== source.droppableId) return;
+    // setContentsOrder((prev) => {
+    //   const copiedOrder = [...prev[AccountName]];
+    //   const target = copiedOrder[source.index];
+    //   copiedOrder.splice(source.index, 1);
+    //   copiedOrder.splice(destination?.index, 0, target);
+    //   return { ...prev, [AccountName]: copiedOrder };
+    // });
+    // return;
   };
-  useEffect(() => {
-    setContentsOrder((prev) => {
-      const visibleArray: string[] = [];
-      for (let index in characterOrder) {
-        const characterName = characterOrder[index];
-        for (let contentName in contentSetting[characterName]) {
-          const { isVisible } = contentSetting[characterName][contentName];
-          if (visibleArray.includes(contentName)) continue;
-          if (isVisible) visibleArray.push(contentName);
-        }
-      }
-      const CopiedOrder = [...prev[AccountName]].filter((name) =>
-        visibleArray.includes(name)
-      );
-      const filteredArray = visibleArray.filter(
-        (name) => !CopiedOrder.includes(name)
-      );
-      return { ...prev, [AccountName]: [...CopiedOrder, ...filteredArray] };
-    });
-  }, [AccountName, characterOrder, contentSetting, setContentsOrder]);
+
   return (
     <>
       <DragDropContext onDragEnd={dragContentHandler}>
@@ -111,7 +90,7 @@ const DragContents = ({ AccountName }: IProps) => {
                           ? `${ContentName.slice(0, 7)}...`
                           : ContentName}
                       </Name>
-                      {characterOrder.map((CharacterName) => {
+                      {/* {characterOrder.map((CharacterName) => {
                         const gate =
                           gates[AccountName][CharacterName][ContentName];
                         const Key = getKey(ContentName, gate);
@@ -128,7 +107,7 @@ const DragContents = ({ AccountName }: IProps) => {
                             Color={color}
                           />
                         );
-                      })}
+                      })} */}
                     </ColumnContainer>
                   )}
                 </Draggable>

@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { faEye } from "@fortawesome/free-regular-svg-icons";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { LoginState } from "../../../atoms/login";
-import { Accounts, Characters } from "../../../atoms/data";
+import { Accounts } from "../../../atoms/data";
 
 export const ButtonContainer = styled.div`
   display: flex;
@@ -31,37 +31,37 @@ const ConfigContentButton = ({
 }) => {
   const [ConfigAccount] = useModal();
   const loggined = useRecoilValue(LoginState);
-  const [characters, setCharacters] = useRecoilState(Characters);
+
   const [accounts, setAccounts] = useRecoilState(Accounts);
   const turnOffVisible = () => {
-    setCharacters((prev) => {
-      const copiedPrev = [...prev];
-      const Index = copiedPrev.findIndex(
-        (chara) => chara.characterName === CharacterName
-      );
-      copiedPrev[Index] = {
-        ...copiedPrev[Index],
-        isVisible: false,
-        isGoldCharacter: false,
-      };
-      if (Index === -1) return prev;
-      return copiedPrev;
-    });
-    setAccounts((prev) => {
-      const copiedPrev = [...prev];
-      const Index = copiedPrev.findIndex(
-        (chara) => chara.accountName === AccountName
-      );
-      if (Index === -1) return prev;
-      const copiedAccount = { ...copiedPrev[Index] };
-      const copiedCharacterOrder = [...copiedAccount.characterOrder];
-      const charaIndex = copiedCharacterOrder.indexOf(CharacterName);
-      if (charaIndex === -1) return prev;
-      copiedCharacterOrder.splice(charaIndex, 1);
-      copiedAccount.characterOrder = copiedCharacterOrder;
-      copiedPrev[Index] = copiedAccount;
-      return copiedPrev;
-    });
+    // setCharacters((prev) => {
+    //   const copiedPrev = [...prev];
+    //   const Index = copiedPrev.findIndex(
+    //     (chara) => chara.characterName === CharacterName
+    //   );
+    //   copiedPrev[Index] = {
+    //     ...copiedPrev[Index],
+    //     isVisible: false,
+    //     isGoldCharacter: false,
+    //   };
+    //   if (Index === -1) return prev;
+    //   return copiedPrev;
+    // });
+    // setAccounts((prev) => {
+    //   const copiedPrev = [...prev];
+    //   const Index = copiedPrev.findIndex(
+    //     (chara) => chara.accountName === AccountName
+    //   );
+    //   if (Index === -1) return prev;
+    //   const copiedAccount = { ...copiedPrev[Index] };
+    //   const copiedCharacterOrder = [...copiedAccount.characterOrder];
+    //   const charaIndex = copiedCharacterOrder.indexOf(CharacterName);
+    //   if (charaIndex === -1) return prev;
+    //   copiedCharacterOrder.splice(charaIndex, 1);
+    //   copiedAccount.characterOrder = copiedCharacterOrder;
+    //   copiedPrev[Index] = copiedAccount;
+    //   return copiedPrev;
+    // });
   };
   return (
     <>

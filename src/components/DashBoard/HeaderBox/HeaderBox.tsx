@@ -111,7 +111,7 @@ const HeaderBox = ({ userData, isSync }: IProps) => {
             </>
           )}
         </h1>
-        <AccountGold />
+        {/* <AccountGold /> */}
       </header>
       <Contents />
     </HeaderBoxStyle>

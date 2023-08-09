@@ -81,11 +81,12 @@ const DragAccounts = () => {
                   <UncheckAllButton handleUncheck={uncheckHandler} />
                 </MenuBar>
               )}
-              {accountOrder.map(({ accountName, characterOrder }, index) => {
+              {accountOrder.map(({ _id, characters }, index) => {
+                const accountName = _id ? _id : characters[0].characterName;
                 return (
                   <Draggable
-                    draggableId={`draggableID_${accountName}`}
-                    key={`draggableID_${accountName}`}
+                    draggableId={accountName}
+                    key={accountName}
                     index={index}
                     isDragDisabled={!loggined}
                   >
@@ -101,8 +102,6 @@ const DragAccounts = () => {
                         <DragCharacters
                           DragHandleProps={provided.dragHandleProps}
                           AccountName={accountName}
-                          CharacterOrder={characterOrder}
-                          setAccount={setAccount}
                           index={index}
                         />
                       </div>
