@@ -41,25 +41,31 @@ const ColumnContainer = styled.div`
 
 interface IProps {
   index: number;
+  AccountName: string;
 }
-const DragContents = ({ index }: IProps) => {
+const DragContents = ({ index: AccountIndex, AccountName }: IProps) => {
   const [openModal] = useModal();
   const loggined = useRecoilValue(LoginState);
   const contentsFrequency = useRecoilValue(ContentsFrequency);
   const [accountOrder, setAccount] = useRecoilState(Accounts);
-  const { characterOrder, contentsOrder } = accountOrder[index];
+  const { characterOrder, contentsOrder, characters } =
+    accountOrder[AccountIndex];
   const dragContentHandler = (dragInfo: DropResult) => {
-    // const { destination, source } = dragInfo;
-    // if (!destination) return;
-    // if (destination?.droppableId !== source.droppableId) return;
-    // setContentsOrder((prev) => {
-    //   const copiedOrder = [...prev[AccountName]];
-    //   const target = copiedOrder[source.index];
-    //   copiedOrder.splice(source.index, 1);
-    //   copiedOrder.splice(destination?.index, 0, target);
-    //   return { ...prev, [AccountName]: copiedOrder };
-    // });
-    // return;
+    const { destination, source } = dragInfo;
+    if (!destination) return;
+    if (destination?.droppableId !== source.droppableId) return;
+    setAccount((prev) => {
+      const copiedPrev = [...prev];
+      const copiedAccout = { ...copiedPrev[AccountIndex] };
+      const copiedOrder = [...copiedAccout.contentsOrder];
+      const target = copiedOrder[source.index];
+      copiedOrder.splice(source.index, 1);
+      copiedOrder.splice(destination?.index, 0, target);
+      copiedAccout.contentsOrder = copiedOrder;
+      copiedPrev[AccountIndex] = copiedAccout;
+      return copiedPrev;
+    });
+    return;
   };
 
   return (
@@ -90,24 +96,27 @@ const DragContents = ({ index }: IProps) => {
                           ? `${ContentName.slice(0, 7)}...`
                           : ContentName}
                       </Name>
-                      {/* {characterOrder.map((CharacterName) => {
-                        const gate =
-                          gates[AccountName][CharacterName][ContentName];
-                        const Key = getKey(ContentName, gate);
+                      {characterOrder.map((CharacterName) => {
+                        const chara = characters.find(
+                          (elem) => elem.characterName === CharacterName
+                        );
+                        if (!chara) return null;
+                        const contents = chara.contents.find(
+                          (elem) => elem.contentName === ContentName
+                        );
+                        if (!contents) return null;
 
-                        const color = contentsFrequency.hasOwnProperty(Key)
-                          ? contentsFrequency[Key].Color
-                          : "";
                         return (
                           <CheckBoxButton
-                            key={CharacterName + ContentName}
-                            CharacterName={CharacterName}
-                            AccountName={AccountName}
-                            ContentName={ContentName}
-                            Color={color}
+                            contentName={ContentName}
+                            characterName={CharacterName}
+                            key={CharacterName}
+                            isVisible={contents.isVisible}
+                            index={AccountIndex}
+                            Color={""}
                           />
                         );
-                      })} */}
+                      })}
                     </ColumnContainer>
                   )}
                 </Draggable>

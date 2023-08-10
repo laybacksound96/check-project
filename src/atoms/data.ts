@@ -8,6 +8,7 @@ export interface IAccounts {
   characterOrder: string[];
   contentsOrder: string[];
   characters: ICharacters[];
+  checks: { contentName: string; characterName: string }[];
 }
 export interface ICharacters {
   characterName: string;

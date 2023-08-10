@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   DragDropContext,
   Draggable,
@@ -12,7 +12,6 @@ import DragCharacters from "./DragCharacters";
 import AddAccountButton from "../Components/AddAccountButton";
 import { LoginState } from "../../../atoms/login";
 import UncheckAllButton from "../Components/UncheckAllContents";
-import makeUnchecked from "../Functions/makeUnchecked";
 import { Accounts } from "../../../atoms/data";
 
 const DragBoxStyle = styled.div`
@@ -63,11 +62,15 @@ const DragAccounts = () => {
   };
 
   const uncheckHandler = () => {
-    // setContentSetting((prev) => {
-    //   const newSetting = makeUnchecked(prev);
-    //   if (!newSetting) return prev;
-    //   return newSetting;
-    // });
+    setAccount((prev) => {
+      const copiedPrev = [...prev];
+      copiedPrev.forEach((elem, index) => {
+        const copiedAccout = { ...copiedPrev[index] };
+        copiedAccout.checks = [];
+        copiedPrev[index] = copiedAccout;
+      });
+      return copiedPrev;
+    });
   };
 
   return (

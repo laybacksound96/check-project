@@ -49,6 +49,7 @@ const makeDataResult = (data: IFetchedCharacter[]): IAccounts => {
     characterOrder,
     characters,
     contentsOrder,
+    checks: [],
   };
 };
 export default makeDataResult;

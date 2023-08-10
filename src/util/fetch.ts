@@ -1,4 +1,5 @@
 import axios, { AxiosResponse } from "axios";
+import { IAccounts } from "../atoms/data";
 
 export interface IFetchedData {
   user_id: string;
@@ -53,7 +54,10 @@ export async function search(
     }
   }, 1000);
 }
-export async function patchUser(id: string, data: any): Promise<number> {
+export async function patchUser(
+  id: string,
+  data: IAccounts[]
+): Promise<number> {
   const token = localStorage.getItem("accessToken");
   try {
     if (!data || !token) return 401;

@@ -179,7 +179,7 @@ function DragCharacters({ DragHandleProps, AccountName, index }: IProps) {
               })}
               {provided.placeholder}
             </div>
-            <DragContents index={index} />
+            <DragContents index={index} AccountName={AccountName} />
             <DragAccountBtn {...DragHandleProps} />
           </Container>
         )}
