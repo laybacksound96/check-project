@@ -17,8 +17,10 @@
 
 각 캐릭터는 다양한 컨텐츠를 진행할 수 있으며, 진행할 수 있는 컨텐츠의 종류와 개수는 캐릭터마다 다릅니다.
 
+![image](https://github.com/laybacksound96/check-project/assets/85489519/25c3851d-74a6-40ac-a292-60ef28b6c60d)
+
 ![image](https://github.com/laybacksound96/check-project/assets/85489519/521322e8-e21b-4bf6-a3e7-155981b6b59d)
-![image](https://github.com/laybacksound96/check-project/assets/85489519/3753cb40-4828-4912-9641-e729ec52bb58)
+
 
 문제는 **캐릭터별 컨텐츠들이 너무 많아, 어떤 컨텐츠를 얼마나 진행했는지 알기 어렵다는 점**이었습니다.
 
