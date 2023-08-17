@@ -21,31 +21,108 @@ Checksheet는 온라인 게임 '로스트 아크' 의 **To-do** **SPA** 입니�
 
 ![image](https://github.com/laybacksound96/check-project/assets/85489519/382c2163-95d4-4316-a785-44d6ac80c792)
 
-CheckSheet는 이러한 문제를 해결하고자 제작하게 되었습니다.
+## 이렇게 구현했습니다
 
-## Checksheet는 다음과 같은 기능을 제공합니다
+CheckSheet는 아래의 사진과 같은 문제점을 해결하고자 제작하게 되었습니다.
 
-### 로그인
+![image](https://github.com/laybacksound96/check-project/assets/85489519/25c3851d-74a6-40ac-a292-60ef28b6c60d)
+
+![ezgif com-gif-maker](https://github.com/laybacksound96/check-project/assets/85489519/466ab7d8-96af-4d23-9fd3-68b921597d87)
+
+### 기본 구현
+
+본 프로젝트의 대시보드에서는 두 개의 컴포넌트를 렌더링합니다.
+
+상단 컴포넌트는 남아있는 컨텐츠를 표시하고, 하단 컴포넌트는 컨텐츠 수행여부를 체크하는 체크박스입니다.
+
+위 사진과도 같은 문제점을 해결하기위해서,
+
+저는 **하나의 공유되는 상태가 여러 컴포넌트에 영향을 미치는 구조를 구현**해야 했습니다.
+
+이를 위해 상태관리 라이브러리인 `Recoil` 과 `React hooks` 인 `useEffect`를 사용하였습니다.
+
+체크박스를 클릭할 때마다 `Recoil`의 전역 상태의 `setter` 함수가 호출되어 상태를 변경합니다.
+
+이 때, `useEffect` 훅은 전역 상태를 구독하고있습니다.
+
+따라서 상태가 변경될때마다 전역 상태에 저장된 남아있는 컨텐츠의 개수 등을 계산해서 리렌더링하게 됩니다.
+
+
+![config_gif](https://github.com/laybacksound96/check-project/assets/85489519/d809d35e-51b0-4cb2-8131-c2e0ced02ff8)
+
+### 데이터 분류와 설정
+
+앞서 언급한 컨텐츠는 같은 컨텐츠라도 단계별, 난이도별로 차이가 있어 구분하고 싶었습니다.
+
+- 컨텐츠별로 단계(이하 '관문')가 있고, 단계의 개수가 다릅니다. 
+- 관문은 유저에 의해 두 개의 난이도로 선택될 수 있습니다. ('쉬움' , '어려움')
+
+따라서 같은 컨텐츠라 하더라도 다양한 경우의 수가 나올 수 있습니다.
+
+이 다양한 데이터들을 합산하지 않고 구분할 수 있어야하며 시각적으로도 시인성이 있기를 바랬습니다.
+
+이러한 구현을 위해 **데이터들을 키값으로 분류하여 오브젝트에 저장**하였습니다.
+
+```javascript
+  {"컨텐츠A_1관문-쉬움_2관문-어려움" : 
+      {색상 : "#....",
+       개수 : 3 },
+   "컨텐츠A_1관문-어려움_2관문-어려움" : 
+      {색상 : "#....",
+       개수 : 4 } ,
+       ....
+  }
+```
+오브젝트의 key는 중복될 수 없다는 점에 착안해서 구현하였습니다. 
+
+
+### 로그인과 인증
+
 ![login_gif](https://github.com/laybacksound96/check-project/assets/85489519/7804fa56-1235-436d-9768-f405b568aff7)
-- OAuth2.0와 [`Discord API`](https://discord.com/developers/applications/1107519062570975293/oauth2/general)를 활용하여 Discord 소셜로그인을 지원합니다.
+- 본 프로젝트는 OAuth2.0 및 [`Discord API`](https://discord.com/developers/applications/1107519062570975293/oauth2/general)를 활용하여 Discord 소셜로그인을 지원합니다.
+
+사용자 인증은 `Json Web Token`을 사용합니다. 
+
+기존에 `Session` 방식의 인증방식을 학습한 적이 있어, `Session` 방식과의 차이가 궁금하여 JWT방식의 인증방식을 학습하여 적용하였습니다. 
+
+JWT로 발급한 Access Token은 체크박스 클릭, 컴포넌트 드래그 등의 유저 정보를 변경하고자 하는 요청에 쓰입니다.
+
+백엔드 서버의 middleware에서 이러한 유효성 검사를 진행하며, 유효한 토큰이 아니거나 토큰이 없을 경우 등의 에러 핸들러를 구현하였습니다.
+
+
 
 ### UI
 ![dragNdrop_gif](https://github.com/laybacksound96/check-project/assets/85489519/b19ecc42-9078-4e04-8ceb-78548904e9b9)
-- 다양한 요소에 Drag-and-Drop 기능([`react-beautiful-dnd`](https://github.com/atlassian/react-beautiful-dnd))을 제공합니다 
+- 다양한 요소에 Drag-and-Drop 기능([`react-beautiful-dnd`](https://github.com/atlassian/react-beautiful-dnd))을 제공합니다.
 
-![click](https://github.com/laybacksound96/check-project/assets/85489519/96a67aca-b18b-425e-bb0b-a32c1465811e)
-
-- 남아있는 할 일의 개수를 확인합니다. 
-
-![config_gif](https://github.com/laybacksound96/check-project/assets/85489519/d809d35e-51b0-4cb2-8131-c2e0ced02ff8)
-- 할 일에 대한 세부적인 기능을 설정할 수 있는 모달들을 구현하였습니다.
-- 설정값에 따라 할 일들의 색상을 바꿔 높은 시인성을 추구하였습니다.
 
 ### 검색
 ![search_gif](https://github.com/laybacksound96/check-project/assets/85489519/28aea34a-0c72-4523-b5f3-f08580e5d040)
 
 - 다른 유저를 검색할 수 있으며, 실시간 자동완성기능이 있습니다.
-- 이 기능은 [op.gg](https://www.op.gg/)의 검색 방식을 클로닝하였습니다.
+- 이 기능은 [다른 검색기능이 있는 웹사이트](https://www.op.gg/)의 검색 방식을 클로닝하였습니다.
+
+해당 기능의 로직을 파악하기 위해 해당 웹사이트에서 개발자도구로 네트워크통신을 검사했습니다. 
+
+input박스에서 입력을 마치고 약 1초가 지나야 요청을 하는 것을 확인하였고, 이 아이디어를 응용하여 프로젝트에 적용했습니다.
+
+#### 겪은 문제
+
+해당 검색기능을 구현한 뒤 배포단계에서 사용자들의 사용방식을 관찰한 결과 잘 동작하지 않았음을 알게되었습니다.
+
+유저들이 검색이 끝날 때 까지 기다리지 않는다는 것이었습니다.
+
+이러한 문제를 해결하고자 다음과 같은 방법을 적용하였습니다. 
+
+`1. DB 검색 쿼리의 속도를 향상시킴`
+
+`2. 통신중에 (...) 등의 '검색 중'을 표현하는 아이콘을 표시하여 유저에게 기다릴 수 있게 하기`
+
+1번의 개선방법으로는 DB의 지역 설정을 미국에서 서울로 바꿈으로서 해결하였습니다. 프로젝트의 DB는 MongoDB Atlas로 Cloud DB였습니다.
+2번은 현재 개발진행중에 있습니다.
+
+
+
 
 ## 프로젝트에 사용된 기술스택 및 의존성
 
