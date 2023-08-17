@@ -2,6 +2,8 @@
 
 Checksheet는 온라인 게임 '로스트 아크' 의 **To-do** **SPA** 입니다.
 
+친구들과 게임 이용중에 느낀 불편함을 해소하고자 제작하게 된 프로젝트입니다.
+
 ## 제작 배경
 
 ![image](https://github.com/laybacksound96/check-project/assets/85489519/92fd3923-2e51-45d7-9e81-e1f024b9172a)
