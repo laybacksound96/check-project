@@ -1,6 +1,4 @@
 
-![image](https://github.com/laybacksound96/check-project/assets/85489519/6c3514bd-a6e1-4ec2-8688-9cade7da415d)
-<h1 align="center"><a href="https://www.checksheet.link/">Checksheet.link</a></h1>
 
 <div align="center">
 
