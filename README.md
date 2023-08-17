@@ -1,9 +1,6 @@
 # Checksheet.link
 
-온라인 게임 **로스트아크**의 **To-do** [`React`](https://facebook.github.io/react/) **SPA**
-
-</div>
- 
+Checksheet는 온라인 게임 '로스트 아크' 의 **To-do** **SPA** 입니다.
 
 ## 제작 배경
 
