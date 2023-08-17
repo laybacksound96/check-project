@@ -1,7 +1,5 @@
 
 
-<div align="center">
-
 온라인 게임 **로스트아크**의 **To-do** [`React`](https://facebook.github.io/react/) **SPA**
 
 로스트아크엔 주에 한 회씩 할 수 있는 다양한 컨텐츠들이 있습니다.
