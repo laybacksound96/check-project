@@ -10,6 +10,7 @@ import { Accounts } from "../atoms/data";
 import { ContentsFrequency } from "../atoms/frequency";
 import { useRouteLoaderData } from "react-router-dom";
 import { loadToken } from "../util/auth";
+import refreshLevel from "../components/DashBoard/Functions/refreshLevel";
 
 const DashboardStyle = styled.div`
   margin-top: 5px;
@@ -32,21 +33,12 @@ function Dashboard({ userData }: IUserData) {
       setAccounts(userData.data.accountOrder);
       if (!loginToken) return;
       if (loginToken.user_id === userData.user_id) {
+        refreshLevel(userData.data.accountOrder, setAccounts);
         setLoginState(true);
       }
     }
   }, []);
 
-  // useEffect(() => {
-  //   console.log("accounts");
-  //   console.log(accounts);
-  //   console.log("  ");
-  // }, [accounts]);
-  // useEffect(() => {
-  //   console.log("contentsFrequency");
-  //   console.log(contentsFrequency);
-  //   console.log("  ");
-  // }, [contentsFrequency]);
   return (
     <>
       <Modal />
