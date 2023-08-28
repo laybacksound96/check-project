@@ -1,5 +1,6 @@
 import { IAccounts } from "../atoms/data";
-import { ISync } from "../page/Dashboard";
+import { ISync } from "../components/DashBoard/HeaderBox/HeaderBox";
+
 import { patchUser } from "./fetch";
 
 let lastCallTimeout: any = null;

@@ -4,7 +4,12 @@ import AccountGold from "./AccountGold";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRotate, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { IFetchedData } from "../../../util/fetch";
-import { ISync } from "../../../page/Dashboard";
+
+import { useEffect, useState } from "react";
+import { useRecoilValue } from "recoil";
+import { Accounts } from "../../../atoms/data";
+import patchData from "../../../util/patchData";
+import { LoginState } from "../../../atoms/login";
 
 interface IStyle {
   isSync: ISync;
@@ -77,10 +82,6 @@ const Error = styled.p`
   color: red;
 `;
 
-interface IProps {
-  userData: string | IFetchedData;
-  isSync: ISync;
-}
 const makeName = (data: IFetchedData) => {
   if (data.global_name) {
     return data.global_name;
@@ -92,12 +93,25 @@ const makeName = (data: IFetchedData) => {
     }
   }
 };
-const HeaderBox = ({ userData, isSync }: IProps) => {
+interface IUserData {
+  userData: IFetchedData | "GUEST";
+}
+export type ISync = "success" | "error" | "inprogress" | null;
+const HeaderBox = ({ userData }: IUserData) => {
+  const accounts = useRecoilValue(Accounts);
+  const loginState = useRecoilValue(LoginState);
+  const [isSync, setIsSync] = useState<ISync>(null);
+  useEffect(() => {
+    if (userData !== "GUEST" && loginState) {
+      patchData(userData.user_id, accounts, setIsSync);
+    }
+  }, [accounts, userData, loginState]);
+
   return (
     <HeaderBoxStyle isSync={isSync}>
       <header>
         <h1>
-          {typeof userData === "string" ? (
+          {userData === "GUEST" ? (
             <>{userData}님의 체크시트</>
           ) : (
             <>{makeName(userData)}님의 체크시트</>
