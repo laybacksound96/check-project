@@ -1,6 +1,6 @@
 import { useRecoilState } from "recoil";
 import { fetchSearchAccount } from "../../../../util/fetch";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Input } from "./AddContent";
 import CharacterContainer from "./components/CharacterContainer";

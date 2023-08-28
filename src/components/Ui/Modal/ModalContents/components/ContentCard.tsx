@@ -17,7 +17,7 @@ import { ContentSetting } from "../../../../../atoms/Settings/ContentSetting";
 import { Gates, IGatesSetting } from "../../../../../atoms/Settings/Gates";
 import useSetGatesVisible from "../../../../../CustomHooks/Settings/useSetGatesVisible";
 import commander from "../../../../../json/commander.json";
-import { getKey } from "../../../../DashBoard/Functions/CalculateCheckbox";
+
 import { ContentsFrequency } from "../../../../../atoms/frequency";
 import getLowerLightnessColor from "../../../../DashBoard/Functions/getLowerLightnessColor";
 interface IStyel {

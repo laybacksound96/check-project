@@ -4,7 +4,6 @@ import {
   Droppable,
   Draggable,
 } from "react-beautiful-dnd";
-
 import { AxisLocker } from "../Functions/AxisLocker";
 import CheckBoxButton from "../Components/CheckBoxButton";
 import styled from "styled-components";
@@ -12,13 +11,10 @@ import { dragIcon } from "../../../Settings";
 import useModal from "../../../CustomHooks/Modal/useModal";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { ContentsFrequency } from "../../../atoms/frequency";
-import { CharacterOrder, ContentsOrder } from "../../../atoms/Settings/Orders";
-import React, { useEffect } from "react";
-import { getKey } from "../Functions/CalculateCheckbox";
-import { Gates } from "../../../atoms/Settings/Gates";
-import { ContentSetting } from "../../../atoms/Settings/ContentSetting";
+import React from "react";
 import { LoginState } from "../../../atoms/login";
 import { Accounts } from "../../../atoms/data";
+
 const Name = styled.div`
   display: flex;
   flex-direction: column;
