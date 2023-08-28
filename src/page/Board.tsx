@@ -2,6 +2,7 @@ import {
   Await,
   LoaderFunction,
   defer,
+  useLoaderData,
   useParams,
   useRouteLoaderData,
 } from "react-router-dom";
@@ -22,7 +23,7 @@ interface IData {
   userData: IFetchedData;
 }
 const Board = () => {
-  const data = useRouteLoaderData("board-userData");
+  const { userData } = useLoaderData() as IData;
   const token = useRouteLoaderData("root") as ReturnType<typeof loadToken>;
   const { userId } = useParams();
   const isEditable = token?.user_id === userId;
@@ -30,9 +31,9 @@ const Board = () => {
   return (
     <>
       <Suspense fallback={<p>Loading...</p>}>
-        <Await resolve={data}>
-          {({ userData }: IData) => {
-            return <Dashboard userData={userData} isEditable={isEditable} />;
+        <Await resolve={userData}>
+          {(data) => {
+            return <Dashboard userData={data} isEditable={isEditable} />;
           }}
         </Await>
       </Suspense>

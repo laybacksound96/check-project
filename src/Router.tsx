@@ -6,8 +6,6 @@ import { loadToken } from "./util/auth";
 import LayoutBoard from "./page/LayoutBoard";
 import Board, { loadBoardData } from "./page/Board";
 import Dashboard from "./page/Dashboard";
-import NotFoundData from "./components/Errors/ErrorComponent";
-import DragAccounts from "./components/DashBoard/DragAccounts/DragAccounts";
 import ErrorComponent from "./components/Errors/ErrorComponent";
 
 export const router = createBrowserRouter([
