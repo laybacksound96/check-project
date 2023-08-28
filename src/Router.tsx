@@ -6,8 +6,9 @@ import { loadToken } from "./util/auth";
 import LayoutBoard from "./page/LayoutBoard";
 import Board, { loadBoardData } from "./page/Board";
 import Dashboard from "./page/Dashboard";
-import NotFoundData from "./components/Errors/NotFoundData";
+import NotFoundData from "./components/Errors/ErrorComponent";
 import DragAccounts from "./components/DashBoard/DragAccounts/DragAccounts";
+import ErrorComponent from "./components/Errors/ErrorComponent";
 
 export const router = createBrowserRouter([
   {
@@ -35,7 +36,9 @@ export const router = createBrowserRouter([
             id: "board-userData",
             loader: loadBoardData,
             element: <Board />,
-            errorElement: <NotFoundData />,
+            errorElement: (
+              <ErrorComponent message="존재하지 않는 유저입니다." />
+            ),
           },
         ],
       },

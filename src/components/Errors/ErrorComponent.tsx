@@ -12,14 +12,15 @@ const Container = styled.div`
     margin-bottom: 10px;
   }
 `;
-const NotFoundData = () => {
+
+const ErrorComponent = ({ message }: { message: string }) => {
   return (
     <Container>
       <span>
         <FontAwesomeIcon icon={faCircleExclamation} />
       </span>
-      <p>존재하지 않는 유저입니다.</p>
+      <p>{message}</p>
     </Container>
   );
 };
-export default NotFoundData;
+export default ErrorComponent;
