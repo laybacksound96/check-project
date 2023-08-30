@@ -8,7 +8,7 @@ export interface IFetchedData {
   discriminator: string;
   banner_color: string;
   data: {
-    accountOrder: [];
+    accountOrder: IAccounts[];
   };
   ownCharacters: string[];
 }
@@ -73,7 +73,18 @@ export async function patchUser(
     throw error;
   }
 }
-export async function fetchSearchAccount(inputValue: string): Promise<[]> {
+
+export interface IFetchData {
+  ServerName: string;
+  CharacterName: string;
+  CharacterLevel: number;
+  CharacterClassName: string;
+  ItemAvgLevel: string;
+  ItemMaxLevel: string;
+}
+export async function fetchAccountData(
+  inputValue: string
+): Promise<IFetchData[]> {
   try {
     const response = await axios.post(
       `${url}api/character`,

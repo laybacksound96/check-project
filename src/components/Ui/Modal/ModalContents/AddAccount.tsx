@@ -1,5 +1,5 @@
 import { useRecoilState } from "recoil";
-import { fetchSearchAccount } from "../../../../util/fetch";
+import { fetchAccountData } from "../../../../util/fetch";
 import React, { useState } from "react";
 import styled from "styled-components";
 import { Input } from "./AddContent";
@@ -60,7 +60,7 @@ const AddAccount = () => {
     //   return;
     // }
     try {
-      const data = await fetchSearchAccount(inputValue);
+      const data = await fetchAccountData(inputValue);
       if (!data) {
         setError({ message: "서버에 존재하지 않는 이름이에요" });
         return;
