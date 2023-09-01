@@ -14,7 +14,7 @@ const Modal = () => {
     <>
       {isModalOpen && (
         <ModalContainer onClose={() => close()}>
-          {modalType === CONFIG_CONTENT && <ConfigContent prop={modalProp} />}
+          {/* {modalType === CONFIG_CONTENT && <ConfigContent prop={modalProp} />} */}
           {modalType === CONFIG_ACCOUNT && <ConfigAccount />}
           {modalType === ADD_CONTENT && <AddContent />}
           {modalType === ADD_ACCOUNT && <AddAccount />}

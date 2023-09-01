@@ -1,38 +1,26 @@
-import {
-  Await,
-  LoaderFunction,
-  defer,
-  useParams,
-  useRouteLoaderData,
-} from "react-router-dom";
+import { Await, LoaderFunction, defer, useLoaderData } from "react-router-dom";
 import { IFetchedData, loadUserData } from "../util/fetch";
 import { Suspense } from "react";
 import Dashboard from "./Dashboard";
-import { loadToken } from "../util/auth";
 
 export const loadBoardData: LoaderFunction = async ({ request, params }) => {
   const id = params.userId;
   if (typeof id === "undefined") {
     throw new Error("Invalid id");
   }
-  const userData = await loadUserData(id);
-  return defer({ userData });
+  return defer({ data: loadUserData(id) });
 };
 interface IData {
-  userData: IFetchedData;
+  data: Promise<IFetchedData>;
 }
 const Board = () => {
-  const data = useRouteLoaderData("board-userData");
-  const token = useRouteLoaderData("root") as ReturnType<typeof loadToken>;
-  const { userId } = useParams();
-  const isEditable = token?.user_id === userId;
-
+  const { data } = useLoaderData() as IData;
   return (
     <>
-      <Suspense fallback={<p>Loading...</p>}>
-        <Await resolve={data} errorElement={<div>error</div>}>
-          {({ userData }: IData) => {
-            return <Dashboard userData={userData} login={isEditable} />;
+      <Suspense fallback={<p>유저정보를 기다리는 중이에요...</p>}>
+        <Await resolve={data}>
+          {(data) => {
+            return <Dashboard userData={data} />;
           }}
         </Await>
       </Suspense>

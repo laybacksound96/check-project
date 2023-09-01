@@ -1,3 +1,7 @@
+
+## version 1.0.1 변경사항
+- 캐릭터 탭의 버튼이 작동하지 않는 문제 해결
+=======
 # Checksheet.link
 
 Checksheet는 온라인 게임 '로스트 아크' 의 **To-do** **SPA** 입니다.

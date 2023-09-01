@@ -14,6 +14,7 @@ import { ISearchedData, search } from "../../../util/fetch";
 import { useRecoilState } from "recoil";
 import { IsFocused } from "../../../atoms/ui";
 import UserCard from "./UserCard";
+import { Link } from "react-router-dom";
 
 const NavConainer = styled.div`
   padding: 0px 20px;
@@ -190,7 +191,7 @@ const Nav = () => {
   return (
     <NavConainer>
       <div style={{ flex: 1 }}>
-        <a href="/">CheckSheet.Link</a>
+        <Link to="/">CheckSheet.Link</Link>
       </div>
       <SearchContainer>
         <InputContainer>

@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from "axios";
+import { IAccounts } from "../atoms/data";
 
-import { IAllAtoms } from "../page/Dashboard";
 export interface IFetchedData {
   user_id: string;
   user_name: string;
@@ -8,7 +8,7 @@ export interface IFetchedData {
   discriminator: string;
   banner_color: string;
   data: {
-    text: string;
+    accountOrder: IAccounts[];
   };
   ownCharacters: string[];
 }
@@ -19,7 +19,8 @@ export interface ISearchedData {
   discriminator: string;
 }
 
-const url = "https://www.checksheet.link/";
+const url2 = "https://www.checksheet.link/";
+const url = "http://localhost:8080/";
 
 export const loadUserData = async (id: string) => {
   const response = await axios.get<IFetchedData>(`${url}user/${id}`);
@@ -53,7 +54,10 @@ export async function search(
     }
   }, 1000);
 }
-export async function patchUser(id: string, data: IAllAtoms): Promise<number> {
+export async function patchUser(
+  id: string,
+  data: IAccounts[]
+): Promise<number> {
   const token = localStorage.getItem("accessToken");
   try {
     if (!data || !token) return 401;
@@ -69,7 +73,18 @@ export async function patchUser(id: string, data: IAllAtoms): Promise<number> {
     throw error;
   }
 }
-export async function fetchSearchAccount(inputValue: string): Promise<[]> {
+
+export interface IFetchData {
+  ServerName: string;
+  CharacterName: string;
+  CharacterLevel: number;
+  CharacterClassName: string;
+  ItemAvgLevel: string;
+  ItemMaxLevel: string;
+}
+export async function fetchAccountData(
+  inputValue: string
+): Promise<IFetchData[]> {
   try {
     const response = await axios.post(
       `${url}api/character`,
