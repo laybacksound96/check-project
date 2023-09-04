@@ -83,6 +83,7 @@ const AddAccount = () => {
   const AddAccountHandler = (data: IFetchedCharacter[]) => {
     if (data.length === 0) return;
     try {
+      console.log(makeDataResult(data));
       setAccounts((prev) => {
         return [...prev, makeDataResult(data)];
       });

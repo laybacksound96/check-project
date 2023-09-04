@@ -7,6 +7,7 @@ import LayoutBoard from "./page/LayoutBoard";
 import Board, { loadBoardData } from "./page/Board";
 import Dashboard from "./page/Dashboard";
 import ErrorComponent from "./components/Errors/ErrorComponent";
+import TestPage from "./page/TestPage";
 
 export const router = createBrowserRouter([
   {
@@ -28,6 +29,10 @@ export const router = createBrowserRouter([
           {
             path: "GUEST",
             element: <Dashboard userData={"GUEST"} />,
+          },
+          {
+            path: "TEST",
+            element: <TestPage />,
           },
           {
             path: ":userId",

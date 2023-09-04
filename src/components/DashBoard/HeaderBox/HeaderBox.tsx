@@ -103,6 +103,7 @@ const HeaderBox = ({ userData }: IUserData) => {
   const [isSync, setIsSync] = useState<ISync>(null);
   useEffect(() => {
     if (userData !== "GUEST" && loginState) {
+      if (!userData.data) return;
       patchData(userData.user_id, accounts, setIsSync);
     }
   }, [accounts, userData, loginState]);

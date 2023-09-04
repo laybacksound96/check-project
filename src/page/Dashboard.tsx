@@ -4,9 +4,14 @@ import Modal from "../components/Ui/Modal/Modal";
 import DragAccounts from "../components/DashBoard/DragAccounts/DragAccounts";
 import { useEffect } from "react";
 import { IFetchedData, fetchAccountData } from "../util/fetch";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import {
+  SetterOrUpdater,
+  useRecoilState,
+  useRecoilValue,
+  useSetRecoilState,
+} from "recoil";
 import { LoginState } from "../atoms/login";
-import { Accounts } from "../atoms/data";
+import { Accounts, IAccounts } from "../atoms/data";
 import { ContentsFrequency } from "../atoms/frequency";
 import { useRouteLoaderData } from "react-router-dom";
 import { loadToken } from "../util/auth";
@@ -19,9 +24,23 @@ const DashboardStyle = styled.div`
 interface IUserData {
   userData: IFetchedData | "GUEST";
 }
-
+function refreshLevel(
+  userData: IFetchedData,
+  setAccounts: SetterOrUpdater<IAccounts[]>
+) {
+  userData.data.accountOrder.forEach((account, index) => {
+    const data = fetchAccountData(account.characters[0].characterName);
+    data.then((resolvedData) => {
+      setAccounts((accounts) => {
+        const copiedAccounts = [...accounts];
+        copiedAccounts[index] = syncData(account, resolvedData);
+        return copiedAccounts;
+      });
+    });
+  });
+}
 function Dashboard({ userData }: IUserData) {
-  const setAccounts = useSetRecoilState(Accounts);
+  const [accounts, setAccounts] = useRecoilState(Accounts);
   const setLoginState = useSetRecoilState(LoginState);
   const loginToken = useRouteLoaderData("root") as ReturnType<typeof loadToken>;
 
@@ -30,24 +49,18 @@ function Dashboard({ userData }: IUserData) {
     if (userData === "GUEST") {
       // GUEST일때 setter 추가
     } else {
-      setAccounts(() => userData.data.accountOrder);
+      setLoginState(true);
+      if (!userData.data) return;
       if (!loginToken) return;
+      setAccounts(() => userData.data.accountOrder);
       if (loginToken.user_id === userData.user_id) {
-        userData.data.accountOrder.forEach((account, index) => {
-          const data = fetchAccountData(account.characters[0].characterName);
-          data.then((resolvedData) => {
-            setAccounts((accounts) => {
-              const copiedAccounts = [...accounts];
-              copiedAccounts[index] = syncData(account, resolvedData);
-              return copiedAccounts;
-            });
-          });
-        });
-        setLoginState(true);
+        refreshLevel(userData, setAccounts);
       }
     }
   }, []);
-
+  useEffect(() => {
+    console.log(accounts);
+  }, [accounts]);
   return (
     <>
       <Modal />
