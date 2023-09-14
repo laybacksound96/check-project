@@ -39,36 +39,24 @@
       "normal": {
         "gateNumber": 1,
         "level": 1430,
-        "gold": 400
+        "gold": 600
       },
       "hard": {
         "gateNumber": 1,
         "level": 1460,
-        "gold": 600
+        "gold": 900
       }
     },
     {
       "normal": {
         "gateNumber": 2,
         "level": 1430,
-        "gold": 500
+        "gold": 1000
       },
       "hard": {
         "gateNumber": 2,
         "level": 1460,
-        "gold": 700
-      }
-    },
-    {
-      "normal": {
-        "gateNumber": 3,
-        "level": 1430,
-        "gold": 700
-      },
-      "hard": {
-        "gateNumber": 3,
-        "level": 1460,
-        "gold": 1100
+        "gold": 1500
       }
     }
   ],
@@ -100,72 +88,48 @@
       "normal": {
         "gateNumber": 1,
         "level": 1490,
-        "gold": 1200
+        "gold": 1500
       },
       "hard": {
         "gateNumber": 1,
         "level": 1540,
-        "gold": 2500
+        "gold": 2000
       }
     },
     {
       "normal": {
         "gateNumber": 2,
         "level": 1490,
-        "gold": 1800
+        "gold": 1500
       },
       "hard": {
         "gateNumber": 2,
         "level": 1540,
-        "gold": 3000
+        "gold": 2000
       }
     },
     {
       "normal": {
         "gateNumber": 3,
         "level": 1500,
-        "gold": 700
-      },
-      "hard": {
-        "gateNumber": 3,
-        "level": 1550,
-        "gold": 900
-      }
-    },
-    {
-      "normal": {
-        "gateNumber": 4,
-        "level": 1500,
-        "gold": 800
-      },
-      "hard": {
-        "gateNumber": 4,
-        "level": 1550,
-        "gold": 1100
-      }
-    },
-    {
-      "normal": {
-        "gateNumber": 5,
-        "level": 1520,
-        "gold": 1000
-      },
-      "hard": {
-        "gateNumber": 5,
-        "level": 1560,
-        "gold": 1200
-      }
-    },
-    {
-      "normal": {
-        "gateNumber": 6,
-        "level": 1520,
         "gold": 1500
       },
       "hard": {
-        "gateNumber": 6,
-        "level": 1560,
-        "gold": 1800
+        "gateNumber": 3,
+        "level": 1550,
+        "gold": 2000
+      }
+    },
+    {
+      "normal": {
+        "gateNumber": 4,
+        "level": 1500,
+        "gold": 2500
+      },
+      "hard": {
+        "gateNumber": 4,
+        "level": 1550,
+        "gold": 3000
       }
     }
   ],
@@ -174,48 +138,36 @@
       "normal": {
         "gateNumber": 1,
         "level": 1540,
-        "gold": 800
+        "gold": 1000
       },
       "hard": {
         "gateNumber": 1,
-        "level": 1580,
-        "gold": 1000
-      }
-    },
-    {
-      "normal": {
-        "gateNumber": 2,
-        "level": 1540,
-        "gold": 800
-      },
-      "hard": {
-        "gateNumber": 2,
-        "level": 1580,
-        "gold": 1000
-      }
-    },
-    {
-      "normal": {
-        "gateNumber": 3,
-        "level": 1540,
-        "gold": 1200
-      },
-      "hard": {
-        "gateNumber": 3,
         "level": 1580,
         "gold": 1500
       }
     },
     {
       "normal": {
-        "gateNumber": 4,
+        "gateNumber": 2,
         "level": 1540,
-        "gold": 1700
+        "gold": 1500
       },
       "hard": {
-        "gateNumber": 4,
+        "gateNumber": 2,
         "level": 1580,
-        "gold": 2000
+        "gold": 2500
+      }
+    },
+    {
+      "normal": {
+        "gateNumber": 3,
+        "level": 1540,
+        "gold": 3000
+      },
+      "hard": {
+        "gateNumber": 3,
+        "level": 1580,
+        "gold": 4000
       }
     }
   ],
@@ -248,7 +200,7 @@
       "normal": {
         "gateNumber": 3,
         "level": 1580,
-        "gold": 3000
+        "gold": 4500
       },
       "hard": {
         "gateNumber": 3,
