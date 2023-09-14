@@ -19,8 +19,8 @@ export interface ISearchedData {
   discriminator: string;
 }
 
-const url = "https://www.checksheet.link/";
-
+const url2 = "https://www.checksheet.link/";
+const url = "http://localhost:8080/";
 export const loadUserData = async (id: string) => {
   const response = await axios.get<IFetchedData>(`${url}user/${id}`);
   return response.data;
