@@ -6,21 +6,16 @@ import {
   Droppable,
 } from "react-beautiful-dnd";
 
-import React, { useEffect } from "react";
+import React from "react";
 import styled, { css } from "styled-components";
-import DragContents from "./DragContents";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { CharacterOrder } from "../../../atoms/Settings/Orders";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { dragIcon } from "../../../Settings";
-import { CharacterInfo } from "../../../atoms/Info/CharacterInfo";
 import ConfigAccountButton from "../Components/ConfigAccountButton";
 import ConfigContentButton from "../Components/ConfigContentButton";
 import { AxisLocker } from "../Functions/AxisLocker";
-import { CharacterSetting } from "../../../atoms/Settings/CharacterSetting";
-import { ContentSetting } from "../../../atoms/Settings/ContentSetting";
-import { Gates } from "../../../atoms/Settings/Gates";
-import CharacterGold from "../Components/CharacterGold";
 import { LoginState } from "../../../atoms/login";
+import { Accounts } from "../../../atoms/data";
+import DragContents from "./DragContents";
 interface IStyle {
   loggined: boolean;
 }
@@ -85,7 +80,13 @@ export const Character = styled.div`
 const CharactersContainer = styled.div`
   display: flex;
 `;
-
+const RightContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  height: 100%;
+  padding: 5px;
+`;
 export const NameContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -101,37 +102,30 @@ export const NameContainer = styled.div`
 interface IProps {
   DragHandleProps: DraggableProvidedDragHandleProps | null | undefined;
   AccountName: string;
+  index: number;
 }
 
-function DragCharacters({ DragHandleProps, AccountName }: IProps) {
+function DragCharacters({ DragHandleProps, AccountName, index }: IProps) {
   const loggined = useRecoilValue(LoginState);
-  const setCharacterOrder = useSetRecoilState(CharacterOrder);
-  const { [AccountName]: characterOrder } = useRecoilValue(CharacterOrder);
-  const { [AccountName]: characterInfo } = useRecoilValue(CharacterInfo);
-  const { [AccountName]: characterSetting } = useRecoilValue(CharacterSetting);
-  const { [AccountName]: contentSetting } = useRecoilValue(ContentSetting);
-  const { [AccountName]: gates } = useRecoilValue(Gates);
+  const [accountOrder, setAccount] = useRecoilState(Accounts);
   const dragCharacterHandler = (dragInfo: DropResult) => {
     const { destination, source } = dragInfo;
     if (!destination) return;
     if (destination?.droppableId !== source.droppableId) return;
-    setCharacterOrder((prev) => {
-      const copiedOrder = [...prev[AccountName]];
+    setAccount((prev) => {
+      const copiedPrev = [...prev];
+      const copiedAccout = { ...copiedPrev[index] };
+      const copiedOrder = [...copiedAccout.characterOrder];
       const target = copiedOrder[source.index];
       copiedOrder.splice(source.index, 1);
       copiedOrder.splice(destination?.index, 0, target);
-      return { ...prev, [AccountName]: copiedOrder };
+      copiedAccout.characterOrder = copiedOrder;
+      copiedPrev[index] = copiedAccout;
+      return copiedPrev;
     });
     return;
   };
-  useEffect(() => {
-    setCharacterOrder((prev) => {
-      const visibleArray = Object.keys(characterSetting).filter(
-        (elem) => characterSetting[elem].isVisible
-      );
-      return { ...prev, [AccountName]: visibleArray };
-    });
-  }, [AccountName, characterSetting, setCharacterOrder]);
+  const { characterOrder, characters } = accountOrder[index];
   return (
     <DragDropContext onDragEnd={dragCharacterHandler}>
       <Droppable droppableId={AccountName}>
@@ -140,11 +134,9 @@ function DragCharacters({ DragHandleProps, AccountName }: IProps) {
             <div ref={provided.innerRef} {...provided.droppableProps}>
               <ConfigAccountButton AccountName={AccountName} />
               {characterOrder.map((CharacterName, index) => {
-                const { ClassName, Level } = characterInfo[CharacterName];
-                const { IsGoldCharacter } = characterSetting[CharacterName];
-                const { [CharacterName]: contentState } = contentSetting;
-                const { [CharacterName]: gatesContent } = gates;
-
+                const chracter = characters.find(
+                  (chara) => chara.characterName === CharacterName
+                );
                 return (
                   <Draggable
                     key={CharacterName}
@@ -164,21 +156,21 @@ function DragCharacters({ DragHandleProps, AccountName }: IProps) {
                         <Character {...provided.dragHandleProps}>
                           <NameContainer>
                             <h1>{CharacterName}</h1>
-                            <span>{ClassName}</span>
-                            <span>Lv {Level}</span>
+                            <span>{chracter ? chracter.className : null}</span>
+                            <span>Lv {chracter ? chracter.level : null}</span>
                           </NameContainer>
-                          <div>
+                          <RightContainer>
                             <ConfigContentButton
                               AccountName={AccountName}
                               CharacterName={CharacterName}
                             />
-                            {IsGoldCharacter && (
+                            {/* {IsGoldCharacter && (
                               <CharacterGold
                                 contentState={contentState}
                                 gatesContent={gatesContent}
                               />
-                            )}
-                          </div>
+                            )} */}
+                          </RightContainer>
                         </Character>
                       </CharactersContainer>
                     )}
@@ -187,7 +179,7 @@ function DragCharacters({ DragHandleProps, AccountName }: IProps) {
               })}
               {provided.placeholder}
             </div>
-            <DragContents AccountName={AccountName} />
+            <DragContents index={index} AccountName={AccountName} />
             <DragAccountBtn {...DragHandleProps} />
           </Container>
         )}

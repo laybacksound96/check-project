@@ -3,17 +3,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
 import { dragIcon } from "../../../Settings";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { ContentSetting } from "../../../atoms/Settings/ContentSetting";
 import { LoginState } from "../../../atoms/login";
+import { Accounts } from "../../../atoms/data";
 
 interface IStyle {
   isVisible: boolean;
-  isActivated: boolean;
   Color: string;
 }
 const CheckBox = styled.div<IStyle>`
-  opacity: ${({ isActivated, isVisible }) =>
-    !isVisible || !isActivated ? "0%" : "100%"};
+  opacity: ${({ isVisible }) => (!isVisible ? "0%" : "100%")};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -33,55 +31,60 @@ const CheckBox = styled.div<IStyle>`
   }
 `;
 interface ICheckboxProps {
-  AccountName: string;
-  CharacterName: string;
-  ContentName: string;
   Color: string;
+  isVisible: boolean;
+  contentName: string;
+  characterName: string;
+  index: number;
 }
 
 function CheckBoxButton({
-  AccountName,
-  CharacterName,
-  ContentName,
+  isVisible,
   Color,
+  characterName,
+  contentName,
+  index,
 }: ICheckboxProps) {
+  const [accountOrder, setAccount] = useRecoilState(Accounts);
   const loggined = useRecoilValue(LoginState);
-  const [
-    {
-      [AccountName]: {
-        [CharacterName]: {
-          [ContentName]: { isCleared, isActivated, isVisible },
-        },
-      },
-    },
-    setContentSetting,
-  ] = useRecoilState(ContentSetting);
+
+  function isCleared() {
+    const find = accountOrder[index].checks.find(
+      ({ characterName: chara, contentName: cont }) =>
+        chara === characterName && cont === contentName
+    );
+    if (find) {
+      return true;
+    } else {
+      return false;
+    }
+  }
   function onClickHandler() {
-    if (!isVisible || !isActivated || !loggined) return;
-    setContentSetting((prev) => {
-      return {
-        ...prev,
-        [AccountName]: {
-          ...prev[AccountName],
-          [CharacterName]: {
-            ...prev[AccountName][CharacterName],
-            [ContentName]: {
-              ...prev[AccountName][CharacterName][ContentName],
-              isCleared: !isCleared,
-            },
-          },
-        },
-      };
+    if (!isVisible || !loggined) return;
+    setAccount((prev) => {
+      const copiedPrev = [...prev];
+      const copiedAccout = { ...copiedPrev[index] };
+      const copiedChecks = [...copiedAccout.checks];
+      const boxIndex = copiedChecks.findIndex(
+        ({ characterName: chara, contentName: cont }) =>
+          chara === characterName && cont === contentName
+      );
+      if (boxIndex >= 0) {
+        copiedChecks.splice(boxIndex, 1);
+      } else {
+        copiedChecks.push({ characterName, contentName });
+      }
+      copiedAccout.checks = copiedChecks;
+      copiedPrev[index] = copiedAccout;
+      return copiedPrev;
     });
   }
   return (
-    <CheckBox
-      onClick={onClickHandler}
-      isVisible={isVisible}
-      isActivated={isActivated}
-      Color={Color}
-    >
-      <FontAwesomeIcon icon={isCleared ? faSquareCheck : faSquare} size="lg" />
+    <CheckBox onClick={onClickHandler} isVisible={isVisible} Color={Color}>
+      <FontAwesomeIcon
+        icon={isCleared() ? faSquareCheck : faSquare}
+        size="lg"
+      />
     </CheckBox>
   );
 }

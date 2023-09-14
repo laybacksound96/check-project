@@ -51,65 +51,60 @@ interface IProps {
   prop: modalProp;
 }
 const ConfigContent = ({ prop: { AccountName, CharacterName } }: IProps) => {
-  const {
-    [AccountName]: { [CharacterName]: ContentState },
-  } = useRecoilValue(ContentSetting);
-  const {
-    [AccountName]: { [CharacterName]: GatesContent },
-  } = useRecoilValue(Gates);
-
-  const GoldContents = Object.keys(ContentState).filter(
-    (Name) => ContentState[Name].isGoldContents
-  );
-
-  const filteredByActive = Object.keys(ContentState).filter(
-    (Name) => ContentState[Name].isActivated
-  );
-  const GateArray = [
-    ...filteredByActive.filter((Name) => ContentState[Name].isVisible),
-    ...filteredByActive.filter((Name) => !ContentState[Name].isVisible),
-  ];
-
-  const [currentGold, setCurrentGold] = useState(
-    calcCharacterGold(GatesContent, ContentState) * 0.95
-  );
-  const [prevGold, setPrevGold] = useState(0);
-
-  useEffect(() => {
-    setCurrentGold((prev) => {
-      setPrevGold(prev);
-      return calcCharacterGold(GatesContent, ContentState);
-    });
-  }, [ContentState, GatesContent]);
-
-  return (
-    <Container>
-      <p>골드획득 컨텐츠:</p>
-      <div style={{ display: "flex" }}>
-        {GoldContents.map((content) => {
-          return <GoldContent key={content}>{content}</GoldContent>;
-        })}
-      </div>
-      <GoldBox>
-        <FontAwesomeIcon icon={faCoins} style={{ color: "yellow" }} />
-        <span>
-          <CountUp start={prevGold} end={currentGold} />
-        </span>
-      </GoldBox>
-      <GridContainer>
-        {GateArray.map((ContentName) => {
-          return (
-            <ContentCard
-              key={ContentName}
-              AccountName={AccountName}
-              CharacterName={CharacterName}
-              ContentsName={ContentName}
-            />
-          );
-        })}
-      </GridContainer>
-    </Container>
-  );
+  // const {
+  //   [AccountName]: { [CharacterName]: ContentState },
+  // } = useRecoilValue(ContentSetting);
+  // const {
+  //   [AccountName]: { [CharacterName]: GatesContent },
+  // } = useRecoilValue(Gates);
+  // const GoldContents = Object.keys(ContentState).filter(
+  //   (Name) => ContentState[Name].isGoldContents
+  // );
+  // const filteredByActive = Object.keys(ContentState).filter(
+  //   (Name) => ContentState[Name].isActivated
+  // );
+  // const GateArray = [
+  //   ...filteredByActive.filter((Name) => ContentState[Name].isVisible),
+  //   ...filteredByActive.filter((Name) => !ContentState[Name].isVisible),
+  // ];
+  // const [currentGold, setCurrentGold] = useState(
+  //   calcCharacterGold(GatesContent, ContentState) * 0.95
+  // );
+  // const [prevGold, setPrevGold] = useState(0);
+  // useEffect(() => {
+  //   setCurrentGold((prev) => {
+  //     setPrevGold(prev);
+  //     return calcCharacterGold(GatesContent, ContentState);
+  //   });
+  // }, [ContentState, GatesContent]);
+  // return (
+  //   <Container>
+  //     <p>골드획득 컨텐츠:</p>
+  //     <div style={{ display: "flex" }}>
+  //       {GoldContents.map((content) => {
+  //         return <GoldContent key={content}>{content}</GoldContent>;
+  //       })}
+  //     </div>
+  //     <GoldBox>
+  //       <FontAwesomeIcon icon={faCoins} style={{ color: "yellow" }} />
+  //       <span>
+  //         <CountUp start={prevGold} end={currentGold} />
+  //       </span>
+  //     </GoldBox>
+  //     <GridContainer>
+  //       {GateArray.map((ContentName) => {
+  //         return (
+  //           <ContentCard
+  //             key={ContentName}
+  //             AccountName={AccountName}
+  //             CharacterName={CharacterName}
+  //             ContentsName={ContentName}
+  //           />
+  //         );
+  //       })}
+  //     </GridContainer>
+  //   </Container>
+  // );
 };
 
 export default ConfigContent;

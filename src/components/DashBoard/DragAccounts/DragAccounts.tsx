@@ -6,17 +6,13 @@ import {
   Droppable,
 } from "react-beautiful-dnd";
 import styled from "styled-components";
-
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-
+import { useRecoilState, useRecoilValue } from "recoil";
 import { AxisLocker } from "../Functions/AxisLocker";
-import AccountContainer from "./DragCharacters";
+import DragCharacters from "./DragCharacters";
 import AddAccountButton from "../Components/AddAccountButton";
-import { AccountOrder } from "../../../atoms/Settings/Orders";
 import { LoginState } from "../../../atoms/login";
 import UncheckAllButton from "../Components/UncheckAllContents";
-import { ContentSetting } from "../../../atoms/Settings/ContentSetting";
-import makeUnchecked from "../Functions/makeUnchecked";
+import { Accounts } from "../../../atoms/data";
 
 const DragBoxStyle = styled.div`
   width: 100%;
@@ -50,14 +46,13 @@ const MenuBar = styled.div`
   margin-bottom: 10px;
 `;
 const DragAccounts = () => {
-  const [accountOrder, setAccountOrder] = useRecoilState(AccountOrder);
-  const setContentSetting = useSetRecoilState(ContentSetting);
+  const [accountOrder, setAccount] = useRecoilState(Accounts);
   const loggined = useRecoilValue(LoginState);
   const dragAccountHandler = (dragInfo: DropResult) => {
     const { destination, source } = dragInfo;
     if (!destination) return;
     if (destination?.droppableId !== source.droppableId) return;
-    setAccountOrder((prev) => {
+    setAccount((prev) => {
       const copiedPrev = [...prev];
       const copiedObject = copiedPrev[source.index];
       copiedPrev.splice(source.index, 1);
@@ -67,28 +62,34 @@ const DragAccounts = () => {
   };
 
   const uncheckHandler = () => {
-    setContentSetting((prev) => {
-      const newSetting = makeUnchecked(prev);
-      if (!newSetting) return prev;
-      return newSetting;
+    setAccount((prev) => {
+      const copiedPrev = [...prev];
+      copiedPrev.forEach((elem, index) => {
+        const copiedAccout = { ...copiedPrev[index] };
+        copiedAccout.checks = [];
+        copiedPrev[index] = copiedAccout;
+      });
+      return copiedPrev;
     });
   };
+
   return (
     <DragBoxStyle>
       <DragDropContext onDragEnd={dragAccountHandler}>
         <Droppable droppableId="accounts" direction="vertical">
           {(provided) => (
             <AccountStyle ref={provided.innerRef} {...provided.droppableProps}>
-              {loggined && accountOrder.length > 0 ? (
+              {loggined && accountOrder.length > 0 && (
                 <MenuBar>
                   <UncheckAllButton handleUncheck={uncheckHandler} />
                 </MenuBar>
-              ) : null}
-              {accountOrder.map((AccountName, index) => {
+              )}
+              {accountOrder.map(({ _id, characters }, index) => {
+                const accountName = _id ? _id : characters[0].characterName;
                 return (
                   <Draggable
-                    draggableId={`draggableID_${AccountName}`}
-                    key={`draggableID_${AccountName}`}
+                    draggableId={accountName}
+                    key={accountName}
                     index={index}
                     isDragDisabled={!loggined}
                   >
@@ -101,9 +102,10 @@ const DragAccounts = () => {
                           false
                         )}
                       >
-                        <AccountContainer
+                        <DragCharacters
                           DragHandleProps={provided.dragHandleProps}
-                          AccountName={AccountName}
+                          AccountName={accountName}
+                          index={index}
                         />
                       </div>
                     )}

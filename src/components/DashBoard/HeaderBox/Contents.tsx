@@ -10,6 +10,7 @@ import { Gates } from "../../../atoms/Settings/Gates";
 import { ContentSetting } from "../../../atoms/Settings/ContentSetting";
 import { CharacterSetting } from "../../../atoms/Settings/CharacterSetting";
 import AllChecked from "./AllChecked";
+import { Accounts } from "../../../atoms/data";
 
 const ContainerStyle = styled.ul`
   display: grid;
@@ -21,15 +22,10 @@ const ContainerStyle = styled.ul`
 const Contents = () => {
   const [contentsFrequency, setContentsFrequency] =
     useRecoilState(ContentsFrequency);
-  const gates = useRecoilValue(Gates);
-  const contentSetting = useRecoilValue(ContentSetting);
-  const characterSetting = useRecoilValue(CharacterSetting);
-
+  const [accountOrder, setAccount] = useRecoilState(Accounts);
   useEffect(() => {
-    setContentsFrequency((prev) =>
-      CalculateCheckbox(gates, contentSetting, characterSetting, prev)
-    );
-  }, [characterSetting, contentSetting, gates, setContentsFrequency]);
+    setContentsFrequency((prev) => CalculateCheckbox(accountOrder, prev));
+  }, []);
 
   return (
     <ContainerStyle>

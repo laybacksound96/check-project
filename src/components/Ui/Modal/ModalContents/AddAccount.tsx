@@ -1,5 +1,5 @@
-import { useRecoilState, useSetRecoilState } from "recoil";
-import { fetchSearchAccount } from "../../../../util/fetch";
+import { useRecoilState } from "recoil";
+import { fetchAccountData } from "../../../../util/fetch";
 import React, { useState } from "react";
 import styled from "styled-components";
 import { Input } from "./AddContent";
@@ -7,19 +7,9 @@ import CharacterContainer from "./components/CharacterContainer";
 import SortByLevel from "./functions/SortByLevel";
 import useModal from "../../../../CustomHooks/Modal/useModal";
 
-import { CharacterInfo } from "../../../../atoms/Info/CharacterInfo";
-import { CharacterSetting } from "../../../../atoms/Settings/CharacterSetting";
-import { makeNewAccount } from "./functions/AddAccountFuntions";
-import IsDupplicated from "./functions/Validation/IsDupplicated";
 import IsInValidName from "./functions/Validation/IsValidName";
-import { ContentSetting } from "../../../../atoms/Settings/ContentSetting";
-import { Gates } from "../../../../atoms/Settings/Gates";
-import {
-  CharacterOrder,
-  ContentsOrder,
-  AccountOrder,
-} from "../../../../atoms/Settings/Orders";
-import makeNewContentOrder from "./functions/makeNewContentOrder";
+import { Accounts } from "../../../../atoms/data";
+import makeDataResult from "./functions/AddAccount/makeAccount";
 
 const Container = styled.div`
   display: flex;
@@ -57,26 +47,20 @@ interface IError {
 }
 
 const AddAccount = () => {
-  const [characterInfo, setCharacterInfo] = useRecoilState(CharacterInfo);
-  const setCharacterSetting = useSetRecoilState(CharacterSetting);
-  const setContentSetting = useSetRecoilState(ContentSetting);
-  const setGates = useSetRecoilState(Gates);
-  const setCharacterOrder = useSetRecoilState(CharacterOrder);
-  const setContentsOrder = useSetRecoilState(ContentsOrder);
-  const setAccountOrder = useSetRecoilState(AccountOrder);
   const [, closeModal] = useModal();
   const [inputValue, setInputValue] = useState("");
   const [fetchedData, setFetchedData] = useState<IFetchedCharacter[]>([]);
   const [error, setError] = useState<IError | undefined>();
+  const [accounts, setAccounts] = useRecoilState(Accounts);
 
   const SearchAccountHandler = async (event: React.MouseEvent) => {
     event.preventDefault();
-    if (IsDupplicated(inputValue, characterInfo)) {
-      setError({ message: "같은 이름이 이미 시트에 있어요" });
-      return;
-    }
+    // if (IsDupplicated(inputValue, characterInfo)) {
+    //   setError({ message: "같은 이름이 이미 시트에 있어요" });
+    //   return;
+    // }
     try {
-      const data = await fetchSearchAccount(inputValue);
+      const data = await fetchAccountData(inputValue);
       if (!data) {
         setError({ message: "서버에 존재하지 않는 이름이에요" });
         return;
@@ -98,41 +82,14 @@ const AddAccount = () => {
   };
   const AddAccountHandler = (data: IFetchedCharacter[]) => {
     if (data.length === 0) return;
-    const AccountName = data[0].CharacterName;
-    const { accountInfo, accountSetting, contentSetting, gates } =
-      makeNewAccount(data);
-    const CharacterOrder = Object.keys(accountSetting).filter(
-      (prev) => accountSetting[prev].isVisible
-    );
-    setCharacterInfo((prev) => {
-      return { ...prev, [`${AccountName}`]: accountInfo };
-    });
-    setCharacterSetting((prev) => {
-      return { ...prev, [`${AccountName}`]: accountSetting };
-    });
-    setContentSetting((prev) => {
-      return { ...prev, [`${AccountName}`]: contentSetting };
-    });
-    setGates((prev) => {
-      return { ...prev, [`${AccountName}`]: gates };
-    });
-    setAccountOrder((prev) => [...prev, AccountName]);
-    setCharacterOrder((prev) => {
-      return {
-        ...prev,
-        [`${AccountName}`]: CharacterOrder,
-      };
-    });
-    setContentsOrder((prev) => {
-      return {
-        ...prev,
-        [`${AccountName}`]: makeNewContentOrder(
-          CharacterOrder,
-          contentSetting,
-          AccountName
-        ),
-      };
-    });
+    try {
+      setAccounts((prev) => {
+        return [...prev, makeDataResult(data)];
+      });
+    } catch (error) {
+      console.log(error);
+    }
+
     closeModal();
   };
 
