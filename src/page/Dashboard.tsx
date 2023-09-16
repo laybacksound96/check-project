@@ -95,62 +95,10 @@ export type ISync = "success" | "error" | "inprogress" | null;
 function Dashboard({ userData, login }: IProps) {
   const setIsFocused = useSetRecoilState(IsFocused);
   const [loginState, setLoginState] = useRecoilState(LoginState);
-  const [accountOrder, setAccountOrder] = useRecoilState(AccountOrder);
-  const [characterOrder, setCharacterOrder] = useRecoilState(CharacterOrder);
-  const [contentsOrder, setContentsOrder] = useRecoilState(ContentsOrder);
-  const [characterInfo, setCharacterInfo] = useRecoilState(CharacterInfo);
-  const [characterSetting, setCharacterSetting] =
-    useRecoilState(CharacterSetting);
-  const [contentSetting, setContentSetting] = useRecoilState(ContentSetting);
-  const [gates, setGates] = useRecoilState(Gates);
   const [isSync, setIsSync] = useState<ISync>(null);
-  const { userId } = useParams();
   useEffect(() => {
     setLoginState(login);
-    try {
-      const dataToAtoms = getAllAtom(userData);
-      if (!dataToAtoms) return;
-      setAccountOrder(dataToAtoms.accountOrder);
-      setCharacterOrder(dataToAtoms.characterOrder);
-      setContentsOrder(dataToAtoms.contentsOrder);
-      setCharacterInfo(dataToAtoms.characterInfo);
-      setCharacterSetting(dataToAtoms.characterSetting);
-      setContentSetting(dataToAtoms.contentSetting);
-      setGates(dataToAtoms.gates);
-    } catch (error) {
-      console.log(error);
-    }
   }, []);
-  useEffect(() => {
-    if (!loginState) return;
-    const data: IAllAtoms = {
-      accountOrder,
-      characterInfo,
-      characterOrder,
-      characterSetting,
-      contentSetting,
-      contentsOrder,
-      gates,
-    };
-    if (!userData) {
-      localStorage.setItem("data", JSON.stringify(data));
-    } else {
-      if (!userId) return;
-      patchData(userId, data, setIsSync);
-    }
-  }, [
-    accountOrder,
-    characterInfo,
-    characterOrder,
-    characterSetting,
-    contentSetting,
-    contentsOrder,
-    gates,
-    loginState,
-    userData,
-    userId,
-  ]);
-
   return (
     <>
       <Modal />
