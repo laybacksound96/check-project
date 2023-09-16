@@ -1,15 +1,11 @@
-import styled, { css, keyframes } from "styled-components";
+import styled from "styled-components";
 import Contents from "./Contents";
 import AccountGold from "./AccountGold";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faRotate, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { IFetchedData } from "../../../util/fetch";
-import { ISync } from "../../../page/Dashboard";
+import { useRecoilValue } from "recoil";
+import { UserState } from "../../../atoms/user";
 
-interface IStyle {
-  isSync: ISync;
-}
-const HeaderBoxStyle = styled.header<IStyle>`
+const HeaderBoxStyle = styled.header`
   position: relative;
   min-width: auto;
   height: auto;
@@ -34,9 +30,6 @@ const HeaderBoxStyle = styled.header<IStyle>`
       color: ${(props) => props.theme.TextColor_A};
       svg {
         margin-left: 10px;
-        path {
-          color: ${({ isSync }) => isSync === "success" && "#70ff90"};
-        }
       }
       &:hover {
         span {
@@ -52,63 +45,28 @@ const HeaderBoxStyle = styled.header<IStyle>`
     }
   }
 `;
-const rotateAnimation = keyframes`
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-`;
 
-const RotatingIcon = styled(FontAwesomeIcon)`
-  ${(props) => {
-    if (props.icon === faRotate) {
-      return css`
-        animation: ${rotateAnimation} 1s linear infinite;
-      `;
-    }
-  }}
-`;
-const Error = styled.p`
-  margin-left: 5px;
-  display: inline-block;
-  font-size: 0.9rem;
-  color: red;
-`;
-
-interface IProps {
-  userData: string | IFetchedData;
-  isSync: ISync;
-}
-const makeName = (data: IFetchedData) => {
-  if (data.global_name) {
-    return data.global_name;
+const makeName = ({ user }: IFetchedData) => {
+  if (user.global_name) {
+    return user.global_name;
   } else {
-    if (data.discriminator === "0") {
-      return data.global_name;
+    if (user.discriminator === "0") {
+      return user.global_name;
     } else {
-      return data.user_name;
+      return user.user_name;
     }
   }
 };
-const HeaderBox = ({ userData, isSync }: IProps) => {
+const HeaderBox = () => {
+  const userState = useRecoilValue(UserState);
   return (
-    <HeaderBoxStyle isSync={isSync}>
+    <HeaderBoxStyle>
       <header>
         <h1>
-          {typeof userData === "string" ? (
-            <>{userData}님의 체크시트</>
+          {typeof userState === "string" ? (
+            <>비회원모드 체크시트</>
           ) : (
-            <>{makeName(userData)}님의 체크시트</>
-          )}
-          {isSync === "error" && <Error>서버와의 동기화에 실패했어요.</Error>}
-          {isSync === "inprogress" && <RotatingIcon icon={faRotate} />}
-          {isSync === "success" && (
-            <>
-              <RotatingIcon icon={faCheck} />
-              <span>서버와 동기화되었어요.</span>
-            </>
+            <>{makeName(userState)}님의 체크시트</>
           )}
         </h1>
         <AccountGold />

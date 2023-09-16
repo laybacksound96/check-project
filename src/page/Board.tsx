@@ -10,6 +10,7 @@ export const loadBoardData: LoaderFunction = async ({ request, params }) => {
   }
   return defer({ data: loadUserData(id) });
 };
+
 interface IData {
   data: Promise<IFetchedData>;
 }
@@ -20,7 +21,7 @@ const Board = () => {
       <Suspense fallback={<p>유저정보를 기다리는 중이에요...</p>}>
         <Await resolve={data}>
           {(data) => {
-            return <Dashboard userData={data} login={true} />;
+            return <Dashboard userData={data} />;
           }}
         </Await>
       </Suspense>

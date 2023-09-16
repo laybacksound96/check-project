@@ -1,16 +1,20 @@
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
+import { IAccounts } from "./addAccount";
 
-import { IAllAtoms } from "../page/Dashboard";
 export interface IFetchedData {
-  user_id: string;
-  user_name: string;
-  global_name: string;
-  discriminator: string;
-  banner_color: string;
-  data: {
-    text: string;
+  user: {
+    user_id: string;
+    user_name: string;
+    global_name: string;
+    discriminator: string;
+    banner_color: string;
+    data: {
+      text: string;
+    };
+    ownCharacters: string[];
+    accountOrder: string[];
   };
-  ownCharacters: string[];
+  isLoggined: boolean;
 }
 export interface ISearchedData {
   user_id: string;
@@ -21,54 +25,37 @@ export interface ISearchedData {
 
 const url2 = "https://www.checksheet.link/";
 const url = "http://localhost:8080/";
+
+const postAccountData = async (id: string, data: IAccounts) => {
+  const token = localStorage.getItem("accessToken");
+  const response = await axios.post(
+    `${url}user/${id}`,
+    { data },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "bearer " + token,
+      },
+    }
+  );
+  return response.data;
+};
+
 export const loadUserData = async (id: string) => {
-  const response = await axios.get<IFetchedData>(`${url}user/${id}`);
+  const token = localStorage.getItem("accessToken");
+  const response = await axios.get<IFetchedData>(`${url}user/${id}`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "bearer " + token,
+    },
+  });
   return response.data;
 };
 export async function fetchLogin(): Promise<string> {
   const response = await axios.get(`${url}user/login`);
   return response.data.loginUrl;
 }
-let lastCallTimeout: any = null;
-export async function search(
-  name: string,
-  setter: React.Dispatch<React.SetStateAction<ISearchedData[]>>
-) {
-  if (lastCallTimeout) {
-    clearTimeout(lastCallTimeout);
-  }
 
-  lastCallTimeout = setTimeout(async () => {
-    try {
-      await axios
-        .get<ISearchedData[]>(`${url}user/search?username=${name}`)
-        .then((response: AxiosResponse<ISearchedData[]>) => {
-          const data: ISearchedData[] = response.data;
-          setter(data);
-        });
-      lastCallTimeout = null;
-      return;
-    } catch (error) {
-      throw error;
-    }
-  }, 1000);
-}
-export async function patchUser(id: string, data: IAllAtoms): Promise<number> {
-  const token = localStorage.getItem("accessToken");
-  try {
-    if (!data || !token) return 401;
-    const response = await axios.post(`${url}user/${id}`, data, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "bearer " + token,
-      },
-    });
-    return response.status;
-  } catch (error) {
-    console.error("Error fetching data:", error);
-    throw error;
-  }
-}
 export async function fetchSearchAccount(inputValue: string): Promise<[]> {
   try {
     const response = await axios.post(

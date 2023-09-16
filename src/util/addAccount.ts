@@ -1,33 +1,33 @@
 import { IFetchedCharacter } from "../components/Ui/Modal/ModalContents/AddAccount";
 import { ICommanderData, commanderData } from "../json/commanderTypes";
 
-const calculateGold = (level: number, commanderData: ICommanderData[]) => {
-  let goldContents = [];
-  for (let i in commanderData) {
-    let gold = 0;
-    const { gates, contentName } = commanderData[i];
-    for (let gateNumber in gates) {
-      const gate = gates[gateNumber];
-      if (gate[0].level > level) continue;
-      if (gate.length === 1) {
-        gold += gate[0].gold;
-      } else {
-        if (gate[1].level <= level) {
-          gold += gate[1].gold;
-        } else {
-          gold += gate[0].gold;
-        }
-      }
-    }
-    goldContents.push({ contentName, gold });
-  }
-  return goldContents
-    .sort((a, b) => b.gold - a.gold)
-    .slice(0, 3)
-    .map((elem) => elem.contentName);
-};
+// const calculateGold = (level: number, commanderData: ICommanderData[]) => {
+//   let goldContents = [];
+//   for (let i in commanderData) {
+//     let gold = 0;
+//     const { gates, contentName } = commanderData[i];
+//     for (let gateNumber in gates) {
+//       const gate = gates[gateNumber];
+//       if (gate[0].level > level) continue;
+//       if (gate.length === 1) {
+//         gold += gate[0].gold;
+//       } else {
+//         if (gate[1].level <= level) {
+//           gold += gate[1].gold;
+//         } else {
+//           gold += gate[0].gold;
+//         }
+//       }
+//     }
+//     goldContents.push({ contentName, gold });
+//   }
+//   return goldContents
+//     .sort((a, b) => b.gold - a.gold)
+//     .slice(0, 3)
+//     .map((elem) => elem.contentName);
+// };
 
-interface IAccounts {
+export interface IAccounts {
   characterOrder: string[];
   contentsOrder: string[];
   characters: ICharacters[];
@@ -53,7 +53,7 @@ interface ICharacters {
     isVisble: boolean;
   }[];
 }
-const makeDataResult = (data: IFetchedCharacter[]): IAccounts => {
+export const makeDataResult = (data: IFetchedCharacter[]): IAccounts => {
   const characterOrder: string[] = [];
   const contentsOrder: string[] = [];
   const characters: ICharacters[] = [];
@@ -69,25 +69,25 @@ const makeDataResult = (data: IFetchedCharacter[]): IAccounts => {
     });
     if (+i < 6) characterOrder.push(CharacterName);
   }
-  for (let i in characters) {
-    const { CharacterName, contents, ItemMaxLevel } = characters[i];
-    const goldArray = calculateGold(ItemMaxLevel, commanderData);
-    if (characterOrder.includes(CharacterName)) {
-      goldArray.forEach((elem) => {
-        if (!contentsOrder.includes(elem)) contentsOrder.push(elem);
-      });
-      contentsOrder.reverse();
-    }
-    for (let j in commanderData) {
-      const { contentName, gates } = commanderData[j];
-      contents.push({
-        contentName,
-        isVisible: goldArray.includes(contentName),
-        isGoldContents: goldArray.includes(contentName),
-        gates: makeGates(level, gates),
-      });
-    }
-  }
+  // for (let i in characters) {
+  //   const { CharacterName, contents, ItemMaxLevel } = characters[i];
+  //   const goldArray = calculateGold(ItemMaxLevel, commanderData);
+  //   if (characterOrder.includes(CharacterName)) {
+  //     goldArray.forEach((elem) => {
+  //       if (!contentsOrder.includes(elem)) contentsOrder.push(elem);
+  //     });
+  //     contentsOrder.reverse();
+  //   }
+  // for (let j in commanderData) {
+  //   const { contentName, gates } = commanderData[j];
+  //   contents.push({
+  //     contentName,
+  //     isVisible: goldArray.includes(contentName),
+  //     isGoldContents: goldArray.includes(contentName),
+  //     gates: makeGates(level, gates),
+  //   });
+  // }
+  // }
   return {
     characterOrder,
     characters,

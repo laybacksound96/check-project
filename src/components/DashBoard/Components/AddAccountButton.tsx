@@ -1,7 +1,9 @@
 import styled from "styled-components";
 import useModal from "../../../CustomHooks/Modal/useModal";
 import { useRecoilValue } from "recoil";
-import { LoginState } from "../../../atoms/login";
+import { useState } from "react";
+import { UserState } from "../../../atoms/user";
+import { isLoggined } from "../DragAccounts/DragAccounts";
 
 const Button = styled.button`
   height: 100px;
@@ -15,12 +17,12 @@ const Button = styled.button`
   }
 `;
 const AddAccountButton = () => {
-  const loggined = useRecoilValue(LoginState);
+  const userState = useRecoilValue(UserState);
   const [openModal] = useModal();
   return (
     <Button
       onClick={() => {
-        if (!loggined) return;
+        if (!isLoggined(userState)) return;
         openModal("ADD_ACCOUNT");
       }}
     >

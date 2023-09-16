@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   DragDropContext,
   Draggable,
@@ -6,17 +6,14 @@ import {
   Droppable,
 } from "react-beautiful-dnd";
 import styled from "styled-components";
-
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-
+import { useRecoilState, useRecoilValue } from "recoil";
 import { AxisLocker } from "../Functions/AxisLocker";
 import AccountContainer from "./DragCharacters";
 import AddAccountButton from "../Components/AddAccountButton";
 import { AccountOrder } from "../../../atoms/Settings/Orders";
-import { LoginState } from "../../../atoms/login";
 import UncheckAllButton from "../Components/UncheckAllContents";
-import { ContentSetting } from "../../../atoms/Settings/ContentSetting";
-import makeUnchecked from "../Functions/makeUnchecked";
+import { UserState } from "../../../atoms/user";
+import { IFetchedData } from "../../../util/fetch";
 
 const DragBoxStyle = styled.div`
   width: 100%;
@@ -41,18 +38,15 @@ const AccountStyle = styled.div`
   display: flex;
   flex-direction: column;
 `;
-const MenuBar = styled.div`
-  display: flex;
-  justify-content: start;
-  align-items: center;
-  width: auto;
-  height: auto;
-  margin-bottom: 10px;
-`;
+export function isLoggined(userState: IFetchedData | "GUEST") {
+  if (userState === "GUEST") return true;
+  return userState.isLoggined;
+}
 const DragAccounts = () => {
   const [accountOrder, setAccountOrder] = useRecoilState(AccountOrder);
-  const setContentSetting = useSetRecoilState(ContentSetting);
-  const loggined = useRecoilValue(LoginState);
+  const userState = useRecoilValue(UserState);
+  const [loggined] = useState(isLoggined(userState));
+
   const dragAccountHandler = (dragInfo: DropResult) => {
     const { destination, source } = dragInfo;
     if (!destination) return;
@@ -67,23 +61,20 @@ const DragAccounts = () => {
   };
 
   const uncheckHandler = () => {
-    setContentSetting((prev) => {
-      const newSetting = makeUnchecked(prev);
-      if (!newSetting) return prev;
-      return newSetting;
-    });
+    // setContentSetting((prev) => {
+    //   const newSetting = makeUnchecked(prev);
+    //   if (!newSetting) return prev;
+    //   return newSetting;
+    // });
   };
+
   return (
     <DragBoxStyle>
       <DragDropContext onDragEnd={dragAccountHandler}>
         <Droppable droppableId="accounts" direction="vertical">
           {(provided) => (
             <AccountStyle ref={provided.innerRef} {...provided.droppableProps}>
-              {loggined && accountOrder.length > 0 ? (
-                <MenuBar>
-                  <UncheckAllButton handleUncheck={uncheckHandler} />
-                </MenuBar>
-              ) : null}
+              {loggined && <UncheckAllButton handleUncheck={uncheckHandler} />}
               {accountOrder.map((AccountName, index) => {
                 return (
                   <Draggable

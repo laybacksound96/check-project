@@ -2,108 +2,38 @@ import HeaderBox from "../components/DashBoard/HeaderBox/HeaderBox";
 import styled from "styled-components";
 import Modal from "../components/Ui/Modal/Modal";
 import DragAccounts from "../components/DashBoard/DragAccounts/DragAccounts";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { IFetchedData } from "../util/fetch";
-import { useRecoilState, useSetRecoilState } from "recoil";
-import { LoginState } from "../atoms/login";
-import { CharacterInfo, ICharacterInfo } from "../atoms/Info/CharacterInfo";
-import {
-  CharacterSetting,
-  ICharacterSetting,
-} from "../atoms/Settings/CharacterSetting";
-import {
-  ContentSetting,
-  IAccountContent,
-} from "../atoms/Settings/ContentSetting";
-import { Gates, IGates } from "../atoms/Settings/Gates";
-import {
-  AccountOrder,
-  CharacterOrder,
-  ContentsOrder,
-  ICharacterOrders,
-  IContentsOrders,
-} from "../atoms/Settings/Orders";
-import patchData from "../util/patchData";
-import { useParams } from "react-router";
-import { IsFocused } from "../atoms/ui";
+import { useSetRecoilState } from "recoil";
+import { UserState } from "../atoms/user";
 
-function isValidData(data: object) {
-  const keys = [
-    "accountOrder",
-    "characterOrder",
-    "contentsOrder",
-    "characterInfo",
-    "characterSetting",
-    "contentSetting",
-    "gates",
-  ];
-  if (typeof data !== "object") {
-    return false;
-  } else {
-    for (let i in keys) {
-      const key = keys[i];
-      const isHasKey = data.hasOwnProperty(key);
-      if (!isHasKey) return false;
-    }
-  }
-  return true;
-}
-
-const getAllAtom = (
-  userData: IFetchedData | undefined
-): IAllAtoms | undefined => {
-  if (!userData) {
-    const localData = localStorage.getItem("data");
-    if (!localData) return;
-    return JSON.parse(localData);
-  } else {
-    if (!userData.data) return;
-    const result = JSON.parse(userData.data.text);
-    if (!isValidData(result)) {
-      const defaultResult: IAllAtoms = {
-        accountOrder: [],
-        characterInfo: {},
-        characterOrder: {},
-        characterSetting: {},
-        contentSetting: {},
-        contentsOrder: {},
-        gates: {},
-      };
-      return defaultResult;
-    }
-    return result;
-  }
-};
 const DashboardStyle = styled.div`
   margin-top: 5px;
   min-width: 800px;
 `;
 interface IProps {
-  userData?: IFetchedData;
-  login: boolean;
+  userData: IFetchedData | "GUEST";
 }
-export interface IAllAtoms {
-  accountOrder: string[];
-  characterOrder: ICharacterOrders;
-  contentsOrder: IContentsOrders;
-  characterInfo: ICharacterInfo;
-  characterSetting: ICharacterSetting;
-  contentSetting: IAccountContent;
-  gates: IGates;
-}
-export type ISync = "success" | "error" | "inprogress" | null;
-function Dashboard({ userData, login }: IProps) {
-  const setIsFocused = useSetRecoilState(IsFocused);
-  const [loginState, setLoginState] = useRecoilState(LoginState);
-  const [isSync, setIsSync] = useState<ISync>(null);
+
+function Dashboard({ userData }: IProps) {
+  const setUserState = useSetRecoilState(UserState);
   useEffect(() => {
-    setLoginState(login);
+    if (userData === "GUEST") {
+      return;
+    }
+    setUserState(userData);
   }, []);
+
+  useEffect(() => {
+    console.log("//userData");
+    console.log(userData);
+  }, [userData]);
+
   return (
     <>
       <Modal />
-      <DashboardStyle onClick={() => setIsFocused(false)}>
-        <HeaderBox userData={userData ? userData : "GUEST"} isSync={isSync} />
+      <DashboardStyle>
+        <HeaderBox />
         <DragAccounts />
       </DashboardStyle>
     </>
