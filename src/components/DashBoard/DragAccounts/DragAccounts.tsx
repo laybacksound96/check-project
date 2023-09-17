@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import {
   DragDropContext,
   Draggable,
@@ -6,15 +6,17 @@ import {
   Droppable,
 } from "react-beautiful-dnd";
 import styled from "styled-components";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
+import { AccountOrder } from "../../../atoms/Settings/Orders";
+import { UserState } from "../../../atoms/user";
+import { IAccount, IFetchedData, getAccountData } from "../../../util/fetch";
+import { Await } from "react-router-dom";
+import Dashboard from "../../../page/Dashboard";
+import AddAccountButton from "../Components/AddAccountButton";
+import UncheckAllButton from "../Components/UncheckAllContents";
 import { AxisLocker } from "../Functions/AxisLocker";
 import AccountContainer from "./DragCharacters";
-import AddAccountButton from "../Components/AddAccountButton";
-import { AccountOrder } from "../../../atoms/Settings/Orders";
-import UncheckAllButton from "../Components/UncheckAllContents";
-import { UserState } from "../../../atoms/user";
-import { IFetchedData } from "../../../util/fetch";
-
+import { Data } from "../../../atoms/data";
 const DragBoxStyle = styled.div`
   width: 100%;
   height: auto;
@@ -42,11 +44,12 @@ export function isLoggined(userState: IFetchedData | "GUEST") {
   if (userState === "GUEST") return true;
   return userState.isLoggined;
 }
+
 const DragAccounts = () => {
   const [accountOrder, setAccountOrder] = useRecoilState(AccountOrder);
-  const userState = useRecoilValue(UserState);
+  const [userState, setUserState] = useRecoilState(UserState);
   const [loggined] = useState(isLoggined(userState));
-
+  const [data, setData] = useRecoilState(Data);
   const dragAccountHandler = (dragInfo: DropResult) => {
     const { destination, source } = dragInfo;
     if (!destination) return;
@@ -75,11 +78,11 @@ const DragAccounts = () => {
           {(provided) => (
             <AccountStyle ref={provided.innerRef} {...provided.droppableProps}>
               {loggined && <UncheckAllButton handleUncheck={uncheckHandler} />}
-              {accountOrder.map((AccountName, index) => {
+              {data.map((data, index) => {
                 return (
                   <Draggable
-                    draggableId={`draggableID_${AccountName}`}
-                    key={`draggableID_${AccountName}`}
+                    draggableId={data._id}
+                    key={data._id}
                     index={index}
                     isDragDisabled={!loggined}
                   >
@@ -94,7 +97,7 @@ const DragAccounts = () => {
                       >
                         <AccountContainer
                           DragHandleProps={provided.dragHandleProps}
-                          AccountName={AccountName}
+                          data={data}
                         />
                       </div>
                     )}

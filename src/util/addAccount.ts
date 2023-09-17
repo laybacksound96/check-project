@@ -1,97 +1,146 @@
 import { IFetchedCharacter } from "../components/Ui/Modal/ModalContents/AddAccount";
-import { ICommanderData, commanderData } from "../json/commanderTypes";
+import { ICommanderData, IDifficulty } from "../json/commanderTypes";
 
-// const calculateGold = (level: number, commanderData: ICommanderData[]) => {
-//   let goldContents = [];
-//   for (let i in commanderData) {
-//     let gold = 0;
-//     const { gates, contentName } = commanderData[i];
-//     for (let gateNumber in gates) {
-//       const gate = gates[gateNumber];
-//       if (gate[0].level > level) continue;
-//       if (gate.length === 1) {
-//         gold += gate[0].gold;
-//       } else {
-//         if (gate[1].level <= level) {
-//           gold += gate[1].gold;
-//         } else {
-//           gold += gate[0].gold;
-//         }
-//       }
-//     }
-//     goldContents.push({ contentName, gold });
-//   }
-//   return goldContents
-//     .sort((a, b) => b.gold - a.gold)
-//     .slice(0, 3)
-//     .map((elem) => elem.contentName);
-// };
-
-export interface IAccounts {
+export type IAccountData = {
   characterOrder: string[];
   contentsOrder: string[];
-  characters: ICharacters[];
   checks: {
     contentName: string;
     characterName: string;
   }[];
-}
-interface ICharacters {
+};
+export type ICharactersData = {
   CharacterName: string;
   ItemMaxLevel: number;
   ServerName: string;
   CharacterClassName: string;
-  contents: {
-    name: string;
-    info: {
-      isGoldContents: boolean;
-      gateSetting: {
-        isVisible: boolean;
-        difficulty: string;
-      }[];
-    };
-    isVisble: boolean;
-  }[];
+};
+
+export interface IGate {
+  isVisible: boolean;
+  difficulty: string;
 }
-export const makeDataResult = (data: IFetchedCharacter[]): IAccounts => {
-  const characterOrder: string[] = [];
-  const contentsOrder: string[] = [];
-  const characters: ICharacters[] = [];
-  for (let i in data) {
-    const { ServerName, ItemMaxLevel, CharacterName, CharacterClassName } =
-      data[i];
-    characters.push({
-      ServerName,
-      CharacterName,
-      ItemMaxLevel: parseInt(ItemMaxLevel.replace(",", "")),
-      CharacterClassName,
-      contents: [],
-    });
-    if (+i < 6) characterOrder.push(CharacterName);
+export type IContentsData = {
+  owner: string;
+  contentName: string;
+  gateSetting: IGate[];
+  isVisble: boolean;
+  isGoldContents: boolean;
+};
+
+export const makeDataResult = (
+  data: IFetchedCharacter[],
+  commanderData: ICommanderData[]
+) => {
+  function makeCharacters(data: IFetchedCharacter[]): ICharactersData[] {
+    const characters: ICharactersData[] = [];
+    for (let i in data) {
+      const { ServerName, ItemMaxLevel, CharacterName, CharacterClassName } =
+        data[i];
+      characters.push({
+        ServerName,
+        CharacterName,
+        ItemMaxLevel: parseInt(ItemMaxLevel.replace(",", "")),
+        CharacterClassName,
+      });
+    }
+    return characters;
   }
-  // for (let i in characters) {
-  //   const { CharacterName, contents, ItemMaxLevel } = characters[i];
-  //   const goldArray = calculateGold(ItemMaxLevel, commanderData);
-  //   if (characterOrder.includes(CharacterName)) {
-  //     goldArray.forEach((elem) => {
-  //       if (!contentsOrder.includes(elem)) contentsOrder.push(elem);
-  //     });
-  //     contentsOrder.reverse();
-  //   }
-  // for (let j in commanderData) {
-  //   const { contentName, gates } = commanderData[j];
-  //   contents.push({
-  //     contentName,
-  //     isVisible: goldArray.includes(contentName),
-  //     isGoldContents: goldArray.includes(contentName),
-  //     gates: makeGates(level, gates),
-  //   });
-  // }
-  // }
-  return {
-    characterOrder,
+  function makeCharacterOrder(characters: ICharactersData[]): string[] {
+    const characterOrder: string[] = [];
+    for (let i in characters) {
+      if (+i < 6) characterOrder.push(data[i].CharacterName);
+    }
+    return characterOrder;
+  }
+
+  function makeContents(
+    characters: ICharactersData[],
+    commanderData: ICommanderData[]
+  ): IContentsData[] {
+    const allContents: IContentsData[] = [];
+
+    function makeGoldCotents(
+      contents: IContentsData[],
+      commanderData: ICommanderData[]
+    ) {
+      function readGold(name: string, difficulty: string, gateNumber: number) {
+        const commander = commanderData.find((elem) => elem.name === name);
+        if (!commander) return 0;
+        const findDifficulty = commander.data.find(
+          (elem) => elem.difficulty === difficulty
+        );
+        if (!findDifficulty) return 0;
+        return findDifficulty.gates[gateNumber].gold;
+      }
+      const goldContents = contents.map(({ contentName, gateSetting }) => {
+        let goldIncome = 0;
+        for (let gateNumber in gateSetting) {
+          const gate = gateSetting[gateNumber];
+          if (!gate.isVisible) continue;
+          goldIncome += readGold(contentName, gate.difficulty, +gateNumber);
+        }
+        return { name: contentName, goldIncome };
+      });
+      return goldContents;
+    }
+    for (let i in characters) {
+      const { CharacterName, ItemMaxLevel } = characters[i];
+      const contents: IContentsData[] = commanderData.map(({ data, name }) => {
+        function makeGateSetting(
+          ItemMaxLevel: number,
+          data: IDifficulty[]
+        ): IGate[] {
+          const isActiveLevel = () => {
+            return data[0].gates[0].level <= ItemMaxLevel;
+          };
+
+          const initialSetting: IGate[] = data[0].gates.map(() => {
+            return { difficulty: "normal", isVisible: false };
+          });
+          if (!isActiveLevel()) return initialSetting;
+
+          for (let i in data) {
+            const currentData = data[i];
+            for (let j in initialSetting) {
+              if (currentData.gates[j].level <= ItemMaxLevel) {
+                initialSetting[j].difficulty = currentData.difficulty;
+                initialSetting[j].isVisible = true;
+              }
+            }
+          }
+
+          return initialSetting;
+        }
+        const content = {
+          owner: CharacterName,
+          contentName: name,
+          isVisble: false, // 골드컨텐츠인지 확인필요
+          isGoldContents: false, // 골드컨텐츠인지 확인필요
+          gateSetting: makeGateSetting(ItemMaxLevel, data),
+        };
+        return content;
+      });
+      const goldContents = makeGoldCotents(contents, commanderData)
+        .sort((a, b) => b.goldIncome - a.goldIncome)
+        .slice(0, 3);
+      goldContents.forEach(({ name }) => {
+        const index = contents.findIndex(
+          ({ contentName }) => contentName === name
+        );
+        contents[index].isVisble = true;
+        contents[index].isGoldContents = true;
+      });
+      allContents.push(...contents);
+    }
+    return allContents;
+  }
+
+  const characters = makeCharacters(data);
+  const result = {
     characters,
-    contentsOrder,
-    checks: [],
+    characterOrder: makeCharacterOrder(characters),
+    contents: makeContents(characters, commanderData),
   };
+  return result;
 };

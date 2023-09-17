@@ -9,6 +9,7 @@ import IsInValidName from "./functions/Validation/IsValidName";
 import { makeDataResult } from "../../../../util/addAccount";
 import { useRecoilValue } from "recoil";
 import { UserState } from "../../../../atoms/user";
+import { commanderData } from "../../../../json/commanderTypes";
 
 const Container = styled.div`
   display: flex;
@@ -82,14 +83,11 @@ const AddAccount = () => {
     if (data.length === 0) return;
     // 1. Account 만들고 백엔드에 전송
     // 2. 통신 끝나면 모달 닫음
-    if (userState !== "GUEST") {
-      // 만든 account 데이터랑 id 첨부해서 post
 
-      console.log(userState);
-      console.log(makeDataResult(data));
-    } else {
-      // GUEST 모드일때
-    }
+    // 만든 account 데이터랑 id 첨부해서 post
+
+    console.log(userState);
+    console.log(makeDataResult(data, commanderData));
 
     closeModal();
   };

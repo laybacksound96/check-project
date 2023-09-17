@@ -1,5 +1,5 @@
 import axios from "axios";
-import { IAccounts } from "./addAccount";
+import { IAccount } from "../atoms/data";
 
 export interface IFetchedData {
   user: {
@@ -26,18 +26,8 @@ export interface ISearchedData {
 const url2 = "https://www.checksheet.link/";
 const url = "http://localhost:8080/";
 
-const postAccountData = async (id: string, data: IAccounts) => {
-  const token = localStorage.getItem("accessToken");
-  const response = await axios.post(
-    `${url}user/${id}`,
-    { data },
-    {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "bearer " + token,
-      },
-    }
-  );
+export const getAccountData = async (account_id: string) => {
+  const response = await axios.get<IAccount>(`${url}account/${account_id}`);
   return response.data;
 };
 

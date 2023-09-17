@@ -26,10 +26,6 @@ export const router = createBrowserRouter([
             element: <Navigate to="/" />,
           },
           {
-            path: "GUEST",
-            element: <Dashboard userData={"GUEST"} />,
-          },
-          {
             path: ":userId",
             id: "board-userData",
             loader: loadBoardData,
