@@ -10,7 +10,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
-import { ISearchedData, search } from "../../../util/fetch";
+import { ISearchedData } from "../../../util/fetch";
 import { useRecoilState } from "recoil";
 import { IsFocused } from "../../../atoms/ui";
 import UserCard from "./UserCard";
@@ -178,12 +178,12 @@ const Nav = () => {
     window.location.href = "/" + location;
   }
   const HandleChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const inputedValue = event.target.value;
-    if (inputedValue === "") {
-      setSearchList([]);
-    } else {
-      search(inputedValue, setSearchList);
-    }
+    // const inputedValue = event.target.value;
+    // if (inputedValue === "") {
+    //   setSearchList([]);
+    // } else {
+    //   search(inputedValue, setSearchList);
+    // }
   };
 
   const token = useRouteLoaderData("root") as ReturnType<typeof loadToken>;

@@ -12,8 +12,8 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { dragIcon } from "../../../Settings";
 import { LoginState } from "../../../atoms/login";
 import { UserState } from "../../../atoms/user";
-import { Data } from "../../../atoms/data";
-import { IAccount } from "../../../util/fetch";
+import { Data, IAccount } from "../../../atoms/data";
+
 import ConfigAccountButton from "../Components/ConfigAccountButton";
 import CharacterGold from "../Components/CharacterGold";
 import ConfigContentButton from "../Components/ConfigContentButton";

@@ -53,13 +53,12 @@ export const makeDataResult = (
     }
     return characterOrder;
   }
-
   function makeContents(
     characters: ICharactersData[],
     commanderData: ICommanderData[]
-  ): IContentsData[] {
+  ) {
     const allContents: IContentsData[] = [];
-
+    const contentsOrder: string[] = [];
     function makeGoldCotents(
       contents: IContentsData[],
       commanderData: ICommanderData[]
@@ -130,17 +129,24 @@ export const makeDataResult = (
         );
         contents[index].isVisble = true;
         contents[index].isGoldContents = true;
+        if (!contentsOrder.includes(name) && +i < 6) {
+          contentsOrder.push(name);
+        }
       });
       allContents.push(...contents);
     }
-    return allContents;
+    return { allContents, contentsOrder };
   }
-
   const characters = makeCharacters(data);
+  const { allContents: contents, contentsOrder } = makeContents(
+    characters,
+    commanderData
+  );
   const result = {
     characters,
     characterOrder: makeCharacterOrder(characters),
-    contents: makeContents(characters, commanderData),
+    contents,
+    contentsOrder,
   };
   return result;
 };

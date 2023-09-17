@@ -83,7 +83,6 @@ const AddAccount = () => {
     if (data.length === 0) return;
     // 1. Account 만들고 백엔드에 전송
     // 2. 통신 끝나면 모달 닫음
-
     // 만든 account 데이터랑 id 첨부해서 post
 
     console.log(userState);

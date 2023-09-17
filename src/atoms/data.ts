@@ -8,18 +8,15 @@ export type IAccount = {
     contentName: string;
     characterName: string;
   }[];
-  characters_id: string;
+  characters: ICharacters[];
   contents_id: string;
 };
 export type ICharacters = {
+  CharacterName: string;
+  ItemMaxLevel: number;
+  ServerName: string;
+  CharacterClassName: string;
   _id: string;
-  owner: string;
-  characters: {
-    CharacterName: string;
-    ItemMaxLevel: number;
-    ServerName: string;
-    CharacterClassName: string;
-  }[];
 };
 export type IContents = {
   _id: string;

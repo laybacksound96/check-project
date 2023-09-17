@@ -9,13 +9,13 @@ import styled from "styled-components";
 import { useRecoilState } from "recoil";
 import { AccountOrder } from "../../../atoms/Settings/Orders";
 import { UserState } from "../../../atoms/user";
-import { IAccount, IFetchedData, getAccountData } from "../../../util/fetch";
+import { IFetchedData, getAccountData } from "../../../util/fetch";
 import { Await } from "react-router-dom";
 import Dashboard from "../../../page/Dashboard";
 import AddAccountButton from "../Components/AddAccountButton";
 import UncheckAllButton from "../Components/UncheckAllContents";
 import { AxisLocker } from "../Functions/AxisLocker";
-import AccountContainer from "./DragCharacters";
+import DragCharacters from "./DragCharacters";
 import { Data } from "../../../atoms/data";
 const DragBoxStyle = styled.div`
   width: 100%;
@@ -95,7 +95,7 @@ const DragAccounts = () => {
                           false
                         )}
                       >
-                        <AccountContainer
+                        <DragCharacters
                           DragHandleProps={provided.dragHandleProps}
                           data={data}
                         />

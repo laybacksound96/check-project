@@ -22,6 +22,7 @@ function Dashboard({ userData }: IProps) {
   const [data, setData] = useRecoilState(Data);
   const [userState, setUserState] = useRecoilState(UserState);
   useEffect(() => {
+    setUserState(userData);
     Promise.all(
       userData.user.accountOrder.map((id) => getAccountData(id))
     ).then((value) => {
@@ -30,8 +31,13 @@ function Dashboard({ userData }: IProps) {
     });
   }, []);
   useEffect(() => {
+    console.log("//data//");
     console.log(data);
   }, [data]);
+  useEffect(() => {
+    console.log("//userState//");
+    console.log(userState);
+  }, [userState]);
   return (
     <>
       <DashboardStyle>
