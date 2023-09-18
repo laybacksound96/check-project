@@ -8,7 +8,16 @@ export type IAccount = {
     contentName: string;
     characterName: string;
   }[];
-  characters: ICharacters[];
+  characters: {
+    owner: string;
+    _id: string;
+    characters: ICharacters[];
+  };
+  contents: {
+    owner: string;
+    _id: string;
+    characters: IContents[];
+  };
   contents_id: string;
 };
 export type ICharacters = {
@@ -23,15 +32,11 @@ export type IContents = {
   owner: string;
   contents: {
     name: string;
-    info: {
-      isGoldContents: boolean;
-      gateSetting: [
-        {
-          isVisible: boolean;
-          difficulty: string;
-        }
-      ];
-    };
+    isGoldContents: boolean;
+    gateSetting: {
+      isVisible: boolean;
+      difficulty: string;
+    }[];
     isVisble: boolean;
   }[];
 };

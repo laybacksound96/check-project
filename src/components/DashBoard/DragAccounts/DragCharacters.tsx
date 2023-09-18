@@ -5,7 +5,6 @@ import {
   DropResult,
   Droppable,
 } from "react-beautiful-dnd";
-
 import React from "react";
 import styled, { css } from "styled-components";
 import { useRecoilState, useRecoilValue } from "recoil";
@@ -13,12 +12,12 @@ import { dragIcon } from "../../../Settings";
 import { LoginState } from "../../../atoms/login";
 import { UserState } from "../../../atoms/user";
 import { Data, IAccount } from "../../../atoms/data";
-
 import ConfigAccountButton from "../Components/ConfigAccountButton";
 import CharacterGold from "../Components/CharacterGold";
 import ConfigContentButton from "../Components/ConfigContentButton";
 import { AxisLocker } from "../Functions/AxisLocker";
 import DragContents from "./DragContents";
+import { dragCharacter } from "../../../util/fetch";
 interface IStyle {
   loggined: boolean;
 }
@@ -28,10 +27,13 @@ const DragAccountBtn = styled.div`
   justify-content: center;
   align-items: center;
   margin-left: 10px;
-  opacity: 0;
   width: 100px;
   background-color: rgba(100, 100, 100, 0.5);
   border-radius: 10px;
+  opacity: 40%;
+  &:hover {
+    opacity: 70%;
+  }
 `;
 const Container = styled.div<IStyle>`
   display: flex;
@@ -57,7 +59,6 @@ const Container = styled.div<IStyle>`
       }
     `}
 `;
-
 export const Character = styled.div`
   display: flex;
   justify-content: space-between;
@@ -83,7 +84,6 @@ export const Character = styled.div`
 const CharactersContainer = styled.div`
   display: flex;
 `;
-
 export const NameContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -99,39 +99,51 @@ export const NameContainer = styled.div`
 interface IProps {
   DragHandleProps: DraggableProvidedDragHandleProps | null | undefined;
   data: IAccount;
+  accountIndex: number;
 }
 
-function DragCharacters({ DragHandleProps, data }: IProps) {
+function DragCharacters({ DragHandleProps, accountIndex }: IProps) {
+  const userState = useRecoilValue(UserState);
+  const [data, setData] = useRecoilState(Data);
   const loggined = useRecoilValue(LoginState);
   const dragCharacterHandler = (dragInfo: DropResult) => {
-    // const { destination, source } = dragInfo;
-    // if (!destination) return;
-    // if (destination?.droppableId !== source.droppableId) return;
-    // setCharacterOrder((prev) => {
-    //   const copiedOrder = [...prev[AccountName]];
-    //   const target = copiedOrder[source.index];
-    //   copiedOrder.splice(source.index, 1);
-    //   copiedOrder.splice(destination?.index, 0, target);
-    //   return { ...prev, [AccountName]: copiedOrder };
-    // });
-    // return;
+    const { destination, source } = dragInfo;
+    if (!destination) return;
+    if (destination?.droppableId !== source.droppableId) return;
+    if (destination.index === source.index) return;
+    setData((prev) => {
+      const copiedAccounts = [...prev];
+      const copiedData = { ...copiedAccounts[accountIndex] };
+      const copiedCharacterOrder = [...copiedData.characterOrder];
+      const target = copiedCharacterOrder[source.index];
+      copiedCharacterOrder.splice(source.index, 1);
+      copiedCharacterOrder.splice(destination?.index, 0, target);
+      if (userState !== "GUEST") {
+        const userId = userState.user._id;
+        dragCharacter(copiedData._id, userId, copiedCharacterOrder);
+      }
+      copiedData.characterOrder = copiedCharacterOrder;
+      copiedAccounts[accountIndex] = copiedData;
+      return copiedAccounts;
+    });
+    return;
   };
 
   return (
     <DragDropContext onDragEnd={dragCharacterHandler}>
-      <Droppable droppableId={data._id}>
+      <Droppable droppableId={data[accountIndex]._id}>
         {(provided) => (
           <Container loggined={loggined}>
             <div ref={provided.innerRef} {...provided.droppableProps}>
-              <ConfigAccountButton AccountName={data._id} />
-              {data.characterOrder.map((CharacterName, index) => {
-                const character = data.characters.find(
-                  ({ CharacterName }) => CharacterName
+              <ConfigAccountButton AccountName={data[accountIndex]._id} />
+              {data[accountIndex].characterOrder.map((name, index) => {
+                const character = data[accountIndex].characters.characters.find(
+                  ({ CharacterName }) => CharacterName === name
                 );
                 return (
                   <Draggable
-                    key={CharacterName}
-                    draggableId={CharacterName}
+                    key={name}
+                    draggableId={name}
                     index={index}
                     isDragDisabled={!loggined}
                   >
@@ -146,14 +158,14 @@ function DragCharacters({ DragHandleProps, data }: IProps) {
                       >
                         <Character {...provided.dragHandleProps}>
                           <NameContainer>
-                            <h1>{CharacterName}</h1>
+                            <h1>{name}</h1>
                             <span>{character?.CharacterClassName}</span>
                             <span>Lv {character?.ItemMaxLevel}</span>
                           </NameContainer>
                           <div>
                             <ConfigContentButton
-                              AccountName={data._id}
-                              CharacterName={CharacterName}
+                              AccountName={data[accountIndex]._id}
+                              CharacterName={name}
                             />
                             {/* {IsGoldCharacter && (
                               <CharacterGold
@@ -170,8 +182,11 @@ function DragCharacters({ DragHandleProps, data }: IProps) {
               })}
               {provided.placeholder}
             </div>
-            {/* <DragContents AccountName={data._id} />
-            <DragAccountBtn {...DragHandleProps} /> */}
+            <DragContents
+              AccountName={data[accountIndex]._id}
+              accountIndex={accountIndex}
+            />
+            <DragAccountBtn {...DragHandleProps} />
           </Container>
         )}
       </Droppable>

@@ -46,34 +46,8 @@ function CheckBoxButton({
   Color,
 }: ICheckboxProps) {
   const loggined = useRecoilValue(LoginState);
-  const [
-    {
-      [AccountName]: {
-        [CharacterName]: {
-          [ContentName]: { isCleared, isActivated, isVisible },
-        },
-      },
-    },
-    setContentSetting,
-  ] = useRecoilState(ContentSetting);
-  function onClickHandler() {
-    if (!isVisible || !isActivated || !loggined) return;
-    setContentSetting((prev) => {
-      return {
-        ...prev,
-        [AccountName]: {
-          ...prev[AccountName],
-          [CharacterName]: {
-            ...prev[AccountName][CharacterName],
-            [ContentName]: {
-              ...prev[AccountName][CharacterName][ContentName],
-              isCleared: !isCleared,
-            },
-          },
-        },
-      };
-    });
-  }
+
+  function onClickHandler() {}
   return (
     <CheckBox
       onClick={onClickHandler}

@@ -13,6 +13,7 @@ export interface IFetchedData {
     };
     ownCharacters: string[];
     accountOrder: string[];
+    _id: string;
   };
   isLoggined: boolean;
 }
@@ -64,5 +65,51 @@ export async function fetchSearchAccount(inputValue: string): Promise<[]> {
     return response.data;
   } catch (error) {
     throw new Error("알 수 없는 오류가 있어요");
+  }
+}
+
+export async function dragAccount(userId: string, accountOrderdata: string[]) {
+  const token = localStorage.getItem("accessToken");
+  try {
+    const response = await axios.patch<string[]>(
+      `${url}user/accountOrder/${userId}`,
+      {
+        accountOrder: accountOrderdata,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "bearer " + token,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    return accountOrderdata;
+  }
+}
+export async function dragCharacter(
+  accountId: string,
+  userId: string,
+  characterOrderdata: string[]
+) {
+  const token = localStorage.getItem("accessToken");
+  try {
+    const response = await axios.patch<string[]>(
+      `${url}account/characterOrder/${accountId}`,
+      {
+        characterOrder: characterOrderdata,
+        user_id: userId,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "bearer " + token,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    return characterOrderdata;
   }
 }

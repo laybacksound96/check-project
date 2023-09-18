@@ -9,7 +9,7 @@ import styled from "styled-components";
 import { useRecoilState } from "recoil";
 import { AccountOrder } from "../../../atoms/Settings/Orders";
 import { UserState } from "../../../atoms/user";
-import { IFetchedData, getAccountData } from "../../../util/fetch";
+import { IFetchedData, dragAccount, getAccountData } from "../../../util/fetch";
 import { Await } from "react-router-dom";
 import Dashboard from "../../../page/Dashboard";
 import AddAccountButton from "../Components/AddAccountButton";
@@ -17,6 +17,7 @@ import UncheckAllButton from "../Components/UncheckAllContents";
 import { AxisLocker } from "../Functions/AxisLocker";
 import DragCharacters from "./DragCharacters";
 import { Data } from "../../../atoms/data";
+import axios from "axios";
 const DragBoxStyle = styled.div`
   width: 100%;
   height: auto;
@@ -46,7 +47,6 @@ export function isLoggined(userState: IFetchedData | "GUEST") {
 }
 
 const DragAccounts = () => {
-  const [accountOrder, setAccountOrder] = useRecoilState(AccountOrder);
   const [userState, setUserState] = useRecoilState(UserState);
   const [loggined] = useState(isLoggined(userState));
   const [data, setData] = useRecoilState(Data);
@@ -54,11 +54,17 @@ const DragAccounts = () => {
     const { destination, source } = dragInfo;
     if (!destination) return;
     if (destination?.droppableId !== source.droppableId) return;
-    setAccountOrder((prev) => {
+    if (destination.index === source.index) return;
+    setData((prev) => {
       const copiedPrev = [...prev];
       const copiedObject = copiedPrev[source.index];
       copiedPrev.splice(source.index, 1);
       copiedPrev.splice(destination?.index, 0, copiedObject);
+      const accountOrderdata = copiedPrev.map((elem) => elem._id);
+      if (userState !== "GUEST") {
+        const userId = userState.user._id;
+        dragAccount(userId, accountOrderdata);
+      }
       return [...copiedPrev];
     });
   };
@@ -98,6 +104,7 @@ const DragAccounts = () => {
                         <DragCharacters
                           DragHandleProps={provided.dragHandleProps}
                           data={data}
+                          accountIndex={index}
                         />
                       </div>
                     )}
