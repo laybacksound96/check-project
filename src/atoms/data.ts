@@ -41,7 +41,7 @@ export type IContents = {
   }[];
 };
 
-export const Data = atom<IAccount[]>({
-  key: "Data",
+export const Account = atom<IAccount[]>({
+  key: "Account",
   default: [],
 });

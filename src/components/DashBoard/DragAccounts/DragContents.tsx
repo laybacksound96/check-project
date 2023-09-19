@@ -18,7 +18,7 @@ import { getKey } from "../Functions/CalculateCheckbox";
 import { Gates } from "../../../atoms/Settings/Gates";
 import { ContentSetting } from "../../../atoms/Settings/ContentSetting";
 import { LoginState } from "../../../atoms/login";
-import { Data } from "../../../atoms/data";
+import { Account } from "../../../atoms/data";
 const Name = styled.div`
   display: flex;
   flex-direction: column;
@@ -45,7 +45,7 @@ interface IProps {
 }
 const DragContents = ({ AccountName, accountIndex }: IProps) => {
   const [openModal] = useModal();
-  const [data, setData] = useRecoilState(Data);
+  const [account, setAccount] = useRecoilState(Account);
   const loggined = useRecoilValue(LoginState);
   const contentsFrequency = useRecoilValue(ContentsFrequency);
   const gates = useRecoilValue(Gates);
@@ -62,7 +62,7 @@ const DragContents = ({ AccountName, accountIndex }: IProps) => {
     // });
     return;
   };
-  const { contentsOrder, characterOrder, contents } = data[accountIndex];
+  const { contentsOrder, characterOrder, contents } = account[accountIndex];
   return (
     <>
       <DragDropContext onDragEnd={dragContentHandler}>

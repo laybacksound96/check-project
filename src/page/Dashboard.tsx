@@ -3,24 +3,24 @@ import styled from "styled-components";
 import Modal from "../components/Ui/Modal/Modal";
 import DragAccounts from "../components/DashBoard/DragAccounts/DragAccounts";
 import { useEffect, useState } from "react";
-import { IFetchedData, getAccountData } from "../util/fetch";
+import { ICommanderData, IFetchedData, getAccountData } from "../util/fetch";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { UserState } from "../atoms/user";
 import { AccountOrder } from "../atoms/Settings/Orders";
-import { Data } from "../atoms/data";
 import { LoginState } from "../atoms/login";
+import { Account } from "../atoms/data";
 
 const DashboardStyle = styled.div`
   margin-top: 5px;
   min-width: 800px;
 `;
 interface IProps {
-  userData: IFetchedData;
+  data: [IFetchedData, ICommanderData];
 }
 
-function Dashboard({ userData }: IProps) {
+function Dashboard({ data: [userData, commanderData] }: IProps) {
   const [loading, setLoading] = useState(true);
-  const [data, setData] = useRecoilState(Data);
+  const [account, setAccount] = useRecoilState(Account);
   const [loggined, setLoggined] = useRecoilState(LoginState);
   const [userState, setUserState] = useRecoilState(UserState);
   useEffect(() => {
@@ -28,10 +28,10 @@ function Dashboard({ userData }: IProps) {
     Promise.all(
       userData.user.accountOrder.map((id) => getAccountData(id))
     ).then((value) => {
-      setData(value);
+      setAccount(value);
       setLoading(false);
     });
-  }, [setData, setUserState, userData]);
+  }, [setAccount, setUserState, userData]);
   useEffect(() => {
     if (userState === "GUEST" || userState.isLoggined === true) {
       setLoggined(true);
@@ -41,8 +41,8 @@ function Dashboard({ userData }: IProps) {
   }, [setLoggined, userState]);
   useEffect(() => {
     console.log("//data//");
-    console.log(data);
-  }, [data]);
+    console.log(account);
+  }, [account]);
   useEffect(() => {
     console.log("//userState//");
     console.log(userState);

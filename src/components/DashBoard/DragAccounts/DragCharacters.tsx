@@ -11,13 +11,14 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { dragIcon } from "../../../Settings";
 import { LoginState } from "../../../atoms/login";
 import { UserState } from "../../../atoms/user";
-import { Data, IAccount } from "../../../atoms/data";
+import { IAccount } from "../../../atoms/data";
 import ConfigAccountButton from "../Components/ConfigAccountButton";
 import CharacterGold from "../Components/CharacterGold";
 import ConfigContentButton from "../Components/ConfigContentButton";
 import { AxisLocker } from "../Functions/AxisLocker";
 import DragContents from "./DragContents";
 import { dragCharacter } from "../../../util/fetch";
+import { Account } from "../../../atoms/data";
 interface IStyle {
   loggined: boolean;
 }
@@ -104,14 +105,14 @@ interface IProps {
 
 function DragCharacters({ DragHandleProps, accountIndex }: IProps) {
   const userState = useRecoilValue(UserState);
-  const [data, setData] = useRecoilState(Data);
   const loggined = useRecoilValue(LoginState);
+  const [account, setAccount] = useRecoilState(Account);
   const dragCharacterHandler = (dragInfo: DropResult) => {
     const { destination, source } = dragInfo;
     if (!destination) return;
     if (destination?.droppableId !== source.droppableId) return;
     if (destination.index === source.index) return;
-    setData((prev) => {
+    setAccount((prev) => {
       const copiedAccounts = [...prev];
       const copiedData = { ...copiedAccounts[accountIndex] };
       const copiedCharacterOrder = [...copiedData.characterOrder];
@@ -131,13 +132,15 @@ function DragCharacters({ DragHandleProps, accountIndex }: IProps) {
 
   return (
     <DragDropContext onDragEnd={dragCharacterHandler}>
-      <Droppable droppableId={data[accountIndex]._id}>
+      <Droppable droppableId={account[accountIndex]._id}>
         {(provided) => (
           <Container loggined={loggined}>
             <div ref={provided.innerRef} {...provided.droppableProps}>
-              <ConfigAccountButton AccountName={data[accountIndex]._id} />
-              {data[accountIndex].characterOrder.map((name, index) => {
-                const character = data[accountIndex].characters.characters.find(
+              <ConfigAccountButton AccountName={account[accountIndex]._id} />
+              {account[accountIndex].characterOrder.map((name, index) => {
+                const character = account[
+                  accountIndex
+                ].characters.characters.find(
                   ({ CharacterName }) => CharacterName === name
                 );
                 return (
@@ -164,7 +167,7 @@ function DragCharacters({ DragHandleProps, accountIndex }: IProps) {
                           </NameContainer>
                           <div>
                             <ConfigContentButton
-                              AccountName={data[accountIndex]._id}
+                              AccountName={account[accountIndex]._id}
                               CharacterName={name}
                             />
                             {/* {IsGoldCharacter && (
@@ -183,7 +186,7 @@ function DragCharacters({ DragHandleProps, accountIndex }: IProps) {
               {provided.placeholder}
             </div>
             <DragContents
-              AccountName={data[accountIndex]._id}
+              AccountName={account[accountIndex]._id}
               accountIndex={accountIndex}
             />
             <DragAccountBtn {...DragHandleProps} />

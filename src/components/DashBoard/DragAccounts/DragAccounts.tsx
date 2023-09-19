@@ -16,8 +16,8 @@ import AddAccountButton from "../Components/AddAccountButton";
 import UncheckAllButton from "../Components/UncheckAllContents";
 import { AxisLocker } from "../Functions/AxisLocker";
 import DragCharacters from "./DragCharacters";
-import { Data } from "../../../atoms/data";
 import axios from "axios";
+import { Account } from "../../../atoms/data";
 const DragBoxStyle = styled.div`
   width: 100%;
   height: auto;
@@ -49,13 +49,13 @@ export function isLoggined(userState: IFetchedData | "GUEST") {
 const DragAccounts = () => {
   const [userState, setUserState] = useRecoilState(UserState);
   const [loggined] = useState(isLoggined(userState));
-  const [data, setData] = useRecoilState(Data);
+  const [account, setAccount] = useRecoilState(Account);
   const dragAccountHandler = (dragInfo: DropResult) => {
     const { destination, source } = dragInfo;
     if (!destination) return;
     if (destination?.droppableId !== source.droppableId) return;
     if (destination.index === source.index) return;
-    setData((prev) => {
+    setAccount((prev) => {
       const copiedPrev = [...prev];
       const copiedObject = copiedPrev[source.index];
       copiedPrev.splice(source.index, 1);
@@ -84,7 +84,7 @@ const DragAccounts = () => {
           {(provided) => (
             <AccountStyle ref={provided.innerRef} {...provided.droppableProps}>
               {loggined && <UncheckAllButton handleUncheck={uncheckHandler} />}
-              {data.map((data, index) => {
+              {account.map((data, index) => {
                 return (
                   <Draggable
                     draggableId={data._id}

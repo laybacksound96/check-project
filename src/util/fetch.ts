@@ -1,6 +1,16 @@
 import axios from "axios";
 import { IAccount } from "../atoms/data";
-
+export interface IDifficulty {
+  difficulty: "normal" | "hard";
+  gates: { level: number; gold: number }[];
+}
+export type ICommander = {
+  name: string;
+  data: IDifficulty[];
+};
+export type ICommanderData = {
+  commanderData: ICommander[];
+};
 export interface IFetchedData {
   user: {
     user_id: string;
@@ -40,6 +50,10 @@ export const loadUserData = async (id: string) => {
       Authorization: "bearer " + token,
     },
   });
+  return response.data;
+};
+export const getCommander = async () => {
+  const response = await axios.get<ICommanderData>(`${url}api/commander`);
   return response.data;
 };
 export async function fetchLogin(): Promise<string> {
