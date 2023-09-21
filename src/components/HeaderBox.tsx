@@ -3,7 +3,7 @@ import Contents from "./Contents";
 import AccountGold from "./AccountGold";
 import { useRecoilValue } from "recoil";
 import { IFetchedData } from "../util/fetch";
-import { UserState } from "../atoms/user";
+import { UserState } from "../atoms/data";
 
 const HeaderBoxStyle = styled.header`
   position: relative;

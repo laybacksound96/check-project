@@ -1,4 +1,5 @@
 import { atom } from "recoil";
+import { IFetchedData } from "../util/fetch";
 export type IAccount = {
   _id: string;
   owner: string;
@@ -44,4 +45,8 @@ export type IContents = {
 export const Account = atom<IAccount[]>({
   key: "Account",
   default: [],
+});
+export const UserState = atom<IFetchedData | "GUEST">({
+  key: "UserState",
+  default: "GUEST",
 });

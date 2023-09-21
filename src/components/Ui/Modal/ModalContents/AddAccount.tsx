@@ -6,10 +6,10 @@ import CharacterContainer from "./components/CharacterContainer";
 import useModal from "../../../../CustomHooks/useModal";
 import { makeDataResult } from "../../../../util/addAccount";
 import { useRecoilValue } from "recoil";
-import { UserState } from "../../../../atoms/user";
 import { commanderData } from "../../../../json/commanderTypes";
 import IsInValidName from "../../../Functions/IsValidName";
 import SortByLevel from "../../../Functions/SortByLevel";
+import { UserState } from "../../../../atoms/data";
 
 const Container = styled.div`
   display: flex;

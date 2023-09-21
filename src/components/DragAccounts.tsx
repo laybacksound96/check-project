@@ -7,7 +7,6 @@ import {
 } from "react-beautiful-dnd";
 import styled from "styled-components";
 import { useRecoilState } from "recoil";
-import { UserState } from "../atoms/user";
 import { IFetchedData, getAccountData, patchAccount } from "../util/fetch";
 import { Await } from "react-router-dom";
 import Dashboard from "../page/Dashboard";
@@ -15,7 +14,7 @@ import AddAccountButton from "./AddAccountButton";
 import { AxisLocker } from "./Functions/AxisLocker";
 import DragCharacters from "./DragCharacters";
 import axios from "axios";
-import { Account } from "../atoms/data";
+import { Account, UserState } from "../atoms/data";
 import UncheckAllButton from "./UncheckAllContents";
 const DragBoxStyle = styled.div`
   width: 100%;

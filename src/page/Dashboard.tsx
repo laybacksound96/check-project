@@ -4,9 +4,8 @@ import DragAccounts from "../components/DragAccounts";
 import { useEffect, useState } from "react";
 import { IFetchedData, getAccountData } from "../util/fetch";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { UserState } from "../atoms/user";
 import { LoginState } from "../atoms/login";
-import { Account } from "../atoms/data";
+import { Account, UserState } from "../atoms/data";
 import { ICommanderData } from "../atoms/commander";
 import HeaderBox from "../components/HeaderBox";
 
