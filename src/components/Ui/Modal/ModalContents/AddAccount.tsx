@@ -5,7 +5,7 @@ import { Input } from "./AddContent";
 import CharacterContainer from "./components/CharacterContainer";
 import SortByLevel from "./functions/SortByLevel";
 import useModal from "../../../../CustomHooks/Modal/useModal";
-import IsInValidName from "./functions/Validation/IsValidName";
+import IsInValidName from "./functions/IsValidName";
 import { makeDataResult } from "../../../../util/addAccount";
 import { useRecoilValue } from "recoil";
 import { UserState } from "../../../../atoms/user";

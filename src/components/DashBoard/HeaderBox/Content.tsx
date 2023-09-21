@@ -2,7 +2,6 @@ import React from "react";
 import { useEffect, useState } from "react";
 import styled, { css, keyframes } from "styled-components";
 import getLowerLightnessColor from "../Functions/getLowerLightnessColor";
-import { IFrequencyContents } from "../../../atoms/frequency";
 interface IpropStyle {
   shouldAnimate: boolean;
   Color: string;
@@ -106,51 +105,38 @@ const OwnerBox = styled.span<IColorStyle>`
   background-color: ${(props) => getLowerLightnessColor(props.Color, 20)};
   border-radius: 5px;
 `;
-interface IProps {
-  contentState: IFrequencyContents;
-  Color: string;
-}
-const Content = ({
-  contentState: { Frequency, ContentName, GateState, RemainOwner },
-  Color,
-}: IProps) => {
+
+const Content = () => {
   const [shouldAnimate, setShouldAnimate] = useState(false);
 
-  useEffect(() => {
-    setShouldAnimate(true);
-    const timeoutId = setTimeout(() => {
-      setShouldAnimate(false);
-    }, 300);
-    return () => clearTimeout(timeoutId);
-  }, [Frequency]);
-
   return (
-    <ContentStyle shouldAnimate={shouldAnimate} Color={Color}>
-      <HeaderContainer>
-        <NameBox>
-          <h1>
-            {ContentName.length >= 12
-              ? `${ContentName.slice(0, 12)}...`
-              : ContentName}
-          </h1>
-          {GateState.map((elem) => {
-            return <p key={elem}>{elem}</p>;
-          })}
-        </NameBox>
-        <FrequencyBox Color={Color}>
-          <span>{Frequency}</span>
-        </FrequencyBox>
-      </HeaderContainer>
-      <OwnerContainer Color={Color}>
-        {RemainOwner.map((name, index) => {
-          return index < 4 ? (
-            <OwnerBox key={index} Color={Color}>
-              {index === 3 && RemainOwner.length > 4 ? `${name}...` : name}
-            </OwnerBox>
-          ) : null;
-        })}
-      </OwnerContainer>
-    </ContentStyle>
+    <div></div>
+    // <ContentStyle shouldAnimate={shouldAnimate} Color={Color}>
+    //   <HeaderContainer>
+    //     <NameBox>
+    //       <h1>
+    //         {ContentName.length >= 12
+    //           ? `${ContentName.slice(0, 12)}...`
+    //           : ContentName}
+    //       </h1>
+    //       {GateState.map((elem) => {
+    //         return <p key={elem}>{elem}</p>;
+    //       })}
+    //     </NameBox>
+    //     <FrequencyBox Color={Color}>
+    //       <span>{Frequency}</span>
+    //     </FrequencyBox>
+    //   </HeaderContainer>
+    //   <OwnerContainer Color={Color}>
+    //     {RemainOwner.map((name, index) => {
+    //       return index < 4 ? (
+    //         <OwnerBox key={index} Color={Color}>
+    //           {index === 3 && RemainOwner.length > 4 ? `${name}...` : name}
+    //         </OwnerBox>
+    //       ) : null;
+    //     })}
+    //   </OwnerContainer>
+    // </ContentStyle>
   );
 };
 
