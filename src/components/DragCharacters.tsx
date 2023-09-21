@@ -9,12 +9,13 @@ import React from "react";
 import styled, { css } from "styled-components";
 import { useRecoilState, useRecoilValue } from "recoil";
 import DragContents from "./DragContents";
-import { Account, IAccount, UserState } from "../atoms/data";
+import { AccountOrder, IAccountOrder } from "../atoms/data";
 import { dragIcon } from "../Settings";
 import { LoginState } from "../atoms/login";
 import { patchCharacter } from "../util/fetch";
 import ConfigAccountButton from "./ConfigAccountButton";
 import { AxisLocker } from "./Functions/AxisLocker";
+import { UserState } from "../atoms/fetchData";
 interface IStyle {
   loggined: boolean;
 }
@@ -95,20 +96,20 @@ export const NameContainer = styled.div`
 `;
 interface IProps {
   DragHandleProps: DraggableProvidedDragHandleProps | null | undefined;
-  data: IAccount;
+  account: IAccountOrder;
   accountIndex: number;
 }
 
-function DragCharacters({ DragHandleProps, accountIndex }: IProps) {
+function DragCharacters({ DragHandleProps, account, accountIndex }: IProps) {
   const userState = useRecoilValue(UserState);
   const loggined = useRecoilValue(LoginState);
-  const [account, setAccount] = useRecoilState(Account);
+  const [accountOrder, setAccountOrder] = useRecoilState(AccountOrder);
   const dragCharacterHandler = (dragInfo: DropResult) => {
     const { destination, source } = dragInfo;
     if (!destination) return;
     if (destination?.droppableId !== source.droppableId) return;
     if (destination.index === source.index) return;
-    setAccount((prev) => {
+    setAccountOrder((prev) => {
       const copiedAccounts = [...prev];
       const copiedData = { ...copiedAccounts[accountIndex] };
       const copiedCharacterOrder = [...copiedData.characterOrder];
@@ -128,15 +129,13 @@ function DragCharacters({ DragHandleProps, accountIndex }: IProps) {
 
   return (
     <DragDropContext onDragEnd={dragCharacterHandler}>
-      <Droppable droppableId={account[accountIndex]._id}>
+      <Droppable droppableId={account._id}>
         {(provided) => (
           <Container loggined={loggined}>
             <div ref={provided.innerRef} {...provided.droppableProps}>
-              <ConfigAccountButton AccountName={account[accountIndex]._id} />
-              {account[accountIndex].characterOrder.map((name, index) => {
-                const character = account[
-                  accountIndex
-                ].characters.characters.find(
+              <ConfigAccountButton AccountName={account._id} />
+              {account.characterOrder.map((name, index) => {
+                const character = account.characters.find(
                   ({ CharacterName }) => CharacterName === name
                 );
                 return (
@@ -181,10 +180,7 @@ function DragCharacters({ DragHandleProps, accountIndex }: IProps) {
               })}
               {provided.placeholder}
             </div>
-            <DragContents
-              AccountId={account[accountIndex]._id}
-              accountIndex={accountIndex}
-            />
+            <DragContents AccountId={account._id} accountIndex={accountIndex} />
             <DragAccountBtn {...DragHandleProps} />
           </Container>
         )}

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { ISearchedData } from "../util/fetch";
+import { ISearchedData } from "../atoms/fetchData";
 
 const Container = styled.a`
   span:nth-child(2) {

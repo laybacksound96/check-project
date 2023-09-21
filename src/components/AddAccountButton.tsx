@@ -3,7 +3,7 @@ import useModal from "../CustomHooks/useModal";
 import { useRecoilValue } from "recoil";
 import { useState } from "react";
 import { isLoggined } from "./DragAccounts";
-import { UserState } from "../atoms/data";
+import { UserState } from "../atoms/fetchData";
 
 const Button = styled.button`
   height: 100px;

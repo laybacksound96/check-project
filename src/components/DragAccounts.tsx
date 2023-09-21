@@ -6,16 +6,15 @@ import {
   Droppable,
 } from "react-beautiful-dnd";
 import styled from "styled-components";
-import { useRecoilState } from "recoil";
-import { IFetchedData, getAccountData, patchAccount } from "../util/fetch";
-import { Await } from "react-router-dom";
-import Dashboard from "../page/Dashboard";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { patchAccount } from "../util/fetch";
 import AddAccountButton from "./AddAccountButton";
 import { AxisLocker } from "./Functions/AxisLocker";
 import DragCharacters from "./DragCharacters";
-import axios from "axios";
-import { Account, UserState } from "../atoms/data";
+import { AccountOrder } from "../atoms/data";
 import UncheckAllButton from "./UncheckAllContents";
+import { LoginState } from "../atoms/login";
+import { IFetchedData, UserState } from "../atoms/fetchData";
 const DragBoxStyle = styled.div`
   width: 100%;
   height: auto;
@@ -45,15 +44,15 @@ export function isLoggined(userState: IFetchedData | "GUEST") {
 }
 
 const DragAccounts = () => {
-  const [userState, setUserState] = useRecoilState(UserState);
-  const [loggined] = useState(isLoggined(userState));
-  const [account, setAccount] = useRecoilState(Account);
+  const userState = useRecoilValue(UserState);
+  const loggined = useRecoilValue(LoginState);
+  const [accountOrder, setAccountOrder] = useRecoilState(AccountOrder);
   const dragAccountHandler = (dragInfo: DropResult) => {
     const { destination, source } = dragInfo;
     if (!destination) return;
     if (destination?.droppableId !== source.droppableId) return;
     if (destination.index === source.index) return;
-    setAccount((prev) => {
+    setAccountOrder((prev) => {
       const copiedPrev = [...prev];
       const copiedObject = copiedPrev[source.index];
       copiedPrev.splice(source.index, 1);
@@ -82,11 +81,11 @@ const DragAccounts = () => {
           {(provided) => (
             <AccountStyle ref={provided.innerRef} {...provided.droppableProps}>
               {loggined && <UncheckAllButton handleUncheck={uncheckHandler} />}
-              {account.map((data, index) => {
+              {accountOrder.map((account, index) => {
                 return (
                   <Draggable
-                    draggableId={data._id}
-                    key={data._id}
+                    draggableId={account._id}
+                    key={account._id}
                     index={index}
                     isDragDisabled={!loggined}
                   >
@@ -101,7 +100,7 @@ const DragAccounts = () => {
                       >
                         <DragCharacters
                           DragHandleProps={provided.dragHandleProps}
-                          data={data}
+                          account={account}
                           accountIndex={index}
                         />
                       </div>

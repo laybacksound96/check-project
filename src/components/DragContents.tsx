@@ -9,11 +9,12 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import React from "react";
 import useModal from "../CustomHooks/useModal";
 import { dragIcon } from "../Settings";
-import { Account, UserState } from "../atoms/data";
 import { LoginState } from "../atoms/login";
 import { patchContents } from "../util/fetch";
 import CheckBoxButton from "./CheckBoxButton";
 import { AxisLocker } from "./Functions/AxisLocker";
+import { AccountOrder } from "../atoms/data";
+import { UserState } from "../atoms/fetchData";
 
 const Name = styled.div`
   display: flex;
@@ -42,14 +43,14 @@ interface IProps {
 const DragContents = ({ AccountId, accountIndex }: IProps) => {
   const [openModal] = useModal();
   const userState = useRecoilValue(UserState);
-  const [account, setAccount] = useRecoilState(Account);
+  const [accountOrder, setAccountOrder] = useRecoilState(AccountOrder);
   const loggined = useRecoilValue(LoginState);
   const dragContentHandler = (dragInfo: DropResult) => {
     const { destination, source } = dragInfo;
     if (!destination) return;
     if (destination?.droppableId !== source.droppableId) return;
     if (destination.index === source.index) return;
-    setAccount((prev) => {
+    setAccountOrder((prev) => {
       const copiedAccounts = [...prev];
       const copiedData = { ...copiedAccounts[accountIndex] };
       const copiedContentsOrder = [...copiedData.contentsOrder];
@@ -66,7 +67,8 @@ const DragContents = ({ AccountId, accountIndex }: IProps) => {
     });
     return;
   };
-  const { contentsOrder, characterOrder, contents } = account[accountIndex];
+  const { contentsOrder, characterOrder, contents } =
+    accountOrder[accountIndex];
   return (
     <>
       <DragDropContext onDragEnd={dragContentHandler}>

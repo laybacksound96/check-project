@@ -2,9 +2,7 @@ import styled from "styled-components";
 import Contents from "./Contents";
 import AccountGold from "./AccountGold";
 import { useRecoilValue } from "recoil";
-import { IFetchedData } from "../util/fetch";
-import { UserState } from "../atoms/data";
-
+import { IFetchedData, UserState } from "../atoms/fetchData";
 const HeaderBoxStyle = styled.header`
   position: relative;
   min-width: auto;

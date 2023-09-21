@@ -10,9 +10,9 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
-import { ISearchedData } from "../util/fetch";
 import { useRecoilState } from "recoil";
 import UserCard from "./UserCard";
+import { ISearchedData } from "../atoms/fetchData";
 
 const NavConainer = styled.div`
   padding: 0px 20px;

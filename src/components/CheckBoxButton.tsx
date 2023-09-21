@@ -3,8 +3,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { LoginState } from "../atoms/login";
-import { Account } from "../atoms/data";
 import { dragIcon } from "../Settings";
+import { AccountOrder } from "../atoms/data";
 
 interface IStyle {
   isVisible: boolean;
@@ -46,7 +46,7 @@ function CheckBoxButton({
   Color,
 }: ICheckboxProps) {
   const loggined = useRecoilValue(LoginState);
-  const account = useRecoilValue(Account);
+  const account = useRecoilValue(AccountOrder);
   const { checks } = account[AccountIndex];
   const checked = checks.find(
     ({ characterName, contentName }) =>

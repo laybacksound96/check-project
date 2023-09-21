@@ -9,7 +9,7 @@ import { useRecoilValue } from "recoil";
 import { commanderData } from "../../../../json/commanderTypes";
 import IsInValidName from "../../../Functions/IsValidName";
 import SortByLevel from "../../../Functions/SortByLevel";
-import { UserState } from "../../../../atoms/data";
+import { UserState } from "../../../../atoms/fetchData";
 
 const Container = styled.div`
   display: flex;

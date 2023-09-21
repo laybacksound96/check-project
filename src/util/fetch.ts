@@ -1,35 +1,14 @@
 import axios from "axios";
-import { IAccount } from "../atoms/data";
 import { ICommanderData } from "../atoms/commander";
-
-export interface IFetchedData {
-  user: {
-    user_id: string;
-    user_name: string;
-    global_name: string;
-    discriminator: string;
-    banner_color: string;
-    data: {
-      text: string;
-    };
-    ownCharacters: string[];
-    accountOrder: string[];
-    _id: string;
-  };
-  isLoggined: boolean;
-}
-export interface ISearchedData {
-  user_id: string;
-  global_name: string | null;
-  user_name: string;
-  discriminator: string;
-}
+import { IFetchedAccount, IFetchedData } from "../atoms/fetchData";
 
 const url2 = "https://www.checksheet.link/";
 const url = "http://localhost:8080/";
 
 export const getAccountData = async (account_id: string) => {
-  const response = await axios.get<IAccount>(`${url}account/${account_id}`);
+  const response = await axios.get<IFetchedAccount>(
+    `${url}account/${account_id}`
+  );
   return response.data;
 };
 
