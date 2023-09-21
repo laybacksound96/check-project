@@ -2,8 +2,6 @@ import styled from "styled-components";
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { CharacterSetting } from "../../../../../atoms/Settings/CharacterSetting";
-import { CharacterInfo } from "../../../../../atoms/Info/CharacterInfo";
 import { faCoins } from "@fortawesome/free-solid-svg-icons";
 
 export const NameContainer = styled.div`
@@ -74,77 +72,38 @@ interface IProps {
   CharacterName: string;
 }
 const SettingCharacters = ({ AccountName, CharacterName }: IProps) => {
-  const [
-    {
-      [AccountName]: {
-        [CharacterName]: { isVisible: isVisibleChar, IsGoldCharacter },
-      },
-    },
-    setCharacterSetting,
-  ] = useRecoilState(CharacterSetting);
-  const {
-    [AccountName]: {
-      [CharacterName]: { ClassName, Level },
-    },
-  } = useRecoilValue(CharacterInfo);
-  const handleGoldChar = () => {
-    setCharacterSetting((prev) => {
-      return {
-        ...prev,
-        [AccountName]: {
-          ...prev[AccountName],
-          [CharacterName]: {
-            ...prev[AccountName][CharacterName],
-            IsGoldCharacter: !IsGoldCharacter,
-          },
-        },
-      };
-    });
-  };
-  const handleVisible = () => {
-    setCharacterSetting((prev) => {
-      return {
-        ...prev,
-        [AccountName]: {
-          ...prev[AccountName],
-          [CharacterName]: {
-            ...prev[AccountName][CharacterName],
-            isVisible: !isVisibleChar,
-            IsGoldCharacter: isVisibleChar ? false : false,
-          },
-        },
-      };
-    });
-  };
+  const handleGoldChar = () => {};
+  const handleVisible = () => {};
   return (
-    <Character key={CharacterName} isVisible={isVisibleChar}>
-      <NameContainer>
-        <h1>{CharacterName}</h1>
+    <div></div>
+    // <Character key={CharacterName} isVisible={isVisibleChar}>
+    //   <NameContainer>
+    //     <h1>{CharacterName}</h1>
 
-        {IsGoldCharacter && (
-          <span>
-            <FontAwesomeIcon icon={faCoins} color="yellow" />
-            골드획득캐릭터
-          </span>
-        )}
+    //     {IsGoldCharacter && (
+    //       <span>
+    //         <FontAwesomeIcon icon={faCoins} color="yellow" />
+    //         골드획득캐릭터
+    //       </span>
+    //     )}
 
-        <span>{ClassName}</span>
-        <span>Lv {Level}</span>
-      </NameContainer>
+    //     <span>{ClassName}</span>
+    //     <span>Lv {Level}</span>
+    //   </NameContainer>
 
-      <ButtonContainer>
-        <FontAwesomeIcon
-          icon={faCoins}
-          color={IsGoldCharacter ? "yellow" : "white"}
-          onClick={() => handleGoldChar()}
-        />
+    //   <ButtonContainer>
+    //     <FontAwesomeIcon
+    //       icon={faCoins}
+    //       color={IsGoldCharacter ? "yellow" : "white"}
+    //       onClick={() => handleGoldChar()}
+    //     />
 
-        <FontAwesomeIcon
-          onClick={() => handleVisible()}
-          icon={isVisibleChar ? faEye : faEyeSlash}
-        />
-      </ButtonContainer>
-    </Character>
+    //     <FontAwesomeIcon
+    //       onClick={() => handleVisible()}
+    //       icon={isVisibleChar ? faEye : faEyeSlash}
+    //     />
+    //   </ButtonContainer>
+    // </Character>
   );
 };
 

@@ -7,9 +7,12 @@ import {
 } from "react-beautiful-dnd";
 import styled from "styled-components";
 import { useRecoilState } from "recoil";
-import { AccountOrder } from "../../../atoms/Settings/Orders";
 import { UserState } from "../../../atoms/user";
-import { IFetchedData, dragAccount, getAccountData } from "../../../util/fetch";
+import {
+  IFetchedData,
+  getAccountData,
+  patchAccount,
+} from "../../../util/fetch";
 import { Await } from "react-router-dom";
 import Dashboard from "../../../page/Dashboard";
 import AddAccountButton from "../Components/AddAccountButton";
@@ -63,7 +66,7 @@ const DragAccounts = () => {
       const accountOrderdata = copiedPrev.map((elem) => elem._id);
       if (userState !== "GUEST") {
         const userId = userState.user._id;
-        dragAccount(userId, accountOrderdata);
+        patchAccount(userId, accountOrderdata);
       }
       return [...copiedPrev];
     });

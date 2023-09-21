@@ -12,7 +12,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import { ISearchedData } from "../../../util/fetch";
 import { useRecoilState } from "recoil";
-import { IsFocused } from "../../../atoms/ui";
 import UserCard from "./UserCard";
 
 const NavConainer = styled.div`
@@ -170,7 +169,6 @@ const LoginDiscord = styled.div`
 const Nav = () => {
   const [searchList, setSearchList] = useState<ISearchedData[]>([]);
   const { userId } = useParams();
-  const [isFocused, setIsFocused] = useRecoilState(IsFocused);
   const location = userId ? `board/${userId}` : "";
   function logoutHandler() {
     localStorage.removeItem("accessToken");
@@ -188,61 +186,62 @@ const Nav = () => {
 
   const token = useRouteLoaderData("root") as ReturnType<typeof loadToken>;
   return (
-    <NavConainer>
-      <div style={{ flex: 1 }}>
-        <a href="/">CheckSheet.Link</a>
-      </div>
-      <SearchContainer>
-        <InputContainer>
-          <div>
-            <span>Search</span>
-            <input
-              placeholder="디스코드 닉네임 혹은 캐릭터이름..."
-              onFocus={() => setIsFocused(true)}
-              onChange={HandleChange}
-            />
-          </div>
-          <FontAwesomeIcon icon={faMagnifyingGlass} color="black" />
-        </InputContainer>
-        {isFocused && (
-          <SearchList>
-            {searchList.length > 0 ? (
-              searchList.map((elem, index) => (
-                <div
-                  key={index}
-                  style={{ display: "flex", flexDirection: "column" }}
-                >
-                  <UserCard data={elem} />
-                </div>
-              ))
-            ) : (
-              <EmptyList>
-                <FontAwesomeIcon icon={faCircleInfo} />
-                <span>검색한 유저가 없습니다.</span>
-              </EmptyList>
-            )}
-          </SearchList>
-        )}
-      </SearchContainer>
-      <LoginContainer>
-        {!token && (
-          <LoginDiscord onClick={discordLoginHandler}>
-            <div>
-              <DiscordIcon />
-              <span>Discord로 로그인</span>
-            </div>
-          </LoginDiscord>
-        )}
-        {token && (
-          <LogoutButton onClick={logoutHandler}>
-            <div>
-              <span>로그아웃</span>
-              <FontAwesomeIcon icon={faPersonWalkingDashedLineArrowRight} />
-            </div>
-          </LogoutButton>
-        )}
-      </LoginContainer>
-    </NavConainer>
+    <div></div>
+    // <NavConainer>
+    //   <div style={{ flex: 1 }}>
+    //     <a href="/">CheckSheet.Link</a>
+    //   </div>
+    //   <SearchContainer>
+    //     <InputContainer>
+    //       <div>
+    //         <span>Search</span>
+    //         <input
+    //           placeholder="디스코드 닉네임 혹은 캐릭터이름..."
+    //           onFocus={() => false}
+    //           onChange={HandleChange}
+    //         />
+    //       </div>
+    //       <FontAwesomeIcon icon={faMagnifyingGlass} color="black" />
+    //     </InputContainer>
+    //     {isFocused && (
+    //       <SearchList>
+    //         {searchList.length > 0 ? (
+    //           searchList.map((elem, index) => (
+    //             <div
+    //               key={index}
+    //               style={{ display: "flex", flexDirection: "column" }}
+    //             >
+    //               <UserCard data={elem} />
+    //             </div>
+    //           ))
+    //         ) : (
+    //           <EmptyList>
+    //             <FontAwesomeIcon icon={faCircleInfo} />
+    //             <span>검색한 유저가 없습니다.</span>
+    //           </EmptyList>
+    //         )}
+    //       </SearchList>
+    //     )}
+    //   </SearchContainer>
+    //   <LoginContainer>
+    //     {!token && (
+    //       <LoginDiscord onClick={discordLoginHandler}>
+    //         <div>
+    //           <DiscordIcon />
+    //           <span>Discord로 로그인</span>
+    //         </div>
+    //       </LoginDiscord>
+    //     )}
+    //     {token && (
+    //       <LogoutButton onClick={logoutHandler}>
+    //         <div>
+    //           <span>로그아웃</span>
+    //           <FontAwesomeIcon icon={faPersonWalkingDashedLineArrowRight} />
+    //         </div>
+    //       </LogoutButton>
+    //     )}
+    //   </LoginContainer>
+    // </NavConainer>
   );
 };
 

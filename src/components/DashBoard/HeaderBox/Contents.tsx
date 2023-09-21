@@ -3,12 +3,6 @@ import styled from "styled-components";
 import { useEffect } from "react";
 import Content from "./Content";
 import React from "react";
-import sortContentsFrequency from "../Functions/sortContentsFrequency";
-import CalculateCheckbox from "../Functions/CalculateCheckbox";
-import { ContentsFrequency } from "../../../atoms/frequency";
-import { Gates } from "../../../atoms/Settings/Gates";
-import { ContentSetting } from "../../../atoms/Settings/ContentSetting";
-import { CharacterSetting } from "../../../atoms/Settings/CharacterSetting";
 import AllChecked from "./AllChecked";
 
 const ContainerStyle = styled.ul`
@@ -19,37 +13,26 @@ const ContainerStyle = styled.ul`
 `;
 
 const Contents = () => {
-  const [contentsFrequency, setContentsFrequency] =
-    useRecoilState(ContentsFrequency);
-  const gates = useRecoilValue(Gates);
-  const contentSetting = useRecoilValue(ContentSetting);
-  const characterSetting = useRecoilValue(CharacterSetting);
-
-  useEffect(() => {
-    setContentsFrequency((prev) =>
-      CalculateCheckbox(gates, contentSetting, characterSetting, prev)
-    );
-  }, [characterSetting, contentSetting, gates, setContentsFrequency]);
-
   return (
-    <ContainerStyle>
-      {sortContentsFrequency(contentsFrequency).map((key) => {
-        if (!contentsFrequency[key]) return null;
-        if (contentsFrequency[key].Frequency === 0) return null;
-        return (
-          <Content
-            key={key}
-            contentState={contentsFrequency[key]}
-            Color={contentsFrequency[key].Color}
-          />
-        );
-      })}
-      {Object.keys(contentsFrequency).filter(
-        (key) => contentsFrequency[key].Frequency > 0
-      ).length === 0 ? (
-        <AllChecked />
-      ) : null}
-    </ContainerStyle>
+    <div></div>
+    // <ContainerStyle>
+    //   {sortContentsFrequency(contentsFrequency).map((key) => {
+    //     if (!contentsFrequency[key]) return null;
+    //     if (contentsFrequency[key].Frequency === 0) return null;
+    //     return (
+    //       <Content
+    //         key={key}
+    //         contentState={contentsFrequency[key]}
+    //         Color={contentsFrequency[key].Color}
+    //       />
+    //     );
+    //   })}
+    //   {Object.keys(contentsFrequency).filter(
+    //     (key) => contentsFrequency[key].Frequency > 0
+    //   ).length === 0 ? (
+    //     <AllChecked />
+    //   ) : null}
+    // </ContainerStyle>
   );
 };
 

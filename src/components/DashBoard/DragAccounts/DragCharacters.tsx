@@ -17,8 +17,8 @@ import CharacterGold from "../Components/CharacterGold";
 import ConfigContentButton from "../Components/ConfigContentButton";
 import { AxisLocker } from "../Functions/AxisLocker";
 import DragContents from "./DragContents";
-import { dragCharacter } from "../../../util/fetch";
 import { Account } from "../../../atoms/data";
+import { patchCharacter } from "../../../util/fetch";
 interface IStyle {
   loggined: boolean;
 }
@@ -121,7 +121,7 @@ function DragCharacters({ DragHandleProps, accountIndex }: IProps) {
       copiedCharacterOrder.splice(destination?.index, 0, target);
       if (userState !== "GUEST") {
         const userId = userState.user._id;
-        dragCharacter(copiedData._id, userId, copiedCharacterOrder);
+        patchCharacter(copiedData._id, userId, copiedCharacterOrder);
       }
       copiedData.characterOrder = copiedCharacterOrder;
       copiedAccounts[accountIndex] = copiedData;
@@ -166,10 +166,10 @@ function DragCharacters({ DragHandleProps, accountIndex }: IProps) {
                             <span>Lv {character?.ItemMaxLevel}</span>
                           </NameContainer>
                           <div>
-                            <ConfigContentButton
+                            {/* <ConfigContentButton
                               AccountName={account[accountIndex]._id}
                               CharacterName={name}
-                            />
+                            /> */}
                             {/* {IsGoldCharacter && (
                               <CharacterGold
                                 contentState={contentState}
@@ -186,7 +186,7 @@ function DragCharacters({ DragHandleProps, accountIndex }: IProps) {
               {provided.placeholder}
             </div>
             <DragContents
-              AccountName={account[accountIndex]._id}
+              AccountId={account[accountIndex]._id}
               accountIndex={accountIndex}
             />
             <DragAccountBtn {...DragHandleProps} />

@@ -11,14 +11,11 @@ import styled from "styled-components";
 import { dragIcon } from "../../../Settings";
 import useModal from "../../../CustomHooks/Modal/useModal";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { ContentsFrequency } from "../../../atoms/frequency";
-import { CharacterOrder, ContentsOrder } from "../../../atoms/Settings/Orders";
-import React, { useEffect } from "react";
-import { getKey } from "../Functions/CalculateCheckbox";
-import { Gates } from "../../../atoms/Settings/Gates";
-import { ContentSetting } from "../../../atoms/Settings/ContentSetting";
+import React from "react";
 import { LoginState } from "../../../atoms/login";
 import { Account } from "../../../atoms/data";
+import { UserState } from "../../../atoms/user";
+import { patchContents } from "../../../util/fetch";
 const Name = styled.div`
   display: flex;
   flex-direction: column;
@@ -40,26 +37,34 @@ const ColumnContainer = styled.div`
 `;
 
 interface IProps {
-  AccountName: string;
+  AccountId: string;
   accountIndex: number;
 }
-const DragContents = ({ AccountName, accountIndex }: IProps) => {
+const DragContents = ({ AccountId, accountIndex }: IProps) => {
   const [openModal] = useModal();
+  const userState = useRecoilValue(UserState);
   const [account, setAccount] = useRecoilState(Account);
   const loggined = useRecoilValue(LoginState);
-  const contentsFrequency = useRecoilValue(ContentsFrequency);
-  const gates = useRecoilValue(Gates);
   const dragContentHandler = (dragInfo: DropResult) => {
     const { destination, source } = dragInfo;
     if (!destination) return;
     if (destination?.droppableId !== source.droppableId) return;
-    // setContentsOrder((prev) => {
-    //   const copiedOrder = [...prev[AccountName]];
-    //   const target = copiedOrder[source.index];
-    //   copiedOrder.splice(source.index, 1);
-    //   copiedOrder.splice(destination?.index, 0, target);
-    //   return { ...prev, [AccountName]: copiedOrder };
-    // });
+    if (destination.index === source.index) return;
+    setAccount((prev) => {
+      const copiedAccounts = [...prev];
+      const copiedData = { ...copiedAccounts[accountIndex] };
+      const copiedContentsOrder = [...copiedData.contentsOrder];
+      const target = copiedContentsOrder[source.index];
+      copiedContentsOrder.splice(source.index, 1);
+      copiedContentsOrder.splice(destination?.index, 0, target);
+      if (userState !== "GUEST") {
+        const userId = userState.user._id;
+        patchContents(copiedData._id, userId, copiedContentsOrder);
+      }
+      copiedData.contentsOrder = copiedContentsOrder;
+      copiedAccounts[accountIndex] = copiedData;
+      return copiedAccounts;
+    });
     return;
   };
   const { contentsOrder, characterOrder, contents } = account[accountIndex];
@@ -93,14 +98,13 @@ const DragContents = ({ AccountName, accountIndex }: IProps) => {
                       </Name>
                       {characterOrder.map((CharacterName) => {
                         return (
-                          <div key={CharacterName}>button</div>
-                          // <CheckBoxButton
-                          //   key={CharacterName + ContentName}
-                          //   CharacterName={CharacterName}
-                          //   AccountName={AccountName}
-                          //   ContentName={ContentName}
-                          //   Color={"color"}
-                          // />
+                          <CheckBoxButton
+                            key={accountIndex + CharacterName + ContentName}
+                            CharacterName={CharacterName}
+                            AccountIndex={accountIndex}
+                            ContentName={ContentName}
+                            Color={"testColor"}
+                          />
                         );
                       })}
                     </ColumnContainer>

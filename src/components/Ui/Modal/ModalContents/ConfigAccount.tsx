@@ -5,15 +5,6 @@ import DangerZone from "./components/DangerZone";
 import useModal from "../../../../CustomHooks/Modal/useModal";
 import SettingCharacters from "./components/SettingVisibleContent";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { CharacterSetting } from "../../../../atoms/Settings/CharacterSetting";
-import { CharacterInfo } from "../../../../atoms/Info/CharacterInfo";
-import { ContentSetting } from "../../../../atoms/Settings/ContentSetting";
-import { Gates } from "../../../../atoms/Settings/Gates";
-import {
-  CharacterOrder,
-  ContentsOrder,
-  AccountOrder,
-} from "../../../../atoms/Settings/Orders";
 
 const ModalContainer = styled.div`
   width: auto;
@@ -56,57 +47,11 @@ export const ConfigAccount = () => {
       modalProp: { AccountName },
     },
   ] = useModal();
-  const setAccountOrder = useSetRecoilState(AccountOrder);
-  const setCharacterOrder = useSetRecoilState(CharacterOrder);
-  const setContentsOrder = useSetRecoilState(ContentsOrder);
-  const setCharacterInfo = useSetRecoilState(CharacterInfo);
-  const setCharacterSetting = useSetRecoilState(CharacterSetting);
-  const setContentSetting = useSetRecoilState(ContentSetting);
-  const setGates = useSetRecoilState(Gates);
-  const { [AccountName]: Characters } = useRecoilValue(CharacterSetting);
 
-  function handleDelete() {
-    setCharacterInfo((prev) => {
-      const copiedPrev = { ...prev };
-      delete copiedPrev[AccountName];
-      return copiedPrev;
-    });
-    setCharacterSetting((prev) => {
-      const copiedPrev = { ...prev };
-      delete copiedPrev[AccountName];
-      return copiedPrev;
-    });
-    setContentSetting((prev) => {
-      const copiedPrev = { ...prev };
-      delete copiedPrev[AccountName];
-      return copiedPrev;
-    });
-    setGates((prev) => {
-      const copiedPrev = { ...prev };
-      delete copiedPrev[AccountName];
-      return copiedPrev;
-    });
-    setAccountOrder((prev) => {
-      const copiedPrev = [...prev];
-      const index = copiedPrev.indexOf(AccountName);
-      copiedPrev.splice(index, 1);
-      return copiedPrev;
-    });
-    setCharacterOrder((prev) => {
-      const copiedPrev = { ...prev };
-      delete copiedPrev[AccountName];
-      return copiedPrev;
-    });
-    setContentsOrder((prev) => {
-      const copiedPrev = { ...prev };
-      delete copiedPrev[AccountName];
-      return copiedPrev;
-    });
-    closeModal();
-  }
+  function handleDelete() {}
   return (
     <>
-      <ModalContainer>
+      {/* <ModalContainer>
         <ContentList>
           <header>
             <FontAwesomeIcon icon={faGear} />
@@ -125,7 +70,7 @@ export const ConfigAccount = () => {
           </CharacterContainer>
         </ContentList>
       </ModalContainer>
-      <DangerZone handleDelete={handleDelete} />
+      <DangerZone handleDelete={handleDelete} /> */}
     </>
   );
 };

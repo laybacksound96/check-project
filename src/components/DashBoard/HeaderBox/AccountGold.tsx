@@ -1,8 +1,4 @@
 import { useRecoilValue } from "recoil";
-import { CharacterSetting } from "../../../atoms/Settings/CharacterSetting";
-import { ContentSetting } from "../../../atoms/Settings/ContentSetting";
-import { Gates } from "../../../atoms/Settings/Gates";
-import CalculateAccountGold from "../Functions/CalculateAccountGold";
 import CountUp from "react-countup";
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -25,43 +21,23 @@ const Container = styled.div`
   }
 `;
 const AccountGold = () => {
-  const characterSetting = useRecoilValue(CharacterSetting);
-  const contentSetting = useRecoilValue(ContentSetting);
-  const gates = useRecoilValue(Gates);
-
-  const [gold, setGold] = useState(
-    CalculateAccountGold(characterSetting, contentSetting, gates, false)
+  return (
+    <div></div>
+    // <Container>
+    //   <FontAwesomeIcon icon={faCoins} />
+    //   <CountUp start={PrevGold} end={gold} />
+    //   <span className="total-gold">/</span>
+    //   <CountUp
+    //     end={CalculateAccountGold(
+    //       characterSetting,
+    //       contentSetting,
+    //       gates,
+    //       true
+    //     )}
+    //     className="total-gold"
+    //   />
+    // </Container>
   );
-  const [PrevGold, setPrevGold] = useState(gold);
-  const isEmpty = 0 >= Object.keys(characterSetting).length;
-
-  useEffect(() => {
-    setGold((prev) => {
-      setPrevGold(prev);
-      return CalculateAccountGold(
-        characterSetting,
-        contentSetting,
-        gates,
-        false
-      );
-    });
-  }, [characterSetting, contentSetting, gates]);
-  return !isEmpty ? (
-    <Container>
-      <FontAwesomeIcon icon={faCoins} />
-      <CountUp start={PrevGold} end={gold} />
-      <span className="total-gold">/</span>
-      <CountUp
-        end={CalculateAccountGold(
-          characterSetting,
-          contentSetting,
-          gates,
-          true
-        )}
-        className="total-gold"
-      />
-    </Container>
-  ) : null;
 };
 
 export default AccountGold;

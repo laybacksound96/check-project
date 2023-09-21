@@ -3,12 +3,12 @@ import styled from "styled-components";
 import Modal from "../components/Ui/Modal/Modal";
 import DragAccounts from "../components/DashBoard/DragAccounts/DragAccounts";
 import { useEffect, useState } from "react";
-import { ICommanderData, IFetchedData, getAccountData } from "../util/fetch";
+import { IFetchedData, getAccountData } from "../util/fetch";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { UserState } from "../atoms/user";
-import { AccountOrder } from "../atoms/Settings/Orders";
 import { LoginState } from "../atoms/login";
 import { Account } from "../atoms/data";
+import { ICommanderData } from "../atoms/commander";
 
 const DashboardStyle = styled.div`
   margin-top: 5px;

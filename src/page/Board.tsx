@@ -1,12 +1,8 @@
 import { Await, LoaderFunction, defer, useLoaderData } from "react-router-dom";
-import {
-  ICommanderData,
-  IFetchedData,
-  getCommander,
-  loadUserData,
-} from "../util/fetch";
+import { IFetchedData, getCommander, loadUserData } from "../util/fetch";
 import { Suspense } from "react";
 import Dashboard from "./Dashboard";
+import { ICommanderData } from "../atoms/commander";
 
 export const loadBoardData: LoaderFunction = async ({ request, params }) => {
   const id = params.userId;

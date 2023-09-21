@@ -3,8 +3,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
 import { dragIcon } from "../../../Settings";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { ContentSetting } from "../../../atoms/Settings/ContentSetting";
 import { LoginState } from "../../../atoms/login";
+import { Account } from "../../../atoms/data";
 
 interface IStyle {
   isVisible: boolean;
@@ -33,29 +33,34 @@ const CheckBox = styled.div<IStyle>`
   }
 `;
 interface ICheckboxProps {
-  AccountName: string;
+  AccountIndex: number;
   CharacterName: string;
   ContentName: string;
   Color: string;
 }
 
 function CheckBoxButton({
-  AccountName,
+  AccountIndex,
   CharacterName,
   ContentName,
   Color,
 }: ICheckboxProps) {
   const loggined = useRecoilValue(LoginState);
-
+  const account = useRecoilValue(Account);
+  const { checks } = account[AccountIndex];
+  const checked = checks.find(
+    ({ characterName, contentName }) =>
+      CharacterName === characterName && ContentName === contentName
+  );
   function onClickHandler() {}
   return (
     <CheckBox
       onClick={onClickHandler}
-      isVisible={isVisible}
-      isActivated={isActivated}
+      isVisible={true}
+      isActivated={true}
       Color={Color}
     >
-      <FontAwesomeIcon icon={isCleared ? faSquareCheck : faSquare} size="lg" />
+      <FontAwesomeIcon icon={checked ? faSquareCheck : faSquare} size="lg" />
     </CheckBox>
   );
 }

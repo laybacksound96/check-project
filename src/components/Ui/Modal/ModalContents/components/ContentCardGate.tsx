@@ -5,7 +5,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ContentCardCheckBox from "./ContentCardCheckBox";
 
 import { useState } from "react";
-import { IGatesSetting } from "../../../../../atoms/Settings/Gates";
 
 const GateVisibleContainer = styled.div`
   display: flex;
@@ -57,69 +56,48 @@ const CheckBoxContainer = styled.div`
   display: flex;
   width: 100%;
 `;
-interface IProps {
-  Gate: IGatesSetting;
-  Difficulty: "normal" | "hard";
-  isContentVisible: boolean;
-  GateIndex: number;
-  SetGateVisibleHandler: (GateIndex: number) => void;
-  SetDifficultyHandler: (
-    GateIndex: number,
-    difficulty: string,
-    isNormal: boolean
-  ) => void;
-  Color: string | undefined;
-  isNormal: boolean;
-}
-const ContentCardGate = ({
-  Gate: { Gate_No, isVisible },
-  Difficulty,
-  isContentVisible,
-  GateIndex,
-  isNormal,
-  SetGateVisibleHandler,
-  SetDifficultyHandler,
-  Color,
-}: IProps) => {
+
+const ContentCardGate = () => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <GateContainer
-      Color={Color}
-      isContentVisible={isContentVisible}
-      isGateVisible={isVisible}
-      isHovered={isHovered}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      <GateNumber>{Gate_No}</GateNumber>
-      <DifficultyContainer>
-        <CheckBoxContainer>
-          <ContentCardCheckBox
-            isNormal={isNormal}
-            State={Difficulty}
-            Difficulty="normal"
-            handler={() =>
-              SetDifficultyHandler(GateIndex, Difficulty, isNormal)
-            }
-          />
-          <ContentCardCheckBox
-            isNormal={isNormal}
-            State={Difficulty}
-            Difficulty="hard"
-            handler={() =>
-              SetDifficultyHandler(GateIndex, Difficulty, isNormal)
-            }
-          />
-        </CheckBoxContainer>
-      </DifficultyContainer>
-      <GateVisibleContainer>
-        <FontAwesomeIcon
-          icon={isVisible ? faEye : faEyeSlash}
-          onClick={() => SetGateVisibleHandler(GateIndex)}
-        />
-      </GateVisibleContainer>
-    </GateContainer>
+    <div></div>
+    // <GateContainer
+    //   Color={Color}
+    //   isContentVisible={isContentVisible}
+    //   isGateVisible={isVisible}
+    //   isHovered={isHovered}
+    //   onMouseEnter={() => setIsHovered(true)}
+    //   onMouseLeave={() => setIsHovered(false)}
+    // >
+    //   <GateNumber>{Gate_No}</GateNumber>
+    //   <DifficultyContainer>
+    //     <CheckBoxContainer>
+    //       <ContentCardCheckBox
+    //         isNormal={isNormal}
+    //         State={Difficulty}
+    //         Difficulty="normal"
+    //         handler={() =>
+    //           SetDifficultyHandler(GateIndex, Difficulty, isNormal)
+    //         }
+    //       />
+    //       <ContentCardCheckBox
+    //         isNormal={isNormal}
+    //         State={Difficulty}
+    //         Difficulty="hard"
+    //         handler={() =>
+    //           SetDifficultyHandler(GateIndex, Difficulty, isNormal)
+    //         }
+    //       />
+    //     </CheckBoxContainer>
+    //   </DifficultyContainer>
+    //   <GateVisibleContainer>
+    //     <FontAwesomeIcon
+    //       icon={isVisible ? faEye : faEyeSlash}
+    //       onClick={() => SetGateVisibleHandler(GateIndex)}
+    //     />
+    //   </GateVisibleContainer>
+    // </GateContainer>
   );
 };
 

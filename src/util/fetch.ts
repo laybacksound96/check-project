@@ -1,16 +1,7 @@
 import axios from "axios";
 import { IAccount } from "../atoms/data";
-export interface IDifficulty {
-  difficulty: "normal" | "hard";
-  gates: { level: number; gold: number }[];
-}
-export type ICommander = {
-  name: string;
-  data: IDifficulty[];
-};
-export type ICommanderData = {
-  commanderData: ICommander[];
-};
+import { ICommanderData } from "../atoms/commander";
+
 export interface IFetchedData {
   user: {
     user_id: string;
@@ -82,7 +73,7 @@ export async function fetchSearchAccount(inputValue: string): Promise<[]> {
   }
 }
 
-export async function dragAccount(userId: string, accountOrderdata: string[]) {
+export async function patchAccount(userId: string, accountOrderdata: string[]) {
   const token = localStorage.getItem("accessToken");
   try {
     const response = await axios.patch<string[]>(
@@ -102,7 +93,7 @@ export async function dragAccount(userId: string, accountOrderdata: string[]) {
     return accountOrderdata;
   }
 }
-export async function dragCharacter(
+export async function patchCharacter(
   accountId: string,
   userId: string,
   characterOrderdata: string[]
@@ -125,5 +116,30 @@ export async function dragCharacter(
     return response.data;
   } catch (error) {
     return characterOrderdata;
+  }
+}
+export async function patchContents(
+  accountId: string,
+  userId: string,
+  conentsOrderdata: string[]
+) {
+  const token = localStorage.getItem("accessToken");
+  try {
+    const response = await axios.patch<string[]>(
+      `${url}account/contentsOrder/${accountId}`,
+      {
+        contentsOrder: conentsOrderdata,
+        user_id: userId,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "bearer " + token,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    return conentsOrderdata;
   }
 }

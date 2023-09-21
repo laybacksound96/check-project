@@ -2,9 +2,6 @@ import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCoins } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
-import { IContentState } from "../../../atoms/Settings/ContentSetting";
-import { IGatesContent } from "../../../atoms/Settings/Gates";
-import CalculateCharacterClearGold from "../Functions/CalculateCharacterClearGold";
 import CountUp from "react-countup";
 const GoldContainer = styled.div`
   svg {
@@ -19,19 +16,10 @@ const GoldContainer = styled.div`
   margin-right: 5px;
   margin-bottom: 8px;
 `;
-interface IProps {
-  contentState: IContentState;
-  gatesContent: IGatesContent;
-}
-const CharacterGold = ({ contentState, gatesContent }: IProps) => {
+
+const CharacterGold = () => {
   const [gold, setGold] = useState(0);
   const [PrevGold, setPrevGold] = useState(gold);
-  useEffect(() => {
-    setGold((prev) => {
-      setPrevGold(prev);
-      return CalculateCharacterClearGold(contentState, gatesContent);
-    });
-  }, [contentState, gatesContent]);
   return (
     <GoldContainer>
       <FontAwesomeIcon icon={faCoins} />

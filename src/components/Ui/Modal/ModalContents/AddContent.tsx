@@ -3,7 +3,6 @@ import { useRecoilValue } from "recoil";
 import styled, { keyframes, css } from "styled-components";
 
 import useModal from "../../../../CustomHooks/Modal/useModal";
-import { ContentSetting } from "../../../../atoms/Settings/ContentSetting";
 
 interface IStyle {
   isDisabled: boolean;
@@ -77,47 +76,39 @@ const AddContent = () => {
       modalProp: { AccountName },
     },
   ] = useModal();
-  const { [AccountName]: AccountContent } = useRecoilValue(ContentSetting);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (!inputRef.current) return;
     inputRef.current.focus();
   }, []);
-  const AddContentHandler = () => {
-    if (Object.keys(AccountContent).find((elem) => elem === inputValue)) {
-      setIsDupplicated(true);
-      setIsdisabled(true);
-      return;
-    }
 
-    closeModal();
-  };
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setIsDupplicated(false);
     event.target.value === "" ? setIsdisabled(true) : setIsdisabled(false);
     setInputValue(event.target.value);
   };
   return (
-    <div>
-      <Input
-        isDisabled={false}
-        value={inputValue}
-        onChange={handleInputChange}
-        placeholder="여기에 일정을 입력"
-        ref={inputRef}
-      />
-      {isDupplicated && <Error>같은 이름의 일정이 이미 있어요</Error>}
-      <div style={{ paddingTop: "10px" }}>
-        <ButtonStyle
-          id="contentId"
-          disabled={isdisabled}
-          onClick={AddContentHandler}
-        >
-          추가
-        </ButtonStyle>
-      </div>
-    </div>
+    <div></div>
+    // <div>
+    //   <Input
+    //     isDisabled={false}
+    //     value={inputValue}
+    //     onChange={handleInputChange}
+    //     placeholder="여기에 일정을 입력"
+    //     ref={inputRef}
+    //   />
+    //   {isDupplicated && <Error>같은 이름의 일정이 이미 있어요</Error>}
+    //   <div style={{ paddingTop: "10px" }}>
+    //     <ButtonStyle
+    //       id="contentId"
+    //       disabled={isdisabled}
+    //       onClick={AddContentHandler}
+    //     >
+    //       추가
+    //     </ButtonStyle>
+    //   </div>
+    // </div>
   );
 };
 
