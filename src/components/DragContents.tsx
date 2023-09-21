@@ -13,7 +13,7 @@ import { LoginState } from "../atoms/login";
 import { patchContents } from "../util/fetch";
 import CheckBoxButton from "./CheckBoxButton";
 import { AxisLocker } from "./Functions/AxisLocker";
-import { AccountOrder } from "../atoms/data";
+import { AccountOrder, IAccountOrder } from "../atoms/data";
 import { UserState } from "../atoms/fetchData";
 
 const Name = styled.div`
@@ -37,10 +37,10 @@ const ColumnContainer = styled.div`
 `;
 
 interface IProps {
-  AccountId: string;
+  account: IAccountOrder;
   accountIndex: number;
 }
-const DragContents = ({ AccountId, accountIndex }: IProps) => {
+const DragContents = ({ account, accountIndex }: IProps) => {
   const [openModal] = useModal();
   const userState = useRecoilValue(UserState);
   const [accountOrder, setAccountOrder] = useRecoilState(AccountOrder);
@@ -67,8 +67,6 @@ const DragContents = ({ AccountId, accountIndex }: IProps) => {
     });
     return;
   };
-  const { contentsOrder, characterOrder, contents } =
-    accountOrder[accountIndex];
   return (
     <>
       <DragDropContext onDragEnd={dragContentHandler}>
@@ -79,7 +77,7 @@ const DragContents = ({ AccountId, accountIndex }: IProps) => {
               {...provided.droppableProps}
               style={{ display: "flex" }}
             >
-              {contentsOrder.map((ContentName, index) => (
+              {account.contentsOrder.map((ContentName, index) => (
                 <Draggable
                   draggableId={ContentName}
                   index={index}
@@ -97,13 +95,14 @@ const DragContents = ({ AccountId, accountIndex }: IProps) => {
                           ? `${ContentName.slice(0, 7)}...`
                           : ContentName}
                       </Name>
-                      {characterOrder.map((CharacterName) => {
+                      {account.characterOrder.map((CharacterName) => {
                         return (
                           <CheckBoxButton
                             key={accountIndex + CharacterName + ContentName}
                             CharacterName={CharacterName}
                             AccountIndex={accountIndex}
                             ContentName={ContentName}
+                            Account={account}
                             Color={"testColor"}
                           />
                         );

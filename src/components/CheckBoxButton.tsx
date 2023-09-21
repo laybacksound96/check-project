@@ -1,10 +1,9 @@
 import { faSquare, faSquareCheck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { LoginState } from "../atoms/login";
+import { useRecoilValue } from "recoil";
 import { dragIcon } from "../Settings";
-import { AccountOrder } from "../atoms/data";
+import { AccountOrder, IAccountOrder, IContent } from "../atoms/data";
 
 interface IStyle {
   isVisible: boolean;
@@ -37,6 +36,7 @@ interface ICheckboxProps {
   CharacterName: string;
   ContentName: string;
   Color: string;
+  Account: IAccountOrder;
 }
 
 function CheckBoxButton({
@@ -44,14 +44,13 @@ function CheckBoxButton({
   CharacterName,
   ContentName,
   Color,
+  Account: { checks, contents },
 }: ICheckboxProps) {
-  const loggined = useRecoilValue(LoginState);
-  const account = useRecoilValue(AccountOrder);
-  const { checks } = account[AccountIndex];
   const checked = checks.find(
     ({ characterName, contentName }) =>
       CharacterName === characterName && ContentName === contentName
   );
+
   function onClickHandler() {}
   return (
     <CheckBox

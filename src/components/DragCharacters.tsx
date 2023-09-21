@@ -180,7 +180,7 @@ function DragCharacters({ DragHandleProps, account, accountIndex }: IProps) {
               })}
               {provided.placeholder}
             </div>
-            <DragContents AccountId={account._id} accountIndex={accountIndex} />
+            <DragContents account={account} accountIndex={accountIndex} />
             <DragAccountBtn {...DragHandleProps} />
           </Container>
         )}
