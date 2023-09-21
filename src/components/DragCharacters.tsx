@@ -8,17 +8,14 @@ import {
 import React from "react";
 import styled, { css } from "styled-components";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { dragIcon } from "../../../Settings";
-import { LoginState } from "../../../atoms/login";
-import { UserState } from "../../../atoms/user";
-import { IAccount } from "../../../atoms/data";
-import ConfigAccountButton from "../Components/ConfigAccountButton";
-import CharacterGold from "../Components/CharacterGold";
-import ConfigContentButton from "../Components/ConfigContentButton";
-import { AxisLocker } from "../Functions/AxisLocker";
 import DragContents from "./DragContents";
-import { Account } from "../../../atoms/data";
-import { patchCharacter } from "../../../util/fetch";
+import { Account, IAccount } from "../atoms/data";
+import { dragIcon } from "../Settings";
+import { LoginState } from "../atoms/login";
+import { UserState } from "../atoms/user";
+import { patchCharacter } from "../util/fetch";
+import ConfigAccountButton from "./ConfigAccountButton";
+import { AxisLocker } from "./Functions/AxisLocker";
 interface IStyle {
   loggined: boolean;
 }

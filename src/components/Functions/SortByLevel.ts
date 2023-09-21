@@ -1,4 +1,4 @@
-import { IFetchedCharacter } from "../AddAccount";
+import { IFetchedCharacter } from "../Ui/Modal/ModalContents/AddAccount";
 
 const SortByLevel = (data: IFetchedCharacter[]) => {
   const copiedData: IFetchedCharacter[] = [...data];

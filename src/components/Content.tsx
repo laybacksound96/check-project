@@ -1,7 +1,7 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import styled, { css, keyframes } from "styled-components";
-import getLowerLightnessColor from "../Functions/getLowerLightnessColor";
+import getLowerLightnessColor from "./Functions/getLowerLightnessColor";
 interface IpropStyle {
   shouldAnimate: boolean;
   Color: string;

@@ -1,10 +1,10 @@
 import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { dragIcon } from "../../../Settings";
 import styled, { css } from "styled-components";
-import useModal from "../../../CustomHooks/Modal/useModal";
 import { useRecoilValue } from "recoil";
-import { LoginState } from "../../../atoms/login";
+import useModal from "../CustomHooks/useModal";
+import { dragIcon } from "../Settings";
+import { LoginState } from "../atoms/login";
 interface IStyle {
   loggined: boolean;
 }

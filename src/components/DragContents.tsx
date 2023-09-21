@@ -4,18 +4,18 @@ import {
   Droppable,
   Draggable,
 } from "react-beautiful-dnd";
-
-import { AxisLocker } from "../Functions/AxisLocker";
-import CheckBoxButton from "../Components/CheckBoxButton";
 import styled from "styled-components";
-import { dragIcon } from "../../../Settings";
-import useModal from "../../../CustomHooks/Modal/useModal";
 import { useRecoilState, useRecoilValue } from "recoil";
 import React from "react";
-import { LoginState } from "../../../atoms/login";
-import { Account } from "../../../atoms/data";
-import { UserState } from "../../../atoms/user";
-import { patchContents } from "../../../util/fetch";
+import useModal from "../CustomHooks/useModal";
+import { dragIcon } from "../Settings";
+import { Account } from "../atoms/data";
+import { LoginState } from "../atoms/login";
+import { UserState } from "../atoms/user";
+import { patchContents } from "../util/fetch";
+import CheckBoxButton from "./CheckBoxButton";
+import { AxisLocker } from "./Functions/AxisLocker";
+
 const Name = styled.div`
   display: flex;
   flex-direction: column;

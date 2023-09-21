@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import Contents from "./Contents";
 import AccountGold from "./AccountGold";
-import { IFetchedData } from "../../../util/fetch";
 import { useRecoilValue } from "recoil";
-import { UserState } from "../../../atoms/user";
+import { IFetchedData } from "../util/fetch";
+import { UserState } from "../atoms/user";
 
 const HeaderBoxStyle = styled.header`
   position: relative;

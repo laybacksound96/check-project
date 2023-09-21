@@ -1,10 +1,10 @@
 import { faSquare, faSquareCheck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
-import { dragIcon } from "../../../Settings";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { LoginState } from "../../../atoms/login";
-import { Account } from "../../../atoms/data";
+import { LoginState } from "../atoms/login";
+import { Account } from "../atoms/data";
+import { dragIcon } from "../Settings";
 
 interface IStyle {
   isVisible: boolean;

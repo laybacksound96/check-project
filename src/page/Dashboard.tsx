@@ -1,4 +1,3 @@
-import HeaderBox from "../components/DashBoard/HeaderBox/HeaderBox";
 import styled from "styled-components";
 import Modal from "../components/Ui/Modal/Modal";
 import DragAccounts from "../components/DragAccounts";
@@ -9,6 +8,7 @@ import { UserState } from "../atoms/user";
 import { LoginState } from "../atoms/login";
 import { Account } from "../atoms/data";
 import { ICommanderData } from "../atoms/commander";
+import HeaderBox from "../components/HeaderBox";
 
 const DashboardStyle = styled.div`
   margin-top: 5px;

@@ -3,13 +3,13 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { Input } from "./AddContent";
 import CharacterContainer from "./components/CharacterContainer";
-import SortByLevel from "./functions/SortByLevel";
 import useModal from "../../../../CustomHooks/useModal";
-import IsInValidName from "./functions/IsValidName";
 import { makeDataResult } from "../../../../util/addAccount";
 import { useRecoilValue } from "recoil";
 import { UserState } from "../../../../atoms/user";
 import { commanderData } from "../../../../json/commanderTypes";
+import IsInValidName from "../../../Functions/IsValidName";
+import SortByLevel from "../../../Functions/SortByLevel";
 
 const Container = styled.div`
   display: flex;
