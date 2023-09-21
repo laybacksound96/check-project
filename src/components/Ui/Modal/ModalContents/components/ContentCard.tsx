@@ -12,7 +12,7 @@ import {
 
 import CountUp from "react-countup";
 import { useRecoilValue } from "recoil";
-import getLowerLightnessColor from "../../../../DashBoard/Functions/getLowerLightnessColor";
+import getLowerLightnessColor from "../../../../Functions/getLowerLightnessColor";
 interface IStyel {
   isVisibled: boolean;
   Color: string | undefined;

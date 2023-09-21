@@ -1,9 +1,9 @@
 import styled from "styled-components";
-import useModal from "../../../CustomHooks/Modal/useModal";
+import useModal from "../CustomHooks/useModal";
 import { useRecoilValue } from "recoil";
 import { useState } from "react";
-import { UserState } from "../../../atoms/user";
-import { isLoggined } from "../DragAccounts/DragAccounts";
+import { UserState } from "../atoms/user";
+import { isLoggined } from "./DragAccounts";
 
 const Button = styled.button`
   height: 100px;

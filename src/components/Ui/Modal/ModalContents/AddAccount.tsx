@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { Input } from "./AddContent";
 import CharacterContainer from "./components/CharacterContainer";
 import SortByLevel from "./functions/SortByLevel";
-import useModal from "../../../../CustomHooks/Modal/useModal";
+import useModal from "../../../../CustomHooks/useModal";
 import IsInValidName from "./functions/IsValidName";
 import { makeDataResult } from "../../../../util/addAccount";
 import { useRecoilValue } from "recoil";

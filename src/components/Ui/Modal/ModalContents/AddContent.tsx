@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { useRecoilValue } from "recoil";
 import styled, { keyframes, css } from "styled-components";
 
-import useModal from "../../../../CustomHooks/Modal/useModal";
+import useModal from "../../../../CustomHooks/useModal";
 
 interface IStyle {
   isDisabled: boolean;

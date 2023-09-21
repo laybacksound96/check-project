@@ -1,7 +1,7 @@
 import HeaderBox from "../components/DashBoard/HeaderBox/HeaderBox";
 import styled from "styled-components";
 import Modal from "../components/Ui/Modal/Modal";
-import DragAccounts from "../components/DashBoard/DragAccounts/DragAccounts";
+import DragAccounts from "../components/DragAccounts";
 import { useEffect, useState } from "react";
 import { IFetchedData, getAccountData } from "../util/fetch";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";

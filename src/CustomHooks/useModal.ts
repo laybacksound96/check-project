@@ -1,10 +1,5 @@
 import { useRecoilState } from "recoil";
-import {
-  IModalObject,
-  ModalEnum,
-  ModalState,
-  modalProp,
-} from "../../atoms/modal";
+import { IModalObject, ModalEnum, ModalState, modalProp } from "../atoms/modal";
 type ModalKey = keyof typeof ModalEnum;
 
 function useModal(): [

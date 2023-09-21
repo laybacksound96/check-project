@@ -1,7 +1,7 @@
 import { useParams, useRouteLoaderData } from "react-router-dom";
 import styled from "styled-components";
-import { loadToken } from "../../../util/auth";
-import { discordLoginHandler } from "../../../page/Home";
+import { loadToken } from "../util/auth";
+import { discordLoginHandler } from "../page/Home";
 import { ReactComponent as DiscordIcon } from "../../../icons/discord-icon.svg";
 import {
   faCircleInfo,
@@ -10,7 +10,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
-import { ISearchedData } from "../../../util/fetch";
+import { ISearchedData } from "../util/fetch";
 import { useRecoilState } from "recoil";
 import UserCard from "./UserCard";
 
