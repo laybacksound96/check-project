@@ -2,8 +2,6 @@ import { useState, useRef, useEffect } from "react";
 import { useRecoilValue } from "recoil";
 import styled, { keyframes, css } from "styled-components";
 
-import useModal from "../../../../CustomHooks/useModal";
-
 interface IStyle {
   isDisabled: boolean;
 }
@@ -65,17 +63,7 @@ const Error = styled.p`
   color: #bb002caa;
 `;
 
-const AddContent = () => {
-  const [inputValue, setInputValue] = useState("");
-  const [isdisabled, setIsdisabled] = useState(true);
-  const [isDupplicated, setIsDupplicated] = useState(false);
-  const [
-    ,
-    closeModal,
-    {
-      modalProp: { AccountName },
-    },
-  ] = useModal();
+const ModalAddContent = () => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -83,11 +71,6 @@ const AddContent = () => {
     inputRef.current.focus();
   }, []);
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setIsDupplicated(false);
-    event.target.value === "" ? setIsdisabled(true) : setIsdisabled(false);
-    setInputValue(event.target.value);
-  };
   return (
     <div></div>
     // <div>
@@ -112,4 +95,4 @@ const AddContent = () => {
   );
 };
 
-export default AddContent;
+export default ModalAddContent;

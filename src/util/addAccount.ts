@@ -1,5 +1,6 @@
-import { IFetchedCharacter } from "../components/Ui/Modal/ModalContents/AddAccount";
-import { ICommanderData, IDifficulty } from "../json/commanderTypes";
+import { ICommander, IDifficulty } from "../atoms/commander";
+import { ICharacter, IContent, IGate } from "../atoms/data";
+import { IFetchedCharacter } from "../components/ModalAddAccount";
 
 export type IAccountData = {
   characterOrder: string[];
@@ -9,31 +10,13 @@ export type IAccountData = {
     characterName: string;
   }[];
 };
-export type ICharactersData = {
-  CharacterName: string;
-  ItemMaxLevel: number;
-  ServerName: string;
-  CharacterClassName: string;
-};
-
-export interface IGate {
-  isVisible: boolean;
-  difficulty: string;
-}
-export type IContentsData = {
-  owner: string;
-  contentName: string;
-  gateSetting: IGate[];
-  isVisble: boolean;
-  isGoldContents: boolean;
-};
 
 export const makeDataResult = (
   data: IFetchedCharacter[],
-  commanderData: ICommanderData[]
+  commanderData: ICommander[]
 ) => {
-  function makeCharacters(data: IFetchedCharacter[]): ICharactersData[] {
-    const characters: ICharactersData[] = [];
+  function makeCharacters(data: IFetchedCharacter[]): ICharacter[] {
+    const characters: ICharacter[] = [];
     for (let i in data) {
       const { ServerName, ItemMaxLevel, CharacterName, CharacterClassName } =
         data[i];
@@ -42,26 +25,24 @@ export const makeDataResult = (
         CharacterName,
         ItemMaxLevel: parseInt(ItemMaxLevel.replace(",", "")),
         CharacterClassName,
+        _id: CharacterName,
       });
     }
     return characters;
   }
-  function makeCharacterOrder(characters: ICharactersData[]): string[] {
+  function makeCharacterOrder(characters: ICharacter[]): string[] {
     const characterOrder: string[] = [];
     for (let i in characters) {
       if (+i < 6) characterOrder.push(data[i].CharacterName);
     }
     return characterOrder;
   }
-  function makeContents(
-    characters: ICharactersData[],
-    commanderData: ICommanderData[]
-  ) {
-    const allContents: IContentsData[] = [];
+  function makeContents(characters: ICharacter[], commanderData: ICommander[]) {
+    const allContents: IContent[] = [];
     const contentsOrder: string[] = [];
     function makeGoldCotents(
-      contents: IContentsData[],
-      commanderData: ICommanderData[]
+      contents: IContent[],
+      commanderData: ICommander[]
     ) {
       function readGold(name: string, difficulty: string, gateNumber: number) {
         const commander = commanderData.find((elem) => elem.name === name);
@@ -85,7 +66,7 @@ export const makeDataResult = (
     }
     for (let i in characters) {
       const { CharacterName, ItemMaxLevel } = characters[i];
-      const contents: IContentsData[] = commanderData.map(({ data, name }) => {
+      const contents: IContent[] = commanderData.map(({ data, name }) => {
         function makeGateSetting(
           ItemMaxLevel: number,
           data: IDifficulty[]
@@ -117,6 +98,7 @@ export const makeDataResult = (
           isVisble: false, // 골드컨텐츠인지 확인필요
           isGoldContents: false, // 골드컨텐츠인지 확인필요
           gateSetting: makeGateSetting(ItemMaxLevel, data),
+          _id: name + CharacterName,
         };
         return content;
       });

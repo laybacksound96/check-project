@@ -1,10 +1,10 @@
 import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled, { css } from "styled-components";
-import { useRecoilValue } from "recoil";
-import useModal from "../CustomHooks/useModal";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { dragIcon } from "../Settings";
 import { LoginState } from "../atoms/login";
+import { ModalConfigAccount } from "../atoms/modal";
 interface IStyle {
   loggined: boolean;
 }
@@ -34,19 +34,16 @@ const Character = styled.div<IStyle>`
     `}
 `;
 
-const ConfigAccountButton = ({ AccountName }: { AccountName: string }) => {
+const ButtonConfigAccount = () => {
   const loggined = useRecoilValue(LoginState);
-  const [openModal] = useModal();
+  const openModal = useSetRecoilState(ModalConfigAccount);
   return (
     <>
       <Character
         loggined={loggined}
         onClick={() => {
           if (!loggined) return;
-          openModal("CONFIG_ACCOUNT", {
-            AccountName,
-            CharacterName: "",
-          });
+          openModal(true);
         }}
       >
         {loggined && <FontAwesomeIcon icon={faGear} size="lg" />}
@@ -55,4 +52,4 @@ const ConfigAccountButton = ({ AccountName }: { AccountName: string }) => {
   );
 };
 
-export default ConfigAccountButton;
+export default ButtonConfigAccount;

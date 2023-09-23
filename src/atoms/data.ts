@@ -7,16 +7,17 @@ export type ICharacter = {
   ServerName: string;
   CharacterClassName: string;
 };
+export interface IGate {
+  isVisible: boolean;
+  difficulty: string;
+}
 export interface IContent {
   _id: string;
   owner: string;
   contentName: string;
-  isGoldContents: boolean;
-  gateSetting: {
-    isVisible: boolean;
-    difficulty: string;
-  }[];
+  gateSetting: IGate[];
   isVisble: boolean;
+  isGoldContents: boolean;
 }
 export interface ICheck {
   _id?: string;

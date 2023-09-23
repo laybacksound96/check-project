@@ -3,8 +3,11 @@ import styled from "styled-components";
 import Content from "./Content";
 import React from "react";
 import AllChecked from "./AllChecked";
-import { AccountOrder, IAccountOrder, IContent } from "../atoms/data";
+import { IAccountOrder, IContent } from "../atoms/data";
 import processDifficulty from "./Functions/processDifficulty";
+import calculateStrength from "./Functions/calculateStrength";
+import getRandomPastelColor from "./Functions/getRandomPastelColor";
+import { FrequencyCounter, IFrequency } from "../atoms/frequency";
 
 const ContainerStyle = styled.ul`
   display: grid;
@@ -12,7 +15,7 @@ const ContainerStyle = styled.ul`
   grid-auto-rows: auto;
   margin-top: 30px;
 `;
-function filterContents(accountOrder: IAccountOrder[]) {
+export function filterContents(accountOrder: IAccountOrder[]) {
   const filteredContetns = accountOrder.map(
     ({ contents, characterOrder, contentsOrder, checks }) => {
       return contents.filter(({ contentName, isVisble, owner }) => {
@@ -30,26 +33,21 @@ function filterContents(accountOrder: IAccountOrder[]) {
   );
   return filteredContetns;
 }
-function flattenArray(arr: IContent[][]) {
+export function flattenArray(arr: IContent[][]) {
   return arr.reduce((flat, subArray) => {
     return flat.concat(subArray);
   }, []);
 }
-function countAndGroupByContentId(
+export function countAndGroupByContentId(
   inputArray: {
     contentId: string;
     owner: string;
     contentName: string;
     contentIds: string[];
+    color: string;
   }[]
-) {
-  const result: {
-    remain: string[];
-    count: number;
-    contentId: string;
-    contentIds: string[];
-    contentName: string;
-  }[] = [];
+): IFrequency[] {
+  const result: IFrequency[] = [];
   for (let i = 0; i < inputArray.length; i++) {
     const currentItem = inputArray[i];
     const existingItem = result.find(
@@ -67,29 +65,35 @@ function countAndGroupByContentId(
         count: 1,
         contentId: currentItem.contentId,
         contentIds: currentItem.contentIds,
+        color: currentItem.color,
       });
     }
   }
 
   return result;
 }
-function makeContentsFrequency(filteredContents: IContent[][]): IFrequency[] {
+export function makeContentsFrequency(filteredContents: IContent[][]) {
   const flatten = flattenArray(filteredContents);
   const processed = flatten.map(({ contentName, gateSetting, owner }) => {
     const gates = processDifficulty(
       gateSetting.map(({ difficulty }) => difficulty)
     );
+
     return {
       owner,
       contentName,
       contentIds: gates,
       contentId: gates && gates.join(", "),
+      color: getRandomPastelColor(
+        contentName,
+        calculateStrength(gateSetting.map(({ difficulty }) => difficulty))
+      ),
     };
   });
   return countAndGroupByContentId(processed);
 }
 
-function sortCommander(frequency: IFrequency[]) {
+export function sortCommander(frequency: IFrequency[]) {
   const sortOrder = [
     "카멘",
     "상아탑",
@@ -101,6 +105,7 @@ function sortCommander(frequency: IFrequency[]) {
     "발탄",
     "아르고스",
   ];
+
   return frequency.sort((a, b) => {
     const indexA = sortOrder.indexOf(a.contentName);
     const indexB = sortOrder.indexOf(b.contentName);
@@ -111,28 +116,19 @@ function sortCommander(frequency: IFrequency[]) {
     return indexA - indexB;
   });
 }
-interface IFrequency {
-  remain: string[];
-  count: number;
-  contentId: string;
-  contentIds: string[];
-  contentName: string;
-}
 const Contents = () => {
-  const accountOrder = useRecoilValue(AccountOrder);
-  const frequency = makeContentsFrequency(filterContents(accountOrder));
-
+  const frequency = useRecoilValue(FrequencyCounter);
   return (
     <ContainerStyle>
-      {sortCommander(frequency).map(
-        ({ contentId, contentName, count, remain, contentIds }) => {
+      {frequency.map(
+        ({ contentId, contentName, count, remain, contentIds, color }) => {
           return (
             <Content
               key={contentId + contentName}
               contentName={contentName}
               count={count}
               remain={remain}
-              color={"gray"}
+              color={color}
               contentIds={contentIds}
             />
           );

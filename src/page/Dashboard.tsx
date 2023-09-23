@@ -1,15 +1,22 @@
 import styled from "styled-components";
-import Modal from "../components/Ui/Modal/Modal";
 import DragAccounts from "../components/DragAccounts";
 import { useEffect, useState } from "react";
 import { getAccountData, patchChecks } from "../util/fetch";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { LoginState } from "../atoms/login";
 import { AccountOrder, IAccountOrder } from "../atoms/data";
-import { ICommanderData } from "../atoms/commander";
+import { CommanderData, ICommanderData } from "../atoms/commander";
 import HeaderBox from "../components/HeaderBox";
 import { IFetchedData, UserState } from "../atoms/fetchData";
 import patchData from "../components/Functions/patchData";
+import { FrequencyCounter } from "../atoms/frequency";
+import {
+  sortCommander,
+  makeContentsFrequency,
+  filterContents,
+} from "../components/Contents";
+import ModalAddAccount from "../components/ModalAddAccount";
+import { ModalAddAcount } from "../atoms/modal";
 
 const DashboardStyle = styled.div`
   margin-top: 5px;
@@ -19,11 +26,14 @@ interface IProps {
   data: [IFetchedData, ICommanderData];
 }
 
-function Dashboard({ data: [userData, commanderData] }: IProps) {
+function Dashboard({ data: [userData, { commanderData: commander }] }: IProps) {
   const [loading, setLoading] = useState(true);
   const [account, setAccount] = useRecoilState(AccountOrder);
   const [loggined, setLoggined] = useRecoilState(LoginState);
   const [userState, setUserState] = useRecoilState(UserState);
+  const [commanderData, setCommanderData] = useRecoilState(CommanderData);
+  const setFrequencyCounter = useSetRecoilState(FrequencyCounter);
+  const modalAddacount = useRecoilValue(ModalAddAcount);
   useEffect(() => {
     setUserState(userData);
     Promise.all(
@@ -48,10 +58,11 @@ function Dashboard({ data: [userData, commanderData] }: IProps) {
           };
         }
       );
+      setCommanderData(commander);
       setAccount(account);
       setLoading(false);
     });
-  }, [setAccount, setUserState, userData]);
+  }, [commander, setAccount, setCommanderData, setUserState, userData]);
   useEffect(() => {
     if (userState === "GUEST" || userState.isLoggined === true) {
       setLoggined(true);
@@ -64,6 +75,10 @@ function Dashboard({ data: [userData, commanderData] }: IProps) {
     console.log(account);
   }, [account]);
   useEffect(() => {
+    console.log("//commanderData//");
+    console.log(commanderData);
+  }, [commanderData]);
+  useEffect(() => {
     console.log("//userState//");
     console.log(userState);
   }, [userState]);
@@ -71,10 +86,15 @@ function Dashboard({ data: [userData, commanderData] }: IProps) {
     console.log("//userState//");
     console.log(loggined);
   }, [loggined]);
+  useEffect(() => {
+    setFrequencyCounter(
+      sortCommander(makeContentsFrequency(filterContents(account)))
+    );
+  }, [account, setFrequencyCounter]);
   return (
     <>
       <DashboardStyle>
-        <Modal />
+        {modalAddacount && <ModalAddAccount />}
         <HeaderBox />
         {loading && <p>사용자 정보 로딩중...</p>}
         <DragAccounts />

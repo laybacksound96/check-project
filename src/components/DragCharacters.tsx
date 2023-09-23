@@ -13,9 +13,9 @@ import { AccountOrder, IAccountOrder } from "../atoms/data";
 import { dragIcon } from "../Settings";
 import { LoginState } from "../atoms/login";
 import { patchCharacter } from "../util/fetch";
-import ConfigAccountButton from "./ConfigAccountButton";
 import { AxisLocker } from "./Functions/AxisLocker";
 import { UserState } from "../atoms/fetchData";
+import ButtonConfigAccount from "./ButtonConfigAccount";
 interface IStyle {
   loggined: boolean;
 }
@@ -133,7 +133,7 @@ function DragCharacters({ DragHandleProps, account, accountIndex }: IProps) {
         {(provided) => (
           <Container loggined={loggined}>
             <div ref={provided.innerRef} {...provided.droppableProps}>
-              <ConfigAccountButton AccountName={account._id} />
+              <ButtonConfigAccount />
               {account.characterOrder.map((name, index) => {
                 const character = account.characters.find(
                   ({ CharacterName }) => CharacterName === name

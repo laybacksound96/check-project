@@ -2,9 +2,9 @@ import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
 import { faEye } from "@fortawesome/free-regular-svg-icons";
-import { useRecoilValue } from "recoil";
-import useModal from "../CustomHooks/useModal";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { LoginState } from "../atoms/login";
+import { ModalConfigAccount } from "../atoms/modal";
 export const ButtonContainer = styled.div`
   display: flex;
   justify-content: start;
@@ -21,14 +21,14 @@ export const ButtonContainer = styled.div`
     background-color: rgba(100, 100, 100, 0.7);
   }
 `;
-const ConfigContentButton = ({
+const ButtonConfigContent = ({
   AccountName,
   CharacterName,
 }: {
   AccountName: string;
   CharacterName: string;
 }) => {
-  const [ConfigAccount] = useModal();
+  const openModal = useSetRecoilState(ModalConfigAccount);
   const loggined = useRecoilValue(LoginState);
   return (
     <>
@@ -38,10 +38,7 @@ const ConfigContentButton = ({
           <FontAwesomeIcon
             onClick={() => {
               if (!loggined) return;
-              ConfigAccount("CONFIG_CONTENT", {
-                AccountName,
-                CharacterName,
-              });
+              openModal(true);
             }}
             icon={faGear}
             size="lg"
@@ -51,4 +48,4 @@ const ConfigContentButton = ({
     </>
   );
 };
-export default ConfigContentButton;
+export default ButtonConfigContent;

@@ -41,7 +41,7 @@ interface ICheckboxProps {
   ) => void;
 }
 
-function CheckBoxButton({
+function ButtonCheckBox({
   CharacterName,
   ContentName,
   Color,
@@ -66,4 +66,4 @@ function CheckBoxButton({
   );
 }
 
-export default CheckBoxButton;
+export default ButtonCheckBox;

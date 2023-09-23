@@ -1,9 +1,8 @@
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGear } from "@fortawesome/free-solid-svg-icons";
-import DangerZone from "./components/DangerZone";
-import useModal from "../../../../CustomHooks/useModal";
-import SettingCharacters from "./components/SettingVisibleContent";
+import DangerZone from "./Ui/Modal/ModalContents/components/DangerZone";
+import SettingCharacters from "./Ui/Modal/ModalContents/components/SettingVisibleContent";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 
 const ModalContainer = styled.div`
@@ -39,15 +38,7 @@ const CharacterContainer = styled.div`
   grid-template-columns: repeat(2, minmax(250px, 1fr));
   gap: 10px;
 `;
-export const ConfigAccount = () => {
-  const [
-    ,
-    closeModal,
-    {
-      modalProp: { AccountName },
-    },
-  ] = useModal();
-
+export const ModalConfigAccount = () => {
   function handleDelete() {}
   return (
     <>
@@ -75,4 +66,4 @@ export const ConfigAccount = () => {
   );
 };
 
-export default ConfigAccount;
+export default ModalConfigAccount;

@@ -1,35 +1,24 @@
-function getRandomPastelColor(ContentName: string): string {
-  let minSaturation = 20; // 최소 채도 (0 ~ 100)
-  let maxSaturation = 40; // 최대 채도 (0 ~ 100)
-  let minLightness = 30; // 최소 명도 (0 ~ 100)
-  let maxLightness = 60; // 최대 명도 (0 ~ 100)
-
-  let hue = Math.floor(Math.random() * 360); // 0 ~ 359 사이의 랜덤한 색상
+function getRandomPastelColor(
+  ContentName: string,
+  strengthNum: number
+): string {
+  let hue = Math.floor(Math.random() * 360);
+  const strength = strengthNum * 0.2;
   if (ContentName === "아르고스" || ContentName === "상아탑") {
     hue = 203;
-    maxSaturation = 25;
-    minLightness = 20;
-    maxLightness = 30;
   }
-  if (ContentName === "아브렐슈드") hue = 240;
+  if (ContentName === "아브렐슈드") hue = 262;
   if (ContentName === "발탄") hue = 180;
   if (ContentName === "비아키스") hue = 300;
   if (ContentName === "쿠크세이튼") hue = 0;
   if (ContentName === "일리아칸") hue = 134;
   if (ContentName === "카양겔") {
     hue = 51;
-    minSaturation = 40;
-    maxSaturation = 60;
-    minLightness = 60;
-    maxLightness = 65;
   }
+  if (ContentName === "카멘") hue = 240;
 
-  const saturation = Math.floor(
-    Math.random() * (maxSaturation - minSaturation + 1) + minSaturation
-  );
-  const lightness = Math.floor(
-    Math.random() * (maxLightness - minLightness + 1) + minLightness
-  );
+  const lightness = 60 - strength;
+  const saturation = 40 + strength;
 
   const hslColor = "hsl(" + hue + ", " + saturation + "%, " + lightness + "%)";
 

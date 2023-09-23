@@ -8,7 +8,7 @@ import {
 import styled from "styled-components";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { patchAccount } from "../util/fetch";
-import AddAccountButton from "./AddAccountButton";
+import AddAccountButton from "./ButtonAddAccount";
 import { AxisLocker } from "./Functions/AxisLocker";
 import DragCharacters from "./DragCharacters";
 import { AccountOrder } from "../atoms/data";

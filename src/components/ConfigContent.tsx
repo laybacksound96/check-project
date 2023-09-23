@@ -1,7 +1,6 @@
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import ContentCard from "./components/ContentCard";
-import { modalProp } from "../../../../atoms/modal";
+import ContentCard from "./Ui/Modal/ModalContents/components/ContentCard";
 import { useEffect, useState } from "react";
 import CountUp from "react-countup";
 import { faCoins } from "@fortawesome/free-solid-svg-icons";
@@ -45,9 +44,6 @@ const GoldBox = styled.div`
   }
 `;
 
-interface IProps {
-  prop: modalProp;
-}
 const ConfigContent = () => {
   return (
     <div></div>

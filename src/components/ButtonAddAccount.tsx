@@ -1,9 +1,8 @@
 import styled from "styled-components";
-import useModal from "../CustomHooks/useModal";
-import { useRecoilValue } from "recoil";
-import { useState } from "react";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { isLoggined } from "./DragAccounts";
 import { UserState } from "../atoms/fetchData";
+import { ModalAddAcount } from "../atoms/modal";
 
 const Button = styled.button`
   height: 100px;
@@ -16,18 +15,18 @@ const Button = styled.button`
     transition: ease-in-out 0.1s;
   }
 `;
-const AddAccountButton = () => {
+const ButtonAddAccount = () => {
   const userState = useRecoilValue(UserState);
-  const [openModal] = useModal();
+  const openModal = useSetRecoilState(ModalAddAcount);
   return (
     <Button
       onClick={() => {
         if (!isLoggined(userState)) return;
-        openModal("ADD_ACCOUNT");
+        openModal(true);
       }}
     >
       계정 추가하기
     </Button>
   );
 };
-export default AddAccountButton;
+export default ButtonAddAccount;

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
-import { vibration } from "../AddContent";
+import { vibration } from "../../../../ModalAddContent";
 
 const DangerZoneContainer = styled.div`
   margin: 20px;

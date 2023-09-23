@@ -7,15 +7,17 @@ import {
 import styled from "styled-components";
 import { useRecoilState, useRecoilValue } from "recoil";
 import React from "react";
-import useModal from "../CustomHooks/useModal";
 import { dragIcon } from "../Settings";
 import { LoginState } from "../atoms/login";
 import { patchChecks, patchContents } from "../util/fetch";
-import CheckBoxButton from "./CheckBoxButton";
+import CheckBoxButton from "./ButtonCheckBox";
 import { AxisLocker } from "./Functions/AxisLocker";
 import { AccountOrder, IAccountOrder } from "../atoms/data";
 import { UserState } from "../atoms/fetchData";
 import patchData from "./Functions/patchData";
+import { FrequencyCounter } from "../atoms/frequency";
+import calculateStrength from "./Functions/calculateStrength";
+import getRandomPastelColor from "./Functions/getRandomPastelColor";
 
 const Name = styled.div`
   display: flex;
@@ -42,9 +44,9 @@ interface IProps {
   accountIndex: number;
 }
 const DragContents = ({ account, accountIndex }: IProps) => {
-  const [openModal] = useModal();
   const userState = useRecoilValue(UserState);
   const [accountOrder, setAccountOrder] = useRecoilState(AccountOrder);
+  const frequency = useRecoilValue(FrequencyCounter);
   const loggined = useRecoilValue(LoginState);
   const dragContentHandler = (dragInfo: DropResult) => {
     const { destination, source } = dragInfo;
@@ -107,6 +109,7 @@ const DragContents = ({ account, accountIndex }: IProps) => {
       });
     }
   };
+
   return (
     <>
       <DragDropContext onDragEnd={dragContentHandler}>
@@ -143,13 +146,25 @@ const DragContents = ({ account, accountIndex }: IProps) => {
                             contentName === ContentName
                         );
                         const isVisible = content ? content.isVisble : false;
+
+                        const color = content
+                          ? getRandomPastelColor(
+                              ContentName,
+                              calculateStrength(
+                                content?.gateSetting.map(
+                                  ({ difficulty }) => difficulty
+                                )
+                              )
+                            )
+                          : "white";
+
                         return (
                           <CheckBoxButton
                             key={accountIndex + CharacterName + ContentName}
                             CharacterName={CharacterName}
                             ContentName={ContentName}
                             Account={account}
-                            Color={"testColor"}
+                            Color={color}
                             isVisible={isVisible}
                             onClickHandler={onClickHandler}
                           />

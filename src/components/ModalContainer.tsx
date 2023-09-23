@@ -1,7 +1,5 @@
 import React from "react";
-import { useRecoilValue } from "recoil";
 import styled, { keyframes } from "styled-components";
-import { ModalEnum, ModalState } from "../../../atoms/modal";
 
 const fadeInAnimation = keyframes`
   0% {
@@ -80,24 +78,17 @@ const Header = styled.header`
 `;
 interface ModalProps {
   onClose: () => void;
+  title: string;
   children: React.ReactNode;
 }
 
-const ModalContainer = ({ children, onClose }: ModalProps) => {
-  const {
-    modalType: type,
-    modalProp: { CharacterName: name },
-  } = useRecoilValue(ModalState);
+const ModalContainer = ({ children, onClose, title }: ModalProps) => {
   return (
     <Container>
       <Background onClick={onClose}></Background>
       <MainDiv>
         <Header>
-          {type === ModalEnum.CONFIG_CONTENT ? (
-            <h1>{`${name}의 ${type}`}</h1>
-          ) : (
-            <h1>{type}</h1>
-          )}
+          <h1>{title}</h1>
           <ButtonContainer>
             <button onClick={onClose}>
               <span>X</span>
