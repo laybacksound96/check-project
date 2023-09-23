@@ -4,7 +4,10 @@ import styled from "styled-components";
 import { faEye } from "@fortawesome/free-regular-svg-icons";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { LoginState } from "../atoms/login";
-import { ModalConfigAccount } from "../atoms/modal";
+import {
+  ModalConfigAccountAtom,
+  ModalConfigContentsAtom,
+} from "../atoms/modal";
 export const ButtonContainer = styled.div`
   display: flex;
   justify-content: start;
@@ -28,7 +31,7 @@ const ButtonConfigContent = ({
   AccountName: string;
   CharacterName: string;
 }) => {
-  const openModal = useSetRecoilState(ModalConfigAccount);
+  const openModal = useSetRecoilState(ModalConfigContentsAtom);
   const loggined = useRecoilValue(LoginState);
   return (
     <>

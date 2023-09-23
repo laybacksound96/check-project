@@ -4,7 +4,7 @@ import styled, { css } from "styled-components";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { dragIcon } from "../Settings";
 import { LoginState } from "../atoms/login";
-import { ModalConfigAccount } from "../atoms/modal";
+import { ModalConfigAccountAtom } from "../atoms/modal";
 interface IStyle {
   loggined: boolean;
 }
@@ -34,16 +34,17 @@ const Character = styled.div<IStyle>`
     `}
 `;
 
-const ButtonConfigAccount = () => {
+const ButtonConfigAccount = ({ index }: { index: number }) => {
   const loggined = useRecoilValue(LoginState);
-  const openModal = useSetRecoilState(ModalConfigAccount);
+  const openModal = useSetRecoilState(ModalConfigAccountAtom);
+
   return (
     <>
       <Character
         loggined={loggined}
         onClick={() => {
           if (!loggined) return;
-          openModal(true);
+          openModal({ status: true, index });
         }}
       >
         {loggined && <FontAwesomeIcon icon={faGear} size="lg" />}

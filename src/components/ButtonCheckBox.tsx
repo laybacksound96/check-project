@@ -1,4 +1,5 @@
-import { faSquare, faSquareCheck } from "@fortawesome/free-solid-svg-icons";
+import { faSquareCheck } from "@fortawesome/free-solid-svg-icons";
+import { faSquare } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
 import { dragIcon } from "../Settings";
@@ -46,7 +47,7 @@ function ButtonCheckBox({
   ContentName,
   Color,
   isVisible,
-  Account: { checks, contents },
+  Account: { checks },
   onClickHandler,
 }: ICheckboxProps) {
   const checkIndex = checks.findIndex(

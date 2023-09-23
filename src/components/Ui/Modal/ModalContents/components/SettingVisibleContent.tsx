@@ -76,10 +76,9 @@ const SettingCharacters = ({ AccountName, CharacterName }: IProps) => {
   const handleVisible = () => {};
   return (
     <div></div>
-    // <Character key={CharacterName} isVisible={isVisibleChar}>
+    // <Character key={CharacterName} >
     //   <NameContainer>
     //     <h1>{CharacterName}</h1>
-
     //     {IsGoldCharacter && (
     //       <span>
     //         <FontAwesomeIcon icon={faCoins} color="yellow" />

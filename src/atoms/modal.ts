@@ -1,18 +1,18 @@
 import { atom } from "recoil";
 
-export const ModalAddAcount = atom<boolean>({
+export const ModalAddAcountAtom = atom<boolean>({
   key: "ModalAddacount",
   default: false,
 });
-export const ModalAddContents = atom<boolean>({
+export const ModalAddContentsAtom = atom<boolean>({
   key: "ModalAddContents",
   default: false,
 });
-export const ModalConfigAccount = atom<boolean>({
+export const ModalConfigAccountAtom = atom<{ status: boolean; index: number }>({
   key: "ModalConfigAccount",
-  default: false,
+  default: { status: false, index: 0 },
 });
-export const ModalConfigContents = atom<boolean>({
+export const ModalConfigContentsAtom = atom<boolean>({
   key: "ModalConfigContents",
   default: false,
 });

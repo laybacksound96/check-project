@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { isLoggined } from "./DragAccounts";
 import { UserState } from "../atoms/fetchData";
-import { ModalAddAcount } from "../atoms/modal";
+import { ModalAddAcountAtom } from "../atoms/modal";
 
 const Button = styled.button`
   height: 100px;
@@ -17,7 +17,7 @@ const Button = styled.button`
 `;
 const ButtonAddAccount = () => {
   const userState = useRecoilValue(UserState);
-  const openModal = useSetRecoilState(ModalAddAcount);
+  const openModal = useSetRecoilState(ModalAddAcountAtom);
   return (
     <Button
       onClick={() => {

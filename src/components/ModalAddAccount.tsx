@@ -4,11 +4,11 @@ import styled from "styled-components";
 import { Input } from "./ModalAddContent";
 import CharacterContainer from "./Ui/Modal/ModalContents/components/CharacterContainer";
 import { makeDataResult } from "../util/addAccount";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import SortByLevel from "./Functions/SortByLevel";
 import { UserState } from "../atoms/fetchData";
 import ModalContainer from "./ModalContainer";
-import { ModalAddAcount } from "../atoms/modal";
+import { ModalAddAcountAtom } from "../atoms/modal";
 import { AccountOrder } from "../atoms/data";
 import { IsDuplicated, IsInValidName } from "./Functions/handleErrors";
 import { CommanderData } from "../atoms/commander";
@@ -50,8 +50,8 @@ interface IError {
 
 const ModalAddAccount = () => {
   const [error, setError] = useState<IError | undefined>();
-  const closeModal = useSetRecoilState(ModalAddAcount);
-  const [account, setAccount] = useRecoilState(AccountOrder);
+  const closeModal = useSetRecoilState(ModalAddAcountAtom);
+  const setAccount = useSetRecoilState(AccountOrder);
   const commanderData = useRecoilValue(CommanderData);
   const [inputValue, setInputValue] = useState("");
   const [fetchedData, setFetchedData] = useState<IFetchedCharacter[]>([]);

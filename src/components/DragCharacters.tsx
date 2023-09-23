@@ -16,6 +16,8 @@ import { patchCharacter } from "../util/fetch";
 import { AxisLocker } from "./Functions/AxisLocker";
 import { UserState } from "../atoms/fetchData";
 import ButtonConfigAccount from "./ButtonConfigAccount";
+import ModalConfigAccount from "./ModalConfigAccount";
+import { ModalConfigAccountAtom } from "../atoms/modal";
 interface IStyle {
   loggined: boolean;
 }
@@ -133,7 +135,7 @@ function DragCharacters({ DragHandleProps, account, accountIndex }: IProps) {
         {(provided) => (
           <Container loggined={loggined}>
             <div ref={provided.innerRef} {...provided.droppableProps}>
-              <ButtonConfigAccount />
+              <ButtonConfigAccount index={accountIndex} />
               {account.characterOrder.map((name, index) => {
                 const character = account.characters.find(
                   ({ CharacterName }) => CharacterName === name

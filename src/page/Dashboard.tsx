@@ -2,21 +2,14 @@ import styled from "styled-components";
 import DragAccounts from "../components/DragAccounts";
 import { useEffect, useState } from "react";
 import { getAccountData } from "../util/fetch";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { LoginState } from "../atoms/login";
 import { AccountOrder, IAccountOrder } from "../atoms/data";
 import { CommanderData, ICommanderData } from "../atoms/commander";
 import HeaderBox from "../components/HeaderBox";
 import { IFetchedData, UserState } from "../atoms/fetchData";
 import { FrequencyCounter } from "../atoms/frequency";
-import ModalAddAccount from "../components/ModalAddAccount";
-import { ModalAddAcount } from "../atoms/modal";
-import {
-  sortCommander,
-  makeContentsFrequency,
-  filterContents,
-  makeFrequencyCounter,
-} from "../components/Functions/makeFrequencyCounter";
+import { makeFrequencyCounter } from "../components/Functions/makeFrequencyCounter";
 
 const DashboardStyle = styled.div`
   margin-top: 5px;
@@ -34,7 +27,7 @@ function Dashboard({ data: [userData, { commanderData: commander }] }: IProps) {
   const [commanderData, setCommanderData] = useRecoilState(CommanderData);
   const [frequencyCounter, setFrequencyCounter] =
     useRecoilState(FrequencyCounter);
-  const modalAddacount = useRecoilValue(ModalAddAcount);
+
   useEffect(() => {
     setUserState(userData);
     Promise.all(
@@ -96,7 +89,6 @@ function Dashboard({ data: [userData, { commanderData: commander }] }: IProps) {
   return (
     <>
       <DashboardStyle>
-        {modalAddacount && <ModalAddAccount />}
         <HeaderBox />
         {loading && <p>사용자 정보 로딩중...</p>}
         <DragAccounts />
