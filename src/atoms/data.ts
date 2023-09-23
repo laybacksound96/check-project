@@ -9,19 +9,17 @@ export type ICharacter = {
 };
 export interface IContent {
   _id: string;
-  characterName: string;
-  contents: {
-    contentName: string;
-    isGoldContents: boolean;
-    gateSetting: {
-      isVisible: boolean;
-      difficulty: string;
-    }[];
-    isVisble: boolean;
+  owner: string;
+  contentName: string;
+  isGoldContents: boolean;
+  gateSetting: {
+    isVisible: boolean;
+    difficulty: string;
   }[];
+  isVisble: boolean;
 }
 export interface ICheck {
-  _id: string;
+  _id?: string;
   contentName: string;
   characterName: string;
 }

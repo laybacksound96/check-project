@@ -55,7 +55,6 @@ const NameBox = styled.div`
   align-items: center;
   justify-content: space-between;
   width: auto;
-
   h1 {
     font-weight: bold;
     font-size: 20px;
@@ -70,7 +69,6 @@ const FrequencyBox = styled.div<IColorStyle>`
   height: 45px;
   border-radius: 7px;
   background-color: ${(props) => getLowerLightnessColor(props.Color, 20)};
-
   span {
     margin-bottom: 5px;
     font-size: 30px;
@@ -105,38 +103,49 @@ const OwnerBox = styled.span<IColorStyle>`
   background-color: ${(props) => getLowerLightnessColor(props.Color, 20)};
   border-radius: 5px;
 `;
-
-const Content = () => {
+interface Iprops {
+  contentName: string;
+  count: number;
+  remain: string[];
+  color: string;
+  contentIds: string[];
+}
+const Content = ({ contentName, count, remain, color, contentIds }: Iprops) => {
   const [shouldAnimate, setShouldAnimate] = useState(false);
-
+  useEffect(() => {
+    setShouldAnimate(true);
+    const timeoutId = setTimeout(() => {
+      setShouldAnimate(false);
+    }, 300);
+    return () => clearTimeout(timeoutId);
+  }, [count]);
   return (
-    <div></div>
-    // <ContentStyle shouldAnimate={shouldAnimate} Color={Color}>
-    //   <HeaderContainer>
-    //     <NameBox>
-    //       <h1>
-    //         {ContentName.length >= 12
-    //           ? `${ContentName.slice(0, 12)}...`
-    //           : ContentName}
-    //       </h1>
-    //       {GateState.map((elem) => {
-    //         return <p key={elem}>{elem}</p>;
-    //       })}
-    //     </NameBox>
-    //     <FrequencyBox Color={Color}>
-    //       <span>{Frequency}</span>
-    //     </FrequencyBox>
-    //   </HeaderContainer>
-    //   <OwnerContainer Color={Color}>
-    //     {RemainOwner.map((name, index) => {
-    //       return index < 4 ? (
-    //         <OwnerBox key={index} Color={Color}>
-    //           {index === 3 && RemainOwner.length > 4 ? `${name}...` : name}
-    //         </OwnerBox>
-    //       ) : null;
-    //     })}
-    //   </OwnerContainer>
-    // </ContentStyle>
+    <ContentStyle shouldAnimate={shouldAnimate} Color={color}>
+      <HeaderContainer>
+        <NameBox>
+          <h1>
+            {contentName.length >= 12
+              ? `${contentName.slice(0, 12)}...`
+              : contentName}
+          </h1>
+          {contentIds.map((elem) => {
+            return <p key={elem}>{elem}</p>;
+          })}
+        </NameBox>
+        <FrequencyBox Color={color}>
+          <span>{count}</span>
+        </FrequencyBox>
+      </HeaderContainer>
+      <OwnerContainer Color={color}>
+        {remain.map((name, index) => {
+          return index < 4 ? (
+            <OwnerBox key={index} Color={color}>
+              {index === 3 && remain.length > 4 ? `${name}...` : name}
+            </OwnerBox>
+          ) : null;
+        })}
+      </OwnerContainer>
+    </ContentStyle>
   );
 };
 

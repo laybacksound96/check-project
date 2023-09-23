@@ -10,11 +10,12 @@ import React from "react";
 import useModal from "../CustomHooks/useModal";
 import { dragIcon } from "../Settings";
 import { LoginState } from "../atoms/login";
-import { patchContents } from "../util/fetch";
+import { patchChecks, patchContents } from "../util/fetch";
 import CheckBoxButton from "./CheckBoxButton";
 import { AxisLocker } from "./Functions/AxisLocker";
 import { AccountOrder, IAccountOrder } from "../atoms/data";
 import { UserState } from "../atoms/fetchData";
+import patchData from "./Functions/patchData";
 
 const Name = styled.div`
   display: flex;
@@ -67,6 +68,45 @@ const DragContents = ({ account, accountIndex }: IProps) => {
     });
     return;
   };
+  const onClickHandler = (
+    characterName: string,
+    contentName: string,
+    checkIndex: number
+  ) => {
+    if (checkIndex === -1) {
+      setAccountOrder((prev) => {
+        const copiedAccounts = [...prev];
+        const copiedData = { ...copiedAccounts[accountIndex] };
+        const copiedChecks = [...copiedData.checks];
+        copiedChecks.push({ characterName, contentName });
+        copiedData.checks = copiedChecks;
+        copiedAccounts[accountIndex] = copiedData;
+        if (userState !== "GUEST") {
+          const userId = userState.user._id;
+          patchData(700, async () => {
+            patchChecks(copiedData._id, userId, copiedChecks);
+          });
+        }
+        return copiedAccounts;
+      });
+    } else {
+      setAccountOrder((prev) => {
+        const copiedAccounts = [...prev];
+        const copiedData = { ...copiedAccounts[accountIndex] };
+        const copiedChecks = [...copiedData.checks];
+        copiedChecks.splice(checkIndex, 1);
+        copiedData.checks = copiedChecks;
+        copiedAccounts[accountIndex] = copiedData;
+        if (userState !== "GUEST") {
+          const userId = userState.user._id;
+          patchData(700, async () => {
+            patchChecks(copiedData._id, userId, copiedChecks);
+          });
+        }
+        return copiedAccounts;
+      });
+    }
+  };
   return (
     <>
       <DragDropContext onDragEnd={dragContentHandler}>
@@ -96,14 +136,22 @@ const DragContents = ({ account, accountIndex }: IProps) => {
                           : ContentName}
                       </Name>
                       {account.characterOrder.map((CharacterName) => {
+                        const contents = account.contents;
+                        const content = contents.find(
+                          ({ owner, contentName }) =>
+                            owner === CharacterName &&
+                            contentName === ContentName
+                        );
+                        const isVisible = content ? content.isVisble : false;
                         return (
                           <CheckBoxButton
                             key={accountIndex + CharacterName + ContentName}
                             CharacterName={CharacterName}
-                            AccountIndex={accountIndex}
                             ContentName={ContentName}
                             Account={account}
                             Color={"testColor"}
+                            isVisible={isVisible}
+                            onClickHandler={onClickHandler}
                           />
                         );
                       })}

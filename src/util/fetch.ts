@@ -1,6 +1,7 @@
 import axios from "axios";
 import { ICommanderData } from "../atoms/commander";
 import { IFetchedAccount, IFetchedData } from "../atoms/fetchData";
+import { ICheck } from "../atoms/data";
 
 const url2 = "https://www.checksheet.link/";
 const url = "http://localhost:8080/";
@@ -120,5 +121,30 @@ export async function patchContents(
     return response.data;
   } catch (error) {
     return conentsOrderdata;
+  }
+}
+export async function patchChecks(
+  accountId: string,
+  userId: string,
+  checks: ICheck[]
+) {
+  const token = localStorage.getItem("accessToken");
+  try {
+    const response = await axios.patch<string[]>(
+      `${url}account/checks/${accountId}`,
+      {
+        checks: checks,
+        user_id: userId,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "bearer " + token,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    return checks;
   }
 }

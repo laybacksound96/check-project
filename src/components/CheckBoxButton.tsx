@@ -1,18 +1,15 @@
 import { faSquare, faSquareCheck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
-import { useRecoilValue } from "recoil";
 import { dragIcon } from "../Settings";
-import { AccountOrder, IAccountOrder, IContent } from "../atoms/data";
+import { IAccountOrder } from "../atoms/data";
 
 interface IStyle {
   isVisible: boolean;
-  isActivated: boolean;
   Color: string;
 }
 const CheckBox = styled.div<IStyle>`
-  opacity: ${({ isActivated, isVisible }) =>
-    !isVisible || !isActivated ? "0%" : "100%"};
+  opacity: ${({ isVisible }) => (isVisible ? "100%" : "0%")};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -32,33 +29,38 @@ const CheckBox = styled.div<IStyle>`
   }
 `;
 interface ICheckboxProps {
-  AccountIndex: number;
   CharacterName: string;
   ContentName: string;
   Color: string;
   Account: IAccountOrder;
+  isVisible: boolean;
+  onClickHandler: (
+    CharacterName: string,
+    ContentName: string,
+    checkIndex: number
+  ) => void;
 }
 
 function CheckBoxButton({
-  AccountIndex,
   CharacterName,
   ContentName,
   Color,
+  isVisible,
   Account: { checks, contents },
+  onClickHandler,
 }: ICheckboxProps) {
-  const checked = checks.find(
+  const checkIndex = checks.findIndex(
     ({ characterName, contentName }) =>
       CharacterName === characterName && ContentName === contentName
   );
+  const checked = checkIndex === -1 ? true : false;
 
-  function onClickHandler() {}
+  function onClick() {
+    if (!isVisible) return;
+    onClickHandler(CharacterName, ContentName, checkIndex);
+  }
   return (
-    <CheckBox
-      onClick={onClickHandler}
-      isVisible={true}
-      isActivated={true}
-      Color={Color}
-    >
+    <CheckBox onClick={onClick} isVisible={isVisible} Color={Color}>
       <FontAwesomeIcon icon={checked ? faSquareCheck : faSquare} size="lg" />
     </CheckBox>
   );
