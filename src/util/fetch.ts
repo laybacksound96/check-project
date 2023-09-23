@@ -1,7 +1,7 @@
 import axios from "axios";
 import { ICommanderData } from "../atoms/commander";
 import { IFetchedAccount, IFetchedData } from "../atoms/fetchData";
-import { ICheck } from "../atoms/data";
+import { IAccountOrder, ICheck } from "../atoms/data";
 
 const url2 = "https://www.checksheet.link/";
 const url = "http://localhost:8080/";
@@ -52,7 +52,26 @@ export async function fetchSearchAccount(inputValue: string): Promise<[]> {
     throw new Error("알 수 없는 오류가 있어요");
   }
 }
-
+export async function postAccount(userId: string, accountOrder: IAccountOrder) {
+  const token = localStorage.getItem("accessToken");
+  try {
+    const response = await axios.post(
+      `${url}account/${userId}`,
+      {
+        accountOrder,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "bearer " + token,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    return accountOrder;
+  }
+}
 export async function patchAccount(userId: string, accountOrderdata: string[]) {
   const token = localStorage.getItem("accessToken");
   try {

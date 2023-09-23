@@ -1,22 +1,22 @@
 import styled from "styled-components";
 import DragAccounts from "../components/DragAccounts";
 import { useEffect, useState } from "react";
-import { getAccountData, patchChecks } from "../util/fetch";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { getAccountData } from "../util/fetch";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { LoginState } from "../atoms/login";
 import { AccountOrder, IAccountOrder } from "../atoms/data";
 import { CommanderData, ICommanderData } from "../atoms/commander";
 import HeaderBox from "../components/HeaderBox";
 import { IFetchedData, UserState } from "../atoms/fetchData";
-import patchData from "../components/Functions/patchData";
 import { FrequencyCounter } from "../atoms/frequency";
+import ModalAddAccount from "../components/ModalAddAccount";
+import { ModalAddAcount } from "../atoms/modal";
 import {
   sortCommander,
   makeContentsFrequency,
   filterContents,
-} from "../components/Contents";
-import ModalAddAccount from "../components/ModalAddAccount";
-import { ModalAddAcount } from "../atoms/modal";
+  makeFrequencyCounter,
+} from "../components/Functions/makeFrequencyCounter";
 
 const DashboardStyle = styled.div`
   margin-top: 5px;
@@ -32,7 +32,8 @@ function Dashboard({ data: [userData, { commanderData: commander }] }: IProps) {
   const [loggined, setLoggined] = useRecoilState(LoginState);
   const [userState, setUserState] = useRecoilState(UserState);
   const [commanderData, setCommanderData] = useRecoilState(CommanderData);
-  const setFrequencyCounter = useSetRecoilState(FrequencyCounter);
+  const [frequencyCounter, setFrequencyCounter] =
+    useRecoilState(FrequencyCounter);
   const modalAddacount = useRecoilValue(ModalAddAcount);
   useEffect(() => {
     setUserState(userData);
@@ -87,10 +88,11 @@ function Dashboard({ data: [userData, { commanderData: commander }] }: IProps) {
     console.log(loggined);
   }, [loggined]);
   useEffect(() => {
-    setFrequencyCounter(
-      sortCommander(makeContentsFrequency(filterContents(account)))
-    );
+    setFrequencyCounter(makeFrequencyCounter(account));
   }, [account, setFrequencyCounter]);
+  useEffect(() => {
+    console.log(frequencyCounter);
+  }, [frequencyCounter]);
   return (
     <>
       <DashboardStyle>

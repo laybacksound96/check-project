@@ -1,7 +1,7 @@
 import { atom } from "recoil";
 
 export type ICharacter = {
-  _id: string;
+  _id?: string;
   CharacterName: string;
   ItemMaxLevel: number;
   ServerName: string;
@@ -12,7 +12,7 @@ export interface IGate {
   difficulty: string;
 }
 export interface IContent {
-  _id: string;
+  _id?: string;
   owner: string;
   contentName: string;
   gateSetting: IGate[];

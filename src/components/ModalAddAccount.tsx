@@ -1,4 +1,4 @@
-import { fetchSearchAccount, patchAccount } from "../util/fetch";
+import { fetchSearchAccount, postAccount } from "../util/fetch";
 import React, { useState } from "react";
 import styled from "styled-components";
 import { Input } from "./ModalAddContent";
@@ -90,20 +90,22 @@ const ModalAddAccount = () => {
       makeDataResult(data, commanderData);
     setAccount((prev) => {
       const copiedPrev = [...prev];
-      copiedPrev.push({
+      const newAccount = {
         characterOrder,
         characters,
         contents,
         contentsOrder,
         _id: characterOrder[0],
         checks: [],
-      });
+      };
+      copiedPrev.push(newAccount);
       if (userState !== "GUEST") {
         const userId = userState.user._id;
-        //patchAccount(userId, copiedPrev);
+        postAccount(userId, newAccount);
       }
       return copiedPrev;
     });
+    closeModal(false);
   };
 
   return (

@@ -1,5 +1,6 @@
 import { ICommander, IDifficulty } from "../atoms/commander";
 import { ICharacter, IContent, IGate } from "../atoms/data";
+import { IFetchedData } from "../atoms/fetchData";
 import { IFetchedCharacter } from "../components/ModalAddAccount";
 
 export type IAccountData = {
@@ -25,9 +26,9 @@ export const makeDataResult = (
         CharacterName,
         ItemMaxLevel: parseInt(ItemMaxLevel.replace(",", "")),
         CharacterClassName,
-        _id: CharacterName,
       });
     }
+    console.log(characters);
     return characters;
   }
   function makeCharacterOrder(characters: ICharacter[]): string[] {
@@ -98,7 +99,6 @@ export const makeDataResult = (
           isVisble: false, // 골드컨텐츠인지 확인필요
           isGoldContents: false, // 골드컨텐츠인지 확인필요
           gateSetting: makeGateSetting(ItemMaxLevel, data),
-          _id: name + CharacterName,
         };
         return content;
       });

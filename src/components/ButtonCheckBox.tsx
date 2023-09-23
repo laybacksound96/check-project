@@ -53,7 +53,7 @@ function ButtonCheckBox({
     ({ characterName, contentName }) =>
       CharacterName === characterName && ContentName === contentName
   );
-  const checked = checkIndex === -1 ? true : false;
+  const checked = checkIndex === -1 ? false : true;
 
   function onClick() {
     if (!isVisible) return;
