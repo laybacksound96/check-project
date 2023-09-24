@@ -17,6 +17,7 @@ import { AxisLocker } from "./Functions/AxisLocker";
 import { UserState } from "../atoms/fetchData";
 import ButtonConfigAccount from "./ButtonConfigAccount";
 import ButtonConfigContent from "./ButtonConfigContent";
+import CharacterGold from "./CharacterGold";
 interface IStyle {
   loggined: boolean;
 }
@@ -136,6 +137,12 @@ function DragCharacters({ DragHandleProps, account, accountIndex }: IProps) {
                 const character = account.characters.find(
                   ({ CharacterName }) => CharacterName === name
                 );
+                const contents = account.contents.filter(
+                  ({ owner }) => owner === name
+                );
+                if (!character || !contents) {
+                  return <div></div>;
+                }
                 return (
                   <Draggable
                     key={name}
@@ -155,20 +162,22 @@ function DragCharacters({ DragHandleProps, account, accountIndex }: IProps) {
                         <Character {...provided.dragHandleProps}>
                           <NameContainer>
                             <h1>{name}</h1>
-                            <span>{character?.CharacterClassName}</span>
-                            <span>Lv {character?.ItemMaxLevel}</span>
+                            <span>{character.CharacterClassName}</span>
+                            <span>Lv {character.ItemMaxLevel}</span>
                           </NameContainer>
                           <div>
                             <ButtonConfigContent
                               index={accountIndex}
                               CharacterName={name}
                             />
-                            {/* {IsGoldCharacter && (
+
+                            {character.isGoldCharacter && (
                               <CharacterGold
-                                contentState={contentState}
-                                gatesContent={gatesContent}
+                                checks={account.checks}
+                                contents={contents}
+                                CharacterName={name}
                               />
-                            )} */}
+                            )}
                           </div>
                         </Character>
                       </CharactersContainer>
