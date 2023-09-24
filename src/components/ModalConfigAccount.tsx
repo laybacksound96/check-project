@@ -1,13 +1,12 @@
 import styled from "styled-components";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGear } from "@fortawesome/free-solid-svg-icons";
 import DangerZone from "./Ui/Modal/ModalContents/components/DangerZone";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { ModalConfigAccountAtom } from "../atoms/modal";
 import ModalContainer from "./ModalContainer";
 import { AccountOrder } from "../atoms/data";
 import { UserState } from "../atoms/fetchData";
 import SettingCharacters from "./Ui/Modal/ModalContents/components/SettingVisibleContent";
+import { deleteAccount } from "../util/fetch";
 
 const Container = styled.div`
   width: auto;
@@ -43,10 +42,28 @@ const CharacterContainer = styled.div`
   gap: 10px;
 `;
 export const ModalConfigAccount = () => {
-  function handleDelete() {}
-  const accountOrder = useRecoilValue(AccountOrder);
+  const [accountOrder, setAccountOrder] = useRecoilState(AccountOrder);
   const user = useRecoilValue(UserState);
   const [{ index }, closeModal] = useRecoilState(ModalConfigAccountAtom);
+  function handleDelete() {
+    const accountId = accountOrder[index]._id;
+    if (user === "GUEST") {
+      setAccountOrder((prev) => {
+        const copiedPrev = [...prev];
+        copiedPrev.splice(index, 1);
+        return copiedPrev;
+      });
+    } else {
+      deleteAccount(accountId).then(() => {
+        setAccountOrder((prev) => {
+          const copiedPrev = [...prev];
+          copiedPrev.splice(index, 1);
+          return copiedPrev;
+        });
+      });
+    }
+    closeModal({ status: false, index: 0 });
+  }
   const { characters, characterOrder } = accountOrder[index];
   return (
     <ModalContainer

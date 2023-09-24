@@ -167,3 +167,17 @@ export async function patchChecks(
     return checks;
   }
 }
+export async function deleteAccount(accountId: string) {
+  const token = localStorage.getItem("accessToken");
+  try {
+    const response = await axios.delete(`${url}account/${accountId}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "bearer " + token,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    return;
+  }
+}

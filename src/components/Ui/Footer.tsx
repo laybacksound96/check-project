@@ -13,7 +13,7 @@ const FooterStyle = styled.footer`
 const Footer = () => {
   return (
     <FooterStyle>
-      <p>Contact us : 412#4615</p>
+      <p>Contact us : 412(potion_overdose)</p>
     </FooterStyle>
   );
 };
