@@ -6,6 +6,7 @@ export type ICharacter = {
   ItemMaxLevel: number;
   ServerName: string;
   CharacterClassName: string;
+  isGoldCharacter: boolean;
 };
 export interface IGate {
   isVisible: boolean;

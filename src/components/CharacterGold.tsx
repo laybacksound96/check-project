@@ -10,7 +10,6 @@ const GoldContainer = styled.div`
   * {
     font-size: 0.9rem;
     opacity: 40%;
-    color: ${(props) => props.theme.TextColor_A};
   }
   padding-left: 10px;
   margin-right: 5px;

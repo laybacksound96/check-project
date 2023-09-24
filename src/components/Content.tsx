@@ -39,9 +39,6 @@ const ContentStyle = styled.li<IpropStyle>`
   width: auto;
   height: auto;
 
-  * {
-    color: ${(props) => props.theme.TextColor_A};
-  }
   background-color: ${(props) => props.Color};
   ${(props) =>
     props.shouldAnimate &&

@@ -1,16 +1,18 @@
 import styled from "styled-components";
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { faCoins } from "@fortawesome/free-solid-svg-icons";
+import { AccountOrder, ICharacter } from "../../../../../atoms/data";
+import { patchCharacter } from "../../../../../util/fetch";
+import { UserState } from "../../../../../atoms/fetchData";
 
 export const NameContainer = styled.div`
   display: flex;
   flex-direction: column;
-
   h1 {
     font-size: 1.1rem;
-    margin-bottom: 0px;
+    margin-bottom: 3px;
     svg {
       font-size: 0.9rem;
       margin: 0px 5px;
@@ -68,41 +70,90 @@ export const ButtonContainer = styled.div`
   }
 `;
 interface IProps {
-  AccountName: string;
-  CharacterName: string;
+  index: number;
+  Character: ICharacter;
+  isVisible: boolean;
+  charIndex: number;
 }
-const SettingCharacters = ({ AccountName, CharacterName }: IProps) => {
-  const handleGoldChar = () => {};
-  const handleVisible = () => {};
+const SettingCharacters = ({
+  index,
+  Character: {
+    CharacterName,
+    ItemMaxLevel,
+    isGoldCharacter,
+    CharacterClassName,
+  },
+  isVisible,
+  charIndex,
+}: IProps) => {
+  const setAccountOrder = useSetRecoilState(AccountOrder);
+  const userState = useRecoilValue(UserState);
+  const handleGoldChar = () => {
+    setAccountOrder((prev) => {
+      const copiedAccounts = [...prev];
+      const copiedData = { ...copiedAccounts[index] };
+      const copiedcharacters = [...copiedData.characters];
+      const cpopiedCharacter = { ...copiedcharacters[charIndex] };
+      cpopiedCharacter.isGoldCharacter = !cpopiedCharacter.isGoldCharacter;
+      copiedcharacters[charIndex] = cpopiedCharacter;
+      copiedData.characters = copiedcharacters;
+      copiedAccounts[index] = copiedData;
+
+      return copiedAccounts;
+    });
+  };
+  const handleVisible = () => {
+    setAccountOrder((prev) => {
+      const copiedAccounts = [...prev];
+      const copiedData = { ...copiedAccounts[index] };
+      const copiedCharacterOrder = [...copiedData.characterOrder];
+      const target = CharacterName;
+      const targetIndex = copiedCharacterOrder.findIndex(
+        (name) => name === target
+      );
+      if (isVisible) {
+        if (targetIndex === -1) {
+          return copiedAccounts;
+        }
+        copiedCharacterOrder.splice(targetIndex, 1);
+      } else {
+        copiedCharacterOrder.push(target);
+      }
+      if (userState !== "GUEST") {
+        const userId = userState.user._id;
+        patchCharacter(copiedData._id, userId, copiedCharacterOrder);
+      }
+      copiedData.characterOrder = copiedCharacterOrder;
+      copiedAccounts[index] = copiedData;
+      return copiedAccounts;
+    });
+  };
+
   return (
-    <div></div>
-    // <Character key={CharacterName} >
-    //   <NameContainer>
-    //     <h1>{CharacterName}</h1>
-    //     {IsGoldCharacter && (
-    //       <span>
-    //         <FontAwesomeIcon icon={faCoins} color="yellow" />
-    //         골드획득캐릭터
-    //       </span>
-    //     )}
-
-    //     <span>{ClassName}</span>
-    //     <span>Lv {Level}</span>
-    //   </NameContainer>
-
-    //   <ButtonContainer>
-    //     <FontAwesomeIcon
-    //       icon={faCoins}
-    //       color={IsGoldCharacter ? "yellow" : "white"}
-    //       onClick={() => handleGoldChar()}
-    //     />
-
-    //     <FontAwesomeIcon
-    //       onClick={() => handleVisible()}
-    //       icon={isVisibleChar ? faEye : faEyeSlash}
-    //     />
-    //   </ButtonContainer>
-    // </Character>
+    <Character key={CharacterName} isVisible={isVisible}>
+      <NameContainer>
+        <h1>{CharacterName}</h1>
+        {isGoldCharacter && (
+          <span>
+            <FontAwesomeIcon icon={faCoins} color="yellow" />
+            골드획득캐릭터
+          </span>
+        )}
+        <span>{CharacterClassName}</span>
+        <span>Lv {ItemMaxLevel}</span>
+      </NameContainer>
+      <ButtonContainer>
+        <FontAwesomeIcon
+          icon={faCoins}
+          color={isGoldCharacter ? "yellow" : "white"}
+          onClick={() => handleGoldChar()}
+        />
+        <FontAwesomeIcon
+          onClick={() => handleVisible()}
+          icon={isVisible ? faEye : faEyeSlash}
+        />
+      </ButtonContainer>
+    </Character>
   );
 };
 

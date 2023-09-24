@@ -7,7 +7,7 @@ import {
 } from "react-beautiful-dnd";
 import React from "react";
 import styled, { css } from "styled-components";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import DragContents from "./DragContents";
 import { AccountOrder, IAccountOrder } from "../atoms/data";
 import { dragIcon } from "../Settings";
@@ -16,8 +16,7 @@ import { patchCharacter } from "../util/fetch";
 import { AxisLocker } from "./Functions/AxisLocker";
 import { UserState } from "../atoms/fetchData";
 import ButtonConfigAccount from "./ButtonConfigAccount";
-import ModalConfigAccount from "./ModalConfigAccount";
-import { ModalConfigAccountAtom } from "../atoms/modal";
+import ButtonConfigContent from "./ButtonConfigContent";
 interface IStyle {
   loggined: boolean;
 }
@@ -38,9 +37,6 @@ const DragAccountBtn = styled.div`
 const Container = styled.div<IStyle>`
   display: flex;
   justify-content: space-between;
-  * {
-    color: ${(props) => props.theme.TextColor_A};
-  }
   font-weight: 500;
   border-radius: 10px;
   background-color: ${(props) => props.theme.Color_3};
@@ -105,7 +101,7 @@ interface IProps {
 function DragCharacters({ DragHandleProps, account, accountIndex }: IProps) {
   const userState = useRecoilValue(UserState);
   const loggined = useRecoilValue(LoginState);
-  const [accountOrder, setAccountOrder] = useRecoilState(AccountOrder);
+  const setAccountOrder = useSetRecoilState(AccountOrder);
   const dragCharacterHandler = (dragInfo: DropResult) => {
     const { destination, source } = dragInfo;
     if (!destination) return;
@@ -163,10 +159,10 @@ function DragCharacters({ DragHandleProps, account, accountIndex }: IProps) {
                             <span>Lv {character?.ItemMaxLevel}</span>
                           </NameContainer>
                           <div>
-                            {/* <ConfigContentButton
-                              AccountName={account[accountIndex]._id}
+                            <ButtonConfigContent
+                              index={accountIndex}
                               CharacterName={name}
-                            /> */}
+                            />
                             {/* {IsGoldCharacter && (
                               <CharacterGold
                                 contentState={contentState}

@@ -1,7 +1,6 @@
 import { fetchSearchAccount, postAccount } from "../util/fetch";
 import React, { useState } from "react";
 import styled from "styled-components";
-import { Input } from "./ModalAddContent";
 import CharacterContainer from "./Ui/Modal/ModalContents/components/CharacterContainer";
 import { makeDataResult } from "../util/addAccount";
 import { useRecoilValue, useSetRecoilState } from "recoil";
@@ -12,6 +11,7 @@ import { ModalAddAcountAtom } from "../atoms/modal";
 import { AccountOrder } from "../atoms/data";
 import { IsDuplicated, IsInValidName } from "./Functions/handleErrors";
 import { CommanderData } from "../atoms/commander";
+import { Button, Input } from "./SharedComponents";
 
 const Container = styled.div`
   display: flex;
@@ -22,14 +22,9 @@ const Container = styled.div`
     justify-content: start;
     width: 100%;
     margin-bottom: 5px;
-    input {
-      margin: 0 10px;
-    }
   }
 `;
-const Button = styled.button`
-  margin-top: 5px;
-`;
+
 const Error = styled.p`
   margin-left: 5px;
   margin-top: 5px;
@@ -115,18 +110,18 @@ const ModalAddAccount = () => {
           <Input
             type="text"
             name="search"
-            isDisabled={error !== undefined}
             onChange={HandleChange}
             value={inputValue}
+            isDisabled={error !== undefined}
             placeholder="캐릭터 명을 입력한 뒤 검색"
           />
-          <button
+          <Button
             type="submit"
             onClick={SearchAccountHandler}
             disabled={inputValue.length === 0 || error !== undefined}
           >
             검색
-          </button>
+          </Button>
         </form>
         {error && <Error>{error.message}</Error>}
         {!error && <CharacterContainer Characters={fetchedData} />}

@@ -68,7 +68,6 @@ const Header = styled.header`
     margin-right: 10px;
   }
   h1 {
-    color: ${(props) => props.theme.TextColor_A};
     font-size: 40px;
     font-weight: bolder;
   }

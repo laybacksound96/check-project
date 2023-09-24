@@ -13,7 +13,7 @@ const Container = styled.div`
   height: 60vh;
   display: flex;
   flex-direction: column;
-  justify-content: start;
+  justify-content: space-between;
   overflow-y: auto;
 `;
 
@@ -73,14 +73,21 @@ export const ModalConfigAccount = () => {
       <Container>
         <ContentList>
           <CharacterContainer>
-            {characters.map(({ CharacterName, _id }, index) => {
-              const id = _id ? _id : CharacterName + index;
+            {characters.map((character, charIndex) => {
+              const id = character._id
+                ? character._id
+                : character.CharacterName + charIndex;
               const name = user === "GUEST" ? characterOrder[0] : id;
+              const isVisible = characterOrder.includes(
+                character.CharacterName
+              );
               return (
                 <SettingCharacters
-                  key={CharacterName}
-                  AccountName={name}
-                  CharacterName={CharacterName}
+                  key={character.CharacterName}
+                  index={index}
+                  Character={character}
+                  isVisible={isVisible}
+                  charIndex={charIndex}
                 />
               );
             })}

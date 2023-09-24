@@ -15,9 +15,6 @@ const HeaderBoxStyle = styled.header`
   border-style: solid;
   border-width: 3px;
 
-  * {
-    color: ${(props) => props.theme.TextColor_A};
-  }
   header {
     display: flex;
     justify-content: space-between;

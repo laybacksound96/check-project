@@ -5,43 +5,6 @@ import styled, { keyframes, css } from "styled-components";
 interface IStyle {
   isDisabled: boolean;
 }
-export const vibration = keyframes`
-    from {
-      transform: translateX(1%);
-    }
-    to {
-      transform: translateX(-1%);
-    }
-  `;
-export const Input = styled.input<IStyle>`
-  width: 300px;
-  height: 50px;
-  background-color: ${(props) => props.theme.Color_4};
-  border: 2px solid
-    ${(props) => (props.isDisabled ? "#EF476F" : props.theme.TextColor_B)};
-  border-radius: 10px;
-  padding-left: 10px;
-  color: ${(props) => props.theme.TextColor_A};
-  &:hover {
-    transition: 0.1s ease;
-    border: 2px solid
-      ${(props) => (props.isDisabled ? "#EF476F" : props.theme.Color_1)};
-  }
-  &:focus {
-    outline: none;
-    transition: 0.2s ease;
-    border: 2px solid
-      ${(props) => (props.isDisabled ? "#EF476F" : props.theme.TextColor_A)};
-  }
-  &::placeholder {
-    color: ${(props) => props.theme.TextColor_B};
-  }
-  ${(props) =>
-    props.isDisabled &&
-    css`
-      animation: ${vibration} 0.1s 5 linear;
-    `};
-`;
 
 const ButtonStyle = styled.button`
   width: 60px;

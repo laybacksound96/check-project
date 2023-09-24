@@ -26,6 +26,7 @@ export const makeDataResult = (
         CharacterName,
         ItemMaxLevel: parseInt(ItemMaxLevel.replace(",", "")),
         CharacterClassName,
+        isGoldCharacter: +i < 6 ? true : false,
       });
     }
     console.log(characters);
