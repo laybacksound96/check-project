@@ -8,5 +8,7 @@ declare module "styled-components" {
     Color_1: string;
     TextColor_A: string;
     TextColor_B: string;
+    Negative: string;
+    Positive: string;
   }
 }

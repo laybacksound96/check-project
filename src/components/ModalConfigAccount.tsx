@@ -74,10 +74,6 @@ export const ModalConfigAccount = () => {
         <ContentList>
           <CharacterContainer>
             {characters.map((character, charIndex) => {
-              const id = character._id
-                ? character._id
-                : character.CharacterName + charIndex;
-              const name = user === "GUEST" ? characterOrder[0] : id;
               const isVisible = characterOrder.includes(
                 character.CharacterName
               );

@@ -7,4 +7,6 @@ export const darkTheme: DefaultTheme = {
   Color_1: "#313338",
   TextColor_A: "#FFFFFF",
   TextColor_B: "#404249",
+  Negative: "#ef476f",
+  Positive: "#47ef87",
 };
