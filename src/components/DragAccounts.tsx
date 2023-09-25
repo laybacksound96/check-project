@@ -17,7 +17,12 @@ import { LoginState } from "../atoms/login";
 import { IFetchedData, UserState } from "../atoms/fetchData";
 import ModalAddAccount from "./ModalAddAccount";
 import ModalConfigAccount from "./ModalConfigAccount";
-import { ModalAddAcountAtom, ModalConfigAccountAtom } from "../atoms/modal";
+import {
+  ModalAddAcountAtom,
+  ModalConfigAccountAtom,
+  ModalConfigContentsAtom,
+} from "../atoms/modal";
+import ModalConfigContent from "./ModalConfigContent";
 const DragBoxStyle = styled.div`
   width: 100%;
   height: auto;
@@ -42,6 +47,7 @@ export function isLoggined(userState: IFetchedData | "GUEST") {
 }
 
 const DragAccounts = () => {
+  const modalConfigContent = useRecoilValue(ModalConfigContentsAtom);
   const modalAddacount = useRecoilValue(ModalAddAcountAtom);
   const modalConfigAccount = useRecoilValue(ModalConfigAccountAtom);
   const userState = useRecoilValue(UserState);
@@ -76,6 +82,7 @@ const DragAccounts = () => {
 
   return (
     <DragBoxStyle>
+      {modalConfigContent && <ModalConfigContent />}
       {modalConfigAccount.status && <ModalConfigAccount />}
       {modalAddacount && <ModalAddAccount />}
       <DragDropContext onDragEnd={dragAccountHandler}>

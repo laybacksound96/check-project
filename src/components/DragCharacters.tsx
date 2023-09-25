@@ -141,7 +141,7 @@ function DragCharacters({ DragHandleProps, account, accountIndex }: IProps) {
                   ({ owner }) => owner === name
                 );
                 if (!character || !contents) {
-                  return <div></div>;
+                  return null;
                 }
                 return (
                   <Draggable
@@ -167,10 +167,9 @@ function DragCharacters({ DragHandleProps, account, accountIndex }: IProps) {
                           </NameContainer>
                           <div>
                             <ButtonConfigContent
-                              index={accountIndex}
-                              CharacterName={name}
+                              accountIndex={accountIndex}
+                              characterName={name}
                             />
-
                             {character.isGoldCharacter && (
                               <CharacterGold
                                 checks={account.checks}

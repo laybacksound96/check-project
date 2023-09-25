@@ -85,17 +85,14 @@ export function makeContentsFrequency(filteredContents: IContent[]) {
         contentName,
         contentIds: gates,
         contentId: gates && gates.join(", "),
-        color: getRandomPastelColor(
-          contentName,
-          calculateStrength(gateSetting.map(({ difficulty }) => difficulty))
-        ),
+        color: getRandomPastelColor(contentName, gateSetting),
       };
     }
   );
   return processed;
 }
 
-export function sortCommander(frequency: IFrequency[]) {
+function sortCommander(frequency: IFrequency[]) {
   const sortOrder = [
     "카멘",
     "상아탑",

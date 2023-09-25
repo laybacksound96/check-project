@@ -1,9 +1,15 @@
+import { IGate } from "../../atoms/data";
+import calculateStrength from "./calculateStrength";
+
 function getRandomPastelColor(
   ContentName: string,
-  strengthNum: number
+  gateSetting: IGate[]
 ): string {
   let hue = Math.floor(Math.random() * 360);
-  const strength = strengthNum * 0.2;
+
+  const strength =
+    calculateStrength(gateSetting.map(({ difficulty }) => difficulty)) * 0.2;
+
   if (ContentName === "아르고스" || ContentName === "상아탑") {
     hue = 203;
   }
@@ -16,10 +22,8 @@ function getRandomPastelColor(
     hue = 51;
   }
   if (ContentName === "카멘") hue = 240;
-
   const lightness = 60 - strength;
   const saturation = 40 + strength;
-
   const hslColor = "hsl(" + hue + ", " + saturation + "%, " + lightness + "%)";
 
   return hslColor;

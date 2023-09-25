@@ -13,6 +13,11 @@ import {
 import CountUp from "react-countup";
 import { useRecoilValue } from "recoil";
 import getLowerLightnessColor from "../../../../Functions/getLowerLightnessColor";
+import { IContent } from "../../../../../atoms/data";
+import getRandomPastelColor from "../../../../Functions/getRandomPastelColor";
+import CountGold from "../../../../CountGold";
+import { CommanderData } from "../../../../../atoms/commander";
+import calculateIncome from "../../../../Functions/calculateIncome";
 interface IStyel {
   isVisibled: boolean;
   Color: string | undefined;
@@ -21,6 +26,7 @@ interface IStyel {
 const ContentList = styled.div<IStyel>`
   display: flex;
   flex-direction: column;
+  box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.35);
   background-color: ${({ Color, theme: { Color_4 }, isVisibled }) =>
     Color === undefined || isVisibled === false
       ? Color_4
@@ -78,27 +84,29 @@ export const GateContainer = styled.div`
   }
 `;
 
-interface IStyle {
-  isHovered: boolean;
-}
-const GoldCheck = styled.div<IStyle>`
+const GoldCheck = styled.div`
   display: flex;
-  opacity: ${(props) => (props.isHovered ? "100%" : "40%")};
+  opacity: 40%;
   transition: opacity 0.1s ease-in-out;
   padding-left: 5px;
   align-items: center;
   span {
     font-size: 1rem;
   }
+  &:hover {
+    opacity: 100%;
+  }
 `;
 
-const IconContainer = styled.div<IStyle>`
-  opacity: ${(props) => (props.isHovered ? "100%" : "80%")};
+const IconContainer = styled.div`
+  opacity: 80%;
   transition: opacity 0.1s ease-in-out;
+  &:hover {
+    opacity: 100%;
+  }
 `;
 
 interface GoldIconStyle {
-  isHovered: boolean;
   isGoldContents: boolean;
 }
 
@@ -122,69 +130,75 @@ const GoldContainer = styled.div`
   flex-direction: column;
 `;
 interface IProps {
-  AccountName: string;
-  ContentsName: string;
-  CharacterName: string;
+  contents: IContent;
+  isGoldContents: boolean;
+  level: number;
 }
-const ContentCard = ({ AccountName, ContentsName, CharacterName }: IProps) => {
-  const [isHovered, setIsHovered] = useState(false);
-  const [currentGold, setCurrentGold] = useState(0);
-  const [prevGold, setPrevGold] = useState(0);
+const ContentCard = ({ contents, isGoldContents, level }: IProps) => {
+  const { isVisble, contentName, gateSetting } = contents;
+  const commanderData = useRecoilValue(CommanderData);
+  const commander = commanderData.find(({ name }) => name === contentName);
+  if (!commander) return null;
+  const income = calculateIncome([contents], commanderData);
+  const goldContentsHandler = () => {};
+  const visibleHandler = () => {};
+
   return (
-    <div></div>
-    // <ContentList
-    //   isVisibled={isContentVisible}
-    //   onMouseEnter={() => setIsHovered(true)}
-    //   onMouseLeave={() => setIsHovered(false)}
-    //   Color={frequency?.Color}
-    // >
-    //   <CardHeader>
-    //     <header>
-    //       <div>
-    //         <h1>{ContentsName}</h1>
-    //       </div>
+    <ContentList
+      isVisibled={isVisble}
+      Color={getRandomPastelColor(contentName, gateSetting)}
+    >
+      <CardHeader>
+        <header>
+          <div>
+            <h1>{contentName}</h1>
+          </div>
+          <IconContainer onClick={() => visibleHandler}>
+            <FontAwesomeIcon icon={isVisble ? faEye : faEyeSlash} />
+          </IconContainer>
+        </header>
+        <GoldContainer>
+          <GoldIcon isGoldContents={isGoldContents}>
+            <FontAwesomeIcon
+              icon={faCoins}
+              style={{ color: isGoldContents ? "yellow" : "gray" }}
+            />
+            <CountGold income={income} />
+          </GoldIcon>
+          <GoldCheck onClick={() => goldContentsHandler}>
+            <span>골드획득 컨텐츠</span>
+            <FontAwesomeIcon icon={isGoldContents ? faSquareCheck : faSquare} />
+          </GoldCheck>
+        </GoldContainer>
+      </CardHeader>
+      <GateContainer>
+        {gateSetting.map((gate, index) => {
+          const { difficulty, isVisible } = gate;
+          const checkActivate = () => {
+            if (commander.data.length === 1) {
+              const { gates } = commander.data[0];
+              return gates[index].level <= level;
+            } else {
+              const { gates } = commander.data[1];
+              return gates[index].level <= level;
+            }
+          };
 
-    //       <IconContainer isHovered={isHovered} onClick={visibleHandler}>
-    //         <FontAwesomeIcon icon={isContentVisible ? faEye : faEyeSlash} />
-    //       </IconContainer>
-    //     </header>
-    //     <span>{frequency?.GateState}</span>
-
-    //     <GoldContainer>
-    //       <GoldIcon isHovered={isHovered} isGoldContents={isGoldContents}>
-    //         <FontAwesomeIcon
-    //           icon={faCoins}
-    //           style={{ color: isGoldContents ? "yellow" : "gray" }}
-    //         />
-    //         <span>
-    //           <CountUp start={prevGold} end={currentGold} />
-    //         </span>
-    //       </GoldIcon>
-    //       <GoldCheck isHovered={isHovered} onClick={goldContentsHandler}>
-    //         <span>골드획득 컨텐츠</span>
-    //         <FontAwesomeIcon icon={isGoldContents ? faSquareCheck : faSquare} />
-    //       </GoldCheck>
-    //     </GoldContainer>
-    //   </CardHeader>
-    //   <GateContainer>
-    //     {gates.map((gate, index) => {
-    //       const { Difficulty, isNormal } = gate;
-    //       return (
-    //         <ContentCardGate
-    //           key={index}
-    //           Difficulty={Difficulty}
-    //           Gate={gate}
-    //           GateIndex={index}
-    //           SetGateVisibleHandler={gateVisibleHandler}
-    //           SetDifficultyHandler={gateDifficultyHandler}
-    //           isContentVisible={isContentVisible}
-    //           isNormal={isNormal}
-    //           Color={frequency?.Color}
-    //         />
-    //       );
-    //     })}
-    //   </GateContainer>
-    // </ContentList>
+          return (
+            <ContentCardGate
+              key={index}
+              Difficulty={difficulty}
+              Gate={gate}
+              GateIndex={index}
+              isVisible={isVisble}
+              isGateVisible={isVisible}
+              isActivated={checkActivate()}
+              Color={getRandomPastelColor(contentName, gateSetting)}
+            />
+          );
+        })}
+      </GateContainer>
+    </ContentList>
   );
 };
 export default ContentCard;

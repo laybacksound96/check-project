@@ -145,27 +145,18 @@ const DragContents = ({ account, accountIndex }: IProps) => {
                             owner === CharacterName &&
                             contentName === ContentName
                         );
-                        const isVisible = content ? content.isVisble : false;
-
-                        const color = content
-                          ? getRandomPastelColor(
-                              ContentName,
-                              calculateStrength(
-                                content?.gateSetting.map(
-                                  ({ difficulty }) => difficulty
-                                )
-                              )
-                            )
-                          : "white";
-
+                        if (!content) return null;
                         return (
                           <CheckBoxButton
                             key={accountIndex + CharacterName + ContentName}
                             CharacterName={CharacterName}
                             ContentName={ContentName}
                             Account={account}
-                            Color={color}
-                            isVisible={isVisible}
+                            Color={getRandomPastelColor(
+                              ContentName,
+                              content.gateSetting
+                            )}
+                            isVisible={content.isVisble}
                             onClickHandler={onClickHandler}
                           />
                         );

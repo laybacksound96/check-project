@@ -12,7 +12,10 @@ export const ModalConfigAccountAtom = atom<{ status: boolean; index: number }>({
   key: "ModalConfigAccount",
   default: { status: false, index: 0 },
 });
-export const ModalConfigContentsAtom = atom<boolean>({
+export const ModalConfigContentsAtom = atom<{
+  status: boolean;
+  data?: { characterName: string; accountIndex: number };
+}>({
   key: "ModalConfigContents",
-  default: false,
+  default: { status: false },
 });

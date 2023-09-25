@@ -4,11 +4,7 @@ import styled from "styled-components";
 import { faEye } from "@fortawesome/free-regular-svg-icons";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { LoginState } from "../atoms/login";
-import {
-  ModalConfigAccountAtom,
-  ModalConfigContentsAtom,
-} from "../atoms/modal";
-import { isVisible } from "@testing-library/user-event/dist/utils";
+import { ModalConfigContentsAtom } from "../atoms/modal";
 import { AccountOrder } from "../atoms/data";
 import { UserState } from "../atoms/fetchData";
 import { patchCharacter } from "../util/fetch";
@@ -29,11 +25,11 @@ export const ButtonContainer = styled.div`
   }
 `;
 const ButtonConfigContent = ({
-  index,
-  CharacterName,
+  accountIndex,
+  characterName,
 }: {
-  index: number;
-  CharacterName: string;
+  accountIndex: number;
+  characterName: string;
 }) => {
   const setAccountOrder = useSetRecoilState(AccountOrder);
   const userState = useRecoilValue(UserState);
@@ -42,10 +38,10 @@ const ButtonConfigContent = ({
   const handleVisible = () => {
     setAccountOrder((prev) => {
       const copiedAccounts = [...prev];
-      const copiedData = { ...copiedAccounts[index] };
+      const copiedData = { ...copiedAccounts[accountIndex] };
       const copiedCharacterOrder = [...copiedData.characterOrder];
-      const isVisible = copiedCharacterOrder.includes(CharacterName);
-      const target = CharacterName;
+      const isVisible = copiedCharacterOrder.includes(characterName);
+      const target = characterName;
       const targetIndex = copiedCharacterOrder.findIndex(
         (name) => name === target
       );
@@ -62,7 +58,7 @@ const ButtonConfigContent = ({
         patchCharacter(copiedData._id, userId, copiedCharacterOrder);
       }
       copiedData.characterOrder = copiedCharacterOrder;
-      copiedAccounts[index] = copiedData;
+      copiedAccounts[accountIndex] = copiedData;
       return copiedAccounts;
     });
   };
@@ -75,7 +71,10 @@ const ButtonConfigContent = ({
           <FontAwesomeIcon
             onClick={() => {
               if (!loggined) return;
-              openModal(true);
+              openModal({
+                status: true,
+                data: { accountIndex, characterName },
+              });
             }}
             icon={faGear}
             size="lg"

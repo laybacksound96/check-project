@@ -1,23 +1,29 @@
 import styled from "styled-components";
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ContentCardCheckBox from "./ContentCardCheckBox";
-
-import { useState } from "react";
+import { IGate } from "../../../../../atoms/data";
 
 const GateVisibleContainer = styled.div`
   display: flex;
   align-items: center;
+  svg {
+    font-size: 30px;
+    opacity: 20%;
+    transition: opacity 0.1s ease-in-out;
+    &:hover {
+      opacity: 100%;
+    }
+  }
 `;
 interface IconContainerStyle {
-  isHovered: boolean;
   Color: string | undefined;
   isContentVisible: boolean;
   isGateVisible: boolean;
 }
 const GateContainer = styled.div<IconContainerStyle>`
   display: flex;
+  box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.35);
   justify-content: space-evenly;
   align-items: center;
   background-color: ${({
@@ -34,14 +40,6 @@ const GateContainer = styled.div<IconContainerStyle>`
   margin-bottom: 7px;
   opacity: ${(props) => (props.isGateVisible ? "100%" : "30%")};
   transition: opacity 0.1s ease-in-out;
-
-  ${GateVisibleContainer} {
-    svg {
-      font-size: 30px;
-      opacity: ${(props) => (props.isHovered ? "100%" : "0%")};
-      transition: opacity 0.1s ease-in-out;
-    }
-  }
 `;
 
 const GateNumber = styled.span`
@@ -57,47 +55,54 @@ const CheckBoxContainer = styled.div`
   width: 100%;
 `;
 
-const ContentCardGate = () => {
-  const [isHovered, setIsHovered] = useState(false);
-
+interface IProps {
+  Difficulty: string;
+  Gate: IGate;
+  GateIndex: number;
+  isGateVisible: boolean;
+  isVisible: boolean;
+  Color: string;
+  isActivated: boolean;
+}
+const ContentCardGate = ({
+  Difficulty,
+  Gate,
+  GateIndex,
+  isVisible,
+  isGateVisible,
+  Color,
+  isActivated,
+}: IProps) => {
   return (
-    <div></div>
-    // <GateContainer
-    //   Color={Color}
-    //   isContentVisible={isContentVisible}
-    //   isGateVisible={isVisible}
-    //   isHovered={isHovered}
-    //   onMouseEnter={() => setIsHovered(true)}
-    //   onMouseLeave={() => setIsHovered(false)}
-    // >
-    //   <GateNumber>{Gate_No}</GateNumber>
-    //   <DifficultyContainer>
-    //     <CheckBoxContainer>
-    //       <ContentCardCheckBox
-    //         isNormal={isNormal}
-    //         State={Difficulty}
-    //         Difficulty="normal"
-    //         handler={() =>
-    //           SetDifficultyHandler(GateIndex, Difficulty, isNormal)
-    //         }
-    //       />
-    //       <ContentCardCheckBox
-    //         isNormal={isNormal}
-    //         State={Difficulty}
-    //         Difficulty="hard"
-    //         handler={() =>
-    //           SetDifficultyHandler(GateIndex, Difficulty, isNormal)
-    //         }
-    //       />
-    //     </CheckBoxContainer>
-    //   </DifficultyContainer>
-    //   <GateVisibleContainer>
-    //     <FontAwesomeIcon
-    //       icon={isVisible ? faEye : faEyeSlash}
-    //       onClick={() => SetGateVisibleHandler(GateIndex)}
-    //     />
-    //   </GateVisibleContainer>
-    // </GateContainer>
+    <GateContainer
+      Color={Color}
+      isContentVisible={isVisible}
+      isGateVisible={isGateVisible}
+    >
+      <GateNumber>{GateIndex + 1}</GateNumber>
+      <DifficultyContainer>
+        <CheckBoxContainer>
+          <ContentCardCheckBox
+            isCovertable={isActivated}
+            State={Difficulty}
+            Difficulty="normal"
+            handler={() => {}}
+          />
+          <ContentCardCheckBox
+            isCovertable={isActivated}
+            State={Difficulty}
+            Difficulty="hard"
+            handler={() => {}}
+          />
+        </CheckBoxContainer>
+      </DifficultyContainer>
+      <GateVisibleContainer>
+        <FontAwesomeIcon
+          icon={isGateVisible ? faEye : faEyeSlash}
+          onClick={() => {}}
+        />
+      </GateVisibleContainer>
+    </GateContainer>
   );
 };
 
