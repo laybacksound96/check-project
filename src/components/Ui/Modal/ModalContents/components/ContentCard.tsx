@@ -11,22 +11,23 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 import CountUp from "react-countup";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import getLowerLightnessColor from "../../../../Functions/getLowerLightnessColor";
-import { IContent } from "../../../../../atoms/data";
+import { AccountOrder, IContent } from "../../../../../atoms/data";
 import getRandomPastelColor from "../../../../Functions/getRandomPastelColor";
 import CountGold from "../../../../CountGold";
 import { CommanderData } from "../../../../../atoms/commander";
 import calculateIncome from "../../../../Functions/calculateIncome";
-interface IStyel {
+interface IStyle {
   isVisibled: boolean;
   Color: string | undefined;
 }
 
-const ContentList = styled.div<IStyel>`
+const ContentList = styled.div<IStyle>`
   display: flex;
   flex-direction: column;
-  box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.35);
+  box-shadow: ${({ isVisibled }) =>
+    isVisibled ? "0px 5px 10px 0px rgba(0, 0, 0, 0.35)" : "none"};
   background-color: ${({ Color, theme: { Color_4 }, isVisibled }) =>
     Color === undefined || isVisibled === false
       ? Color_4
@@ -50,26 +51,19 @@ export const CardHeader = styled.div`
   align-items: start;
   justify-content: space-between;
   margin-bottom: 10px;
-
   svg {
     font-size: 30px;
     color: ${(props) => props.theme.TextColor_A};
-    vertical-align: text-top;
-    opacity: 40%;
-    padding: 5px;
-    transition: 0.2s ease;
+    &:hover {
+      transition: 0.1s ease-in-out;
+    }
   }
-  svg:hover {
-    border-radius: 5px;
-    opacity: 20%;
-    transition: 0.1s ease-in-out;
-  }
+
   header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    padding-right: 5px;
     margin-bottom: 5px;
   }
 `;
@@ -88,22 +82,20 @@ const GoldCheck = styled.div`
   display: flex;
   opacity: 40%;
   transition: opacity 0.1s ease-in-out;
-  padding-left: 5px;
   align-items: center;
   span {
     font-size: 1rem;
   }
+  svg {
+    margin-left: 5px;
+  }
   &:hover {
-    opacity: 100%;
+    opacity: 80%;
   }
 `;
 
 const IconContainer = styled.div`
-  opacity: 80%;
   transition: opacity 0.1s ease-in-out;
-  &:hover {
-    opacity: 100%;
-  }
 `;
 
 interface GoldIconStyle {
@@ -113,7 +105,9 @@ interface GoldIconStyle {
 const GoldIcon = styled.div<GoldIconStyle>`
   display: flex;
   align-items: center;
+  transition: opacity 0.1s ease-in-out;
   span {
+    transition: opacity 0.1s ease-in-out;
     margin-left: 5px;
     opacity: ${(props) => (props.isGoldContents ? "100%" : "60%")};
     font-size: 1.4rem;
@@ -128,20 +122,72 @@ const GoldIcon = styled.div<GoldIconStyle>`
 const GoldContainer = styled.div`
   display: flex;
   flex-direction: column;
+  padding-left: 5px;
 `;
 interface IProps {
   contents: IContent;
   isGoldContents: boolean;
   level: number;
+  characterName: string;
+  accountIndex: number;
 }
-const ContentCard = ({ contents, isGoldContents, level }: IProps) => {
+const ContentCard = ({
+  contents,
+  isGoldContents,
+  level,
+  accountIndex,
+  characterName,
+}: IProps) => {
   const { isVisble, contentName, gateSetting } = contents;
+  const setAccount = useSetRecoilState(AccountOrder);
   const commanderData = useRecoilValue(CommanderData);
   const commander = commanderData.find(({ name }) => name === contentName);
   if (!commander) return null;
   const income = calculateIncome([contents], commanderData);
-  const goldContentsHandler = () => {};
-  const visibleHandler = () => {};
+  const isActived = () => {
+    if (commander.data[0].gates[0].level <= level) {
+      return true;
+    }
+    return false;
+  };
+  const goldContentsHandler = () => {
+    if (!isActived()) return;
+    setAccount((prev) => {
+      const copiedPrev = [...prev];
+      const copiedAccount = { ...copiedPrev[accountIndex] };
+      const copiedContents = [...copiedAccount.contents];
+      const contentIndex = copiedContents.findIndex(
+        ({ contentName: name, owner }) =>
+          name === contentName && characterName === owner
+      );
+      if (contentIndex === -1) return copiedPrev;
+      const copiedContent = { ...copiedContents[contentIndex] };
+      copiedContent.isGoldContents = !copiedContent.isGoldContents;
+      copiedContents[contentIndex] = copiedContent;
+      copiedAccount.contents = copiedContents;
+      copiedPrev[accountIndex] = copiedAccount;
+      return copiedPrev;
+    });
+  };
+  const visibleHandler = () => {
+    if (!isActived()) return;
+    setAccount((prev) => {
+      const copiedPrev = [...prev];
+      const copiedAccount = { ...copiedPrev[accountIndex] };
+      const copiedContents = [...copiedAccount.contents];
+      const contentIndex = copiedContents.findIndex(
+        ({ contentName: name, owner }) =>
+          name === contentName && characterName === owner
+      );
+      if (contentIndex === -1) return copiedPrev;
+      const copiedContent = { ...copiedContents[contentIndex] };
+      copiedContent.isVisble = !copiedContent.isVisble;
+      copiedContents[contentIndex] = copiedContent;
+      copiedAccount.contents = copiedContents;
+      copiedPrev[accountIndex] = copiedAccount;
+      return copiedPrev;
+    });
+  };
 
   return (
     <ContentList
@@ -153,7 +199,7 @@ const ContentCard = ({ contents, isGoldContents, level }: IProps) => {
           <div>
             <h1>{contentName}</h1>
           </div>
-          <IconContainer onClick={() => visibleHandler}>
+          <IconContainer onClick={() => visibleHandler()}>
             <FontAwesomeIcon icon={isVisble ? faEye : faEyeSlash} />
           </IconContainer>
         </header>
@@ -165,7 +211,7 @@ const ContentCard = ({ contents, isGoldContents, level }: IProps) => {
             />
             <CountGold income={income} />
           </GoldIcon>
-          <GoldCheck onClick={() => goldContentsHandler}>
+          <GoldCheck onClick={() => goldContentsHandler()}>
             <span>골드획득 컨텐츠</span>
             <FontAwesomeIcon icon={isGoldContents ? faSquareCheck : faSquare} />
           </GoldCheck>
@@ -174,7 +220,8 @@ const ContentCard = ({ contents, isGoldContents, level }: IProps) => {
       <GateContainer>
         {gateSetting.map((gate, index) => {
           const { difficulty, isVisible } = gate;
-          const checkActivate = () => {
+          const checkConvertable = () => {
+            // 현재 레벨이 하드레벨보다 높은지
             if (commander.data.length === 1) {
               const { gates } = commander.data[0];
               return gates[index].level <= level;
@@ -183,16 +230,25 @@ const ContentCard = ({ contents, isGoldContents, level }: IProps) => {
               return gates[index].level <= level;
             }
           };
+          const checkGateActivate = () => {
+            // 현재 레벨이 노말보다 높은지
+            const { gates } = commander.data[0];
+            return gates[index].level <= level;
+          };
 
           return (
             <ContentCardGate
+              accountIndex={accountIndex}
+              characterName={characterName}
+              contentName={contentName}
               key={index}
               Difficulty={difficulty}
               Gate={gate}
               GateIndex={index}
               isVisible={isVisble}
               isGateVisible={isVisible}
-              isActivated={checkActivate()}
+              isConvertable={checkConvertable()}
+              isGateActivate={checkGateActivate()}
               Color={getRandomPastelColor(contentName, gateSetting)}
             />
           );

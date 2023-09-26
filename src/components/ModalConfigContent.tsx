@@ -74,18 +74,18 @@ const GoldContens = ({ goldContents }: { goldContents: IContent[] }) => {
 const ModalConfigContent = () => {
   const commanderData = useRecoilValue(CommanderData);
   const [modal, closeModal] = useRecoilState(ModalConfigContentsAtom);
-  const [account, setAccount] = useRecoilState(AccountOrder);
+  const account = useRecoilValue(AccountOrder);
   if (!modal.data) return null;
   const {
     data: { accountIndex, characterName },
   } = modal;
   const contents = filterByName(characterName, account[accountIndex].contents);
   const goldContents = filterGoldContents(contents);
-  const character = account[accountIndex].characters.find(
+  const characterIndex = account[accountIndex].characters.findIndex(
     ({ CharacterName }) => characterName === CharacterName
   );
-  if (!character) return null;
-
+  if (characterIndex === -1) return null;
+  const { ItemMaxLevel } = account[accountIndex].characters[characterIndex];
   return (
     <ModalContainer
       onClose={() => closeModal({ status: false })}
@@ -107,7 +107,9 @@ const ModalConfigContent = () => {
                 isGoldContents={goldContents
                   .map(({ contentName }) => contentName)
                   .includes(contents.contentName)}
-                level={character.ItemMaxLevel}
+                level={ItemMaxLevel}
+                accountIndex={accountIndex}
+                characterName={characterName}
               />
             );
           })}
