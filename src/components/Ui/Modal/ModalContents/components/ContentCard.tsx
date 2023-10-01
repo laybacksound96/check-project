@@ -18,6 +18,8 @@ import getRandomPastelColor from "../../../../Functions/getRandomPastelColor";
 import CountGold from "../../../../CountGold";
 import { CommanderData } from "../../../../../atoms/commander";
 import calculateIncome from "../../../../Functions/calculateIncome";
+import { patchContent, patchContents } from "../../../../../util/fetch";
+import { UserState } from "../../../../../atoms/fetchData";
 interface IStyle {
   isVisibled: boolean;
   Color: string | undefined;
@@ -138,6 +140,7 @@ const ContentCard = ({
   accountIndex,
   characterName,
 }: IProps) => {
+  const userState = useRecoilValue(UserState);
   const { isVisble, contentName, gateSetting } = contents;
   const setAccount = useSetRecoilState(AccountOrder);
   const commanderData = useRecoilValue(CommanderData);
@@ -175,16 +178,41 @@ const ContentCard = ({
       const copiedPrev = [...prev];
       const copiedAccount = { ...copiedPrev[accountIndex] };
       const copiedContents = [...copiedAccount.contents];
+      const copiedOrder = [...copiedAccount.contentsOrder];
+      const contentsOrderIndex = copiedOrder.findIndex((name)=>contentName===name)
       const contentIndex = copiedContents.findIndex(
         ({ contentName: name, owner }) =>
           name === contentName && characterName === owner
       );
+      const existContents = copiedContents.filter(
+        ({ contentName: name ,isVisble  }) =>
+          name === contentName && isVisble===true
+      );
       if (contentIndex === -1) return copiedPrev;
       const copiedContent = { ...copiedContents[contentIndex] };
-      copiedContent.isVisble = !copiedContent.isVisble;
+      const visible = copiedContent.isVisble
+      if(visible){
+        if(contentsOrderIndex>0 && existContents.length===1){
+          copiedOrder.splice(contentsOrderIndex,1)
+        }
+      }else{
+        if(contentsOrderIndex===-1){
+          copiedOrder.push(contentName)
+        }
+      }
+      
+
+      copiedContent.isVisble = !visible;
       copiedContents[contentIndex] = copiedContent;
       copiedAccount.contents = copiedContents;
+      copiedAccount.contentsOrder = copiedOrder
       copiedPrev[accountIndex] = copiedAccount;
+
+      if (userState !== "GUEST") {
+        const userId = userState.user._id;
+        patchContents(copiedAccount._id, userId, copiedOrder);
+        patchContent(copiedAccount._id,userId,copiedContent,contentIndex)
+      }
       return copiedPrev;
     });
   };
