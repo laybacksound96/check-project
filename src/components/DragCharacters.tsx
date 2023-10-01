@@ -9,7 +9,7 @@ import React from "react";
 import styled, { css } from "styled-components";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import DragContents from "./DragContents";
-import { AccountOrder, IAccountOrder } from "../atoms/data";
+import { AccountOrder, IAccountOrder, ICheck, IContent } from "../atoms/data";
 import { dragIcon } from "../Settings";
 import { LoginState } from "../atoms/login";
 import { patchCharacter } from "../util/fetch";
@@ -18,6 +18,13 @@ import { UserState } from "../atoms/fetchData";
 import ButtonConfigAccount from "./ButtonConfigAccount";
 import ButtonConfigContent from "./ButtonConfigContent";
 import CharacterGold from "./CharacterGold";
+import CountGold from "./CountGold";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCoins } from "@fortawesome/free-solid-svg-icons";
+import { CommanderData, ICommander } from "../atoms/commander";
+import calculateIncome from "./Functions/calculateIncome";
+import CountUp from "react-countup";
+
 interface IStyle {
   loggined: boolean;
 }
@@ -93,16 +100,34 @@ export const NameContainer = styled.div`
     }
   }
 `;
+const SettingAndGold = styled.div`
+  display: flex;
+`;
 interface IProps {
   DragHandleProps: DraggableProvidedDragHandleProps | null | undefined;
   account: IAccountOrder;
   accountIndex: number;
 }
+const AccountIncomeContainer = styled.div`
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  opacity: 60%;
+  svg {
+    margin-right: 3px;
+  }
+  div {
+    font-size: 0.95rem;
+  }
+`;
 
 function DragCharacters({ DragHandleProps, account, accountIndex }: IProps) {
   const userState = useRecoilValue(UserState);
   const loggined = useRecoilValue(LoginState);
   const setAccountOrder = useSetRecoilState(AccountOrder);
+  const commanderData = useRecoilValue(CommanderData);
   const dragCharacterHandler = (dragInfo: DropResult) => {
     const { destination, source } = dragInfo;
     if (!destination) return;
@@ -125,14 +150,79 @@ function DragCharacters({ DragHandleProps, account, accountIndex }: IProps) {
     });
     return;
   };
+  const goldContents = account.contents.filter(
+    ({ isVisble, isGoldContents }) =>
+      isVisble === true && isGoldContents === true
+  );
+  const calculateCheckedIncome = (
+    goldContents: IContent[],
+    commanderData: ICommander[],
+    checks: ICheck[]
+  ) => {
+    let gold = 0;
+    checks.forEach(({ characterName, contentName }) => {
+      const commander = commanderData.find(
+        ({ name: commanderName }) => commanderName === contentName
+      );
+      const content = goldContents.find(
+        ({ contentName: cont, owner }) =>
+          cont === contentName && characterName === owner
+      );
 
+      if (!commander || !content) return;
+      const difficulty = content.gateSetting
+        .filter(({ isVisible }) => isVisible === true)
+        .map(({ difficulty }) => difficulty);
+      difficulty.forEach((difficulty, index) => {
+        const gate = commander.data.find(
+          ({ difficulty: diff }) => difficulty === diff
+        );
+        if (!gate) return;
+        gold += gate.gates[index].gold;
+      });
+    });
+    return gold;
+  };
+  const AccountIncome = ({
+    goldContents,
+    commanderData,
+    checks,
+  }: {
+    goldContents: IContent[];
+    commanderData: ICommander[];
+    checks: ICheck[];
+  }) => {
+    return (
+      <AccountIncomeContainer>
+        <span>계정 획득 골드</span>
+        <div>
+          <FontAwesomeIcon icon={faCoins} />
+          <CountGold
+            income={calculateCheckedIncome(goldContents, commanderData, checks)}
+          />
+          <span>/</span>
+          <CountUp
+            start={calculateIncome(goldContents, commanderData)}
+            end={calculateIncome(goldContents, commanderData)}
+          />
+        </div>
+      </AccountIncomeContainer>
+    );
+  };
   return (
     <DragDropContext onDragEnd={dragCharacterHandler}>
       <Droppable droppableId={account._id}>
         {(provided) => (
           <Container loggined={loggined}>
             <div ref={provided.innerRef} {...provided.droppableProps}>
-              <ButtonConfigAccount index={accountIndex} />
+              <SettingAndGold>
+                <ButtonConfigAccount index={accountIndex} />
+                <AccountIncome
+                  goldContents={goldContents}
+                  commanderData={commanderData}
+                  checks={account.checks}
+                />
+              </SettingAndGold>
               {account.characterOrder.map((name, index) => {
                 const character = account.characters.find(
                   ({ CharacterName }) => CharacterName === name

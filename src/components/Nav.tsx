@@ -1,16 +1,15 @@
 import { useParams, useRouteLoaderData } from "react-router-dom";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { loadToken } from "../util/auth";
 import { discordLoginHandler } from "../page/Home";
-import { ReactComponent as DiscordIcon } from "../../../icons/discord-icon.svg";
+import { ReactComponent as DiscordIcon } from "../icons/discord-icon.svg";
 import {
   faCircleInfo,
   faMagnifyingGlass,
   faPersonWalkingDashedLineArrowRight,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
-import { useRecoilState } from "recoil";
+import { useEffect, useState } from "react";
 import UserCard from "./UserCard";
 import { ISearchedData } from "../atoms/fetchData";
 
@@ -168,6 +167,7 @@ const LoginDiscord = styled.div`
 
 const Nav = () => {
   const [searchList, setSearchList] = useState<ISearchedData[]>([]);
+  const [focusState, setFocusState] = useState(false);
   const { userId } = useParams();
   const location = userId ? `board/${userId}` : "";
   function logoutHandler() {
@@ -186,62 +186,63 @@ const Nav = () => {
 
   const token = useRouteLoaderData("root") as ReturnType<typeof loadToken>;
   return (
-    <div></div>
-    // <NavConainer>
-    //   <div style={{ flex: 1 }}>
-    //     <a href="/">CheckSheet.Link</a>
-    //   </div>
-    //   <SearchContainer>
-    //     <InputContainer>
-    //       <div>
-    //         <span>Search</span>
-    //         <input
-    //           placeholder="디스코드 닉네임 혹은 캐릭터이름..."
-    //           onFocus={() => false}
-    //           onChange={HandleChange}
-    //         />
-    //       </div>
-    //       <FontAwesomeIcon icon={faMagnifyingGlass} color="black" />
-    //     </InputContainer>
-    //     {isFocused && (
-    //       <SearchList>
-    //         {searchList.length > 0 ? (
-    //           searchList.map((elem, index) => (
-    //             <div
-    //               key={index}
-    //               style={{ display: "flex", flexDirection: "column" }}
-    //             >
-    //               <UserCard data={elem} />
-    //             </div>
-    //           ))
-    //         ) : (
-    //           <EmptyList>
-    //             <FontAwesomeIcon icon={faCircleInfo} />
-    //             <span>검색한 유저가 없습니다.</span>
-    //           </EmptyList>
-    //         )}
-    //       </SearchList>
-    //     )}
-    //   </SearchContainer>
-    //   <LoginContainer>
-    //     {!token && (
-    //       <LoginDiscord onClick={discordLoginHandler}>
-    //         <div>
-    //           <DiscordIcon />
-    //           <span>Discord로 로그인</span>
-    //         </div>
-    //       </LoginDiscord>
-    //     )}
-    //     {token && (
-    //       <LogoutButton onClick={logoutHandler}>
-    //         <div>
-    //           <span>로그아웃</span>
-    //           <FontAwesomeIcon icon={faPersonWalkingDashedLineArrowRight} />
-    //         </div>
-    //       </LogoutButton>
-    //     )}
-    //   </LoginContainer>
-    // </NavConainer>
+    <NavConainer>
+      <div style={{ flex: 1 }}>
+        <a href="/">CheckSheet.Link</a>
+      </div>
+      <SearchContainer>
+        <InputContainer>
+          <div>
+            <span>Search</span>
+            <input
+              placeholder="디스코드 닉네임 혹은 캐릭터이름..."
+              onFocus={() => {}}
+              onChange={HandleChange}
+              onBlur={() => setFocusState(false)}
+            />
+          </div>
+          <FontAwesomeIcon icon={faMagnifyingGlass} color="black" />
+        </InputContainer>
+        {focusState && (
+          <SearchList>
+            {searchList.length > 0 ? (
+              searchList.map((elem, index) => (
+                <div
+                  key={index}
+                  style={{ display: "flex", flexDirection: "column" }}
+                >
+                  <UserCard data={elem} />
+                </div>
+              ))
+            ) : (
+              <EmptyList>
+                <FontAwesomeIcon icon={faCircleInfo} />
+                <span>검색한 유저가 없습니다.</span>
+              </EmptyList>
+            )}
+          </SearchList>
+        )}
+      </SearchContainer>
+
+      <LoginContainer>
+        {!token && (
+          <LoginDiscord onClick={discordLoginHandler}>
+            <div>
+              <DiscordIcon />
+              <span>Discord로 로그인</span>
+            </div>
+          </LoginDiscord>
+        )}
+        {token && (
+          <LogoutButton onClick={logoutHandler}>
+            <div>
+              <span>로그아웃</span>
+              <FontAwesomeIcon icon={faPersonWalkingDashedLineArrowRight} />
+            </div>
+          </LogoutButton>
+        )}
+      </LoginContainer>
+    </NavConainer>
   );
 };
 

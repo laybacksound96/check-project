@@ -12,7 +12,7 @@ export async function discordLoginHandler(event: React.MouseEvent) {
 
 function Home() {
   const token = useRouteLoaderData("root") as ReturnType<typeof loadToken>;
-  console.log(token);
+  if (token) return <Navigate to={`/board/${token.user_id}`} />;
   return (
     <Main>
       <section>

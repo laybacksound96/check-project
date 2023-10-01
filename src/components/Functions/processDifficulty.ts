@@ -1,33 +1,30 @@
-function processDifficulty(inputArray: string[]): string[] {
-  if (inputArray.length === 0) {
-    return [""];
-  } else if (inputArray.length === 1) {
-    return inputArray;
-  }
+import { IGate } from "../../atoms/data";
 
+function processDifficulty(gate: IGate[]): string[] {
   let result = [];
-  let currentType = inputArray[0];
-  let count = 1;
-  let firstCount = 1;
-  for (let i = 1; i < inputArray.length; i++) {
-    if (inputArray[i] === currentType) {
-      count++;
-    } else {
-      if (count === 1) {
-        result.push(`${currentType} ${i}`);
-      } else {
-        result.push(`${currentType} ${firstCount}-${i}`);
-      }
-      currentType = inputArray[i];
-      firstCount = i + 1;
+  let LeftNo = 1;
+  let LeftDiff = gate[0].difficulty;
+  let CurrentNo;
+  for (let i in gate) {
+    if (!gate[i].isVisible) continue;
+    const RightDiff = gate[i].difficulty;
+    CurrentNo = +i + 1;
+    if (LeftDiff !== RightDiff) {
+      const PreNo = +i;
+      result.push(
+        LeftNo === PreNo
+          ? `${LeftDiff} ${LeftNo}`
+          : `${LeftDiff} ${LeftNo}-${PreNo}`
+      );
+      LeftDiff = RightDiff;
+      LeftNo = +i + 1;
     }
   }
-  if (count === 1) {
-    result.push(`${currentType} ${inputArray.length}`);
-  } else {
-    result.push(`${currentType} ${firstCount}-${inputArray.length}`);
-  }
-
+  result.push(
+    LeftNo === CurrentNo
+      ? `${LeftDiff} ${LeftNo}`
+      : `${LeftDiff} ${LeftNo}-${CurrentNo}`
+  );
   return result;
 }
 export default processDifficulty;

@@ -1,6 +1,5 @@
 import { IAccountOrder, ICheck, IContent } from "../../atoms/data";
 import { IFrequency } from "../../atoms/frequency";
-import calculateStrength from "./calculateStrength";
 import getRandomPastelColor from "./getRandomPastelColor";
 import processDifficulty from "./processDifficulty";
 
@@ -10,11 +9,12 @@ export function filterContents({
   contentsOrder,
   checks,
 }: IAccountOrder) {
-  return contents.filter(({ contentName, isVisble, owner }) => {
+  return contents.filter(({ contentName, isVisble, owner, isGoldContents }) => {
     const isChecked = check(checks, owner, contentName);
     return (
       contentsOrder.includes(contentName) &&
       characterOrder.includes(owner) &&
+      isGoldContents === true &&
       isVisble === true &&
       isChecked === false
     );
@@ -77,9 +77,7 @@ export function countFrequency(
 export function makeContentsFrequency(filteredContents: IContent[]) {
   const processed = filteredContents.map(
     ({ contentName, gateSetting, owner }) => {
-      const gates = processDifficulty(
-        gateSetting.map(({ difficulty }) => difficulty)
-      );
+      const gates = processDifficulty(gateSetting);
       return {
         owner,
         contentName,
@@ -124,8 +122,10 @@ export function makeFrequencyCounter(
     const filteredConents = filterContents(accountOrder[i]);
     result.push(filteredConents);
   }
-  const flattenConents = flattenArray(result);
-  const contentsFrequency = makeContentsFrequency(flattenConents);
+  const flattenContents = flattenArray(result);
+
+  console.log(flattenContents);
+  const contentsFrequency = makeContentsFrequency(flattenContents);
   const countedFrequency = countFrequency(contentsFrequency);
   const sortedFrequency = sortCommander(countedFrequency);
 

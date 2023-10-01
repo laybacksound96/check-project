@@ -10,16 +10,14 @@ interface IStyle {
 }
 const Character = styled.div<IStyle>`
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  width: 200px;
-  padding-left: 5px;
+  width: 70px;
   height: ${dragIcon.icon.edgeLength}px;
   border-radius: 5px;
   svg {
     opacity: 20%;
     font-size: 30px;
-    margin-left: 5px;
   }
   ${(prop) =>
     prop.loggined &&

@@ -5,7 +5,6 @@ import RootLayout from "./page/Layout";
 import { loadToken } from "./util/auth";
 import LayoutBoard from "./page/LayoutBoard";
 import Board, { loadBoardData } from "./page/Board";
-import Dashboard from "./page/Dashboard";
 import NotFoundData from "./components/Errors/NotFoundData";
 
 export const router = createBrowserRouter([
