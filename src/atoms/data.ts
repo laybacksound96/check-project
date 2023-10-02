@@ -1,29 +1,41 @@
 import { atom } from "recoil";
-export const Accounts = atom<IAccounts[]>({
-  key: "Accounts",
-  default: [],
-});
-export interface IAccounts {
+
+export type ICharacter = {
   _id?: string;
+  CharacterName: string;
+  ItemMaxLevel: number;
+  ServerName: string;
+  CharacterClassName: string;
+  isGoldCharacter: boolean;
+};
+export interface IGate {
+  isVisible: boolean;
+  difficulty: string;
+}
+export interface IContent {
+  _id?: string;
+  owner: string;
+  contentName: string;
+  gateSetting: IGate[];
+  isVisble: boolean;
+  isGoldContents: boolean;
+}
+export interface ICheck {
+  _id?: string;
+  contentName: string;
+  characterName: string;
+}
+
+export type IAccountOrder = {
+  _id: string;
   characterOrder: string[];
   contentsOrder: string[];
-  characters: ICharacters[];
-  checks: { contentName: string; characterName: string }[];
-}
-export interface ICharacters {
-  characterName: string;
-  serverName: string;
-  className: string;
-  level: number;
-  contents: IContents[];
-}
-export interface IContents {
-  contentName: string;
-  isGoldContents: boolean;
-  isVisible: boolean;
-  gates: IGates[];
-}
-export interface IGates {
-  isVisible: boolean;
-  isNormal: boolean;
-}
+  characters: ICharacter[];
+  contents: IContent[];
+  checks: ICheck[];
+};
+
+export const AccountOrder = atom<IAccountOrder[]>({
+  key: "AccountOrder",
+  default: [],
+});

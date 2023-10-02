@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { IFetchedCharacter } from "../AddAccount";
+import { IFetchedCharacter } from "../../../../ModalAddAccount";
 
 const CharacterCard = styled.div`
   width: auto;

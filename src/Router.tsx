@@ -5,8 +5,7 @@ import RootLayout from "./page/Layout";
 import { loadToken } from "./util/auth";
 import LayoutBoard from "./page/LayoutBoard";
 import Board, { loadBoardData } from "./page/Board";
-import Dashboard from "./page/Dashboard";
-import ErrorComponent from "./components/Errors/ErrorComponent";
+import NotFoundData from "./components/Errors/NotFoundData";
 
 export const router = createBrowserRouter([
   {
@@ -24,10 +23,6 @@ export const router = createBrowserRouter([
           {
             index: true,
             element: <Navigate to="/" />,
-          },
-          {
-            path: "GUEST",
-            element: <Dashboard userData={"GUEST"} />,
           },
           {
             path: ":userId",

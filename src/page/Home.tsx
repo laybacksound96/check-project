@@ -22,7 +22,9 @@ function Home() {
           <DiscordIcon />
           <p>Discord로 로그인</p>
         </LoginDiscordBtn>
-        <a href="/board/GUEST">로그인 없이 시작</a>
+        <a href="#" style={{ opacity: "40%" }}>
+          로그인 없이 시작 (추가 예정)
+        </a>
       </section>
     </Main>
   );

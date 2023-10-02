@@ -1,19 +1,15 @@
 import { atom } from "recoil";
 
-export interface IFrequencyContents {
-  [`ContentName`]: string;
-  [`GateState`]: string[];
-  [`Frequency`]: number;
-  [`Owner`]: string[];
-  [`RemainOwner`]: string[];
-  [`Color`]: string;
+export interface IFrequency {
+  remain: string[];
+  count: number;
+  contentId: string;
+  contentIds: string[];
+  contentName: string;
+  color: string;
 }
 
-export interface IContentsFrequency {
-  [contentKey: string]: IFrequencyContents;
-}
-
-export const ContentsFrequency = atom<IContentsFrequency>({
-  key: "IContentsFrequency",
-  default: {},
+export const FrequencyCounter = atom<IFrequency[]>({
+  key: "FrequencyCounter",
+  default: [],
 });

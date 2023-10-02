@@ -18,8 +18,7 @@ const FooterStyle = styled.footer`
 const Footer = () => {
   return (
     <FooterStyle>
-      <p>Contact me</p>
-      <p>Discord: 412(_412)</p>
+      <p>Contact us : 412(potion_overdose)</p>
     </FooterStyle>
   );
 };
