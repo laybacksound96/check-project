@@ -6,23 +6,20 @@ const calculateIncome = (
   commanderData: ICommander[]
 ): number => {
   let gold = 0;
-  for (let i in goldContents) {
-    const { contentName, gateSetting, isVisble } = goldContents[i];
-    if (!isVisble) continue;
-    const name = contentName;
-    const difficulty = gateSetting
-      .filter(({ isVisible }) => isVisible === true)
-      .map(({ difficulty }) => difficulty);
-    const commander = commanderData.find(
-      ({ name: commanderName }) => commanderName === name
-    );
+  const mappedContents = goldContents.map(({ contentName, gateSetting }) => {
+    return { contentName, gateSetting };
+  });
+  for (let i in mappedContents) {
+    const { contentName, gateSetting } = mappedContents[i];
+    const commander = commanderData.find(({ name }) => contentName === name);
     if (!commander) continue;
-    for (let j in difficulty) {
-      const gate = commander.data.find(
-        ({ difficulty: diff }) => difficulty[j] === diff
+    for (let j in gateSetting) {
+      const { difficulty: diff, isVisible } = gateSetting[j];
+      const commanderData = commander.data.find(
+        ({ difficulty }) => difficulty === diff
       );
-      if (!gate) continue;
-      gold += gate.gates[j].gold;
+      if (!isVisible || !commanderData) continue;
+      gold += commanderData.gates[j].gold;
     }
   }
   return gold;

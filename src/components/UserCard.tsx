@@ -22,6 +22,17 @@ interface IProps {
   name: string;
 }
 
+const makeName = (
+  user_name: string,
+  discriminator: string,
+  global_name: string
+) => {
+  if (!global_name) {
+    return `${user_name}#${discriminator}`;
+  } else {
+    return `${global_name}(${user_name})`;
+  }
+};
 const UserCard = ({
   data: {
     owner: { _id, discriminator, global_name, user_name },
@@ -30,22 +41,8 @@ const UserCard = ({
 }: IProps) => {
   return (
     <Container href={`/board/${_id}`}>
-      {!global_name ? (
-        <>
-          <span>{name}</span>
-          <span>
-            {global_name}(
-            {discriminator === "0" ? user_name : "#" + discriminator})
-          </span>
-        </>
-      ) : (
-        <>
-          <span>{name}</span>
-          <span>
-            {user_name}#{discriminator}
-          </span>
-        </>
-      )}
+      <span>{name}</span>
+      <span>{makeName(user_name, discriminator, global_name)}</span>
     </Container>
   );
 };

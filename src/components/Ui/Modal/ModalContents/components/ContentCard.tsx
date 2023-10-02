@@ -1,16 +1,12 @@
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
-import { useEffect, useState } from "react";
 import ContentCardGate from "./ContentCardGate";
-
 import {
   faCoins,
   faSquare,
   faSquareCheck,
 } from "@fortawesome/free-solid-svg-icons";
-
-import CountUp from "react-countup";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import getLowerLightnessColor from "../../../../Functions/getLowerLightnessColor";
 import { AccountOrder, IContent } from "../../../../../atoms/data";

@@ -29,10 +29,12 @@ const AccountGold = () => {
   const calculateTotalIncome = () => {
     let totalGold = 0;
     for (let i in accountOrder) {
-      const { contents } = accountOrder[i];
+      const { contents, characterOrder } = accountOrder[i];
       const goldContents = contents.filter(
-        ({ isVisble, isGoldContents }) =>
-          isVisble === true && isGoldContents === true
+        ({ isVisble, isGoldContents, owner }) =>
+          isVisble === true &&
+          isGoldContents === true &&
+          characterOrder.includes(owner)
       );
       for (let j in goldContents) {
         const name = goldContents[j].contentName;

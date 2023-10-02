@@ -151,8 +151,10 @@ function DragCharacters({ DragHandleProps, account, accountIndex }: IProps) {
     return;
   };
   const goldContents = account.contents.filter(
-    ({ isVisble, isGoldContents }) =>
-      isVisble === true && isGoldContents === true
+    ({ isVisble, isGoldContents, owner }) =>
+      isVisble === true &&
+      isGoldContents === true &&
+      account.characterOrder.includes(owner)
   );
   const calculateCheckedIncome = (
     goldContents: IContent[],
