@@ -185,32 +185,7 @@ function DragCharacters({ DragHandleProps, account, accountIndex }: IProps) {
     });
     return gold;
   };
-  const AccountIncome = ({
-    goldContents,
-    commanderData,
-    checks,
-  }: {
-    goldContents: IContent[];
-    commanderData: ICommander[];
-    checks: ICheck[];
-  }) => {
-    return (
-      <AccountIncomeContainer>
-        <span>계정 획득 골드</span>
-        <div>
-          <FontAwesomeIcon icon={faCoins} />
-          <CountGold
-            income={calculateCheckedIncome(goldContents, commanderData, checks)}
-          />
-          <span>/</span>
-          <CountUp
-            start={calculateIncome(goldContents, commanderData)}
-            end={calculateIncome(goldContents, commanderData)}
-          />
-        </div>
-      </AccountIncomeContainer>
-    );
-  };
+
   return (
     <DragDropContext onDragEnd={dragCharacterHandler}>
       <Droppable droppableId={account._id}>
@@ -219,11 +194,24 @@ function DragCharacters({ DragHandleProps, account, accountIndex }: IProps) {
             <div ref={provided.innerRef} {...provided.droppableProps}>
               <SettingAndGold>
                 <ButtonConfigAccount index={accountIndex} />
-                <AccountIncome
-                  goldContents={goldContents}
-                  commanderData={commanderData}
-                  checks={account.checks}
-                />
+                <AccountIncomeContainer>
+                  <span>계정 획득 골드</span>
+                  <div>
+                    <FontAwesomeIcon icon={faCoins} />
+                    <CountGold
+                      income={calculateCheckedIncome(
+                        goldContents,
+                        commanderData,
+                        account.checks
+                      )}
+                    />
+                    <span>/</span>
+                    <CountUp
+                      start={calculateIncome(goldContents, commanderData)}
+                      end={calculateIncome(goldContents, commanderData)}
+                    />
+                  </div>
+                </AccountIncomeContainer>
               </SettingAndGold>
               {account.characterOrder.map((name, index) => {
                 const character = account.characters.find(
