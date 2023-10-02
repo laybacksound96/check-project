@@ -3,7 +3,9 @@ import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ContentCardCheckBox from "./ContentCardCheckBox";
 import { AccountOrder, IGate } from "../../../../../atoms/data";
-import { useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { UserState } from "../../../../../atoms/fetchData";
+import { patchContent } from "../../../../../util/fetch";
 
 const GateVisibleContainer = styled.div`
   display: flex;
@@ -85,6 +87,7 @@ const ContentCardGate = ({
   characterName,
   isGateActivate,
 }: IProps) => {
+  const userState = useRecoilValue(UserState);
   const setAccount = useSetRecoilState(AccountOrder);
   const hanldeGateVisible = () => {
     if (!isGateActivate) return;
@@ -106,6 +109,10 @@ const ContentCardGate = ({
       copiedContents[contentIndex] = copiedContent;
       copiedAccount.contents = copiedContents;
       copiedPrev[accountIndex] = copiedAccount;
+      if (userState !== "GUEST") {
+        const userId = userState.user._id;
+        patchContent(copiedAccount._id, userId, copiedContent, contentIndex);
+      }
       return copiedPrev;
     });
   };
@@ -129,6 +136,10 @@ const ContentCardGate = ({
       copiedContents[contentIndex] = copiedContent;
       copiedAccount.contents = copiedContents;
       copiedPrev[accountIndex] = copiedAccount;
+      if (userState !== "GUEST") {
+        const userId = userState.user._id;
+        patchContent(copiedAccount._id, userId, copiedContent, contentIndex);
+      }
       return copiedPrev;
     });
   };

@@ -7,8 +7,9 @@ import {
 } from "../atoms/fetchData";
 import { IAccountOrder, ICheck, IContent } from "../atoms/data";
 
-const url = "https://www.checksheet.link/";
-
+const url = "http://localhost:8080/";
+// "http://localhost:8080/"
+// "https://www.checksheet.link/"
 export const getAccountData = async (account_id: string) => {
   const response = await axios.get<IFetchedAccount>(
     `${url}account/${account_id}`
