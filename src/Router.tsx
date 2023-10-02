@@ -29,7 +29,9 @@ export const router = createBrowserRouter([
             id: "board-userData",
             loader: loadBoardData,
             element: <Board />,
-            errorElement: <NotFoundData />,
+            errorElement: (
+              <ErrorComponent message="존재하지 않는 유저입니다." />
+            ),
           },
         ],
       },

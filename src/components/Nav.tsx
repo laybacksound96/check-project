@@ -207,7 +207,7 @@ const Nav = () => {
   return (
     <NavConainer>
       <div style={{ flex: 1 }}>
-        <a href="/">CheckSheet.Link</a>
+        <Link to="/">CheckSheet.Link</Link>
       </div>
       <SearchContainer>
         <InputContainer
