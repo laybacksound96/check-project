@@ -17,11 +17,21 @@ export interface IFetchedData {
   };
   isLoggined: boolean;
 }
+
+export interface ISearchedAccounts {
+  owner: {
+    user_name: string;
+    discriminator: string;
+    global_name: string;
+    banner_color: string;
+    avatar: string;
+    _id: string;
+  };
+  characterOrder: string[];
+}
 export interface ISearchedData {
-  user_id: string;
-  global_name: string | null;
-  user_name: string;
-  discriminator: string;
+  username: string;
+  accounts: ISearchedAccounts[];
 }
 
 export type IFetchedAccount = {

@@ -123,11 +123,8 @@ export function makeFrequencyCounter(
     result.push(filteredConents);
   }
   const flattenContents = flattenArray(result);
-
-  console.log(flattenContents);
   const contentsFrequency = makeContentsFrequency(flattenContents);
   const countedFrequency = countFrequency(contentsFrequency);
   const sortedFrequency = sortCommander(countedFrequency);
-
   return sortedFrequency;
 }

@@ -64,28 +64,11 @@ function Dashboard({ data: [userData, { commanderData: commander }] }: IProps) {
       setLoggined(false);
     }
   }, [setLoggined, userState]);
-  useEffect(() => {
-    console.log("//data//");
-    console.log(account);
-  }, [account]);
-  useEffect(() => {
-    console.log("//commanderData//");
-    console.log(commanderData);
-  }, [commanderData]);
-  useEffect(() => {
-    console.log("//userState//");
-    console.log(userState);
-  }, [userState]);
-  useEffect(() => {
-    console.log("//userState//");
-    console.log(loggined);
-  }, [loggined]);
+
   useEffect(() => {
     setFrequencyCounter(makeFrequencyCounter(account));
   }, [account, setFrequencyCounter]);
-  useEffect(() => {
-    console.log(frequencyCounter);
-  }, [frequencyCounter]);
+
   return (
     <>
       <DashboardStyle>

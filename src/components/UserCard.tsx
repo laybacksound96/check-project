@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { ISearchedData } from "../atoms/fetchData";
+import { ISearchedAccounts } from "../atoms/fetchData";
 
 const Container = styled.a`
   span:nth-child(2) {
@@ -18,23 +18,33 @@ const Container = styled.a`
 `;
 
 interface IProps {
-  data: ISearchedData;
+  data: ISearchedAccounts;
+  name: string;
 }
 
 const UserCard = ({
-  data: { user_id, user_name, global_name, discriminator },
+  data: {
+    owner: { _id, discriminator, global_name, user_name },
+  },
+  name,
 }: IProps) => {
   return (
-    <Container href={`/board/${user_id}`}>
-      {global_name ? (
+    <Container href={`/board/${_id}`}>
+      {!global_name ? (
         <>
-          <span>{global_name}</span>
-          <span>{discriminator === "0" ? user_name : "#" + discriminator}</span>
+          <span>{name}</span>
+          <span>
+            {global_name}(
+            {discriminator === "0" ? user_name : "#" + discriminator})
+          </span>
         </>
       ) : (
-        <span>
-          {user_name}#{discriminator}
-        </span>
+        <>
+          <span>{name}</span>
+          <span>
+            {user_name}#{discriminator}
+          </span>
+        </>
       )}
     </Container>
   );

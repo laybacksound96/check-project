@@ -1,6 +1,10 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { ICommanderData } from "../atoms/commander";
-import { IFetchedAccount, IFetchedData } from "../atoms/fetchData";
+import {
+  IFetchedAccount,
+  IFetchedData,
+  ISearchedData,
+} from "../atoms/fetchData";
 import { IAccountOrder, ICheck, IContent } from "../atoms/data";
 
 const url2 = "https://www.checksheet.link/";
@@ -12,7 +16,31 @@ export const getAccountData = async (account_id: string) => {
   );
   return response.data;
 };
+let lastCallTimeout: any = null;
+export async function search(
+  name: string,
+  setter: React.Dispatch<React.SetStateAction<ISearchedData | null>>,
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>
+) {
+  if (lastCallTimeout) {
+    clearTimeout(lastCallTimeout);
+  }
 
+  lastCallTimeout = setTimeout(async () => {
+    try {
+      await axios
+        .get<ISearchedData>(`${url}api/search?username=${name}`)
+        .then((response: AxiosResponse<ISearchedData>) => {
+          setter(response.data);
+          setLoading(false);
+        });
+      lastCallTimeout = null;
+      return;
+    } catch (error) {
+      throw error;
+    }
+  }, 1000);
+}
 export const loadUserData = async (id: string) => {
   const token = localStorage.getItem("accessToken");
   const response = await axios.get<IFetchedData>(`${url}user/${id}`, {
@@ -147,7 +175,7 @@ export async function patchContent(
   accountId: string,
   userId: string,
   data: IContent,
-  contentIndex:number
+  contentIndex: number
 ) {
   const token = localStorage.getItem("accessToken");
   try {
@@ -156,7 +184,7 @@ export async function patchContent(
       {
         data,
         user_id: userId,
-        contentIndex
+        contentIndex,
       },
       {
         headers: {

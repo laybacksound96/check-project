@@ -28,7 +28,7 @@ import CountUp from "react-countup";
 interface IStyle {
   loggined: boolean;
 }
-const DragAccountBtn = styled.div`
+const DragAccountBtn = styled.div<IStyle>`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -37,9 +37,9 @@ const DragAccountBtn = styled.div`
   width: 100px;
   background-color: rgba(100, 100, 100, 0.5);
   border-radius: 10px;
-  opacity: 40%;
+  opacity: ${({ loggined }) => (loggined ? "40%" : "0%")};
   &:hover {
-    opacity: 70%;
+    opacity: ${({ loggined }) => (loggined ? "70%" : "0%")};
   }
 `;
 const Container = styled.div<IStyle>`
@@ -277,7 +277,7 @@ function DragCharacters({ DragHandleProps, account, accountIndex }: IProps) {
               {provided.placeholder}
             </div>
             <DragContents account={account} accountIndex={accountIndex} />
-            <DragAccountBtn {...DragHandleProps} />
+            <DragAccountBtn {...DragHandleProps} loggined={loggined} />
           </Container>
         )}
       </Droppable>

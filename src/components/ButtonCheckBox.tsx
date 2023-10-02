@@ -4,6 +4,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
 import { dragIcon } from "../Settings";
 import { IAccountOrder } from "../atoms/data";
+import { useRecoilValue } from "recoil";
+import { LoginState } from "../atoms/login";
 
 interface IStyle {
   isVisible: boolean;
@@ -55,9 +57,9 @@ function ButtonCheckBox({
       CharacterName === characterName && ContentName === contentName
   );
   const checked = checkIndex === -1 ? false : true;
-
+  const loggined = useRecoilValue(LoginState);
   function onClick() {
-    if (!isVisible) return;
+    if (!isVisible || !loggined) return;
     onClickHandler(CharacterName, ContentName, checkIndex);
   }
   return (

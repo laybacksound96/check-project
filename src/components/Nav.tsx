@@ -1,5 +1,5 @@
 import { useParams, useRouteLoaderData } from "react-router-dom";
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 import { loadToken } from "../util/auth";
 import { discordLoginHandler } from "../page/Home";
 import { ReactComponent as DiscordIcon } from "../icons/discord-icon.svg";
@@ -9,9 +9,10 @@ import {
   faPersonWalkingDashedLineArrowRight,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import UserCard from "./UserCard";
 import { ISearchedData } from "../atoms/fetchData";
+import { search } from "../util/fetch";
 
 const NavConainer = styled.div`
   padding: 0px 20px;
@@ -166,8 +167,10 @@ const LoginDiscord = styled.div`
 `;
 
 const Nav = () => {
-  const [searchList, setSearchList] = useState<ISearchedData[]>([]);
-  const [focusState, setFocusState] = useState(false);
+  const [searchList, setSearchList] = useState<ISearchedData | null>(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
   const { userId } = useParams();
   const location = userId ? `board/${userId}` : "";
   function logoutHandler() {
@@ -175,13 +178,29 @@ const Nav = () => {
     localStorage.removeItem("user_id");
     window.location.href = "/" + location;
   }
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      dropdownRef.current &&
+      !dropdownRef.current.contains(event.target as Node)
+    ) {
+      setIsOpen(false);
+    }
+  };
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   const HandleChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    // const inputedValue = event.target.value;
-    // if (inputedValue === "") {
-    //   setSearchList([]);
-    // } else {
-    //   search(inputedValue, setSearchList);
-    // }
+    const inputedValue = event.target.value;
+    if (inputedValue === "") return;
+    setLoading(true);
+    search(inputedValue, setSearchList, setLoading);
+  };
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
   };
 
   const token = useRouteLoaderData("root") as ReturnType<typeof loadToken>;
@@ -191,34 +210,47 @@ const Nav = () => {
         <a href="/">CheckSheet.Link</a>
       </div>
       <SearchContainer>
-        <InputContainer>
+        <InputContainer
+          onSubmit={(event) => {
+            event.preventDefault();
+          }}
+        >
           <div>
             <span>Search</span>
             <input
               placeholder="디스코드 닉네임 혹은 캐릭터이름..."
-              onFocus={() => {}}
+              onClick={toggleDropdown}
               onChange={HandleChange}
-              onBlur={() => setFocusState(false)}
             />
           </div>
           <FontAwesomeIcon icon={faMagnifyingGlass} color="black" />
         </InputContainer>
-        {focusState && (
-          <SearchList>
-            {searchList.length > 0 ? (
-              searchList.map((elem, index) => (
-                <div
-                  key={index}
-                  style={{ display: "flex", flexDirection: "column" }}
-                >
-                  <UserCard data={elem} />
-                </div>
-              ))
-            ) : (
+
+        {isOpen && (
+          <SearchList ref={dropdownRef}>
+            {loading ? (
               <EmptyList>
-                <FontAwesomeIcon icon={faCircleInfo} />
-                <span>검색한 유저가 없습니다.</span>
+                <FontAwesomeIcon icon={faMagnifyingGlass} beatFade />
+                <span>검색중입니다... </span>
               </EmptyList>
+            ) : (
+              <>
+                {searchList ? (
+                  searchList.accounts.map((elem, index) => (
+                    <div
+                      key={index}
+                      style={{ display: "flex", flexDirection: "column" }}
+                    >
+                      <UserCard data={elem} name={searchList.username} />
+                    </div>
+                  ))
+                ) : (
+                  <EmptyList>
+                    <FontAwesomeIcon icon={faCircleInfo} />
+                    <span>검색한 유저가 없습니다.</span>
+                  </EmptyList>
+                )}
+              </>
             )}
           </SearchList>
         )}
