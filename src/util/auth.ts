@@ -4,7 +4,6 @@ export interface LoginToken {
 }
 export function getAuthToken(): LoginToken | null {
   const cookie = document.cookie;
-  console.log(cookie);
   if (cookie) {
     const cookiePairs = cookie.split(";");
     let accessToken = "";
