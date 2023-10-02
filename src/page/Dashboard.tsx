@@ -2,7 +2,7 @@ import styled from "styled-components";
 import DragAccounts from "../components/DragAccounts";
 import { useEffect, useState } from "react";
 import { getAccountData } from "../util/fetch";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { LoginState } from "../atoms/login";
 import { AccountOrder, IAccountOrder } from "../atoms/data";
 import { CommanderData, ICommanderData } from "../atoms/commander";
@@ -22,11 +22,10 @@ interface IProps {
 function Dashboard({ data: [userData, { commanderData: commander }] }: IProps) {
   const [loading, setLoading] = useState(true);
   const [account, setAccount] = useRecoilState(AccountOrder);
-  const [loggined, setLoggined] = useRecoilState(LoginState);
+  const setLoggined = useSetRecoilState(LoginState);
   const [userState, setUserState] = useRecoilState(UserState);
-  const [commanderData, setCommanderData] = useRecoilState(CommanderData);
-  const [frequencyCounter, setFrequencyCounter] =
-    useRecoilState(FrequencyCounter);
+  const setCommanderData = useSetRecoilState(CommanderData);
+  const setFrequencyCounter = useSetRecoilState(FrequencyCounter);
 
   useEffect(() => {
     setUserState(userData);

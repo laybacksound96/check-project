@@ -237,3 +237,21 @@ export async function deleteAccount(accountId: string) {
     return;
   }
 }
+export async function uncheckAll() {
+  const token = localStorage.getItem("accessToken");
+  try {
+    const response = await axios.patch(
+      `${url}user/checks/uncheckAll`,
+      {},
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "bearer " + token,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    return;
+  }
+}

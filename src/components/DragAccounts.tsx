@@ -7,7 +7,7 @@ import {
 } from "react-beautiful-dnd";
 import styled from "styled-components";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { patchAccount } from "../util/fetch";
+import { patchAccount, uncheckAll } from "../util/fetch";
 import AddAccountButton from "./ButtonAddAccount";
 import { AxisLocker } from "./Functions/AxisLocker";
 import DragCharacters from "./DragCharacters";
@@ -73,11 +73,18 @@ const DragAccounts = () => {
   };
 
   const uncheckHandler = () => {
-    // setContentSetting((prev) => {
-    //   const newSetting = makeUnchecked(prev);
-    //   if (!newSetting) return prev;
-    //   return newSetting;
-    // });
+    if (userState !== "GUEST") {
+      uncheckAll().then(() => {
+        setAccountOrder((prev) => {
+          const copiedPrev = [...prev];
+          copiedPrev.forEach((account, index) => {
+            const copiedAccount = { ...account, checks: [] };
+            copiedPrev[index] = copiedAccount;
+          });
+          return copiedPrev;
+        });
+      });
+    }
   };
 
   return (
