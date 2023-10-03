@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import DragAccounts from "../components/DragAccounts";
 import { useEffect, useState } from "react";
-import { getAccountData } from "../util/fetch";
+import { fetchSearchAccount, getAccountData } from "../util/fetch";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { LoginState } from "../atoms/login";
 import { AccountOrder, IAccountOrder } from "../atoms/data";
@@ -10,6 +10,7 @@ import HeaderBox from "../components/HeaderBox";
 import { IFetchedData, UserState } from "../atoms/fetchData";
 import { FrequencyCounter } from "../atoms/frequency";
 import { makeFrequencyCounter } from "../components/Functions/makeFrequencyCounter";
+import refreshAccount from "../util/refreshAccount";
 
 const DashboardStyle = styled.div`
   margin-top: 5px;
@@ -32,7 +33,7 @@ function Dashboard({ data: [userData, { commanderData: commander }] }: IProps) {
     Promise.all(
       userData.user.accountOrder.map((id) => getAccountData(id))
     ).then((values) => {
-      const account: IAccountOrder[] = values.map(
+      const accounts: IAccountOrder[] = values.map(
         ({
           characterOrder,
           contentsOrder,
@@ -41,7 +42,7 @@ function Dashboard({ data: [userData, { commanderData: commander }] }: IProps) {
           contents: { contents },
           checks,
         }) => {
-          return {
+          const accounts = {
             characterOrder,
             contentsOrder,
             _id,
@@ -49,11 +50,16 @@ function Dashboard({ data: [userData, { commanderData: commander }] }: IProps) {
             checks,
             contents,
           };
+          return accounts;
         }
       );
-      setCommanderData(commander);
-      setAccount(account);
-      setLoading(false);
+      Promise.all(
+        accounts.map((account) => refreshAccount(account, commander))
+      ).then((accounts) => {
+        setCommanderData(commander);
+        setAccount(accounts);
+        setLoading(false);
+      });
     });
   }, [commander, setAccount, setCommanderData, setUserState, userData]);
   useEffect(() => {

@@ -7,7 +7,7 @@ import {
 } from "../atoms/fetchData";
 import { IAccountOrder, ICheck, IContent } from "../atoms/data";
 
-const url = "http://localhost:8080/";
+const url = "https://www.checksheet.link/";
 // "http://localhost:8080/"
 // "https://www.checksheet.link/"
 export const getAccountData = async (account_id: string) => {
@@ -60,9 +60,19 @@ export async function fetchLogin(): Promise<string> {
   return response.data.loginUrl;
 }
 
-export async function fetchSearchAccount(inputValue: string): Promise<[]> {
+export interface fetchedData {
+  CharacterClassName: string;
+  CharacterLevel: number;
+  CharacterName: string;
+  ItemAvgLevel: string;
+  ItemMaxLevel: string;
+  ServerName: string;
+}
+export async function fetchSearchAccount(
+  inputValue: string
+): Promise<fetchedData[]> {
   try {
-    const response = await axios.post(
+    const response = await axios.post<fetchedData[]>(
       `${url}api/character`,
       { name: inputValue },
       {

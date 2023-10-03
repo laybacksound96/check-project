@@ -1,6 +1,4 @@
-import { useRecoilState, useRecoilValue } from "recoil";
-import CountUp from "react-countup";
-import { useEffect, useState } from "react";
+import { useRecoilValue } from "recoil";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCoins } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
