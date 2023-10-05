@@ -51,7 +51,6 @@ const ModalAddAccount = () => {
   const [inputValue, setInputValue] = useState("");
   const [fetchedData, setFetchedData] = useState<IFetchedCharacter[]>([]);
   const accountOrder = useRecoilValue(AccountOrder);
-  const userState = useRecoilValue(UserState);
   const SearchAccountHandler = async (event: React.MouseEvent) => {
     event.preventDefault();
     if (IsDuplicated(inputValue, accountOrder)) {
@@ -81,25 +80,14 @@ const ModalAddAccount = () => {
   };
   const AddAccountHandler = (data: IFetchedCharacter[]) => {
     if (data.length === 0) return;
-    const { characterOrder, characters, contents, contentsOrder } =
-      makeDataResult(data, commanderData);
+    const newAccount = makeDataResult(data, commanderData);
+    postAccount(newAccount);
     setAccount((prev) => {
       const copiedPrev = [...prev];
-      const newAccount = {
-        characterOrder,
-        characters,
-        contents,
-        contentsOrder,
-        _id: characterOrder[0],
-        checks: [],
-      };
-      copiedPrev.push(newAccount);
-      if (userState !== "GUEST") {
-        const userId = userState.user._id;
-        postAccount(userId, newAccount);
-      }
+
       return copiedPrev;
     });
+
     closeModal(false);
   };
 

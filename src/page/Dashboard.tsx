@@ -1,9 +1,12 @@
 import styled from "styled-components";
 import DragAccounts from "../components/DragAccounts";
 import { useEffect, useState } from "react";
-import { fetchSearchAccount, getAccountData } from "../util/fetch";
+import {
+  fetchSearchAccount,
+  getAccountData,
+  patchAccountOrder,
+} from "../util/fetch";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import { LoginState } from "../atoms/login";
 import { AccountOrder, IAccountOrder } from "../atoms/data";
 import { CommanderData, ICommanderData } from "../atoms/commander";
 import HeaderBox from "../components/HeaderBox";
@@ -23,13 +26,10 @@ interface IProps {
 function Dashboard({ data: [userData, { commanderData: commander }] }: IProps) {
   const [loading, setLoading] = useState(true);
   const [account, setAccount] = useRecoilState(AccountOrder);
-  const setLoggined = useSetRecoilState(LoginState);
-  const [userState, setUserState] = useRecoilState(UserState);
   const setCommanderData = useSetRecoilState(CommanderData);
   const setFrequencyCounter = useSetRecoilState(FrequencyCounter);
 
   useEffect(() => {
-    setUserState(userData);
     Promise.all(
       userData.user.accountOrder.map((id) => getAccountData(id))
     ).then((values) => {
@@ -53,26 +53,15 @@ function Dashboard({ data: [userData, { commanderData: commander }] }: IProps) {
           return accounts;
         }
       );
-      Promise.all(
-        accounts.map((account) => refreshAccount(account, commander))
-      ).then((accounts) => {
-        setCommanderData(commander);
-        setAccount(accounts);
-        setLoading(false);
-      });
+      setCommanderData(commander);
+      setAccount(accounts);
+      setLoading(false);
     });
-  }, [commander, setAccount, setCommanderData, setUserState, userData]);
-  useEffect(() => {
-    if (userState === "GUEST" || userState.isLoggined === true) {
-      setLoggined(true);
-    } else {
-      setLoggined(false);
-    }
-  }, [setLoggined, userState]);
+  }, [commander, setAccount, setCommanderData, userData]);
 
-  useEffect(() => {
-    setFrequencyCounter(makeFrequencyCounter(account));
-  }, [account, setFrequencyCounter]);
+  // useEffect(() => {
+  //   setFrequencyCounter(makeFrequencyCounter(account));
+  // }, [account, setFrequencyCounter]);
 
   return (
     <>

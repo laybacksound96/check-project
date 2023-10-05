@@ -143,10 +143,17 @@ function makeContents(characters: ICharacter[], commanderData: ICommander[]) {
   }
   return { allContents, contentsOrder };
 }
+
+export interface accountData {
+  characters: ICharacter[];
+  characterOrder: string[];
+  contents: IContent[];
+  contentsOrder: string[];
+}
 export const makeDataResult = (
   data: IFetchedCharacter[],
   commanderData: ICommander[]
-) => {
+): accountData => {
   const characters = makeCharacters(data);
   const { allContents: contents, contentsOrder } = makeContents(
     characters,

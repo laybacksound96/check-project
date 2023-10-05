@@ -6,10 +6,12 @@ import {
   ISearchedData,
 } from "../atoms/fetchData";
 import { IAccountOrder, ICheck, IContent } from "../atoms/data";
+import { accountData } from "./addAccount";
 
-const url = "https://www.checksheet.link/";
+const url = "http://localhost:8080/";
 // "http://localhost:8080/"
 // "https://www.checksheet.link/"
+
 export const getAccountData = async (account_id: string) => {
   const response = await axios.get<IFetchedAccount>(
     `${url}account/${account_id}`
@@ -90,13 +92,13 @@ export async function fetchSearchAccount(
     throw new Error("알 수 없는 오류가 있어요");
   }
 }
-export async function postAccount(userId: string, accountOrder: IAccountOrder) {
+export async function postAccount(accountData: accountData) {
   const token = localStorage.getItem("accessToken");
   try {
     const response = await axios.post(
-      `${url}account/${userId}`,
+      `${url}account`,
       {
-        accountOrder,
+        accountData,
       },
       {
         headers: {
@@ -107,14 +109,14 @@ export async function postAccount(userId: string, accountOrder: IAccountOrder) {
     );
     return response.data;
   } catch (error) {
-    return accountOrder;
+    return null;
   }
 }
-export async function patchAccount(userId: string, accountOrderdata: string[]) {
+export async function patchAccountOrder(accountOrderdata: string[]) {
   const token = localStorage.getItem("accessToken");
   try {
     const response = await axios.patch<string[]>(
-      `${url}user/accountOrder/${userId}`,
+      `${url}user/accountOrder`,
       {
         accountOrder: accountOrderdata,
       },

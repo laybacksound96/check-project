@@ -7,7 +7,7 @@ import {
 } from "react-beautiful-dnd";
 import styled from "styled-components";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { patchAccount, uncheckAll } from "../util/fetch";
+import { patchAccountOrder, uncheckAll } from "../util/fetch";
 import AddAccountButton from "./ButtonAddAccount";
 import { AxisLocker } from "./Functions/AxisLocker";
 import DragCharacters from "./DragCharacters";
@@ -23,6 +23,8 @@ import {
   ModalConfigContentsAtom,
 } from "../atoms/modal";
 import ModalConfigContent from "./ModalConfigContent";
+import { useRouteLoaderData } from "react-router-dom";
+import { loadToken } from "../util/auth";
 const DragBoxStyle = styled.div`
   width: 100%;
   height: auto;
@@ -41,18 +43,14 @@ const AccountStyle = styled.div`
   display: flex;
   flex-direction: column;
 `;
-export function isLoggined(userState: IFetchedData | "GUEST") {
-  if (userState === "GUEST") return true;
-  return userState.isLoggined;
-}
 
 const DragAccounts = () => {
+  const loggined = useRouteLoaderData("root") as ReturnType<typeof loadToken>;
   const modalConfigContent = useRecoilValue(ModalConfigContentsAtom);
   const modalAddacount = useRecoilValue(ModalAddAcountAtom);
   const modalConfigAccount = useRecoilValue(ModalConfigAccountAtom);
-  const userState = useRecoilValue(UserState);
-  const loggined = useRecoilValue(LoginState);
   const [accountOrder, setAccountOrder] = useRecoilState(AccountOrder);
+
   const dragAccountHandler = (dragInfo: DropResult) => {
     const { destination, source } = dragInfo;
     if (!destination) return;
@@ -64,27 +62,22 @@ const DragAccounts = () => {
       copiedPrev.splice(source.index, 1);
       copiedPrev.splice(destination?.index, 0, copiedObject);
       const accountOrderdata = copiedPrev.map((elem) => elem._id);
-      if (userState !== "GUEST") {
-        const userId = userState.user._id;
-        patchAccount(userId, accountOrderdata);
-      }
+      patchAccountOrder(accountOrderdata);
       return [...copiedPrev];
     });
   };
 
   const uncheckHandler = () => {
-    if (userState !== "GUEST") {
-      uncheckAll().then(() => {
-        setAccountOrder((prev) => {
-          const copiedPrev = [...prev];
-          copiedPrev.forEach((account, index) => {
-            const copiedAccount = { ...account, checks: [] };
-            copiedPrev[index] = copiedAccount;
-          });
-          return copiedPrev;
+    uncheckAll().then(() => {
+      setAccountOrder((prev) => {
+        const copiedPrev = [...prev];
+        copiedPrev.forEach((account, index) => {
+          const copiedAccount = { ...account, checks: [] };
+          copiedPrev[index] = copiedAccount;
         });
+        return copiedPrev;
       });
-    }
+    });
   };
 
   return (
