@@ -10,54 +10,40 @@ import { useRecoilState, useSetRecoilState } from "recoil";
 import { AccountOrder, IAccountOrder } from "../atoms/data";
 import { CommanderData, ICommanderData } from "../atoms/commander";
 import HeaderBox from "../components/HeaderBox";
-import { IFetchedData, UserState } from "../atoms/fetchData";
+import { IFetchedUserData } from "../atoms/fetchData";
 import { FrequencyCounter } from "../atoms/frequency";
 import { makeFrequencyCounter } from "../components/Functions/makeFrequencyCounter";
 import refreshAccount from "../util/refreshAccount";
+import { User } from "../atoms/newData";
 
 const DashboardStyle = styled.div`
   margin-top: 5px;
   min-width: 800px;
 `;
 interface IProps {
-  data: [IFetchedData, ICommanderData];
+  data: [IFetchedUserData, ICommanderData];
 }
 
 function Dashboard({ data: [userData, { commanderData: commander }] }: IProps) {
   const [loading, setLoading] = useState(true);
-  const [account, setAccount] = useRecoilState(AccountOrder);
+  const [user, setUser] = useRecoilState(User);
   const setCommanderData = useSetRecoilState(CommanderData);
   const setFrequencyCounter = useSetRecoilState(FrequencyCounter);
 
   useEffect(() => {
-    Promise.all(
-      userData.user.accountOrder.map((id) => getAccountData(id))
-    ).then((values) => {
-      const accounts: IAccountOrder[] = values.map(
-        ({
-          characterOrder,
-          contentsOrder,
-          _id,
-          characters: { characters },
-          contents: { contents },
-          checks,
-        }) => {
-          const accounts = {
-            characterOrder,
-            contentsOrder,
-            _id,
-            characters,
-            checks,
-            contents,
-          };
-          return accounts;
-        }
-      );
-      setCommanderData(commander);
-      setAccount(accounts);
-      setLoading(false);
-    });
-  }, [commander, setAccount, setCommanderData, userData]);
+    console.log(userData);
+    setUser(userData);
+    setLoading(false);
+  }, []);
+  // useEffect(() => {
+  //   console.log(userData);
+  //   Promise.all(userData.accountOrder.map((id) => getAccountData(id))).then(
+  //     (values) => {
+  //       setCommanderData(commander);
+  //       setLoading(false);
+  //     }
+  //   );
+  // }, [commander, setAccount, setCommanderData, userData]);
 
   // useEffect(() => {
   //   setFrequencyCounter(makeFrequencyCounter(account));
@@ -66,7 +52,7 @@ function Dashboard({ data: [userData, { commanderData: commander }] }: IProps) {
   return (
     <>
       <DashboardStyle>
-        <HeaderBox />
+        {/* <HeaderBox /> */}
         {loading && <p>사용자 정보 로딩중...</p>}
         <DragAccounts />
       </DashboardStyle>

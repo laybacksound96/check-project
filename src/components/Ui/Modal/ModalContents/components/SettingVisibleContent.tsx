@@ -5,7 +5,6 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 import { faCoins } from "@fortawesome/free-solid-svg-icons";
 import { AccountOrder, ICharacter } from "../../../../../atoms/data";
 import { patchCharacter } from "../../../../../util/fetch";
-import { UserState } from "../../../../../atoms/fetchData";
 
 export const NameContainer = styled.div`
   display: flex;
@@ -87,7 +86,6 @@ const SettingCharacters = ({
   charIndex,
 }: IProps) => {
   const setAccountOrder = useSetRecoilState(AccountOrder);
-  const userState = useRecoilValue(UserState);
   const handleGoldChar = () => {
     setAccountOrder((prev) => {
       const copiedAccounts = [...prev];
@@ -119,10 +117,7 @@ const SettingCharacters = ({
       } else {
         copiedCharacterOrder.push(target);
       }
-      if (userState !== "GUEST") {
-        const userId = userState.user._id;
-        patchCharacter(copiedData._id, userId, copiedCharacterOrder);
-      }
+      // patchCharacter(copiedData._id, userId, copiedCharacterOrder);
       copiedData.characterOrder = copiedCharacterOrder;
       copiedAccounts[index] = copiedData;
       return copiedAccounts;

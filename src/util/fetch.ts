@@ -2,7 +2,7 @@ import axios, { AxiosResponse } from "axios";
 import { ICommanderData } from "../atoms/commander";
 import {
   IFetchedAccount,
-  IFetchedData,
+  IFetchedUserData,
   ISearchedData,
 } from "../atoms/fetchData";
 import { IAccountOrder, ICheck, IContent } from "../atoms/data";
@@ -44,13 +44,7 @@ export async function search(
   }, 1000);
 }
 export const loadUserData = async (id: string) => {
-  const token = localStorage.getItem("accessToken");
-  const response = await axios.get<IFetchedData>(`${url}user/${id}`, {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "bearer " + token,
-    },
-  });
+  const response = await axios.get<IFetchedUserData>(`${url}user/${id}`);
   return response.data;
 };
 export const getCommander = async () => {

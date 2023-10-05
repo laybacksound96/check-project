@@ -15,7 +15,6 @@ import CountGold from "../../../../CountGold";
 import { CommanderData } from "../../../../../atoms/commander";
 import calculateIncome from "../../../../Functions/calculateIncome";
 import { patchContent, patchContents } from "../../../../../util/fetch";
-import { UserState } from "../../../../../atoms/fetchData";
 interface IStyle {
   isVisibled: boolean;
   Color: string | undefined;
@@ -136,7 +135,6 @@ const ContentCard = ({
   accountIndex,
   characterName,
 }: IProps) => {
-  const userState = useRecoilValue(UserState);
   const { isVisble, contentName, gateSetting } = contents;
   const setAccount = useSetRecoilState(AccountOrder);
   const commanderData = useRecoilValue(CommanderData);
@@ -165,10 +163,8 @@ const ContentCard = ({
       copiedContents[contentIndex] = copiedContent;
       copiedAccount.contents = copiedContents;
       copiedPrev[accountIndex] = copiedAccount;
-      if (userState !== "GUEST") {
-        const userId = userState.user._id;
-        patchContent(copiedAccount._id, userId, copiedContent, contentIndex);
-      }
+
+      // patchContent(copiedAccount._id, userId, copiedContent, contentIndex);
       return copiedPrev;
     });
   };
@@ -209,11 +205,8 @@ const ContentCard = ({
       copiedAccount.contentsOrder = copiedOrder;
       copiedPrev[accountIndex] = copiedAccount;
 
-      if (userState !== "GUEST") {
-        const userId = userState.user._id;
-        patchContents(copiedAccount._id, userId, copiedOrder);
-        patchContent(copiedAccount._id, userId, copiedContent, contentIndex);
-      }
+      // patchContents(copiedAccount._id, userId, copiedOrder);
+      // patchContent(copiedAccount._id, userId, copiedContent, contentIndex);
       return copiedPrev;
     });
   };

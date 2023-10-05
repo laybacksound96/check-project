@@ -14,7 +14,6 @@ import { dragIcon } from "../Settings";
 import { LoginState } from "../atoms/login";
 import { patchCharacter } from "../util/fetch";
 import { AxisLocker } from "./Functions/AxisLocker";
-import { UserState } from "../atoms/fetchData";
 import ButtonConfigAccount from "./ButtonConfigAccount";
 import ButtonConfigContent from "./ButtonConfigContent";
 import CharacterGold from "./CharacterGold";
@@ -124,7 +123,6 @@ const AccountIncomeContainer = styled.div`
 `;
 
 function DragCharacters({ DragHandleProps, account, accountIndex }: IProps) {
-  const userState = useRecoilValue(UserState);
   const loggined = useRecoilValue(LoginState);
   const setAccountOrder = useSetRecoilState(AccountOrder);
   const commanderData = useRecoilValue(CommanderData);
@@ -140,10 +138,7 @@ function DragCharacters({ DragHandleProps, account, accountIndex }: IProps) {
       const target = copiedCharacterOrder[source.index];
       copiedCharacterOrder.splice(source.index, 1);
       copiedCharacterOrder.splice(destination?.index, 0, target);
-      if (userState !== "GUEST") {
-        const userId = userState.user._id;
-        patchCharacter(copiedData._id, userId, copiedCharacterOrder);
-      }
+      // patchCharacter(copiedData._id, userId, copiedCharacterOrder);
       copiedData.characterOrder = copiedCharacterOrder;
       copiedAccounts[accountIndex] = copiedData;
       return copiedAccounts;

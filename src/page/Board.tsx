@@ -3,7 +3,7 @@ import { getCommander, loadUserData } from "../util/fetch";
 import { Suspense } from "react";
 import Dashboard from "./Dashboard";
 import { ICommanderData } from "../atoms/commander";
-import { IFetchedData } from "../atoms/fetchData";
+import { IFetchedUserData } from "../atoms/fetchData";
 
 export const loadBoardData: LoaderFunction = async ({ request, params }) => {
   const id = params.userId;
@@ -14,7 +14,7 @@ export const loadBoardData: LoaderFunction = async ({ request, params }) => {
 };
 
 interface IData {
-  data: Promise<[IFetchedData, ICommanderData]>;
+  data: Promise<[IFetchedUserData, ICommanderData]>;
 }
 const Board = () => {
   const { data } = useLoaderData() as IData;
@@ -23,7 +23,8 @@ const Board = () => {
     <>
       <Suspense fallback={<p>유저정보를 기다리는 중이에요...</p>}>
         <Await resolve={data}>
-          {(data: [IFetchedData, ICommanderData]) => {
+          {(data: [IFetchedUserData, ICommanderData]) => {
+            console.log(data);
             return <Dashboard data={data} />;
           }}
         </Await>

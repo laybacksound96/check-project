@@ -4,7 +4,6 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { ModalConfigAccountAtom } from "../atoms/modal";
 import ModalContainer from "./ModalContainer";
 import { AccountOrder } from "../atoms/data";
-import { UserState } from "../atoms/fetchData";
 import SettingCharacters from "./Ui/Modal/ModalContents/components/SettingVisibleContent";
 import { deleteAccount } from "../util/fetch";
 
@@ -43,25 +42,22 @@ const CharacterContainer = styled.div`
 `;
 export const ModalConfigAccount = () => {
   const [accountOrder, setAccountOrder] = useRecoilState(AccountOrder);
-  const user = useRecoilValue(UserState);
   const [{ index }, closeModal] = useRecoilState(ModalConfigAccountAtom);
   function handleDelete() {
     const accountId = accountOrder[index]._id;
-    if (user === "GUEST") {
+    setAccountOrder((prev) => {
+      const copiedPrev = [...prev];
+      copiedPrev.splice(index, 1);
+      return copiedPrev;
+    });
+
+    deleteAccount(accountId).then(() => {
       setAccountOrder((prev) => {
         const copiedPrev = [...prev];
         copiedPrev.splice(index, 1);
         return copiedPrev;
       });
-    } else {
-      deleteAccount(accountId).then(() => {
-        setAccountOrder((prev) => {
-          const copiedPrev = [...prev];
-          copiedPrev.splice(index, 1);
-          return copiedPrev;
-        });
-      });
-    }
+    });
     closeModal({ status: false, index: 0 });
   }
   const { characters, characterOrder } = accountOrder[index];

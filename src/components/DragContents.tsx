@@ -13,7 +13,6 @@ import { patchChecks, patchContents } from "../util/fetch";
 import CheckBoxButton from "./ButtonCheckBox";
 import { AxisLocker } from "./Functions/AxisLocker";
 import { AccountOrder, IAccountOrder } from "../atoms/data";
-import { UserState } from "../atoms/fetchData";
 import patchData from "./Functions/patchData";
 import { FrequencyCounter } from "../atoms/frequency";
 import calculateStrength from "./Functions/calculateStrength";
@@ -44,7 +43,6 @@ interface IProps {
   accountIndex: number;
 }
 const DragContents = ({ account, accountIndex }: IProps) => {
-  const userState = useRecoilValue(UserState);
   const [accountOrder, setAccountOrder] = useRecoilState(AccountOrder);
   const frequency = useRecoilValue(FrequencyCounter);
   const loggined = useRecoilValue(LoginState);
@@ -60,10 +58,7 @@ const DragContents = ({ account, accountIndex }: IProps) => {
       const target = copiedContentsOrder[source.index];
       copiedContentsOrder.splice(source.index, 1);
       copiedContentsOrder.splice(destination?.index, 0, target);
-      if (userState !== "GUEST") {
-        const userId = userState.user._id;
-        patchContents(copiedData._id, userId, copiedContentsOrder);
-      }
+      // patchContents(copiedData._id, userId, copiedContentsOrder);
       copiedData.contentsOrder = copiedContentsOrder;
       copiedAccounts[accountIndex] = copiedData;
       return copiedAccounts;
@@ -83,12 +78,9 @@ const DragContents = ({ account, accountIndex }: IProps) => {
         copiedChecks.push({ characterName, contentName });
         copiedData.checks = copiedChecks;
         copiedAccounts[accountIndex] = copiedData;
-        if (userState !== "GUEST") {
-          const userId = userState.user._id;
-          patchData(700, async () => {
-            patchChecks(copiedData._id, userId, copiedChecks);
-          });
-        }
+        // patchData(700, async () => {
+        //   patchChecks(copiedData._id, userId, copiedChecks);
+        // });
         return copiedAccounts;
       });
     } else {
@@ -99,12 +91,9 @@ const DragContents = ({ account, accountIndex }: IProps) => {
         copiedChecks.splice(checkIndex, 1);
         copiedData.checks = copiedChecks;
         copiedAccounts[accountIndex] = copiedData;
-        if (userState !== "GUEST") {
-          const userId = userState.user._id;
-          patchData(700, async () => {
-            patchChecks(copiedData._id, userId, copiedChecks);
-          });
-        }
+        // patchData(700, async () => {
+        //   patchChecks(copiedData._id, userId, copiedChecks);
+        // });
         return copiedAccounts;
       });
     }

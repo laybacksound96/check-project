@@ -13,8 +13,6 @@ import { AxisLocker } from "./Functions/AxisLocker";
 import DragCharacters from "./DragCharacters";
 import { AccountOrder } from "../atoms/data";
 import UncheckAllButton from "./UncheckAllContents";
-import { LoginState } from "../atoms/login";
-import { IFetchedData, UserState } from "../atoms/fetchData";
 import ModalAddAccount from "./ModalAddAccount";
 import ModalConfigAccount from "./ModalConfigAccount";
 import {
@@ -82,9 +80,9 @@ const DragAccounts = () => {
 
   return (
     <DragBoxStyle>
-      {modalConfigContent && <ModalConfigContent />}
+      {/* {modalConfigContent && <ModalConfigContent />}
       {modalConfigAccount.status && <ModalConfigAccount />}
-      {modalAddacount && <ModalAddAccount />}
+      {modalAddacount && <ModalAddAccount />} */}
       <DragDropContext onDragEnd={dragAccountHandler}>
         <Droppable droppableId="accounts" direction="vertical">
           {(provided) => (
@@ -107,11 +105,11 @@ const DragAccounts = () => {
                           false
                         )}
                       >
-                        <DragCharacters
+                        {/* <DragCharacters
                           DragHandleProps={provided.dragHandleProps}
                           account={account}
                           accountIndex={index}
-                        />
+                        /> */}
                       </div>
                     )}
                   </Draggable>
@@ -122,7 +120,7 @@ const DragAccounts = () => {
           )}
         </Droppable>
       </DragDropContext>
-      {loggined && <AddAccountButton />}
+      {/* {loggined && <AddAccountButton />} */}
     </DragBoxStyle>
   );
 };

@@ -5,7 +5,6 @@ import CharacterContainer from "./Ui/Modal/ModalContents/components/CharacterCon
 import { makeDataResult } from "../util/addAccount";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import SortByLevel from "./Functions/SortByLevel";
-import { UserState } from "../atoms/fetchData";
 import ModalContainer from "./ModalContainer";
 import { ModalAddAcountAtom } from "../atoms/modal";
 import { AccountOrder } from "../atoms/data";

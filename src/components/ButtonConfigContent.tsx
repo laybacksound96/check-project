@@ -6,7 +6,6 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 import { LoginState } from "../atoms/login";
 import { ModalConfigContentsAtom } from "../atoms/modal";
 import { AccountOrder } from "../atoms/data";
-import { UserState } from "../atoms/fetchData";
 import { patchCharacter } from "../util/fetch";
 export const ButtonContainer = styled.div`
   display: flex;
@@ -32,7 +31,6 @@ const ButtonConfigContent = ({
   characterName: string;
 }) => {
   const setAccountOrder = useSetRecoilState(AccountOrder);
-  const userState = useRecoilValue(UserState);
   const openModal = useSetRecoilState(ModalConfigContentsAtom);
   const loggined = useRecoilValue(LoginState);
   const handleVisible = () => {
@@ -53,10 +51,7 @@ const ButtonConfigContent = ({
       } else {
         copiedCharacterOrder.push(target);
       }
-      if (userState !== "GUEST") {
-        const userId = userState.user._id;
-        patchCharacter(copiedData._id, userId, copiedCharacterOrder);
-      }
+      // patchCharacter(copiedData._id, userId, copiedCharacterOrder);
       copiedData.characterOrder = copiedCharacterOrder;
       copiedAccounts[accountIndex] = copiedData;
       return copiedAccounts;
