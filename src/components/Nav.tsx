@@ -202,7 +202,6 @@ const Nav = () => {
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
-
   const token = useRouteLoaderData("root") as ReturnType<typeof loadToken>;
   return (
     <NavConainer>
@@ -218,7 +217,7 @@ const Nav = () => {
           <div>
             <span>Search</span>
             <input
-              placeholder="디스코드 닉네임 혹은 캐릭터이름..."
+              placeholder="검색할 캐릭터이름..."
               onClick={toggleDropdown}
               onChange={HandleChange}
             />
