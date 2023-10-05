@@ -1,4 +1,3 @@
-import { atom } from "recoil";
 import { ICheck, ICharacter, IContent } from "./data";
 
 export interface IFetchedUserData {

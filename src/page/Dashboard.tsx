@@ -7,34 +7,32 @@ import {
   patchAccountOrder,
 } from "../util/fetch";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import { AccountOrder, IAccountOrder } from "../atoms/data";
-import { CommanderData, ICommanderData } from "../atoms/commander";
+import { User, AccountOrder, IAccountOrder, IUser } from "../atoms/data";
+import { CommanderData, ICommander } from "../atoms/commander";
 import HeaderBox from "../components/HeaderBox";
 import { IFetchedUserData } from "../atoms/fetchData";
 import { FrequencyCounter } from "../atoms/frequency";
 import { makeFrequencyCounter } from "../components/Functions/makeFrequencyCounter";
 import refreshAccount from "../util/refreshAccount";
-import { User } from "../atoms/newData";
 
 const DashboardStyle = styled.div`
   margin-top: 5px;
   min-width: 800px;
 `;
 interface IProps {
-  data: [IFetchedUserData, ICommanderData];
+  data: [IUser, ICommander[]];
 }
 
-function Dashboard({ data: [userData, { commanderData: commander }] }: IProps) {
-  const [loading, setLoading] = useState(true);
-  const [user, setUser] = useRecoilState(User);
+function Dashboard({ data }: IProps) {
   const setCommanderData = useSetRecoilState(CommanderData);
   const setFrequencyCounter = useSetRecoilState(FrequencyCounter);
-
+  const [user, setUser] = useRecoilState(User);
   useEffect(() => {
-    console.log(userData);
-    setUser(userData);
-    setLoading(false);
+    setUser(data[0]);
   }, []);
+  useEffect(() => {
+    console.log(user);
+  }, [user]);
   // useEffect(() => {
   //   console.log(userData);
   //   Promise.all(userData.accountOrder.map((id) => getAccountData(id))).then(
@@ -53,8 +51,8 @@ function Dashboard({ data: [userData, { commanderData: commander }] }: IProps) {
     <>
       <DashboardStyle>
         {/* <HeaderBox /> */}
-        {loading && <p>사용자 정보 로딩중...</p>}
-        <DragAccounts />
+        {/* {loading && <p>사용자 정보 로딩중...</p>} */}
+        {/* <DragAccounts /> */}
       </DashboardStyle>
     </>
   );

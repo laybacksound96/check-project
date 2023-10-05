@@ -34,8 +34,28 @@ export type IAccountOrder = {
   contents: IContent[];
   checks: ICheck[];
 };
+export interface IUser {
+  _id: string;
+  user_id: string;
+  user_name: string;
+  discriminator: string;
+  global_name?: string;
+  banner_color?: string;
+  avatar?: string;
+  accountOrder: string[];
+}
 
 export const AccountOrder = atom<IAccountOrder[]>({
   key: "AccountOrder",
   default: [],
+});
+export const User = atom<IUser>({
+  key: "User",
+  default: {
+    user_id: "",
+    accountOrder: [],
+    user_name: "",
+    _id: "",
+    discriminator: "",
+  },
 });

@@ -110,6 +110,7 @@ const DragAccounts = () => {
                           account={account}
                           accountIndex={index}
                         /> */}
+                        <span>asdasd</span>
                       </div>
                     )}
                   </Draggable>

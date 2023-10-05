@@ -1,12 +1,12 @@
 import axios, { AxiosResponse } from "axios";
-import { ICommanderData } from "../atoms/commander";
 import {
   IFetchedAccount,
   IFetchedUserData,
   ISearchedData,
 } from "../atoms/fetchData";
-import { IAccountOrder, ICheck, IContent } from "../atoms/data";
+import { IAccountOrder, ICheck, IContent, IUser } from "../atoms/data";
 import { accountData } from "./addAccount";
+import { ICommander } from "../atoms/commander";
 
 const url = "http://localhost:8080/";
 // "http://localhost:8080/"
@@ -44,11 +44,11 @@ export async function search(
   }, 1000);
 }
 export const loadUserData = async (id: string) => {
-  const response = await axios.get<IFetchedUserData>(`${url}user/${id}`);
+  const response = await axios.get<IUser>(`${url}user/${id}`);
   return response.data;
 };
 export const getCommander = async () => {
-  const response = await axios.get<ICommanderData>(`${url}api/commander`);
+  const response = await axios.get<ICommander[]>(`${url}api/commander`);
   return response.data;
 };
 export async function fetchLogin(): Promise<string> {
