@@ -3,10 +3,7 @@ import { ISearchedData } from "../atoms/fetchData";
 import { IAccount, ICharacters, ICheck, IContents, IUser } from "../atoms/data";
 import { ICommander } from "../atoms/commander";
 import { INewAccountData } from "./addAccount";
-
-const url = "http://localhost:8080/";
-// "http://localhost:8080/"
-// "https://www.checksheet.link/"
+const url = process.env.REACT_APP_BACKEND_DOMAIN;
 
 interface IAccountData {
   account: IAccount;
