@@ -201,7 +201,6 @@ const ContentCard = ({
     gateIndex: number,
     Difficulty: string
   ) => {
-    console.log("called");
     const newDifficulty = Difficulty === "hard" ? "normal" : "hard";
     const copiedGateSetting = [...gateSetting];
     const copiedGate = {
