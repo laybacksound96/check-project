@@ -70,13 +70,16 @@ export function makeGoldCotents(
   });
   return goldContents.sort((a, b) => b.goldIncome - a.goldIncome).slice(0, 3);
 }
-export const makeCharacter = (data: IFetchedCharacter): ICharacter => {
+export const makeCharacter = (
+  data: IFetchedCharacter,
+  index: number
+): ICharacter => {
   const { CharacterName, CharacterClassName, ServerName, ItemMaxLevel } = data;
   const result: ICharacter = {
     CharacterName,
     CharacterClassName,
     ServerName,
-    isGoldCharacter: false,
+    isGoldCharacter: index < 6 ? true : false,
     ItemMaxLevel: parseInt(ItemMaxLevel.replace(",", "")),
   };
   return result;
@@ -162,7 +165,7 @@ export function makeAccount(
   commanderData: ICommander[]
 ): INewAccountData {
   const characters = fetchedData
-    .map((character) => makeCharacter(character))
+    .map((character, index) => makeCharacter(character, index))
     .sort((a, b) => b.ItemMaxLevel - a.ItemMaxLevel);
   const characterOrder = characters
     .map(({ CharacterName }) => CharacterName)
