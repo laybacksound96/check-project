@@ -7,14 +7,11 @@ import {
 } from "react-beautiful-dnd";
 import styled from "styled-components";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { patchAccount, uncheckAll } from "../util/fetch";
+import { patchAccountOrder, uncheckAll } from "../util/fetch";
 import AddAccountButton from "./ButtonAddAccount";
 import { AxisLocker } from "./Functions/AxisLocker";
 import DragCharacters from "./DragCharacters";
-import { AccountOrder } from "../atoms/data";
 import UncheckAllButton from "./UncheckAllContents";
-import { LoginState } from "../atoms/login";
-import { IFetchedData, UserState } from "../atoms/fetchData";
 import ModalAddAccount from "./ModalAddAccount";
 import ModalConfigAccount from "./ModalConfigAccount";
 import {
@@ -23,6 +20,10 @@ import {
   ModalConfigContentsAtom,
 } from "../atoms/modal";
 import ModalConfigContent from "./ModalConfigContent";
+import { useRouteLoaderData } from "react-router-dom";
+import { loadToken } from "../util/auth";
+import { changeAccountOrder } from "./Functions/changeFunctions";
+import { Accounts, IAccount } from "../atoms/data";
 const DragBoxStyle = styled.div`
   width: 100%;
   height: auto;
@@ -41,50 +42,40 @@ const AccountStyle = styled.div`
   display: flex;
   flex-direction: column;
 `;
-export function isLoggined(userState: IFetchedData | "GUEST") {
-  if (userState === "GUEST") return true;
-  return userState.isLoggined;
-}
 
 const DragAccounts = () => {
+  const loggined = useRouteLoaderData("root") as ReturnType<typeof loadToken>;
   const modalConfigContent = useRecoilValue(ModalConfigContentsAtom);
   const modalAddacount = useRecoilValue(ModalAddAcountAtom);
   const modalConfigAccount = useRecoilValue(ModalConfigAccountAtom);
-  const userState = useRecoilValue(UserState);
-  const loggined = useRecoilValue(LoginState);
-  const [accountOrder, setAccountOrder] = useRecoilState(AccountOrder);
-  const dragAccountHandler = (dragInfo: DropResult) => {
+  const [accounts, setAccounts] = useRecoilState(Accounts);
+
+  const dragAccountHandler = async (dragInfo: DropResult) => {
     const { destination, source } = dragInfo;
     if (!destination) return;
     if (destination?.droppableId !== source.droppableId) return;
     if (destination.index === source.index) return;
-    setAccountOrder((prev) => {
-      const copiedPrev = [...prev];
-      const copiedObject = copiedPrev[source.index];
-      copiedPrev.splice(source.index, 1);
-      copiedPrev.splice(destination?.index, 0, copiedObject);
-      const accountOrderdata = copiedPrev.map((elem) => elem._id);
-      if (userState !== "GUEST") {
-        const userId = userState.user._id;
-        patchAccount(userId, accountOrderdata);
-      }
-      return [...copiedPrev];
-    });
+
+    const prevOrder = accounts.map(({ _id }) => _id);
+    const newAccountOrder = changeAccountOrder(dragInfo, prevOrder);
+    const result = await patchAccountOrder(newAccountOrder);
+    const newAccounts = result.map((name) => {
+      return accounts.find(({ _id }) => name === _id);
+    }) as IAccount[];
+    setAccounts(newAccounts);
   };
 
   const uncheckHandler = () => {
-    if (userState !== "GUEST") {
-      uncheckAll().then(() => {
-        setAccountOrder((prev) => {
-          const copiedPrev = [...prev];
-          copiedPrev.forEach((account, index) => {
-            const copiedAccount = { ...account, checks: [] };
-            copiedPrev[index] = copiedAccount;
-          });
-          return copiedPrev;
+    uncheckAll().then(() => {
+      setAccounts((prev) => {
+        const copiedPrev = [...prev];
+        copiedPrev.forEach((account, index) => {
+          const copiedAccount = { ...account, checks: [] };
+          copiedPrev[index] = copiedAccount;
         });
+        return copiedPrev;
       });
-    }
+    });
   };
 
   return (
@@ -97,7 +88,7 @@ const DragAccounts = () => {
           {(provided) => (
             <AccountStyle ref={provided.innerRef} {...provided.droppableProps}>
               {loggined && <UncheckAllButton handleUncheck={uncheckHandler} />}
-              {accountOrder.map((account, index) => {
+              {accounts.map((account, index) => {
                 return (
                   <Draggable
                     draggableId={account._id}

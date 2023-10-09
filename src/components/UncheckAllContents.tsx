@@ -3,7 +3,7 @@ import { faSquareCheck } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import { useRecoilValue } from "recoil";
-import { AccountOrder } from "../atoms/data";
+import { Accounts } from "../atoms/data";
 
 const ButtonContainer = styled.div`
   cursor: pointer;
@@ -47,7 +47,7 @@ interface IProps {
 }
 const UncheckAllButton = ({ handleUncheck }: IProps) => {
   const [isConfirmed, setIsConfirmed] = useState(false);
-  const account = useRecoilValue(AccountOrder);
+  const account = useRecoilValue(Accounts);
   return (
     <>
       {account.length > 0 && (

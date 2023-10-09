@@ -2,8 +2,8 @@ import { Await, LoaderFunction, defer, useLoaderData } from "react-router-dom";
 import { getCommander, loadUserData } from "../util/fetch";
 import { Suspense } from "react";
 import Dashboard from "./Dashboard";
-import { ICommanderData } from "../atoms/commander";
-import { IFetchedData } from "../atoms/fetchData";
+import { IUser } from "../atoms/data";
+import { ICommander } from "../atoms/commander";
 
 export const loadBoardData: LoaderFunction = async ({ request, params }) => {
   const id = params.userId;
@@ -14,16 +14,15 @@ export const loadBoardData: LoaderFunction = async ({ request, params }) => {
 };
 
 interface IData {
-  data: Promise<[IFetchedData, ICommanderData]>;
+  data: Promise<[IUser, ICommander[]]>;
 }
 const Board = () => {
   const { data } = useLoaderData() as IData;
-
   return (
     <>
       <Suspense fallback={<p>유저정보를 기다리는 중이에요...</p>}>
         <Await resolve={data}>
-          {(data: [IFetchedData, ICommanderData]) => {
+          {(data: [IUser, ICommander[]]) => {
             return <Dashboard data={data} />;
         </Await>
       </Suspense>

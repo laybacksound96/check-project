@@ -2,16 +2,15 @@ import { fetchSearchAccount, postAccount } from "../util/fetch";
 import React, { useState } from "react";
 import styled from "styled-components";
 import CharacterContainer from "./Ui/Modal/ModalContents/components/CharacterContainer";
-import { makeDataResult } from "../util/addAccount";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import SortByLevel from "./Functions/SortByLevel";
-import { UserState } from "../atoms/fetchData";
 import ModalContainer from "./ModalContainer";
 import { ModalAddAcountAtom } from "../atoms/modal";
-import { AccountOrder } from "../atoms/data";
 import { IsDuplicated, IsInValidName } from "./Functions/handleErrors";
 import { CommanderData } from "../atoms/commander";
 import { Button, Input } from "./SharedComponents";
+import { makeAccount } from "../util/addAccount";
+import { Accounts, Characters, Contents } from "../atoms/data";
 
 const Container = styled.div`
   display: flex;
@@ -46,15 +45,15 @@ interface IError {
 const ModalAddAccount = () => {
   const [error, setError] = useState<IError | undefined>();
   const closeModal = useSetRecoilState(ModalAddAcountAtom);
-  const setAccount = useSetRecoilState(AccountOrder);
+  const setContents = useSetRecoilState(Contents);
+  const [characters, setCharacters] = useRecoilState(Characters);
+  const setAccount = useSetRecoilState(Accounts);
   const commanderData = useRecoilValue(CommanderData);
   const [inputValue, setInputValue] = useState("");
   const [fetchedData, setFetchedData] = useState<IFetchedCharacter[]>([]);
-  const accountOrder = useRecoilValue(AccountOrder);
-  const userState = useRecoilValue(UserState);
   const SearchAccountHandler = async (event: React.MouseEvent) => {
     event.preventDefault();
-    if (IsDuplicated(inputValue, accountOrder)) {
+    if (IsDuplicated(inputValue, characters)) {
       setError({ message: "같은 계정이 이미 시트에 있어요" });
       return;
     }
@@ -79,26 +78,14 @@ const ModalAddAccount = () => {
     }
     setInputValue(() => name);
   };
+
   const AddAccountHandler = (data: IFetchedCharacter[]) => {
     if (data.length === 0) return;
-    const { characterOrder, characters, contents, contentsOrder } =
-      makeDataResult(data, commanderData);
-    setAccount((prev) => {
-      const copiedPrev = [...prev];
-      const newAccount = {
-        characterOrder,
-        characters,
-        contents,
-        contentsOrder,
-        _id: characterOrder[0],
-        checks: [],
-      };
-      copiedPrev.push(newAccount);
-      if (userState !== "GUEST") {
-        const userId = userState.user._id;
-        postAccount(userId, newAccount);
-      }
-      return copiedPrev;
+    const newAccount = makeAccount(data, commanderData);
+    postAccount(newAccount).then(({ account, character, content }) => {
+      setAccount((prev) => [...prev, account]);
+      setCharacters((prev) => [...prev, character]);
+      setContents((prev) => [...prev, content]);
     });
     closeModal(false);
   };

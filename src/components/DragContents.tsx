@@ -5,19 +5,17 @@ import {
   Draggable,
 } from "react-beautiful-dnd";
 import styled from "styled-components";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import React from "react";
 import { dragIcon } from "../Settings";
-import { LoginState } from "../atoms/login";
-import { patchChecks, patchContents } from "../util/fetch";
 import CheckBoxButton from "./ButtonCheckBox";
 import { AxisLocker } from "./Functions/AxisLocker";
-import { AccountOrder, IAccountOrder } from "../atoms/data";
-import { UserState } from "../atoms/fetchData";
-import patchData from "./Functions/patchData";
-import { FrequencyCounter } from "../atoms/frequency";
-import calculateStrength from "./Functions/calculateStrength";
 import getRandomPastelColor from "./Functions/getRandomPastelColor";
+import { Accounts, Contents, IAccount } from "../atoms/data";
+import { changeChecks, changeOrder } from "./Functions/changeFunctions";
+import { patchChecks, patchOrder } from "../util/fetch";
+import { useRouteLoaderData } from "react-router-dom";
+import { loadToken } from "../util/auth";
 
 const Name = styled.div`
   display: flex;
@@ -40,74 +38,49 @@ const ColumnContainer = styled.div`
 `;
 
 interface IProps {
-  account: IAccountOrder;
+  account: IAccount;
   accountIndex: number;
 }
 const DragContents = ({ account, accountIndex }: IProps) => {
-  const userState = useRecoilValue(UserState);
-  const [accountOrder, setAccountOrder] = useRecoilState(AccountOrder);
-  const frequency = useRecoilValue(FrequencyCounter);
-  const loggined = useRecoilValue(LoginState);
-  const dragContentHandler = (dragInfo: DropResult) => {
+  const setAccounts = useSetRecoilState(Accounts);
+  const token = useRouteLoaderData("root") as ReturnType<typeof loadToken>;
+  const loggined = token ? true : false;
+  const contents = useRecoilValue(Contents);
+  const foundContents = contents.find(({ owner }) => owner === account._id);
+  if (!foundContents) return null;
+  const dragContentHandler = async (dragInfo: DropResult) => {
     const { destination, source } = dragInfo;
     if (!destination) return;
     if (destination?.droppableId !== source.droppableId) return;
     if (destination.index === source.index) return;
-    setAccountOrder((prev) => {
+    const prevOrder = [...account.contentsOrder];
+    const newOrder = changeOrder(destination, source, prevOrder);
+    const newAccount = await patchOrder(account._id, {
+      name: "contentsOrder",
+      order: newOrder,
+    });
+    if (!newAccount) return;
+    setAccounts((prev) => {
       const copiedAccounts = [...prev];
-      const copiedData = { ...copiedAccounts[accountIndex] };
-      const copiedContentsOrder = [...copiedData.contentsOrder];
-      const target = copiedContentsOrder[source.index];
-      copiedContentsOrder.splice(source.index, 1);
-      copiedContentsOrder.splice(destination?.index, 0, target);
-      if (userState !== "GUEST") {
-        const userId = userState.user._id;
-        patchContents(copiedData._id, userId, copiedContentsOrder);
-      }
-      copiedData.contentsOrder = copiedContentsOrder;
-      copiedAccounts[accountIndex] = copiedData;
+      copiedAccounts[accountIndex] = newAccount;
       return copiedAccounts;
     });
     return;
   };
-  const onClickHandler = (
+  const onClickHandler = async (
     characterName: string,
     contentName: string,
     checkIndex: number
   ) => {
-    if (checkIndex === -1) {
-      setAccountOrder((prev) => {
-        const copiedAccounts = [...prev];
-        const copiedData = { ...copiedAccounts[accountIndex] };
-        const copiedChecks = [...copiedData.checks];
-        copiedChecks.push({ characterName, contentName });
-        copiedData.checks = copiedChecks;
-        copiedAccounts[accountIndex] = copiedData;
-        if (userState !== "GUEST") {
-          const userId = userState.user._id;
-          patchData(700, async () => {
-            patchChecks(copiedData._id, userId, copiedChecks);
-          });
-        }
-        return copiedAccounts;
-      });
-    } else {
-      setAccountOrder((prev) => {
-        const copiedAccounts = [...prev];
-        const copiedData = { ...copiedAccounts[accountIndex] };
-        const copiedChecks = [...copiedData.checks];
-        copiedChecks.splice(checkIndex, 1);
-        copiedData.checks = copiedChecks;
-        copiedAccounts[accountIndex] = copiedData;
-        if (userState !== "GUEST") {
-          const userId = userState.user._id;
-          patchData(700, async () => {
-            patchChecks(copiedData._id, userId, copiedChecks);
-          });
-        }
-        return copiedAccounts;
-      });
-    }
+    const newCheck = { characterName, contentName };
+    const checks = account.checks;
+    const newChecks = changeChecks(checks, checkIndex, newCheck);
+    const newAccount = await patchChecks(account._id, newChecks);
+    setAccounts((prev) => {
+      const copiedPrev = [...prev];
+      copiedPrev[accountIndex] = newAccount;
+      return copiedPrev;
+    });
   };
 
   return (
@@ -139,8 +112,7 @@ const DragContents = ({ account, accountIndex }: IProps) => {
                           : ContentName}
                       </Name>
                       {account.characterOrder.map((CharacterName) => {
-                        const contents = account.contents;
-                        const content = contents.find(
+                        const content = foundContents.contents.find(
                           ({ owner, contentName }) =>
                             owner === CharacterName &&
                             contentName === ContentName

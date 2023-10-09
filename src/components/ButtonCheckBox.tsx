@@ -3,9 +3,9 @@ import { faSquare } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
 import { dragIcon } from "../Settings";
-import { IAccountOrder } from "../atoms/data";
-import { useRecoilValue } from "recoil";
-import { LoginState } from "../atoms/login";
+import { useRouteLoaderData } from "react-router-dom";
+import { loadToken } from "../util/auth";
+import { IAccount } from "../atoms/data";
 
 interface IStyle {
   isVisible: boolean;
@@ -35,7 +35,7 @@ interface ICheckboxProps {
   CharacterName: string;
   ContentName: string;
   Color: string;
-  Account: IAccountOrder;
+  Account: IAccount;
   isVisible: boolean;
   onClickHandler: (
     CharacterName: string,
@@ -57,7 +57,8 @@ function ButtonCheckBox({
       CharacterName === characterName && ContentName === contentName
   );
   const checked = checkIndex === -1 ? false : true;
-  const loggined = useRecoilValue(LoginState);
+  const token = useRouteLoaderData("root") as ReturnType<typeof loadToken>;
+  const loggined = token ? true : false;
   function onClick() {
     if (!isVisible || !loggined) return;
     onClickHandler(CharacterName, ContentName, checkIndex);

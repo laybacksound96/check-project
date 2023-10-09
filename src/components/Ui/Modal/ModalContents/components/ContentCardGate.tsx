@@ -2,14 +2,11 @@ import styled from "styled-components";
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ContentCardCheckBox from "./ContentCardCheckBox";
-import { AccountOrder, IGate } from "../../../../../atoms/data";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { UserState } from "../../../../../atoms/fetchData";
-import { patchContent } from "../../../../../util/fetch";
 
 const GateVisibleContainer = styled.div`
   display: flex;
   align-items: center;
+  cursor: pointer;
   svg {
     font-size: 30px;
     opacity: 20%;
@@ -63,86 +60,26 @@ const CheckBoxContainer = styled.div`
 
 interface IProps {
   Difficulty: string;
-  Gate: IGate;
   GateIndex: number;
   isGateVisible: boolean;
   isVisible: boolean;
   Color: string;
   isConvertable: boolean;
-  accountIndex: number;
-  contentName: string;
-  characterName: string;
   isGateActivate: boolean;
+  handleGateVisible: (gateIndex: number) => void;
+  handleGateDifficulty: (gateIndex: number, Difficulty: string) => void;
 }
 const ContentCardGate = ({
   Difficulty,
-  Gate,
   GateIndex,
   isVisible,
   isGateVisible,
   Color,
   isConvertable,
-  accountIndex,
-  contentName,
-  characterName,
   isGateActivate,
+  handleGateVisible,
+  handleGateDifficulty,
 }: IProps) => {
-  const userState = useRecoilValue(UserState);
-  const setAccount = useSetRecoilState(AccountOrder);
-  const hanldeGateVisible = () => {
-    if (!isGateActivate) return;
-    setAccount((prev) => {
-      const copiedPrev = [...prev];
-      const copiedAccount = { ...copiedPrev[accountIndex] };
-      const copiedContents = [...copiedAccount.contents];
-      const contentIndex = copiedContents.findIndex(
-        ({ contentName: name, owner }) =>
-          name === contentName && characterName === owner
-      );
-      if (contentIndex === -1) return copiedPrev;
-      const copiedContent = { ...copiedContents[contentIndex] };
-      const copiedGates = [...copiedContent.gateSetting];
-      const copiedGate = { ...copiedGates[GateIndex] };
-      copiedGate.isVisible = !copiedGate.isVisible;
-      copiedGates[GateIndex] = copiedGate;
-      copiedContent.gateSetting = copiedGates;
-      copiedContents[contentIndex] = copiedContent;
-      copiedAccount.contents = copiedContents;
-      copiedPrev[accountIndex] = copiedAccount;
-      if (userState !== "GUEST") {
-        const userId = userState.user._id;
-        patchContent(copiedAccount._id, userId, copiedContent, contentIndex);
-      }
-      return copiedPrev;
-    });
-  };
-  const hanldeGateDifficulty = (diff: string) => {
-    if (!isConvertable || Difficulty === diff) return;
-    setAccount((prev) => {
-      const copiedPrev = [...prev];
-      const copiedAccount = { ...copiedPrev[accountIndex] };
-      const copiedContents = [...copiedAccount.contents];
-      const contentIndex = copiedContents.findIndex(
-        ({ contentName: name, owner }) =>
-          name === contentName && characterName === owner
-      );
-      if (contentIndex === -1) return copiedPrev;
-      const copiedContent = { ...copiedContents[contentIndex] };
-      const copiedGates = [...copiedContent.gateSetting];
-      const copiedGate = { ...copiedGates[GateIndex] };
-      copiedGate.difficulty = diff;
-      copiedGates[GateIndex] = copiedGate;
-      copiedContent.gateSetting = copiedGates;
-      copiedContents[contentIndex] = copiedContent;
-      copiedAccount.contents = copiedContents;
-      copiedPrev[accountIndex] = copiedAccount;
-      if (userState !== "GUEST") {
-        const userId = userState.user._id;
-        patchContent(copiedAccount._id, userId, copiedContent, contentIndex);
-      }
-      return copiedPrev;
-    });
-  };
   return (
     <GateContainer
       Color={Color}
@@ -155,21 +92,32 @@ const ContentCardGate = ({
           <ContentCardCheckBox
             isCovertable={isConvertable}
             State={Difficulty}
+            isVisible={isVisible}
             Difficulty="normal"
-            handler={() => hanldeGateDifficulty("normal")}
+            handler={() => {
+              if (!isConvertable || Difficulty === "normal") return;
+              handleGateDifficulty(GateIndex, Difficulty);
+            }}
           />
           <ContentCardCheckBox
             isCovertable={isConvertable}
             State={Difficulty}
+            isVisible={isVisible}
             Difficulty="hard"
-            handler={() => hanldeGateDifficulty("hard")}
+            handler={() => {
+              if (!isConvertable || Difficulty === "hard") return;
+              handleGateDifficulty(GateIndex, Difficulty);
+            }}
           />
         </CheckBoxContainer>
       </DifficultyContainer>
       <GateVisibleContainer>
         <FontAwesomeIcon
           icon={isGateVisible ? faEye : faEyeSlash}
-          onClick={() => hanldeGateVisible()}
+          onClick={() => {
+            if (!isGateActivate) return;
+            handleGateVisible(GateIndex);
+          }}
         />
       </GateVisibleContainer>
     </GateContainer>

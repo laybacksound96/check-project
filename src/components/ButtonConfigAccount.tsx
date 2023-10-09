@@ -1,10 +1,11 @@
 import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled, { css } from "styled-components";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import { dragIcon } from "../Settings";
-import { LoginState } from "../atoms/login";
 import { ModalConfigAccountAtom } from "../atoms/modal";
+import { useRouteLoaderData } from "react-router-dom";
+import { loadToken } from "../util/auth";
 interface IStyle {
   loggined: boolean;
 }
@@ -16,12 +17,14 @@ const Character = styled.div<IStyle>`
   height: ${dragIcon.icon.edgeLength}px;
   border-radius: 5px;
   svg {
+    cursor: pointer;
     opacity: 20%;
     font-size: 30px;
   }
   ${(prop) =>
     prop.loggined &&
     css`
+      cursor: pointer;
       &:hover {
         background-color: rgba(255, 255, 255, 0.231);
         transition: ease-in-out 0.1s;
@@ -33,13 +36,13 @@ const Character = styled.div<IStyle>`
 `;
 
 const ButtonConfigAccount = ({ index }: { index: number }) => {
-  const loggined = useRecoilValue(LoginState);
+  const loggined = useRouteLoaderData("root") as ReturnType<typeof loadToken>;
   const openModal = useSetRecoilState(ModalConfigAccountAtom);
 
   return (
     <>
       <Character
-        loggined={loggined}
+        loggined={loggined ? true : false}
         onClick={() => {
           if (!loggined) return;
           openModal({ status: true, index });

@@ -1,20 +1,19 @@
-import { IAccountOrder, ICheck, IContent } from "../../atoms/data";
+import { IAccount, ICheck, IContent, IContents } from "../../atoms/data";
 import { IFrequency } from "../../atoms/frequency";
 import getRandomPastelColor from "./getRandomPastelColor";
 import processDifficulty from "./processDifficulty";
 
-export function filterContents({
-  characterOrder,
-  contents,
-  contentsOrder,
-  checks,
-}: IAccountOrder) {
+export function filterContents(
+  characterOrder: string[],
+  contents: IContent[],
+  contentsOrder: string[],
+  checks: ICheck[]
+) {
   return contents.filter(({ contentName, isVisble, owner, isGoldContents }) => {
     const isChecked = check(checks, owner, contentName);
     return (
       contentsOrder.includes(contentName) &&
       characterOrder.includes(owner) &&
-      isGoldContents === true &&
       isVisble === true &&
       isChecked === false
     );
@@ -115,11 +114,21 @@ function sortCommander(frequency: IFrequency[]) {
 }
 
 export function makeFrequencyCounter(
-  accountOrder: IAccountOrder[]
+  accounts: IAccount[],
+  contents: IContents[]
 ): IFrequency[] {
   const result: IContent[][] = [];
-  for (let i in accountOrder) {
-    const filteredConents = filterContents(accountOrder[i]);
+  for (let i in accounts) {
+    const { _id, checks, characterOrder, contentsOrder } = accounts[i];
+    const content = contents.find(({ owner }) => owner === _id);
+    if (!content) continue;
+
+    const filteredConents = filterContents(
+      characterOrder,
+      content.contents,
+      contentsOrder,
+      checks
+    );
     result.push(filteredConents);
   }
   const flattenContents = flattenArray(result);
