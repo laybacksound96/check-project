@@ -2,9 +2,9 @@ import { useRecoilValue } from "recoil";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCoins } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
-import { AccountOrder } from "../atoms/data";
 import { CommanderData } from "../atoms/commander";
 import CountGold from "./CountGold";
+import { Accounts, Contents } from "../atoms/data";
 
 const Container = styled.div`
   svg {
@@ -22,13 +22,16 @@ const Container = styled.div`
   }
 `;
 const AccountGold = () => {
-  const accountOrder = useRecoilValue(AccountOrder);
+  const accountOrder = useRecoilValue(Accounts);
   const commanderData = useRecoilValue(CommanderData);
+  const contents = useRecoilValue(Contents);
   const calculateTotalIncome = () => {
     let totalGold = 0;
     for (let i in accountOrder) {
-      const { contents, characterOrder } = accountOrder[i];
-      const goldContents = contents.filter(
+      const { characterOrder, _id } = accountOrder[i];
+      const foundContents = contents.find(({ owner }) => owner === _id);
+      if (!foundContents) continue;
+      const goldContents = foundContents.contents.filter(
         ({ isVisble, isGoldContents, owner }) =>
           isVisble === true &&
           isGoldContents === true &&
@@ -56,8 +59,10 @@ const AccountGold = () => {
   const calculateCheckedIncome = () => {
     let checkedGold = 0;
     for (let i in accountOrder) {
-      const { checks, contents } = accountOrder[i];
-      const goldContents = contents.filter(
+      const { checks, _id } = accountOrder[i];
+      const foundContents = contents.find(({ owner }) => owner === _id);
+      if (!foundContents) continue;
+      const goldContents = foundContents.contents.filter(
         ({ isVisble, isGoldContents, contentName, owner }) =>
           isVisble === true &&
           isGoldContents === true &&

@@ -1,4 +1,4 @@
-import { IAccountOrder } from "../../atoms/data";
+import { ICharacters } from "../../atoms/data";
 
 export const IsDisabled = (...args: boolean[]): boolean => {
   const hasTrue = args.some((value) => value === true);
@@ -12,10 +12,10 @@ export const IsInValidName = (name: string): boolean => {
 
 export const IsDuplicated = (
   inputValue: string,
-  accountOrder: IAccountOrder[]
+  characters: ICharacters[]
 ): boolean => {
-  for (let i in accountOrder) {
-    const foundCharacter = accountOrder[i].characters.find(
+  for (let i in characters) {
+    const foundCharacter = characters[i].characters.find(
       ({ CharacterName }) => {
         return CharacterName === inputValue;
       }

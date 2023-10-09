@@ -2,7 +2,7 @@ import styled from "styled-components";
 import Contents from "./Contents";
 import AccountGold from "./AccountGold";
 import { useRecoilValue } from "recoil";
-import { IFetchedUserData } from "../atoms/fetchData";
+import { IUser, User } from "../atoms/data";
 const HeaderBoxStyle = styled.header`
   position: relative;
   min-width: auto;
@@ -41,7 +41,7 @@ const HeaderBoxStyle = styled.header`
   }
 `;
 
-const makeName = (user: IFetchedUserData) => {
+const makeName = (user: IUser) => {
   if (user.global_name) {
     return user.global_name;
   } else {
@@ -52,12 +52,12 @@ const makeName = (user: IFetchedUserData) => {
     }
   }
 };
-// <>{makeName(userState)}님의 체크시트</>
 const HeaderBox = () => {
+  const user = useRecoilValue(User);
   return (
     <HeaderBoxStyle>
       <header>
-        <h1></h1>
+        <h1>{makeName(user)}님의 체크시트</h1>
         <AccountGold />
       </header>
       <Contents />

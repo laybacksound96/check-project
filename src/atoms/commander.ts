@@ -1,12 +1,12 @@
 import { atom } from "recoil";
 
-export interface IDifficulty {
+export interface IGates {
   difficulty: "normal" | "hard";
   gates: { level: number; gold: number }[];
 }
 export type ICommander = {
   name: string;
-  data: IDifficulty[];
+  data: IGates[];
 };
 
 export const CommanderData = atom<ICommander[]>({

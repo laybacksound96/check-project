@@ -1,10 +1,11 @@
 import styled from "styled-components";
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { faCoins } from "@fortawesome/free-solid-svg-icons";
-import { AccountOrder, ICharacter } from "../../../../../atoms/data";
-import { patchCharacter } from "../../../../../util/fetch";
+import { Accounts, Characters, ICharacter } from "../../../../../atoms/data";
+import { patchGoldContents, patchOrder } from "../../../../../util/fetch";
+import { changeCharacterVisible } from "../../../../Functions/changeFunctions";
 
 export const NameContainer = styled.div`
   display: flex;
@@ -69,13 +70,14 @@ export const ButtonContainer = styled.div`
   }
 `;
 interface IProps {
+  account_id: string;
   index: number;
   Character: ICharacter;
   isVisible: boolean;
   charIndex: number;
 }
 const SettingCharacters = ({
-  index,
+  account_id,
   Character: {
     CharacterName,
     ItemMaxLevel,
@@ -85,43 +87,42 @@ const SettingCharacters = ({
   isVisible,
   charIndex,
 }: IProps) => {
-  const setAccountOrder = useSetRecoilState(AccountOrder);
-  const handleGoldChar = () => {
-    setAccountOrder((prev) => {
-      const copiedAccounts = [...prev];
-      const copiedData = { ...copiedAccounts[index] };
-      const copiedcharacters = [...copiedData.characters];
-      const cpopiedCharacter = { ...copiedcharacters[charIndex] };
-      cpopiedCharacter.isGoldCharacter = !cpopiedCharacter.isGoldCharacter;
-      copiedcharacters[charIndex] = cpopiedCharacter;
-      copiedData.characters = copiedcharacters;
-      copiedAccounts[index] = copiedData;
-
-      return copiedAccounts;
+  const [accounts, setAccounts] = useRecoilState(Accounts);
+  const [characters, setCharacters] = useRecoilState(Characters);
+  const handleGoldChar = async () => {
+    const index = characters.findIndex(({ owner }) => owner === account_id);
+    if (index === -1) return;
+    const chracter = characters[index].characters[charIndex];
+    const fetchedData = await patchGoldContents(
+      characters[index]._id,
+      chracter.CharacterName,
+      chracter.isGoldCharacter
+    );
+    setCharacters((prev) => {
+      const CopiedPrev = [...prev];
+      CopiedPrev[index] = fetchedData;
+      return CopiedPrev;
     });
   };
-  const handleVisible = () => {
-    setAccountOrder((prev) => {
+  const handleVisible = async () => {
+    const account = accounts.find(({ _id }) => _id === account_id);
+    const accountIndex = accounts.findIndex(({ _id }) => _id === account_id);
+    if (!account || accountIndex === -1) return;
+    const newOrder = changeCharacterVisible(
+      account.characterOrder,
+      CharacterName
+    );
+    const newAccount = await patchOrder(account._id, {
+      name: "characterOrder",
+      order: newOrder,
+    });
+    if (!newAccount) return;
+    setAccounts((prev) => {
       const copiedAccounts = [...prev];
-      const copiedData = { ...copiedAccounts[index] };
-      const copiedCharacterOrder = [...copiedData.characterOrder];
-      const target = CharacterName;
-      const targetIndex = copiedCharacterOrder.findIndex(
-        (name) => name === target
-      );
-      if (isVisible) {
-        if (targetIndex === -1) {
-          return copiedAccounts;
-        }
-        copiedCharacterOrder.splice(targetIndex, 1);
-      } else {
-        copiedCharacterOrder.push(target);
-      }
-      // patchCharacter(copiedData._id, userId, copiedCharacterOrder);
-      copiedData.characterOrder = copiedCharacterOrder;
-      copiedAccounts[index] = copiedData;
+      copiedAccounts[accountIndex] = newAccount;
       return copiedAccounts;
     });
+    return;
   };
 
   return (

@@ -1,14 +1,12 @@
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import ContentCard from "./Ui/Modal/ModalContents/components/ContentCard";
-import { useEffect, useState } from "react";
-import CountUp from "react-countup";
 import { faCoins } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import CountGold from "./CountGold";
 import ModalContainer from "./ModalContainer";
 import { ModalConfigContentsAtom } from "../atoms/modal";
-import { AccountOrder, IContent } from "../atoms/data";
+import { Accounts, Characters, Contents, IContent } from "../atoms/data";
 import sortByCommander from "./Functions/sortCommander";
 import { CommanderData } from "../atoms/commander";
 import calculateIncome from "./Functions/calculateIncome";
@@ -74,18 +72,29 @@ const GoldContens = ({ goldContents }: { goldContents: IContent[] }) => {
 const ModalConfigContent = () => {
   const commanderData = useRecoilValue(CommanderData);
   const [modal, closeModal] = useRecoilState(ModalConfigContentsAtom);
-  const account = useRecoilValue(AccountOrder);
+  const account = useRecoilValue(Accounts);
+  const characters = useRecoilValue(Characters);
+  const contents = useRecoilValue(Contents);
+  const findData = (account_id: string) => {
+    const charactersData = characters.find(({ owner }) => owner === account_id);
+    const contentsData = contents.find(({ owner }) => owner === account_id);
+    if (!charactersData || !contentsData) return null;
+    return { charactersData, contentsData };
+  };
   if (!modal.data) return null;
   const {
     data: { accountIndex, characterName },
   } = modal;
-  const contents = filterByName(characterName, account[accountIndex].contents);
-  const goldContents = filterGoldContents(contents);
-  const characterIndex = account[accountIndex].characters.findIndex(
+  const Data = findData(account[accountIndex]._id);
+  if (!Data) return null;
+  const { charactersData, contentsData } = Data;
+  const filteredContents = filterByName(characterName, contentsData.contents);
+  const goldContents = filterGoldContents(filteredContents);
+  const characterIndex = charactersData.characters.findIndex(
     ({ CharacterName }) => characterName === CharacterName
   );
   if (characterIndex === -1) return null;
-  const { ItemMaxLevel } = account[accountIndex].characters[characterIndex];
+  const { ItemMaxLevel } = charactersData.characters[characterIndex];
   return (
     <ModalContainer
       onClose={() => closeModal({ status: false })}
@@ -99,10 +108,10 @@ const ModalConfigContent = () => {
           <CountGold income={calculateIncome(goldContents, commanderData)} />
         </GoldBox>
         <GridContainer>
-          {sortByCommander(contents).map((contents) => {
+          {sortByCommander(filteredContents).map((contents) => {
             return (
               <ContentCard
-                key={contents._id ? contents._id : contents.contentName}
+                key={contents.contentName}
                 contents={contents}
                 isGoldContents={goldContents
                   .map(({ contentName }) => contentName)

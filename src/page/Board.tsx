@@ -2,7 +2,6 @@ import { Await, LoaderFunction, defer, useLoaderData } from "react-router-dom";
 import { getCommander, loadUserData } from "../util/fetch";
 import { Suspense } from "react";
 import Dashboard from "./Dashboard";
-import { IFetchedUserData } from "../atoms/fetchData";
 import { IUser } from "../atoms/data";
 import { ICommander } from "../atoms/commander";
 

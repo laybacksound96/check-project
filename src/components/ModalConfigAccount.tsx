@@ -3,9 +3,9 @@ import DangerZone from "./Ui/Modal/ModalContents/components/DangerZone";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { ModalConfigAccountAtom } from "../atoms/modal";
 import ModalContainer from "./ModalContainer";
-import { AccountOrder } from "../atoms/data";
 import SettingCharacters from "./Ui/Modal/ModalContents/components/SettingVisibleContent";
 import { deleteAccount } from "../util/fetch";
+import { Accounts, Characters, Contents } from "../atoms/data";
 
 const Container = styled.div`
   width: auto;
@@ -41,16 +41,11 @@ const CharacterContainer = styled.div`
   gap: 10px;
 `;
 export const ModalConfigAccount = () => {
-  const [accountOrder, setAccountOrder] = useRecoilState(AccountOrder);
+  const [accountOrder, setAccountOrder] = useRecoilState(Accounts);
+  const characters = useRecoilValue(Characters);
   const [{ index }, closeModal] = useRecoilState(ModalConfigAccountAtom);
   function handleDelete() {
     const accountId = accountOrder[index]._id;
-    setAccountOrder((prev) => {
-      const copiedPrev = [...prev];
-      copiedPrev.splice(index, 1);
-      return copiedPrev;
-    });
-
     deleteAccount(accountId).then(() => {
       setAccountOrder((prev) => {
         const copiedPrev = [...prev];
@@ -60,7 +55,10 @@ export const ModalConfigAccount = () => {
     });
     closeModal({ status: false, index: 0 });
   }
-  const { characters, characterOrder } = accountOrder[index];
+  const { _id, characterOrder } = accountOrder[index];
+  const charactersData = characters.find(({ owner }) => owner === _id);
+  if (!charactersData) return null;
+  const characterData = charactersData.characters;
   return (
     <ModalContainer
       onClose={() => closeModal({ status: false, index: 0 })}
@@ -69,13 +67,14 @@ export const ModalConfigAccount = () => {
       <Container>
         <ContentList>
           <CharacterContainer>
-            {characters.map((character, charIndex) => {
+            {characterData.map((character, charIndex) => {
               const isVisible = characterOrder.includes(
                 character.CharacterName
               );
               return (
                 <SettingCharacters
                   key={character.CharacterName}
+                  account_id={_id}
                   index={index}
                   Character={character}
                   isVisible={isVisible}

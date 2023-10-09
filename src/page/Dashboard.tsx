@@ -1,19 +1,13 @@
 import styled from "styled-components";
 import DragAccounts from "../components/DragAccounts";
 import { useEffect, useState } from "react";
-import {
-  fetchSearchAccount,
-  getAccountData,
-  patchAccountOrder,
-} from "../util/fetch";
+import { getAccountData } from "../util/fetch";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import { User, AccountOrder, IAccountOrder, IUser } from "../atoms/data";
+import { User, IUser, Accounts, Characters, Contents } from "../atoms/data";
 import { CommanderData, ICommander } from "../atoms/commander";
 import HeaderBox from "../components/HeaderBox";
-import { IFetchedUserData } from "../atoms/fetchData";
 import { FrequencyCounter } from "../atoms/frequency";
 import { makeFrequencyCounter } from "../components/Functions/makeFrequencyCounter";
-import refreshAccount from "../util/refreshAccount";
 
 const DashboardStyle = styled.div`
   margin-top: 5px;
@@ -23,36 +17,37 @@ interface IProps {
   data: [IUser, ICommander[]];
 }
 
-function Dashboard({ data }: IProps) {
+function Dashboard({ data: [userData, commander] }: IProps) {
   const setCommanderData = useSetRecoilState(CommanderData);
   const setFrequencyCounter = useSetRecoilState(FrequencyCounter);
-  const [user, setUser] = useRecoilState(User);
+  const setUser = useSetRecoilState(User);
+  const [contents, setContents] = useRecoilState(Contents);
+  const setCharacters = useSetRecoilState(Characters);
+  const [accounts, setAccounts] = useRecoilState(Accounts);
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
-    setUser(data[0]);
+    setUser(userData);
+    setCommanderData(commander);
+    Promise.all(userData.accountOrder.map((id) => getAccountData(id))).then(
+      (values) => {
+        setAccounts(values.map(({ account }) => account));
+        setContents(values.map(({ contents }) => contents));
+        setCharacters(values.map(({ characters }) => characters));
+        setLoading(false);
+      }
+    );
   }, []);
-  useEffect(() => {
-    console.log(user);
-  }, [user]);
-  // useEffect(() => {
-  //   console.log(userData);
-  //   Promise.all(userData.accountOrder.map((id) => getAccountData(id))).then(
-  //     (values) => {
-  //       setCommanderData(commander);
-  //       setLoading(false);
-  //     }
-  //   );
-  // }, [commander, setAccount, setCommanderData, userData]);
 
-  // useEffect(() => {
-  //   setFrequencyCounter(makeFrequencyCounter(account));
-  // }, [account, setFrequencyCounter]);
+  useEffect(() => {
+    setFrequencyCounter(makeFrequencyCounter(accounts, contents));
+  }, [accounts, contents, setFrequencyCounter]);
 
   return (
     <>
       <DashboardStyle>
-        {/* <HeaderBox /> */}
-        {/* {loading && <p>사용자 정보 로딩중...</p>} */}
-        {/* <DragAccounts /> */}
+        <HeaderBox />
+        {loading && <p>사용자 정보 로딩중...</p>}
+        {<DragAccounts />}
       </DashboardStyle>
     </>
   );

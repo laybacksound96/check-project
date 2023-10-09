@@ -1,21 +1,20 @@
 import axios, { AxiosResponse } from "axios";
-import {
-  IFetchedAccount,
-  IFetchedUserData,
-  ISearchedData,
-} from "../atoms/fetchData";
-import { IAccountOrder, ICheck, IContent, IUser } from "../atoms/data";
-import { accountData } from "./addAccount";
+import { ISearchedData } from "../atoms/fetchData";
+import { IAccount, ICharacters, ICheck, IContents, IUser } from "../atoms/data";
 import { ICommander } from "../atoms/commander";
+import { INewAccountData } from "./addAccount";
 
 const url = "http://localhost:8080/";
 // "http://localhost:8080/"
 // "https://www.checksheet.link/"
 
+interface IAccountData {
+  account: IAccount;
+  characters: ICharacters;
+  contents: IContents;
+}
 export const getAccountData = async (account_id: string) => {
-  const response = await axios.get<IFetchedAccount>(
-    `${url}account/${account_id}`
-  );
+  const response = await axios.get<IAccountData>(`${url}account/${account_id}`);
   return response.data;
 };
 let lastCallTimeout: any = null;
@@ -55,7 +54,6 @@ export async function fetchLogin(): Promise<string> {
   const response = await axios.get(`${url}user/login`);
   return response.data.loginUrl;
 }
-
 export interface fetchedData {
   CharacterClassName: string;
   CharacterLevel: number;
@@ -86,21 +84,15 @@ export async function fetchSearchAccount(
     throw new Error("알 수 없는 오류가 있어요");
   }
 }
-export async function postAccount(accountData: accountData) {
+export async function postAccount(accountData: INewAccountData) {
   const token = localStorage.getItem("accessToken");
   try {
-    const response = await axios.post(
-      `${url}account`,
-      {
-        accountData,
+    const response = await axios.post(`${url}account`, accountData, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "bearer " + token,
       },
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "bearer " + token,
-        },
-      }
-    );
+    });
     return response.data;
   } catch (error) {
     return null;
@@ -126,19 +118,15 @@ export async function patchAccountOrder(accountOrderdata: string[]) {
     return accountOrderdata;
   }
 }
-export async function patchCharacter(
-  accountId: string,
-  userId: string,
-  characterOrderdata: string[]
+export async function patchOrder(
+  account: string,
+  orderData: { name: string; order: string[] }
 ) {
   const token = localStorage.getItem("accessToken");
   try {
-    const response = await axios.patch<string[]>(
-      `${url}account/characterOrder/${accountId}`,
-      {
-        characterOrder: characterOrderdata,
-        user_id: userId,
-      },
+    const response = await axios.patch<IAccount>(
+      `${url}account/Order/${account}`,
+      orderData,
       {
         headers: {
           "Content-Type": "application/json",
@@ -148,50 +136,19 @@ export async function patchCharacter(
     );
     return response.data;
   } catch (error) {
-    return characterOrderdata;
+    return null;
   }
 }
-export async function patchContents(
-  accountId: string,
-  userId: string,
-  conentsOrderdata: string[]
-) {
-  const token = localStorage.getItem("accessToken");
-  try {
-    const response = await axios.patch<string[]>(
-      `${url}account/contentsOrder/${accountId}`,
-      {
-        contentsOrder: conentsOrderdata,
-        user_id: userId,
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "bearer " + token,
-        },
-      }
-    );
-    return response.data;
-  } catch (error) {
-    return conentsOrderdata;
-  }
-}
-
 export async function patchContent(
-  accountId: string,
-  userId: string,
-  data: IContent,
-  contentIndex: number
+  content_id: string,
+  key: string,
+  value: any
 ) {
   const token = localStorage.getItem("accessToken");
   try {
-    const response = await axios.patch<string[]>(
-      `${url}account/content/${accountId}`,
-      {
-        data,
-        user_id: userId,
-        contentIndex,
-      },
+    const response = await axios.patch(
+      `${url}contents/setting/${content_id}`,
+      { [`${key}`]: value },
       {
         headers: {
           "Content-Type": "application/json",
@@ -201,21 +158,16 @@ export async function patchContent(
     );
     return response.data;
   } catch (error) {
-    return data;
+    return null;
   }
 }
-export async function patchChecks(
-  accountId: string,
-  userId: string,
-  checks: ICheck[]
-) {
+export async function patchChecks(accountId: string, checks: ICheck[]) {
   const token = localStorage.getItem("accessToken");
   try {
-    const response = await axios.patch<string[]>(
+    const response = await axios.patch(
       `${url}account/checks/${accountId}`,
       {
         checks: checks,
-        user_id: userId,
       },
       {
         headers: {
@@ -227,6 +179,28 @@ export async function patchChecks(
     return response.data;
   } catch (error) {
     return checks;
+  }
+}
+export async function patchGoldContents(
+  character_id: string,
+  name: string,
+  isGoldCharacter: boolean
+) {
+  const token = localStorage.getItem("accessToken");
+  try {
+    const response = await axios.patch(
+      `${url}character/goldCharacter/${character_id}`,
+      { name, isGoldCharacter },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "bearer " + token,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    return;
   }
 }
 export async function deleteAccount(accountId: string) {

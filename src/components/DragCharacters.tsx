@@ -9,10 +9,18 @@ import React from "react";
 import styled, { css } from "styled-components";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import DragContents from "./DragContents";
-import { AccountOrder, IAccountOrder, ICheck, IContent } from "../atoms/data";
+import {
+  Accounts,
+  Characters,
+  Contents,
+  IAccount,
+  ICharacters,
+  ICheck,
+  IContent,
+  IContents,
+} from "../atoms/data";
 import { dragIcon } from "../Settings";
-import { LoginState } from "../atoms/login";
-import { patchCharacter } from "../util/fetch";
+import { patchOrder } from "../util/fetch";
 import { AxisLocker } from "./Functions/AxisLocker";
 import ButtonConfigAccount from "./ButtonConfigAccount";
 import ButtonConfigContent from "./ButtonConfigContent";
@@ -23,6 +31,9 @@ import { faCoins } from "@fortawesome/free-solid-svg-icons";
 import { CommanderData, ICommander } from "../atoms/commander";
 import calculateIncome from "./Functions/calculateIncome";
 import CountUp from "react-countup";
+import { useRouteLoaderData } from "react-router-dom";
+import { loadToken } from "../util/auth";
+import { changeOrder } from "./Functions/changeFunctions";
 
 interface IStyle {
   loggined: boolean;
@@ -102,11 +113,7 @@ export const NameContainer = styled.div`
 const SettingAndGold = styled.div`
   display: flex;
 `;
-interface IProps {
-  DragHandleProps: DraggableProvidedDragHandleProps | null | undefined;
-  account: IAccountOrder;
-  accountIndex: number;
-}
+
 const AccountIncomeContainer = styled.div`
   display: flex;
   flex-grow: 1;
@@ -121,36 +128,68 @@ const AccountIncomeContainer = styled.div`
     font-size: 0.95rem;
   }
 `;
-
-function DragCharacters({ DragHandleProps, account, accountIndex }: IProps) {
-  const loggined = useRecoilValue(LoginState);
-  const setAccountOrder = useSetRecoilState(AccountOrder);
+interface IProps {
+  DragHandleProps: DraggableProvidedDragHandleProps | null | undefined;
+  accountIndex: number;
+  account: IAccount;
+}
+function DragCharacters({ DragHandleProps, accountIndex, account }: IProps) {
+  const loggined = useRouteLoaderData("root") as ReturnType<typeof loadToken>;
   const commanderData = useRecoilValue(CommanderData);
-  const dragCharacterHandler = (dragInfo: DropResult) => {
+  const setAccounts = useSetRecoilState(Accounts);
+  const characters = useRecoilValue(Characters);
+  const contents = useRecoilValue(Contents);
+  const findData = (account_id: string) => {
+    const charactersData = characters.find(({ owner }) => owner === account_id);
+    const contentsData = contents.find(({ owner }) => owner === account_id);
+    if (!charactersData || !contentsData) return null;
+    return { charactersData, contentsData };
+  };
+  const findDataByName = (
+    characterName: string,
+    charactersData: ICharacters,
+    contentsData: IContents
+  ) => {
+    const character = charactersData.characters.find(
+      ({ CharacterName }) => CharacterName === characterName
+    );
+    const content = contentsData.contents.filter(
+      ({ owner }) => owner === characterName
+    );
+    if (!character || !content) return null;
+
+    return { character, content };
+  };
+  const dragCharacterHandler = async (dragInfo: DropResult) => {
     const { destination, source } = dragInfo;
     if (!destination) return;
     if (destination?.droppableId !== source.droppableId) return;
     if (destination.index === source.index) return;
-    setAccountOrder((prev) => {
+
+    const prevOrder = [...account.characterOrder];
+    const newOrder = changeOrder(destination, source, prevOrder);
+    const newAccount = await patchOrder(account._id, {
+      name: "characterOrder",
+      order: newOrder,
+    });
+    if (!newAccount) return;
+
+    setAccounts((prev) => {
       const copiedAccounts = [...prev];
-      const copiedData = { ...copiedAccounts[accountIndex] };
-      const copiedCharacterOrder = [...copiedData.characterOrder];
-      const target = copiedCharacterOrder[source.index];
-      copiedCharacterOrder.splice(source.index, 1);
-      copiedCharacterOrder.splice(destination?.index, 0, target);
-      // patchCharacter(copiedData._id, userId, copiedCharacterOrder);
-      copiedData.characterOrder = copiedCharacterOrder;
-      copiedAccounts[accountIndex] = copiedData;
+      copiedAccounts[accountIndex] = newAccount;
       return copiedAccounts;
     });
     return;
   };
-  const goldContents = account.contents.filter(
-    ({ isVisble, isGoldContents, owner }) =>
-      isVisble === true &&
-      isGoldContents === true &&
-      account.characterOrder.includes(owner)
-  );
+  const filterGoldContents = (contents: IContent[]) => {
+    const result = contents.filter(
+      ({ isVisble, isGoldContents, owner }) =>
+        isVisble === true &&
+        isGoldContents === true &&
+        account.characterOrder.includes(owner)
+    );
+    return result;
+  };
   const calculateCheckedIncome = (
     goldContents: IContent[],
     commanderData: ICommander[],
@@ -180,12 +219,15 @@ function DragCharacters({ DragHandleProps, account, accountIndex }: IProps) {
     });
     return gold;
   };
-
+  const data = findData(account._id);
+  if (!data) return null;
+  const { charactersData, contentsData } = data;
+  const goldContents = filterGoldContents(contentsData.contents);
   return (
     <DragDropContext onDragEnd={dragCharacterHandler}>
       <Droppable droppableId={account._id}>
         {(provided) => (
-          <Container loggined={loggined}>
+          <Container loggined={loggined ? true : false}>
             <div ref={provided.innerRef} {...provided.droppableProps}>
               <SettingAndGold>
                 <ButtonConfigAccount index={accountIndex} />
@@ -209,15 +251,13 @@ function DragCharacters({ DragHandleProps, account, accountIndex }: IProps) {
                 </AccountIncomeContainer>
               </SettingAndGold>
               {account.characterOrder.map((name, index) => {
-                const character = account.characters.find(
-                  ({ CharacterName }) => CharacterName === name
+                const dataByName = findDataByName(
+                  name,
+                  charactersData,
+                  contentsData
                 );
-                const contents = account.contents.filter(
-                  ({ owner }) => owner === name
-                );
-                if (!character || !contents) {
-                  return null;
-                }
+                if (!dataByName) return null;
+                const { character, content } = dataByName;
                 return (
                   <Draggable
                     key={name}
@@ -248,7 +288,7 @@ function DragCharacters({ DragHandleProps, account, accountIndex }: IProps) {
                             {character.isGoldCharacter && (
                               <CharacterGold
                                 checks={account.checks}
-                                contents={contents}
+                                contents={content}
                                 CharacterName={name}
                               />
                             )}
@@ -262,7 +302,10 @@ function DragCharacters({ DragHandleProps, account, accountIndex }: IProps) {
               {provided.placeholder}
             </div>
             <DragContents account={account} accountIndex={accountIndex} />
-            <DragAccountBtn {...DragHandleProps} loggined={loggined} />
+            <DragAccountBtn
+              {...DragHandleProps}
+              loggined={loggined ? true : false}
+            />
           </Container>
         )}
       </Droppable>

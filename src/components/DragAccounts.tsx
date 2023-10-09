@@ -11,7 +11,6 @@ import { patchAccountOrder, uncheckAll } from "../util/fetch";
 import AddAccountButton from "./ButtonAddAccount";
 import { AxisLocker } from "./Functions/AxisLocker";
 import DragCharacters from "./DragCharacters";
-import { AccountOrder } from "../atoms/data";
 import UncheckAllButton from "./UncheckAllContents";
 import ModalAddAccount from "./ModalAddAccount";
 import ModalConfigAccount from "./ModalConfigAccount";
@@ -23,6 +22,8 @@ import {
 import ModalConfigContent from "./ModalConfigContent";
 import { useRouteLoaderData } from "react-router-dom";
 import { loadToken } from "../util/auth";
+import { changeAccountOrder } from "./Functions/changeFunctions";
+import { Accounts, IAccount } from "../atoms/data";
 const DragBoxStyle = styled.div`
   width: 100%;
   height: auto;
@@ -47,27 +48,26 @@ const DragAccounts = () => {
   const modalConfigContent = useRecoilValue(ModalConfigContentsAtom);
   const modalAddacount = useRecoilValue(ModalAddAcountAtom);
   const modalConfigAccount = useRecoilValue(ModalConfigAccountAtom);
-  const [accountOrder, setAccountOrder] = useRecoilState(AccountOrder);
+  const [accounts, setAccounts] = useRecoilState(Accounts);
 
-  const dragAccountHandler = (dragInfo: DropResult) => {
+  const dragAccountHandler = async (dragInfo: DropResult) => {
     const { destination, source } = dragInfo;
     if (!destination) return;
     if (destination?.droppableId !== source.droppableId) return;
     if (destination.index === source.index) return;
-    setAccountOrder((prev) => {
-      const copiedPrev = [...prev];
-      const copiedObject = copiedPrev[source.index];
-      copiedPrev.splice(source.index, 1);
-      copiedPrev.splice(destination?.index, 0, copiedObject);
-      const accountOrderdata = copiedPrev.map((elem) => elem._id);
-      patchAccountOrder(accountOrderdata);
-      return [...copiedPrev];
-    });
+
+    const prevOrder = accounts.map(({ _id }) => _id);
+    const newAccountOrder = changeAccountOrder(dragInfo, prevOrder);
+    const result = await patchAccountOrder(newAccountOrder);
+    const newAccounts = result.map((name) => {
+      return accounts.find(({ _id }) => name === _id);
+    }) as IAccount[];
+    setAccounts(newAccounts);
   };
 
   const uncheckHandler = () => {
     uncheckAll().then(() => {
-      setAccountOrder((prev) => {
+      setAccounts((prev) => {
         const copiedPrev = [...prev];
         copiedPrev.forEach((account, index) => {
           const copiedAccount = { ...account, checks: [] };
@@ -80,15 +80,15 @@ const DragAccounts = () => {
 
   return (
     <DragBoxStyle>
-      {/* {modalConfigContent && <ModalConfigContent />}
+      {modalConfigContent && <ModalConfigContent />}
       {modalConfigAccount.status && <ModalConfigAccount />}
-      {modalAddacount && <ModalAddAccount />} */}
+      {modalAddacount && <ModalAddAccount />}
       <DragDropContext onDragEnd={dragAccountHandler}>
         <Droppable droppableId="accounts" direction="vertical">
           {(provided) => (
             <AccountStyle ref={provided.innerRef} {...provided.droppableProps}>
               {loggined && <UncheckAllButton handleUncheck={uncheckHandler} />}
-              {accountOrder.map((account, index) => {
+              {accounts.map((account, index) => {
                 return (
                   <Draggable
                     draggableId={account._id}
@@ -105,12 +105,11 @@ const DragAccounts = () => {
                           false
                         )}
                       >
-                        {/* <DragCharacters
+                        <DragCharacters
                           DragHandleProps={provided.dragHandleProps}
                           account={account}
                           accountIndex={index}
-                        /> */}
-                        <span>asdasd</span>
+                        />
                       </div>
                     )}
                   </Draggable>
@@ -121,7 +120,7 @@ const DragAccounts = () => {
           )}
         </Droppable>
       </DragDropContext>
-      {/* {loggined && <AddAccountButton />} */}
+      {loggined && <AddAccountButton />}
     </DragBoxStyle>
   );
 };
