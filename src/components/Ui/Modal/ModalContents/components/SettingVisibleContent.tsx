@@ -4,8 +4,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRecoilState } from "recoil";
 import { faCoins } from "@fortawesome/free-solid-svg-icons";
 import { Accounts, Characters, ICharacter } from "../../../../../atoms/data";
-import { patchGoldContents, patchOrder } from "../../../../../util/fetch";
 import { changeCharacterVisible } from "../../../../Functions/changeFunctions";
+import { useParams } from "react-router-dom";
+import { patchOrder } from "../../../../../fetch/account";
+import { patchGoldContents } from "../../../../../fetch/character";
 
 export const NameContainer = styled.div`
   display: flex;
@@ -78,26 +80,19 @@ interface IProps {
 }
 const SettingCharacters = ({
   account_id,
-  Character: {
-    CharacterName,
-    ItemMaxLevel,
-    isGoldCharacter,
-    CharacterClassName,
-  },
+  Character: { CharacterName, ItemMaxLevel, isGoldCharacter, CharacterClassName },
   isVisible,
   charIndex,
 }: IProps) => {
+  const { userId } = useParams();
   const [accounts, setAccounts] = useRecoilState(Accounts);
   const [characters, setCharacters] = useRecoilState(Characters);
   const handleGoldChar = async () => {
+    if (!userId) return;
     const index = characters.findIndex(({ owner }) => owner === account_id);
     if (index === -1) return;
     const chracter = characters[index].characters[charIndex];
-    const fetchedData = await patchGoldContents(
-      characters[index]._id,
-      chracter.CharacterName,
-      chracter.isGoldCharacter
-    );
+    const fetchedData = await patchGoldContents(userId, characters[index]._id, chracter.CharacterName, chracter.isGoldCharacter);
     setCharacters((prev) => {
       const CopiedPrev = [...prev];
       CopiedPrev[index] = fetchedData;
@@ -105,14 +100,12 @@ const SettingCharacters = ({
     });
   };
   const handleVisible = async () => {
+    if (!userId) return;
     const account = accounts.find(({ _id }) => _id === account_id);
     const accountIndex = accounts.findIndex(({ _id }) => _id === account_id);
     if (!account || accountIndex === -1) return;
-    const newOrder = changeCharacterVisible(
-      account.characterOrder,
-      CharacterName
-    );
-    const newAccount = await patchOrder(account._id, {
+    const newOrder = changeCharacterVisible(account.characterOrder, CharacterName);
+    const newAccount = await patchOrder(userId, account._id, {
       name: "characterOrder",
       order: newOrder,
     });
@@ -139,15 +132,8 @@ const SettingCharacters = ({
         <span>Lv {ItemMaxLevel}</span>
       </NameContainer>
       <ButtonContainer>
-        <FontAwesomeIcon
-          icon={faCoins}
-          color={isGoldCharacter ? "yellow" : "white"}
-          onClick={() => handleGoldChar()}
-        />
-        <FontAwesomeIcon
-          onClick={() => handleVisible()}
-          icon={isVisible ? faEye : faEyeSlash}
-        />
+        <FontAwesomeIcon icon={faCoins} color={isGoldCharacter ? "yellow" : "white"} onClick={() => handleGoldChar()} />
+        <FontAwesomeIcon onClick={() => handleVisible()} icon={isVisible ? faEye : faEyeSlash} />
       </ButtonContainer>
     </Character>
   );

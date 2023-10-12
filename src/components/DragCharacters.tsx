@@ -5,7 +5,6 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 import DragContents from "./DragContents";
 import { Accounts, Characters, Contents, IAccount, ICharacters, ICheck, IContent, IContents } from "../atoms/data";
 import { dragIcon } from "../Settings";
-import { patchOrder } from "../util/fetch";
 import { AxisLocker } from "./Functions/AxisLocker";
 import ButtonConfigAccount from "./ButtonConfigAccount";
 import ButtonConfigContent from "./ButtonConfigContent";
@@ -18,6 +17,8 @@ import calculateIncome from "./Functions/calculateIncome";
 import CountUp from "react-countup";
 import { changeOrder } from "./Functions/changeFunctions";
 import { LoginState } from "../atoms/login";
+import { useParams } from "react-router-dom";
+import { patchOrder } from "../fetch/account";
 
 interface IStyle {
   loggined: boolean;
@@ -118,6 +119,7 @@ interface IProps {
   account: IAccount;
 }
 function DragCharacters({ DragHandleProps, accountIndex, account }: IProps) {
+  const { userId } = useParams();
   const loggined = useRecoilValue(LoginState);
   const commanderData = useRecoilValue(CommanderData);
   const setAccounts = useSetRecoilState(Accounts);
@@ -137,6 +139,7 @@ function DragCharacters({ DragHandleProps, accountIndex, account }: IProps) {
     return { character, content };
   };
   const dragCharacterHandler = async (dragInfo: DropResult) => {
+    if (!userId) return;
     const { destination, source } = dragInfo;
     if (!destination) return;
     if (destination?.droppableId !== source.droppableId) return;
@@ -144,7 +147,7 @@ function DragCharacters({ DragHandleProps, accountIndex, account }: IProps) {
 
     const prevOrder = [...account.characterOrder];
     const newOrder = changeOrder(destination, source, prevOrder);
-    const newAccount = await patchOrder(account._id, {
+    const newAccount = await patchOrder(userId, account._id, {
       name: "characterOrder",
       order: newOrder,
     });

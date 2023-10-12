@@ -8,8 +8,9 @@ import { AxisLocker } from "./Functions/AxisLocker";
 import getRandomPastelColor from "./Functions/getRandomPastelColor";
 import { Accounts, Contents, IAccount } from "../atoms/data";
 import { changeChecks, changeOrder } from "./Functions/changeFunctions";
-import { patchChecks, patchOrder } from "../util/fetch";
 import { LoginState } from "../atoms/login";
+import { useParams } from "react-router-dom";
+import { patchOrder, patchChecks } from "../fetch/account";
 
 const Name = styled.div`
   display: flex;
@@ -36,6 +37,7 @@ interface IProps {
   accountIndex: number;
 }
 const DragContents = ({ account, accountIndex }: IProps) => {
+  const { userId } = useParams();
   const setAccounts = useSetRecoilState(Accounts);
   const loggined = useRecoilValue(LoginState);
   const contents = useRecoilValue(Contents);
@@ -43,12 +45,12 @@ const DragContents = ({ account, accountIndex }: IProps) => {
   if (!foundContents) return null;
   const dragContentHandler = async (dragInfo: DropResult) => {
     const { destination, source } = dragInfo;
-    if (!destination) return;
+    if (!destination || !userId) return;
     if (destination?.droppableId !== source.droppableId) return;
     if (destination.index === source.index) return;
     const prevOrder = [...account.contentsOrder];
     const newOrder = changeOrder(destination, source, prevOrder);
-    const newAccount = await patchOrder(account._id, {
+    const newAccount = await patchOrder(userId, account._id, {
       name: "contentsOrder",
       order: newOrder,
     });
@@ -61,10 +63,11 @@ const DragContents = ({ account, accountIndex }: IProps) => {
     return;
   };
   const onClickHandler = async (characterName: string, contentName: string, checkIndex: number) => {
+    if (!userId) return;
     const newCheck = { characterName, contentName };
     const checks = account.checks;
     const newChecks = changeChecks(checks, checkIndex, newCheck);
-    const newAccount = await patchChecks(account._id, newChecks);
+    const newAccount = await patchChecks(userId, account._id, newChecks);
     setAccounts((prev) => {
       const copiedPrev = [...prev];
       copiedPrev[accountIndex] = newAccount;

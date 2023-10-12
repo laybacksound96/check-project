@@ -90,16 +90,11 @@ const ModalConfigContent = () => {
   const { charactersData, contentsData } = Data;
   const filteredContents = filterByName(characterName, contentsData.contents);
   const goldContents = filterGoldContents(filteredContents);
-  const characterIndex = charactersData.characters.findIndex(
-    ({ CharacterName }) => characterName === CharacterName
-  );
+  const characterIndex = charactersData.characters.findIndex(({ CharacterName }) => characterName === CharacterName);
   if (characterIndex === -1) return null;
   const { ItemMaxLevel } = charactersData.characters[characterIndex];
   return (
-    <ModalContainer
-      onClose={() => closeModal({ status: false })}
-      title={`${characterName}의 캐릭터 표시 설정`}
-    >
+    <ModalContainer onClose={() => closeModal({ status: false })} title={`${characterName}의 캐릭터 표시 설정`}>
       <Container>
         <p>골드획득 컨텐츠:</p>
         <GoldContens goldContents={goldContents} />
@@ -113,9 +108,7 @@ const ModalConfigContent = () => {
               <ContentCard
                 key={contents.contentName}
                 contents={contents}
-                isGoldContents={goldContents
-                  .map(({ contentName }) => contentName)
-                  .includes(contents.contentName)}
+                isGoldContents={goldContents.map(({ contentName }) => contentName).includes(contents.contentName)}
                 level={ItemMaxLevel}
                 accountIndex={accountIndex}
                 characterName={characterName}

@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import DragAccounts from "../components/DragAccounts";
 import { useEffect, useState } from "react";
-import { getAccountData } from "../util/fetch";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { User, IUser, Accounts, Characters, Contents } from "../atoms/data";
 import { CommanderData, ICommander } from "../atoms/commander";
@@ -11,6 +10,7 @@ import { makeFrequencyCounter } from "../components/Functions/makeFrequencyCount
 import { LoginState } from "../atoms/login";
 import { useRouteLoaderData, useParams } from "react-router-dom";
 import { loadToken } from "../util/auth";
+import { getAccountData } from "../fetch/account";
 
 const DashboardStyle = styled.div`
   margin-top: 5px;
@@ -22,10 +22,7 @@ interface IProps {
 
 function Dashboard({ data: [userData, commander] }: IProps) {
   const token = useRouteLoaderData("root") as ReturnType<typeof loadToken>;
-  interface IParams {
-    userId?: string;
-  }
-  const { userId } = useParams() as IParams;
+  const { userId } = useParams();
   const setLoginState = useSetRecoilState(LoginState);
   const setCommanderData = useSetRecoilState(CommanderData);
   const setFrequencyCounter = useSetRecoilState(FrequencyCounter);

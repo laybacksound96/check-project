@@ -1,9 +1,10 @@
 import { Await, LoaderFunction, defer, useLoaderData } from "react-router-dom";
-import { getCommander, loadUserData } from "../util/fetch";
 import { Suspense } from "react";
 import Dashboard from "./Dashboard";
 import { IUser } from "../atoms/data";
 import { ICommander } from "../atoms/commander";
+import { getCommander } from "../fetch/api";
+import { loadUserData } from "../fetch/user";
 
 export const loadBoardData: LoaderFunction = async ({ request, params }) => {
   const id = params.userId;

@@ -2,7 +2,7 @@ import React from "react";
 import { DragDropContext, Draggable, DropResult, Droppable } from "react-beautiful-dnd";
 import styled from "styled-components";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { patchAccountOrder, uncheckAll } from "../util/fetch";
+
 import AddAccountButton from "./ButtonAddAccount";
 import { AxisLocker } from "./Functions/AxisLocker";
 import DragCharacters from "./DragCharacters";
@@ -14,6 +14,8 @@ import ModalConfigContent from "./ModalConfigContent";
 import { changeAccountOrder } from "./Functions/changeFunctions";
 import { Accounts, IAccount } from "../atoms/data";
 import { LoginState } from "../atoms/login";
+import { patchAccountOrder, uncheckAll } from "../fetch/user";
+import { useParams } from "react-router-dom";
 const DragBoxStyle = styled.div`
   width: 100%;
   height: auto;
@@ -39,8 +41,9 @@ const DragAccounts = () => {
   const modalAddacount = useRecoilValue(ModalAddAcountAtom);
   const modalConfigAccount = useRecoilValue(ModalConfigAccountAtom);
   const [accounts, setAccounts] = useRecoilState(Accounts);
-
+  const { userId } = useParams();
   const dragAccountHandler = async (dragInfo: DropResult) => {
+    if (!userId) return;
     const { destination, source } = dragInfo;
     if (!destination) return;
     if (destination?.droppableId !== source.droppableId) return;
@@ -48,7 +51,7 @@ const DragAccounts = () => {
 
     const prevOrder = accounts.map(({ _id }) => _id);
     const newAccountOrder = changeAccountOrder(dragInfo, prevOrder);
-    const result = await patchAccountOrder(newAccountOrder);
+    const result = await patchAccountOrder(userId, newAccountOrder);
     const newAccounts = result.map((name) => {
       return accounts.find(({ _id }) => name === _id);
     }) as IAccount[];
@@ -56,7 +59,8 @@ const DragAccounts = () => {
   };
 
   const uncheckHandler = () => {
-    uncheckAll().then(() => {
+    if (!userId) return;
+    uncheckAll(userId).then(() => {
       setAccounts((prev) => {
         const copiedPrev = [...prev];
         copiedPrev.forEach((account, index) => {

@@ -1,4 +1,3 @@
-import { fetchSearchAccount, postAccount } from "../util/fetch";
 import React, { useState } from "react";
 import styled from "styled-components";
 import CharacterContainer from "./Ui/Modal/ModalContents/components/CharacterContainer";
@@ -11,7 +10,9 @@ import { CommanderData } from "../atoms/commander";
 import { Button, Input } from "./SharedComponents";
 import { makeAccount } from "../util/addAccount";
 import { Accounts, Characters, Contents } from "../atoms/data";
-
+import { useParams } from "react-router-dom";
+import { postAccount } from "../fetch/account";
+import { fetchSearchAccount } from "../fetch/api";
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -51,8 +52,10 @@ const ModalAddAccount = () => {
   const commanderData = useRecoilValue(CommanderData);
   const [inputValue, setInputValue] = useState("");
   const [fetchedData, setFetchedData] = useState<IFetchedCharacter[]>([]);
+  const { userId } = useParams();
   const SearchAccountHandler = async (event: React.MouseEvent) => {
     event.preventDefault();
+
     if (IsDuplicated(inputValue, characters)) {
       setError({ message: "같은 계정이 이미 시트에 있어요" });
       return;
@@ -80,9 +83,9 @@ const ModalAddAccount = () => {
   };
 
   const AddAccountHandler = (data: IFetchedCharacter[]) => {
-    if (data.length === 0) return;
+    if (data.length === 0 || !userId) return;
     const newAccount = makeAccount(data, commanderData);
-    postAccount(newAccount).then(({ account, character, content }) => {
+    postAccount(userId, newAccount).then(({ account, character, content }) => {
       setAccount((prev) => [...prev, account]);
       setCharacters((prev) => [...prev, character]);
       setContents((prev) => [...prev, content]);
@@ -102,21 +105,13 @@ const ModalAddAccount = () => {
             isDisabled={error !== undefined}
             placeholder="캐릭터 명을 입력한 뒤 검색"
           />
-          <Button
-            type="submit"
-            onClick={SearchAccountHandler}
-            disabled={inputValue.length === 0 || error !== undefined}
-          >
+          <Button type="submit" onClick={SearchAccountHandler} disabled={inputValue.length === 0 || error !== undefined}>
             검색
           </Button>
         </form>
         {error && <Error>{error.message}</Error>}
         {!error && <CharacterContainer Characters={fetchedData} />}
-        <Button
-          type="button"
-          onClick={() => AddAccountHandler(fetchedData)}
-          disabled={fetchedData.length === 0 || error !== undefined}
-        >
+        <Button type="button" onClick={() => AddAccountHandler(fetchedData)} disabled={fetchedData.length === 0 || error !== undefined}>
           추가
         </Button>
       </Container>

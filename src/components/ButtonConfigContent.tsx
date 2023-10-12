@@ -6,8 +6,9 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { ModalConfigContentsAtom } from "../atoms/modal";
 import { Accounts } from "../atoms/data";
 import { changeCharacterVisible } from "./Functions/changeFunctions";
-import { patchOrder } from "../util/fetch";
 import { LoginState } from "../atoms/login";
+import { patchOrder } from "../fetch/account";
+import { useParams } from "react-router-dom";
 export const ButtonContainer = styled.div`
   display: flex;
   justify-content: start;
@@ -29,12 +30,14 @@ const ButtonConfigContent = ({ accountIndex, characterName }: { accountIndex: nu
   const openModal = useSetRecoilState(ModalConfigContentsAtom);
   const loggined = useRecoilValue(LoginState);
   const account_id = accounts[accountIndex]._id;
+  const { userId } = useParams();
   const handleVisible = async () => {
+    if (!userId) return;
     const account = accounts.find(({ _id }) => _id === account_id);
     const accountIndex = accounts.findIndex(({ _id }) => _id === account_id);
     if (!account || accountIndex === -1) return;
     const newOrder = changeCharacterVisible(account.characterOrder, characterName);
-    const newAccount = await patchOrder(account._id, {
+    const newAccount = await patchOrder(userId, account._id, {
       name: "characterOrder",
       order: newOrder,
     });
