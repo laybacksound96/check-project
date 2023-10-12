@@ -3,9 +3,9 @@ import { faSquare } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
 import { dragIcon } from "../Settings";
-import { useRouteLoaderData } from "react-router-dom";
-import { loadToken } from "../util/auth";
 import { IAccount } from "../atoms/data";
+import { useRecoilValue } from "recoil";
+import { LoginState } from "../atoms/login";
 
 interface IStyle {
   isVisible: boolean;
@@ -37,28 +37,13 @@ interface ICheckboxProps {
   Color: string;
   Account: IAccount;
   isVisible: boolean;
-  onClickHandler: (
-    CharacterName: string,
-    ContentName: string,
-    checkIndex: number
-  ) => void;
+  onClickHandler: (CharacterName: string, ContentName: string, checkIndex: number) => void;
 }
 
-function ButtonCheckBox({
-  CharacterName,
-  ContentName,
-  Color,
-  isVisible,
-  Account: { checks },
-  onClickHandler,
-}: ICheckboxProps) {
-  const checkIndex = checks.findIndex(
-    ({ characterName, contentName }) =>
-      CharacterName === characterName && ContentName === contentName
-  );
+function ButtonCheckBox({ CharacterName, ContentName, Color, isVisible, Account: { checks }, onClickHandler }: ICheckboxProps) {
+  const checkIndex = checks.findIndex(({ characterName, contentName }) => CharacterName === characterName && ContentName === contentName);
   const checked = checkIndex === -1 ? false : true;
-  const token = useRouteLoaderData("root") as ReturnType<typeof loadToken>;
-  const loggined = token ? true : false;
+  const loggined = useRecoilValue(LoginState);
   function onClick() {
     if (!isVisible || !loggined) return;
     onClickHandler(CharacterName, ContentName, checkIndex);

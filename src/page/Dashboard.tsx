@@ -8,6 +8,9 @@ import { CommanderData, ICommander } from "../atoms/commander";
 import HeaderBox from "../components/HeaderBox";
 import { FrequencyCounter } from "../atoms/frequency";
 import { makeFrequencyCounter } from "../components/Functions/makeFrequencyCounter";
+import { LoginState } from "../atoms/login";
+import { useRouteLoaderData, useParams } from "react-router-dom";
+import { loadToken } from "../util/auth";
 
 const DashboardStyle = styled.div`
   margin-top: 5px;
@@ -18,6 +21,12 @@ interface IProps {
 }
 
 function Dashboard({ data: [userData, commander] }: IProps) {
+  const token = useRouteLoaderData("root") as ReturnType<typeof loadToken>;
+  interface IParams {
+    userId?: string;
+  }
+  const { userId } = useParams() as IParams;
+  const setLoginState = useSetRecoilState(LoginState);
   const setCommanderData = useSetRecoilState(CommanderData);
   const setFrequencyCounter = useSetRecoilState(FrequencyCounter);
   const setUser = useSetRecoilState(User);
@@ -26,16 +35,17 @@ function Dashboard({ data: [userData, commander] }: IProps) {
   const [accounts, setAccounts] = useRecoilState(Accounts);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
+    if (token && userId) {
+      setLoginState(token.user_id === userId);
+    }
     setUser(userData);
     setCommanderData(commander);
-    Promise.all(userData.accountOrder.map((id) => getAccountData(id))).then(
-      (values) => {
-        setAccounts(values.map(({ account }) => account));
-        setContents(values.map(({ contents }) => contents));
-        setCharacters(values.map(({ characters }) => characters));
-        setLoading(false);
-      }
-    );
+    Promise.all(userData.accountOrder.map((id) => getAccountData(id))).then((values) => {
+      setAccounts(values.map(({ account }) => account));
+      setContents(values.map(({ contents }) => contents));
+      setCharacters(values.map(({ characters }) => characters));
+      setLoading(false);
+    });
   }, []);
 
   useEffect(() => {

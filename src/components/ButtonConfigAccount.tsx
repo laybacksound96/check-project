@@ -1,11 +1,10 @@
 import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled, { css } from "styled-components";
-import { useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { dragIcon } from "../Settings";
 import { ModalConfigAccountAtom } from "../atoms/modal";
-import { useRouteLoaderData } from "react-router-dom";
-import { loadToken } from "../util/auth";
+import { LoginState } from "../atoms/login";
 interface IStyle {
   loggined: boolean;
 }
@@ -36,13 +35,13 @@ const Character = styled.div<IStyle>`
 `;
 
 const ButtonConfigAccount = ({ index }: { index: number }) => {
-  const loggined = useRouteLoaderData("root") as ReturnType<typeof loadToken>;
+  const loggined = useRecoilValue(LoginState);
   const openModal = useSetRecoilState(ModalConfigAccountAtom);
 
   return (
     <>
       <Character
-        loggined={loggined ? true : false}
+        loggined={loggined}
         onClick={() => {
           if (!loggined) return;
           openModal({ status: true, index });

@@ -1,10 +1,5 @@
 import React from "react";
-import {
-  DragDropContext,
-  Draggable,
-  DropResult,
-  Droppable,
-} from "react-beautiful-dnd";
+import { DragDropContext, Draggable, DropResult, Droppable } from "react-beautiful-dnd";
 import styled from "styled-components";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { patchAccountOrder, uncheckAll } from "../util/fetch";
@@ -14,16 +9,11 @@ import DragCharacters from "./DragCharacters";
 import UncheckAllButton from "./UncheckAllContents";
 import ModalAddAccount from "./ModalAddAccount";
 import ModalConfigAccount from "./ModalConfigAccount";
-import {
-  ModalAddAcountAtom,
-  ModalConfigAccountAtom,
-  ModalConfigContentsAtom,
-} from "../atoms/modal";
+import { ModalAddAcountAtom, ModalConfigAccountAtom, ModalConfigContentsAtom } from "../atoms/modal";
 import ModalConfigContent from "./ModalConfigContent";
-import { useRouteLoaderData } from "react-router-dom";
-import { loadToken } from "../util/auth";
 import { changeAccountOrder } from "./Functions/changeFunctions";
 import { Accounts, IAccount } from "../atoms/data";
+import { LoginState } from "../atoms/login";
 const DragBoxStyle = styled.div`
   width: 100%;
   height: auto;
@@ -44,7 +34,7 @@ const AccountStyle = styled.div`
 `;
 
 const DragAccounts = () => {
-  const loggined = useRouteLoaderData("root") as ReturnType<typeof loadToken>;
+  const loggined = useRecoilValue(LoginState);
   const modalConfigContent = useRecoilValue(ModalConfigContentsAtom);
   const modalAddacount = useRecoilValue(ModalAddAcountAtom);
   const modalConfigAccount = useRecoilValue(ModalConfigAccountAtom);
@@ -90,26 +80,10 @@ const DragAccounts = () => {
               {loggined && <UncheckAllButton handleUncheck={uncheckHandler} />}
               {accounts.map((account, index) => {
                 return (
-                  <Draggable
-                    draggableId={account._id}
-                    key={account._id}
-                    index={index}
-                    isDragDisabled={!loggined}
-                  >
+                  <Draggable draggableId={account._id} key={account._id} index={index} isDragDisabled={!loggined}>
                     {(provided) => (
-                      <div
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        style={AxisLocker(
-                          provided.draggableProps.style!,
-                          false
-                        )}
-                      >
-                        <DragCharacters
-                          DragHandleProps={provided.dragHandleProps}
-                          account={account}
-                          accountIndex={index}
-                        />
+                      <div ref={provided.innerRef} {...provided.draggableProps} style={AxisLocker(provided.draggableProps.style!, false)}>
+                        <DragCharacters DragHandleProps={provided.dragHandleProps} account={account} accountIndex={index} />
                       </div>
                     )}
                   </Draggable>
