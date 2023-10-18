@@ -3,15 +3,17 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 import ContentCardGate from "./ContentCardGate";
 import { faCoins, faSquare, faSquareCheck } from "@fortawesome/free-solid-svg-icons";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import getLowerLightnessColor from "../../../../Functions/getLowerLightnessColor";
-import { Contents, IContent } from "../../../../../atoms/data";
+import { Accounts, Contents, IContent } from "../../../../../atoms/data";
 import getRandomPastelColor from "../../../../Functions/getRandomPastelColor";
 import CountGold from "../../../../CountGold";
 import { CommanderData } from "../../../../../atoms/commander";
 import calculateIncome from "../../../../Functions/calculateIncome";
 import { useParams } from "react-router-dom";
 import { patchContent } from "../../../../../fetch/contents";
+import { patchOrder } from "../../../../../fetch/account";
+import { changeOrder } from "../../../../Functions/changeFunctions";
 interface IStyle {
   isVisibled: boolean;
   Color: string | undefined;
@@ -128,6 +130,7 @@ const ContentCard = ({ contents, isGoldContents, level, accountIndex, characterN
   const { isVisble, contentName, gateSetting } = contents;
   const [contentsData, setContents] = useRecoilState(Contents);
   const commanderData = useRecoilValue(CommanderData);
+  const [accounts, setAccounts] = useRecoilState(Accounts);
   const commander = commanderData.find(({ name }) => name === contentName);
   const { userId } = useParams();
   if (!commander) return null;
@@ -141,6 +144,7 @@ const ContentCard = ({ contents, isGoldContents, level, accountIndex, characterN
   const goldContentsHandler = async () => {
     if (!isActived() || !contents.isVisble || !userId) return;
     const newContents = await patchContent(userId, contents._id, "isGoldContents", !contents.isGoldContents);
+    if (!newContents) return;
     const index = contentsData.findIndex(({ _id }) => newContents._id === _id);
     setContents((prev) => {
       const copiedPrev = [...prev];
@@ -151,7 +155,31 @@ const ContentCard = ({ contents, isGoldContents, level, accountIndex, characterN
   const visibleHandler = async () => {
     if (!isActived() || !userId) return;
     const newContents = await patchContent(userId, contents._id, "isVisble", !contents.isVisble);
+    if (!newContents) return;
     const index = contentsData.findIndex(({ _id }) => newContents._id === _id);
+    const remainGoldContents = newContents.contents.filter(
+      ({ isGoldContents, isVisble, contentName }) => isGoldContents && isVisble && contentName === contents.contentName
+    );
+    const account = accounts[accountIndex];
+    const contentsOrder = [...account.contentsOrder];
+    if (remainGoldContents.length === 0) {
+      const targetIndex = contentsOrder.findIndex((name) => name === contents.contentName);
+      contentsOrder.splice(targetIndex, 1);
+    } else {
+      if (!contentsOrder.includes(contents.contentName)) {
+        contentsOrder.push(contents.contentName);
+      }
+    }
+    const newAccount = await patchOrder(userId, account._id, {
+      name: "contentsOrder",
+      order: contentsOrder,
+    });
+    if (!newAccount) return;
+    setAccounts((prev) => {
+      const copiedAccounts = [...prev];
+      copiedAccounts[accountIndex] = newAccount;
+      return copiedAccounts;
+    });
     setContents((prev) => {
       const copiedPrev = [...prev];
       copiedPrev[index] = newContents;
@@ -167,6 +195,7 @@ const ContentCard = ({ contents, isGoldContents, level, accountIndex, characterN
     };
     copiedGateSetting[gateIndex] = copiedGate;
     const newContent = await patchContent(userId, contents._id, "gateSetting", copiedGateSetting);
+    if (!newContent) return;
     const index = contentsData.findIndex(({ _id }) => newContent._id === _id);
     if (index === -1) return;
     setContents((prev) => {
@@ -185,6 +214,7 @@ const ContentCard = ({ contents, isGoldContents, level, accountIndex, characterN
     };
     copiedGateSetting[gateIndex] = copiedGate;
     const newContent = await patchContent(userId, contents._id, "gateSetting", copiedGateSetting);
+    if (!newContent) return;
     const index = contentsData.findIndex(({ _id }) => newContent._id === _id);
     if (index === -1) return;
     setContents((prev) => {
