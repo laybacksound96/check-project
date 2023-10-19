@@ -157,14 +157,15 @@ const ContentCard = ({ contents, isGoldContents, level, accountIndex, characterN
     const newContents = await patchContent(userId, contents._id, "isVisble", !contents.isVisble);
     if (!newContents) return;
     const index = contentsData.findIndex(({ _id }) => newContents._id === _id);
-    const remainGoldContents = newContents.contents.filter(
-      ({ isGoldContents, isVisble, contentName }) => isGoldContents && isVisble && contentName === contents.contentName
-    );
+    const remainGoldContents = newContents.contents.filter(({ isVisble, contentName }) => isVisble && contentName === contents.contentName);
+    console.log(remainGoldContents);
     const account = accounts[accountIndex];
     const contentsOrder = [...account.contentsOrder];
     if (remainGoldContents.length === 0) {
       const targetIndex = contentsOrder.findIndex((name) => name === contents.contentName);
-      contentsOrder.splice(targetIndex, 1);
+      if (targetIndex !== -1) {
+        contentsOrder.splice(targetIndex, 1);
+      }
     } else {
       if (!contentsOrder.includes(contents.contentName)) {
         contentsOrder.push(contents.contentName);

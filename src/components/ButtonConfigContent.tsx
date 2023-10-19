@@ -4,11 +4,12 @@ import styled from "styled-components";
 import { faEye } from "@fortawesome/free-regular-svg-icons";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { ModalConfigContentsAtom } from "../atoms/modal";
-import { Accounts } from "../atoms/data";
+import { Accounts, Characters, Contents } from "../atoms/data";
 import { changeCharacterVisible } from "./Functions/changeFunctions";
 import { LoginState } from "../atoms/login";
 import { patchOrder } from "../fetch/account";
 import { useParams } from "react-router-dom";
+import { patchFalseSettings } from "../fetch/contents";
 export const ButtonContainer = styled.div`
   display: flex;
   justify-content: start;
@@ -27,21 +28,36 @@ export const ButtonContainer = styled.div`
 `;
 const ButtonConfigContent = ({ accountIndex, characterName }: { accountIndex: number; characterName: string }) => {
   const [accounts, setAccounts] = useRecoilState(Accounts);
+  const [characters, setCharacters] = useRecoilState(Characters);
+  const [contents, setContents] = useRecoilState(Contents);
   const openModal = useSetRecoilState(ModalConfigContentsAtom);
   const loggined = useRecoilValue(LoginState);
   const account_id = accounts[accountIndex]._id;
   const { userId } = useParams();
   const handleVisible = async () => {
     if (!userId) return;
-    const account = accounts.find(({ _id }) => _id === account_id);
-    const accountIndex = accounts.findIndex(({ _id }) => _id === account_id);
-    if (!account || accountIndex === -1) return;
-    const newOrder = changeCharacterVisible(account.characterOrder, characterName);
-    const newAccount = await patchOrder(userId, account._id, {
+    const newOrder = changeCharacterVisible(accounts[accountIndex].characterOrder, characterName);
+    const newAccount = await patchOrder(userId, account_id, {
       name: "characterOrder",
       order: newOrder,
     });
-    if (!newAccount) return;
+    const fetchedData = await patchFalseSettings(userId, account_id, characterName);
+    if (!newAccount || !fetchedData) return;
+    const { character, contents } = fetchedData;
+    setCharacters((prev) => {
+      const copiedPrev = [...prev];
+      const index = copiedPrev.findIndex(({ owner }) => owner === account_id);
+      if (index === -1) return prev;
+      copiedPrev[index] = character;
+      return copiedPrev;
+    });
+    setContents((prev) => {
+      const copiedPrev = [...prev];
+      const index = copiedPrev.findIndex(({ owner }) => owner === account_id);
+      if (index === -1) return prev;
+      copiedPrev[index] = contents;
+      return copiedPrev;
+    });
     setAccounts((prev) => {
       const copiedAccounts = [...prev];
       copiedAccounts[accountIndex] = newAccount;
