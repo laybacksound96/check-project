@@ -4,8 +4,9 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { ModalConfigAccountAtom } from "../atoms/modal";
 import ModalContainer from "./ModalContainer";
 import SettingCharacters from "./Ui/Modal/ModalContents/components/SettingVisibleContent";
-import { deleteAccount } from "../util/fetch";
-import { Accounts, Characters, Contents } from "../atoms/data";
+import { Accounts, Characters } from "../atoms/data";
+import { deleteAccount } from "../fetch/account";
+import { useParams } from "react-router-dom";
 
 const Container = styled.div`
   width: auto;
@@ -44,9 +45,11 @@ export const ModalConfigAccount = () => {
   const [accountOrder, setAccountOrder] = useRecoilState(Accounts);
   const characters = useRecoilValue(Characters);
   const [{ index }, closeModal] = useRecoilState(ModalConfigAccountAtom);
+  const { userId } = useParams();
   function handleDelete() {
+    if (!userId) return;
     const accountId = accountOrder[index]._id;
-    deleteAccount(accountId).then(() => {
+    deleteAccount(userId, accountId).then(() => {
       setAccountOrder((prev) => {
         const copiedPrev = [...prev];
         copiedPrev.splice(index, 1);
@@ -60,17 +63,12 @@ export const ModalConfigAccount = () => {
   if (!charactersData) return null;
   const characterData = charactersData.characters;
   return (
-    <ModalContainer
-      onClose={() => closeModal({ status: false, index: 0 })}
-      title={"캐릭터 표시 설정"}
-    >
+    <ModalContainer onClose={() => closeModal({ status: false, index: 0 })} title={"캐릭터 표시 설정"}>
       <Container>
         <ContentList>
           <CharacterContainer>
             {characterData.map((character, charIndex) => {
-              const isVisible = characterOrder.includes(
-                character.CharacterName
-              );
+              const isVisible = characterOrder.includes(character.CharacterName);
               return (
                 <SettingCharacters
                   key={character.CharacterName}

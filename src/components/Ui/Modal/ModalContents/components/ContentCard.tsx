@@ -2,19 +2,18 @@ import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 import ContentCardGate from "./ContentCardGate";
-import {
-  faCoins,
-  faSquare,
-  faSquareCheck,
-} from "@fortawesome/free-solid-svg-icons";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { faCoins, faSquare, faSquareCheck } from "@fortawesome/free-solid-svg-icons";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import getLowerLightnessColor from "../../../../Functions/getLowerLightnessColor";
-import { Contents, IContent } from "../../../../../atoms/data";
+import { Accounts, Contents, IContent } from "../../../../../atoms/data";
 import getRandomPastelColor from "../../../../Functions/getRandomPastelColor";
 import CountGold from "../../../../CountGold";
 import { CommanderData } from "../../../../../atoms/commander";
 import calculateIncome from "../../../../Functions/calculateIncome";
-import { patchContent } from "../../../../../util/fetch";
+import { useParams } from "react-router-dom";
+import { patchContent } from "../../../../../fetch/contents";
+import { patchOrder } from "../../../../../fetch/account";
+import { changeOrder } from "../../../../Functions/changeFunctions";
 interface IStyle {
   isVisibled: boolean;
   Color: string | undefined;
@@ -23,12 +22,9 @@ interface IStyle {
 const ContentList = styled.div<IStyle>`
   display: flex;
   flex-direction: column;
-  box-shadow: ${({ isVisibled }) =>
-    isVisibled ? "0px 5px 10px 0px rgba(0, 0, 0, 0.35)" : "none"};
+  box-shadow: ${({ isVisibled }) => (isVisibled ? "0px 5px 10px 0px rgba(0, 0, 0, 0.35)" : "none")};
   background-color: ${({ Color, theme: { Color_4 }, isVisibled }) =>
-    Color === undefined || isVisibled === false
-      ? Color_4
-      : getLowerLightnessColor(Color, 15)};
+    Color === undefined || isVisibled === false ? Color_4 : getLowerLightnessColor(Color, 15)};
 
   padding: 15px;
   width: auto;
@@ -130,17 +126,13 @@ interface IProps {
   characterName: string;
   accountIndex: number;
 }
-const ContentCard = ({
-  contents,
-  isGoldContents,
-  level,
-  accountIndex,
-  characterName,
-}: IProps) => {
+const ContentCard = ({ contents, isGoldContents, level, accountIndex, characterName }: IProps) => {
   const { isVisble, contentName, gateSetting } = contents;
   const [contentsData, setContents] = useRecoilState(Contents);
   const commanderData = useRecoilValue(CommanderData);
+  const [accounts, setAccounts] = useRecoilState(Accounts);
   const commander = commanderData.find(({ name }) => name === contentName);
+  const { userId } = useParams();
   if (!commander) return null;
   const income = calculateIncome([contents], commanderData);
   const isActived = () => {
@@ -150,12 +142,9 @@ const ContentCard = ({
     return false;
   };
   const goldContentsHandler = async () => {
-    if (!isActived() || !contents.isVisble) return;
-    const newContents = await patchContent(
-      contents._id,
-      "isGoldContents",
-      !contents.isGoldContents
-    );
+    if (!isActived() || !contents.isVisble || !userId) return;
+    const newContents = await patchContent(userId, contents._id, "isGoldContents", !contents.isGoldContents);
+    if (!newContents) return;
     const index = contentsData.findIndex(({ _id }) => newContents._id === _id);
     setContents((prev) => {
       const copiedPrev = [...prev];
@@ -164,13 +153,34 @@ const ContentCard = ({
     });
   };
   const visibleHandler = async () => {
-    if (!isActived()) return;
-    const newContents = await patchContent(
-      contents._id,
-      "isVisble",
-      !contents.isVisble
-    );
+    if (!isActived() || !userId) return;
+    const newContents = await patchContent(userId, contents._id, "isVisble", !contents.isVisble);
+    if (!newContents) return;
     const index = contentsData.findIndex(({ _id }) => newContents._id === _id);
+    const remainGoldContents = newContents.contents.filter(({ isVisble, contentName }) => isVisble && contentName === contents.contentName);
+    console.log(remainGoldContents);
+    const account = accounts[accountIndex];
+    const contentsOrder = [...account.contentsOrder];
+    if (remainGoldContents.length === 0) {
+      const targetIndex = contentsOrder.findIndex((name) => name === contents.contentName);
+      if (targetIndex !== -1) {
+        contentsOrder.splice(targetIndex, 1);
+      }
+    } else {
+      if (!contentsOrder.includes(contents.contentName)) {
+        contentsOrder.push(contents.contentName);
+      }
+    }
+    const newAccount = await patchOrder(userId, account._id, {
+      name: "contentsOrder",
+      order: contentsOrder,
+    });
+    if (!newAccount) return;
+    setAccounts((prev) => {
+      const copiedAccounts = [...prev];
+      copiedAccounts[accountIndex] = newAccount;
+      return copiedAccounts;
+    });
     setContents((prev) => {
       const copiedPrev = [...prev];
       copiedPrev[index] = newContents;
@@ -178,17 +188,15 @@ const ContentCard = ({
     });
   };
   const handleGateVisible = async (gateIndex: number) => {
+    if (!userId) return;
     const copiedGateSetting = [...gateSetting];
     const copiedGate = {
       ...copiedGateSetting[gateIndex],
       isVisible: !copiedGateSetting[gateIndex].isVisible,
     };
     copiedGateSetting[gateIndex] = copiedGate;
-    const newContent = await patchContent(
-      contents._id,
-      "gateSetting",
-      copiedGateSetting
-    );
+    const newContent = await patchContent(userId, contents._id, "gateSetting", copiedGateSetting);
+    if (!newContent) return;
     const index = contentsData.findIndex(({ _id }) => newContent._id === _id);
     if (index === -1) return;
     setContents((prev) => {
@@ -197,10 +205,8 @@ const ContentCard = ({
       return copiedPrev;
     });
   };
-  const handleGateDifficulty = async (
-    gateIndex: number,
-    Difficulty: string
-  ) => {
+  const handleGateDifficulty = async (gateIndex: number, Difficulty: string) => {
+    if (!userId) return;
     const newDifficulty = Difficulty === "hard" ? "normal" : "hard";
     const copiedGateSetting = [...gateSetting];
     const copiedGate = {
@@ -208,11 +214,8 @@ const ContentCard = ({
       difficulty: newDifficulty,
     };
     copiedGateSetting[gateIndex] = copiedGate;
-    const newContent = await patchContent(
-      contents._id,
-      "gateSetting",
-      copiedGateSetting
-    );
+    const newContent = await patchContent(userId, contents._id, "gateSetting", copiedGateSetting);
+    if (!newContent) return;
     const index = contentsData.findIndex(({ _id }) => newContent._id === _id);
     if (index === -1) return;
     setContents((prev) => {
@@ -222,10 +225,7 @@ const ContentCard = ({
     });
   };
   return (
-    <ContentList
-      isVisibled={isVisble}
-      Color={getRandomPastelColor(contentName, gateSetting)}
-    >
+    <ContentList isVisibled={isVisble} Color={getRandomPastelColor(contentName, gateSetting)}>
       <CardHeader>
         <header>
           <div>
@@ -237,10 +237,7 @@ const ContentCard = ({
         </header>
         <GoldContainer>
           <GoldIcon isGoldContents={isGoldContents}>
-            <FontAwesomeIcon
-              icon={faCoins}
-              style={{ color: isGoldContents ? "yellow" : "gray" }}
-            />
+            <FontAwesomeIcon icon={faCoins} style={{ color: isGoldContents ? "yellow" : "gray" }} />
             <CountGold income={income} />
           </GoldIcon>
           <GoldCheck onClick={() => goldContentsHandler()}>

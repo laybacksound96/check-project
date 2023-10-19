@@ -1,8 +1,8 @@
 import { Navigate, useRouteLoaderData } from "react-router-dom";
 import { Main, LoginDiscordBtn } from "../Style/Home";
 import { ReactComponent as DiscordIcon } from "../icons/discord-icon.svg";
-import { fetchLogin } from "../util/fetch";
 import { loadToken } from "../util/auth";
+import { fetchLogin } from "../fetch/user";
 
 export async function discordLoginHandler(event: React.MouseEvent) {
   event.preventDefault();

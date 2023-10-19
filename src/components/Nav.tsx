@@ -3,16 +3,12 @@ import styled from "styled-components";
 import { loadToken } from "../util/auth";
 import { discordLoginHandler } from "../page/Home";
 import { ReactComponent as DiscordIcon } from "../icons/discord-icon.svg";
-import {
-  faCircleInfo,
-  faMagnifyingGlass,
-  faPersonWalkingDashedLineArrowRight,
-} from "@fortawesome/free-solid-svg-icons";
+import { faCircleInfo, faMagnifyingGlass, faPersonWalkingDashedLineArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useRef, useState } from "react";
 import UserCard from "./UserCard";
 import { ISearchedData } from "../atoms/fetchData";
-import { search } from "../util/fetch";
+import { search } from "../fetch/api";
 
 const NavConainer = styled.div`
   padding: 0px 20px;
@@ -179,10 +175,7 @@ const Nav = () => {
     window.location.href = "/" + location;
   }
   const handleClickOutside = (event: MouseEvent) => {
-    if (
-      dropdownRef.current &&
-      !dropdownRef.current.contains(event.target as Node)
-    ) {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
       setIsOpen(false);
     }
   };
@@ -216,11 +209,7 @@ const Nav = () => {
         >
           <div>
             <span>Search</span>
-            <input
-              placeholder="검색할 캐릭터이름..."
-              onClick={toggleDropdown}
-              onChange={HandleChange}
-            />
+            <input placeholder="검색할 캐릭터이름..." onClick={toggleDropdown} onChange={HandleChange} />
           </div>
           <FontAwesomeIcon icon={faMagnifyingGlass} color="black" />
         </InputContainer>
@@ -236,10 +225,7 @@ const Nav = () => {
               <>
                 {searchList ? (
                   searchList.accounts.map((elem, index) => (
-                    <div
-                      key={index}
-                      style={{ display: "flex", flexDirection: "column" }}
-                    >
+                    <div key={index} style={{ display: "flex", flexDirection: "column" }}>
                       <UserCard data={elem} name={searchList.username} />
                     </div>
                   ))

@@ -32,23 +32,16 @@ const AccountGold = () => {
       const foundContents = contents.find(({ owner }) => owner === _id);
       if (!foundContents) continue;
       const goldContents = foundContents.contents.filter(
-        ({ isVisble, isGoldContents, owner }) =>
-          isVisble === true &&
-          isGoldContents === true &&
-          characterOrder.includes(owner)
+        ({ isVisble, isGoldContents, owner }) => isVisble === true && isGoldContents === true && characterOrder.includes(owner)
       );
       for (let j in goldContents) {
         const name = goldContents[j].contentName;
         const gate = goldContents[j].gateSetting;
         for (let k in gate) {
-          const commander = commanderData.find(
-            ({ name: commanderName }) => name === commanderName
-          );
+          const commander = commanderData.find(({ name: commanderName }) => name === commanderName);
           if (gate[k].isVisible === false || !commander) continue;
           const diff = gate[k].difficulty;
-          const data = commander.data.find(
-            ({ difficulty }) => difficulty === diff
-          );
+          const data = commander.data.find(({ difficulty }) => difficulty === diff);
           if (!data) continue;
           totalGold += data.gates[k].gold;
         }
@@ -66,23 +59,16 @@ const AccountGold = () => {
         ({ isVisble, isGoldContents, contentName, owner }) =>
           isVisble === true &&
           isGoldContents === true &&
-          checks.find(
-            ({ characterName, contentName: cont }) =>
-              cont === contentName && characterName === owner
-          )
+          checks.find(({ characterName, contentName: cont }) => cont === contentName && characterName === owner)
       );
       for (let j in goldContents) {
         const name = goldContents[j].contentName;
         const gate = goldContents[j].gateSetting;
         for (let k in gate) {
-          const commander = commanderData.find(
-            ({ name: commanderName }) => name === commanderName
-          );
+          const commander = commanderData.find(({ name: commanderName }) => name === commanderName);
           if (gate[k].isVisible === false || !commander) continue;
           const diff = gate[k].difficulty;
-          const data = commander.data.find(
-            ({ difficulty }) => difficulty === diff
-          );
+          const data = commander.data.find(({ difficulty }) => difficulty === diff);
           if (!data) continue;
           checkedGold += data.gates[k].gold;
         }

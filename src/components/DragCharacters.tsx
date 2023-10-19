@@ -1,26 +1,10 @@
-import {
-  DragDropContext,
-  Draggable,
-  DraggableProvidedDragHandleProps,
-  DropResult,
-  Droppable,
-} from "react-beautiful-dnd";
+import { DragDropContext, Draggable, DraggableProvidedDragHandleProps, DropResult, Droppable } from "react-beautiful-dnd";
 import React from "react";
 import styled, { css } from "styled-components";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import DragContents from "./DragContents";
-import {
-  Accounts,
-  Characters,
-  Contents,
-  IAccount,
-  ICharacters,
-  ICheck,
-  IContent,
-  IContents,
-} from "../atoms/data";
+import { Accounts, Characters, Contents, IAccount, ICharacters, ICheck, IContent, IContents } from "../atoms/data";
 import { dragIcon } from "../Settings";
-import { patchOrder } from "../util/fetch";
 import { AxisLocker } from "./Functions/AxisLocker";
 import ButtonConfigAccount from "./ButtonConfigAccount";
 import ButtonConfigContent from "./ButtonConfigContent";
@@ -31,9 +15,10 @@ import { faCoins } from "@fortawesome/free-solid-svg-icons";
 import { CommanderData, ICommander } from "../atoms/commander";
 import calculateIncome from "./Functions/calculateIncome";
 import CountUp from "react-countup";
-import { useRouteLoaderData } from "react-router-dom";
-import { loadToken } from "../util/auth";
 import { changeOrder } from "./Functions/changeFunctions";
+import { LoginState } from "../atoms/login";
+import { useParams } from "react-router-dom";
+import { patchOrder } from "../fetch/account";
 
 interface IStyle {
   loggined: boolean;
@@ -134,7 +119,8 @@ interface IProps {
   account: IAccount;
 }
 function DragCharacters({ DragHandleProps, accountIndex, account }: IProps) {
-  const loggined = useRouteLoaderData("root") as ReturnType<typeof loadToken>;
+  const { userId } = useParams();
+  const loggined = useRecoilValue(LoginState);
   const commanderData = useRecoilValue(CommanderData);
   const setAccounts = useSetRecoilState(Accounts);
   const characters = useRecoilValue(Characters);
@@ -145,22 +131,15 @@ function DragCharacters({ DragHandleProps, accountIndex, account }: IProps) {
     if (!charactersData || !contentsData) return null;
     return { charactersData, contentsData };
   };
-  const findDataByName = (
-    characterName: string,
-    charactersData: ICharacters,
-    contentsData: IContents
-  ) => {
-    const character = charactersData.characters.find(
-      ({ CharacterName }) => CharacterName === characterName
-    );
-    const content = contentsData.contents.filter(
-      ({ owner }) => owner === characterName
-    );
+  const findDataByName = (characterName: string, charactersData: ICharacters, contentsData: IContents) => {
+    const character = charactersData.characters.find(({ CharacterName }) => CharacterName === characterName);
+    const content = contentsData.contents.filter(({ owner }) => owner === characterName);
     if (!character || !content) return null;
 
     return { character, content };
   };
   const dragCharacterHandler = async (dragInfo: DropResult) => {
+    if (!userId) return;
     const { destination, source } = dragInfo;
     if (!destination) return;
     if (destination?.droppableId !== source.droppableId) return;
@@ -168,7 +147,7 @@ function DragCharacters({ DragHandleProps, accountIndex, account }: IProps) {
 
     const prevOrder = [...account.characterOrder];
     const newOrder = changeOrder(destination, source, prevOrder);
-    const newAccount = await patchOrder(account._id, {
+    const newAccount = await patchOrder(userId, account._id, {
       name: "characterOrder",
       order: newOrder,
     });
@@ -183,36 +162,20 @@ function DragCharacters({ DragHandleProps, accountIndex, account }: IProps) {
   };
   const filterGoldContents = (contents: IContent[]) => {
     const result = contents.filter(
-      ({ isVisble, isGoldContents, owner }) =>
-        isVisble === true &&
-        isGoldContents === true &&
-        account.characterOrder.includes(owner)
+      ({ isVisble, isGoldContents, owner }) => isVisble === true && isGoldContents === true && account.characterOrder.includes(owner)
     );
     return result;
   };
-  const calculateCheckedIncome = (
-    goldContents: IContent[],
-    commanderData: ICommander[],
-    checks: ICheck[]
-  ) => {
+  const calculateCheckedIncome = (goldContents: IContent[], commanderData: ICommander[], checks: ICheck[]) => {
     let gold = 0;
     checks.forEach(({ characterName, contentName }) => {
-      const commander = commanderData.find(
-        ({ name: commanderName }) => commanderName === contentName
-      );
-      const content = goldContents.find(
-        ({ contentName: cont, owner }) =>
-          cont === contentName && characterName === owner
-      );
+      const commander = commanderData.find(({ name: commanderName }) => commanderName === contentName);
+      const content = goldContents.find(({ contentName: cont, owner }) => cont === contentName && characterName === owner);
 
       if (!commander || !content) return;
-      const difficulty = content.gateSetting
-        .filter(({ isVisible }) => isVisible === true)
-        .map(({ difficulty }) => difficulty);
+      const difficulty = content.gateSetting.filter(({ isVisible }) => isVisible === true).map(({ difficulty }) => difficulty);
       difficulty.forEach((difficulty, index) => {
-        const gate = commander.data.find(
-          ({ difficulty: diff }) => difficulty === diff
-        );
+        const gate = commander.data.find(({ difficulty: diff }) => difficulty === diff);
         if (!gate) return;
         gold += gate.gates[index].gold;
       });
@@ -227,7 +190,7 @@ function DragCharacters({ DragHandleProps, accountIndex, account }: IProps) {
     <DragDropContext onDragEnd={dragCharacterHandler}>
       <Droppable droppableId={account._id}>
         {(provided) => (
-          <Container loggined={loggined ? true : false}>
+          <Container loggined={loggined}>
             <div ref={provided.innerRef} {...provided.droppableProps}>
               <SettingAndGold>
                 <ButtonConfigAccount index={accountIndex} />
@@ -235,44 +198,23 @@ function DragCharacters({ DragHandleProps, accountIndex, account }: IProps) {
                   <span>계정 획득 골드</span>
                   <div>
                     <FontAwesomeIcon icon={faCoins} />
-                    <CountGold
-                      income={calculateCheckedIncome(
-                        goldContents,
-                        commanderData,
-                        account.checks
-                      )}
-                    />
+                    <CountGold income={calculateCheckedIncome(goldContents, commanderData, account.checks)} />
                     <span>/</span>
-                    <CountUp
-                      start={calculateIncome(goldContents, commanderData)}
-                      end={calculateIncome(goldContents, commanderData)}
-                    />
+                    <CountUp start={calculateIncome(goldContents, commanderData)} end={calculateIncome(goldContents, commanderData)} />
                   </div>
                 </AccountIncomeContainer>
               </SettingAndGold>
               {account.characterOrder.map((name, index) => {
-                const dataByName = findDataByName(
-                  name,
-                  charactersData,
-                  contentsData
-                );
+                const dataByName = findDataByName(name, charactersData, contentsData);
                 if (!dataByName) return null;
                 const { character, content } = dataByName;
                 return (
-                  <Draggable
-                    key={name}
-                    draggableId={name}
-                    index={index}
-                    isDragDisabled={!loggined}
-                  >
+                  <Draggable key={name} draggableId={name} index={index} isDragDisabled={!loggined}>
                     {(provided) => (
                       <CharactersContainer
                         ref={provided.innerRef}
                         {...provided.draggableProps}
-                        style={AxisLocker(
-                          provided.draggableProps.style!,
-                          false
-                        )}
+                        style={AxisLocker(provided.draggableProps.style!, false)}
                       >
                         <Character {...provided.dragHandleProps}>
                           <NameContainer>
@@ -281,17 +223,8 @@ function DragCharacters({ DragHandleProps, accountIndex, account }: IProps) {
                             <span>Lv {character.ItemMaxLevel}</span>
                           </NameContainer>
                           <div>
-                            <ButtonConfigContent
-                              accountIndex={accountIndex}
-                              characterName={name}
-                            />
-                            {character.isGoldCharacter && (
-                              <CharacterGold
-                                checks={account.checks}
-                                contents={content}
-                                CharacterName={name}
-                              />
-                            )}
+                            <ButtonConfigContent accountIndex={accountIndex} characterName={name} />
+                            {character.isGoldCharacter && <CharacterGold checks={account.checks} contents={content} CharacterName={name} />}
                           </div>
                         </Character>
                       </CharactersContainer>
@@ -302,10 +235,7 @@ function DragCharacters({ DragHandleProps, accountIndex, account }: IProps) {
               {provided.placeholder}
             </div>
             <DragContents account={account} accountIndex={accountIndex} />
-            <DragAccountBtn
-              {...DragHandleProps}
-              loggined={loggined ? true : false}
-            />
+            <DragAccountBtn {...DragHandleProps} loggined={loggined} />
           </Container>
         )}
       </Droppable>
