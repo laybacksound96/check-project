@@ -27,10 +27,5 @@ const Board = () => {
         <Await resolve={data}>
           {(data: [IUser, ICommander[]]) => {
             return <Dashboard data={data} />;
-          }}
         </Await>
       </Suspense>
-    </>
-  );
-};
-export default Board;

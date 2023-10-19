@@ -61,4 +61,4 @@ const NotFoundData = () => {
     </Container>
   );
 };
-export default NotFoundData;
+export default ErrorComponent;
