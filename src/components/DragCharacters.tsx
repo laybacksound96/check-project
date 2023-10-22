@@ -151,10 +151,15 @@ function DragCharacters({ DragHandleProps, accountIndex, account }: IProps) {
   const checkNeedsRefreshLevel = (character: ICharacter, charactersData: ICharacters) => {
     if (!levelInfo || !userId) return;
     const foundChar = levelInfo.find((info) => info.name === character.CharacterName);
-    if (!foundChar) return;
+    const index = characters.findIndex(({ owner }) => owner === account._id);
+    if (!foundChar || index === -1) return;
     if (character.ItemMaxLevel === foundChar.level) return;
     patchLevel(userId, charactersData._id, foundChar.name, foundChar.level).then((newCharacters) => {
-      setCharacters(newCharacters);
+      setCharacters((prev) => {
+        const copiedPrev = [...prev];
+        copiedPrev[index] = newCharacters;
+        return copiedPrev;
+      });
     });
     return;
   };
