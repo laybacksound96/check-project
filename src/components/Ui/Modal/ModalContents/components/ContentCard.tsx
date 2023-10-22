@@ -158,7 +158,6 @@ const ContentCard = ({ contents, isGoldContents, level, accountIndex, characterN
     if (!newContents) return;
     const index = contentsData.findIndex(({ _id }) => newContents._id === _id);
     const remainGoldContents = newContents.contents.filter(({ isVisble, contentName }) => isVisble && contentName === contents.contentName);
-    console.log(remainGoldContents);
     const account = accounts[accountIndex];
     const contentsOrder = [...account.contentsOrder];
     if (remainGoldContents.length === 0) {
