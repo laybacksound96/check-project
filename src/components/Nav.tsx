@@ -199,7 +199,7 @@ const Nav = () => {
   return (
     <NavConainer>
       <div style={{ flex: 1 }}>
-        <Link to="/">CheckSheet.Link</Link>
+        <a href="/">CheckSheet.Link</a>
       </div>
       <SearchContainer>
         <InputContainer

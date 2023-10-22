@@ -1,11 +1,9 @@
 import { isRouteErrorResponse, useRouteError } from "react-router-dom";
-import { GlobalStyle } from "../Style/App";
-import Footer from "../components/Ui/Footer";
-import ErrorComponent from "../components/Errors/ErrorComponent";
 
 function ErrorPage() {
   const error = useRouteError();
 
+  let title = "An error occurred!";
   let message = "Something went wrong!";
   if (isRouteErrorResponse(error)) {
     message = error.error?.message || error.statusText;
@@ -13,7 +11,8 @@ function ErrorPage() {
       message = error.data.message;
     }
     if (error.status === 404) {
-      message = "페이지를 찾을 수 없습니다.";
+      title = "Not found!";
+      message = "Could not find resource or page.";
     }
   } else if (error instanceof Error) {
     message = error.message;
@@ -26,10 +25,8 @@ function ErrorPage() {
 
   return (
     <>
-      <GlobalStyle />
-      <div />
-      <ErrorComponent message={message} />
-      <Footer />
+      <p>{title}</p>
+      <p>{message}</p>
     </>
   );
 }
