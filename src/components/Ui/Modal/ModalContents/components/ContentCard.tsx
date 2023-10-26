@@ -187,7 +187,7 @@ const ContentCard = ({ contents, isGoldContents, level, accountIndex, characterN
     });
   };
   const handleGateVisible = async (gateIndex: number) => {
-    if (!userId) return;
+    if (!userId || gateIndex === 0) return;
     const copiedGateSetting = [...gateSetting];
     const copiedGate = {
       ...copiedGateSetting[gateIndex],
@@ -205,7 +205,7 @@ const ContentCard = ({ contents, isGoldContents, level, accountIndex, characterN
     });
   };
   const handleGateDifficulty = async (gateIndex: number, Difficulty: string) => {
-    if (!userId || gateIndex === 0) return;
+    if (!userId) return;
     const newDifficulty = Difficulty === "hard" ? "normal" : "hard";
     const copiedGateSetting = [...gateSetting];
     const copiedGate = {
