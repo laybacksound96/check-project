@@ -8,11 +8,6 @@ const FooterStyle = styled.footer`
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
-  svg {
-    width: 30%;
-    height: 30%;
-  }
 `;
 
 const Footer = () => {

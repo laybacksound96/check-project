@@ -1,9 +1,9 @@
 import { DragDropContext, Draggable, DraggableProvidedDragHandleProps, DropResult, Droppable } from "react-beautiful-dnd";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import DragContents from "./DragContents";
-import { Accounts, Characters, Contents, IAccount, ICharacters, ICheck, IContent, IContents } from "../atoms/data";
+import { Accounts, Characters, Contents, IAccount, ICharacter, ICharacters, ICheck, IContent, IContents } from "../atoms/data";
 import { dragIcon } from "../Settings";
 import { AxisLocker } from "./Functions/AxisLocker";
 import ButtonConfigAccount from "./ButtonConfigAccount";
@@ -19,6 +19,8 @@ import { changeOrder } from "./Functions/changeFunctions";
 import { LoginState } from "../atoms/login";
 import { useParams } from "react-router-dom";
 import { patchOrder } from "../fetch/account";
+import { fetchSearchAccount } from "../fetch/api";
+import { patchLevel } from "../fetch/character";
 
 interface IStyle {
   loggined: boolean;
@@ -118,13 +120,50 @@ interface IProps {
   accountIndex: number;
   account: IAccount;
 }
+interface ILevelInfo {
+  name: string;
+  level: number;
+}
+
 function DragCharacters({ DragHandleProps, accountIndex, account }: IProps) {
   const { userId } = useParams();
   const loggined = useRecoilValue(LoginState);
   const commanderData = useRecoilValue(CommanderData);
   const setAccounts = useSetRecoilState(Accounts);
-  const characters = useRecoilValue(Characters);
+  const [characters, setCharacters] = useRecoilState(Characters);
   const contents = useRecoilValue(Contents);
+  const [levelInfo, setLevelInfo] = useState<ILevelInfo[] | null>(null);
+  useEffect(() => {
+    if (account.characterOrder.length === 0) return;
+
+    fetchSearchAccount(account.characterOrder[0])
+      .then((fetchedDatas) => {
+        const mappedData = fetchedDatas.map((data) => {
+          return { name: data.CharacterName, level: parseInt(data.ItemMaxLevel.replace(",", "")) };
+        });
+        setLevelInfo(mappedData);
+      })
+      .catch(() => {
+        setLevelInfo(null);
+      });
+  }, []);
+
+  const checkNeedsRefreshLevel = (character: ICharacter, charactersData: ICharacters) => {
+    if (!levelInfo || !userId) return;
+    const foundChar = levelInfo.find((info) => info.name === character.CharacterName);
+    const index = characters.findIndex(({ owner }) => owner === account._id);
+    if (!foundChar || index === -1) return;
+    if (character.ItemMaxLevel === foundChar.level) return;
+    patchLevel(userId, charactersData._id, foundChar.name, foundChar.level).then((newCharacters) => {
+      setCharacters((prev) => {
+        const copiedPrev = [...prev];
+        copiedPrev[index] = newCharacters;
+        return copiedPrev;
+      });
+    });
+    return;
+  };
+
   const findData = (account_id: string) => {
     const charactersData = characters.find(({ owner }) => owner === account_id);
     const contentsData = contents.find(({ owner }) => owner === account_id);
@@ -186,6 +225,7 @@ function DragCharacters({ DragHandleProps, accountIndex, account }: IProps) {
   if (!data) return null;
   const { charactersData, contentsData } = data;
   const goldContents = filterGoldContents(contentsData.contents);
+
   return (
     <DragDropContext onDragEnd={dragCharacterHandler}>
       <Droppable droppableId={account._id}>
@@ -208,6 +248,8 @@ function DragCharacters({ DragHandleProps, accountIndex, account }: IProps) {
                 const dataByName = findDataByName(name, charactersData, contentsData);
                 if (!dataByName) return null;
                 const { character, content } = dataByName;
+
+                checkNeedsRefreshLevel(character, charactersData);
                 return (
                   <Draggable key={name} draggableId={name} index={index} isDragDisabled={!loggined}>
                     {(provided) => (
