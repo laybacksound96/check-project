@@ -187,7 +187,7 @@ const ContentCard = ({ contents, isGoldContents, level, accountIndex, characterN
     });
   };
   const handleGateVisible = async (gateIndex: number) => {
-    if (!userId || gateIndex === 0) return;
+    if (!userId) return;
     const copiedGateSetting = [...gateSetting];
     const copiedGate = {
       ...copiedGateSetting[gateIndex],
