@@ -1,10 +1,7 @@
 import { DraggableLocation, DropResult } from "react-beautiful-dnd";
 import { ICheck } from "../../atoms/data";
 
-export const changeAccountOrder = (
-  dragInfo: DropResult,
-  accountOrder: string[]
-) => {
+export const changeAccountOrder = (dragInfo: DropResult, accountOrder: string[]) => {
   const { destination, source } = dragInfo;
   if (destination?.droppableId !== source.droppableId) return accountOrder;
 
@@ -14,25 +11,16 @@ export const changeAccountOrder = (
   copiedAccountOrder.splice(destination?.index, 0, target);
   return copiedAccountOrder;
 };
-export const changeOrder = (
-  destination: DraggableLocation,
-  source: DraggableLocation,
-  characterOrder: string[]
-) => {
+export const changeOrder = (destination: DraggableLocation, source: DraggableLocation, characterOrder: string[]) => {
   const result = [...characterOrder];
   const target = characterOrder[source.index];
   result.splice(source.index, 1);
   result.splice(destination?.index, 0, target);
   return result;
 };
-export const changeCharacterVisible = (
-  characterOrder: string[],
-  characterName: string
-) => {
+export const changeCharacterVisible = (characterOrder: string[], characterName: string) => {
   const copiedCharacterOrder = [...characterOrder];
-  const targetIndex = characterOrder.findIndex(
-    (name) => name === characterName
-  );
+  const targetIndex = characterOrder.findIndex((name) => name === characterName);
   const isVisible = characterOrder.includes(characterName);
   if (isVisible) {
     if (targetIndex === -1) return copiedCharacterOrder;
@@ -42,22 +30,14 @@ export const changeCharacterVisible = (
   }
   return copiedCharacterOrder;
 };
-export const changeContentOrder = (
-  destination: DraggableLocation,
-  source: DraggableLocation,
-  contentsOrder: string[]
-) => {
+export const changeContentOrder = (destination: DraggableLocation, source: DraggableLocation, contentsOrder: string[]) => {
   const result = [...contentsOrder];
   const target = contentsOrder[source.index];
   result.splice(source.index, 1);
   result.splice(destination?.index, 0, target);
   return result;
 };
-export const changeChecks = (
-  checks: ICheck[],
-  checkIndex: number,
-  newCheck: { characterName: string; contentName: string }
-) => {
+export const changeChecks = (checks: ICheck[], checkIndex: number, newCheck: { characterName: string; contentName: string }) => {
   const copiedChecks = [...checks];
   if (checkIndex === -1) {
     copiedChecks.push(newCheck);

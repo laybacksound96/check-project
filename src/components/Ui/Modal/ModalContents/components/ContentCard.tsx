@@ -5,7 +5,7 @@ import ContentCardGate from "./ContentCardGate";
 import { faCoins, faSquare, faSquareCheck } from "@fortawesome/free-solid-svg-icons";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import getLowerLightnessColor from "../../../../Functions/getLowerLightnessColor";
-import { Accounts, Contents, IContent } from "../../../../../atoms/data";
+import { Accounts, Contents, IAccount, IContent, IContents } from "../../../../../atoms/data";
 import getRandomPastelColor from "../../../../Functions/getRandomPastelColor";
 import CountGold from "../../../../CountGold";
 import { CommanderData } from "../../../../../atoms/commander";
@@ -13,7 +13,7 @@ import calculateIncome from "../../../../Functions/calculateIncome";
 import { useParams } from "react-router-dom";
 import { patchContent } from "../../../../../fetch/contents";
 import { patchOrder } from "../../../../../fetch/account";
-import { changeOrder } from "../../../../Functions/changeFunctions";
+import { changeContentOrder, changeOrder } from "../../../../Functions/changeFunctions";
 interface IStyle {
   isVisibled: boolean;
   Color: string | undefined;
@@ -156,23 +156,45 @@ const ContentCard = ({ contents, isGoldContents, level, accountIndex, characterN
     if (!isActived() || !userId) return;
     const newContents = await patchContent(userId, contents._id, "isVisble", !contents.isVisble);
     if (!newContents) return;
+
     const index = contentsData.findIndex(({ _id }) => newContents._id === _id);
-    const remainGoldContents = newContents.contents.filter(({ isVisble, contentName }) => isVisble && contentName === contents.contentName);
     const account = accounts[accountIndex];
-    const contentsOrder = [...account.contentsOrder];
-    if (remainGoldContents.length === 0) {
-      const targetIndex = contentsOrder.findIndex((name) => name === contents.contentName);
-      if (targetIndex !== -1) {
-        contentsOrder.splice(targetIndex, 1);
-      }
-    } else {
-      if (!contentsOrder.includes(contents.contentName)) {
-        contentsOrder.push(contents.contentName);
-      }
-    }
+    const makeNewContentOrder = (account: IAccount, contents: IContent[]): string[] => {
+      const characterOrder = account.characterOrder;
+
+      const result: string[] = [];
+      contents.forEach((content) => {
+        if (characterOrder.includes(content.owner) && content.isVisble) {
+          if (!result.includes(content.contentName)) {
+            result.push(content.contentName);
+          }
+        }
+      });
+
+      return result;
+    };
+    const contentsOrder = account.contentsOrder;
+    const newContentsOrder = makeNewContentOrder(account, newContents.contents);
+    const arrangeContentsOrder = (prevOrder: string[], newOrder: string[]): string[] => {
+      const result: string[] = [];
+      const newContents = [...newOrder];
+      prevOrder.forEach((contents) => {
+        if (newOrder.includes(contents)) {
+          result.push(contents);
+        }
+        const index = newContents.indexOf(contents);
+        if (index !== -1) {
+          newContents.splice(index, 1);
+        }
+      });
+      newContents.forEach((contents) => {
+        result.push(contents);
+      });
+      return result;
+    };
     const newAccount = await patchOrder(userId, account._id, {
       name: "contentsOrder",
-      order: contentsOrder,
+      order: arrangeContentsOrder(contentsOrder, newContentsOrder),
     });
     if (!newAccount) return;
     setAccounts((prev) => {
